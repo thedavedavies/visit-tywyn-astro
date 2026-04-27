@@ -10,11 +10,15 @@
  *     (e.g. `/where-to-stay/`, `/webcam/`, `/dog-friendly-cafes/`).
  *     Astro's filesystem routing resolves the explicit file before
  *     this catch-all.
+ *
+ * For pages whose body content has an `<h4>question</h4>` /
+ * answer pattern (currently only `/explore-tywyn/`) we additionally
+ * emit FAQPage JSON-LD so they're eligible for FAQ rich results.
  */
 import { getCollection, render } from 'astro:content';
 import PageLayout from '../layouts/PageLayout.astro';
 import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
-import { webPage } from '../lib/jsonld';
+import { webPage, faqPage } from '../lib/jsonld';
 
 export async function getStaticPaths() {
 	const bespokeSlugs = new Set(['home-page', 'webcam', 'dog-friendly-cafes', 'where-to-stay', 'events']);
@@ -23,6 +27,31 @@ export async function getStaticPaths() {
 		params: { slug: page.id },
 		props: { page },
 	}));
+}
+
+/**
+ * Extract Q/A pairs from raw markdown body. Each `<h4>` becomes a
+ * question; everything between it and the next h4 (or h3/h2/end-of-
+ * faq-block) becomes the answer. Stripped of HTML tags so the JSON-LD
+ * is valid plain text.
+ */
+function extractFaq(body: string): { question: string; answer: string }[] {
+	const out: { question: string; answer: string }[] = [];
+	// Only run inside an `.faqs` container or after an "FAQ" heading
+	// to avoid false positives on pages that happen to use h4.
+	const sliceMatch = body.match(/<div class="faqs">([\s\S]*?)<\/div>/i);
+	const scope = sliceMatch ? sliceMatch[1]! : body;
+	const re = /<h4[^>]*>([\s\S]*?)<\/h4>([\s\S]*?)(?=<h[1-4][^>]*>|$)/gi;
+	let m: RegExpExecArray | null;
+	while ((m = re.exec(scope))) {
+		const question = m[1]!.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+		const answer = m[2]!
+			.replace(/<[^>]+>/g, ' ')
+			.replace(/\s+/g, ' ')
+			.trim();
+		if (question && answer) out.push({ question, answer });
+	}
+	return out;
 }
 
 const { page } = Astro.props;
@@ -34,13 +63,25 @@ const breadcrumbs = [
 ];
 
 const updatedIso = page.data.updated ? page.data.updated.toISOString() : undefined;
-const jsonLd = webPage({
-	title: page.data.seo?.title ?? page.data.title,
-	description: page.data.seo?.description ?? page.data.subtitle,
-	url: Astro.url,
-	image: page.data.seo?.og_image ?? page.data.hero_image?.src,
-	dateModified: updatedIso,
-});
+
+const jsonLd: Record<string, unknown>[] = [
+	webPage({
+		title: page.data.seo?.title ?? page.data.title,
+		description: page.data.seo?.description ?? page.data.subtitle,
+		url: Astro.url,
+		image: page.data.seo?.og_image ?? page.data.hero_image?.src,
+		dateModified: updatedIso,
+		// Encourage voice assistants to read the headline + first
+		// paragraph aloud. Conservative selectors so we don't ask
+		// them to read sidebars or footer.
+		speakableSelector: ['.entry-title', '.entry-subtitle', '.entry-content > p:first-of-type'],
+	}),
+];
+
+// FAQPage rich-result eligibility — currently /explore-tywyn/ only.
+const faqEntries = extractFaq(page.body ?? '');
+const faqSchema = faqPage(faqEntries);
+if (faqSchema) jsonLd.push(faqSchema);
 ---
 
 <PageLayout

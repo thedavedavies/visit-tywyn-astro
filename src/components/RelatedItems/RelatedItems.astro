@@ -1,0 +1,52 @@
+---
+/**
+ * "More to explore" block at the bottom of detail pages. Used for
+ * internal linking — each card boosts the linked page's authority
+ * a little, helps users find adjacent content, and gives crawlers
+ * extra paths into the site.
+ *
+ * Generic over content type — pass items with `href`, `title`, an
+ * optional thumbnail, and an optional one-line summary.
+ */
+import styles from './RelatedItems.module.scss';
+
+interface Item {
+	href: string;
+	title: string;
+	image?: { src: string; alt?: string };
+	summary?: string;
+}
+
+interface Props {
+	heading: string;
+	items: Item[];
+	headingId?: string;
+}
+
+const { heading, items, headingId = 'related-items' } = Astro.props;
+---
+
+{
+	items.length > 0 && (
+		<section class={styles.section} aria-labelledby={headingId}>
+			<h2 id={headingId} class={styles.heading}>{heading}</h2>
+			<ul class={styles.grid} role="list">
+				{items.map((item) => (
+					<li class={styles.item}>
+						<a href={item.href} class={styles.link}>
+							{item.image && (
+								<div class={styles.media}>
+									<img src={item.image.src} alt={item.image.alt ?? item.title} loading="lazy" />
+								</div>
+							)}
+							<div class={styles.body}>
+								<h3 class={styles.title}>{item.title}</h3>
+								{item.summary && <p class={styles.summary}>{item.summary}</p>}
+							</div>
+						</a>
+					</li>
+				))}
+			</ul>
+		</section>
+	)
+}

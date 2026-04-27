@@ -15,18 +15,24 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import Gallery from '../../components/Gallery/Gallery.astro';
 import Icon from '../../components/Icon/Icon.astro';
+import RelatedItems from '../../components/RelatedItems/RelatedItems.astro';
 import { touristAttraction } from '../../lib/jsonld';
 
 export async function getStaticPaths() {
 	const activities = await getCollection('things-to-do');
 	return activities.map((activity) => ({
 		params: { slug: activity.id },
-		props: { activity },
+		props: { activity, allActivities: activities },
 	}));
 }
 
-const { activity } = Astro.props;
+const { activity, allActivities } = Astro.props;
 const { Content } = await render(activity);
+
+const related = allActivities
+	.filter((a) => a.id !== activity.id)
+	.sort(() => Math.random() - 0.5)
+	.slice(0, 4);
 
 const breadcrumbs = [
 	{ label: 'Home', href: '/' },
@@ -89,6 +95,17 @@ const jsonLd = touristAttraction({
 			)
 		}
 	</div>
+
+	<RelatedItems
+		heading="More things to do in Tywyn"
+		headingId="related-things-to-do"
+		items={related.map((a) => ({
+			href: `/things-to-do/${a.id}/`,
+			title: a.data.title,
+			image: a.data.hero_image,
+			summary: a.data.summary,
+		}))}
+	/>
 </PageLayout>
 
 <style lang="scss">

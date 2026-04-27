@@ -266,6 +266,7 @@ interface ArticleInput {
 	image?: string;
 	datePublished?: string;
 	dateModified?: string;
+	speakableSelector?: string[];
 }
 
 /**
@@ -273,6 +274,10 @@ interface ArticleInput {
  * "getting around", "wales coastal path", etc. Lighter-weight than
  * Article (which is for news-style content) and avoids the schema
  * police flagging missing author/headline fields.
+ *
+ * Pass `speakableSelector` to mark sections that voice assistants
+ * can read aloud (Google Speakable). For most editorial pages the
+ * sensible default is the title and entry-content opening.
  */
 export function webPage(input: ArticleInput): JsonLd {
 	return {
@@ -284,8 +289,75 @@ export function webPage(input: ArticleInput): JsonLd {
 		...(input.image ? { primaryImageOfPage: { '@type': 'ImageObject', url: absoluteUrl(input.image) } } : {}),
 		...(input.datePublished ? { datePublished: input.datePublished } : {}),
 		...(input.dateModified ? { dateModified: input.dateModified } : {}),
+		...(input.speakableSelector?.length
+			? {
+					speakable: {
+						'@type': 'SpeakableSpecification',
+						cssSelector: input.speakableSelector,
+					},
+			  }
+			: {}),
 		isPartOf: { '@id': `${SITE.url}/#website` },
 		inLanguage: SITE.locale,
 		publisher: { '@id': `${SITE.url}/#organization` },
+	};
+}
+
+interface FaqEntry {
+	question: string;
+	answer: string;
+}
+
+/**
+ * FAQPage schema. Pass an array of {question, answer} pairs and
+ * the helper builds the canonical structure that Google uses for
+ * FAQ rich results in search.
+ */
+export function faqPage(entries: FaqEntry[]): JsonLd | null {
+	if (entries.length === 0) return null;
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'FAQPage',
+		mainEntity: entries.map((entry) => ({
+			'@type': 'Question',
+			name: entry.question,
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: entry.answer,
+			},
+		})),
+	};
+}
+
+/**
+ * Local-business / opening hours / etc enrichment for editorial
+ * places that aren't restaurants or attractions. Currently unused
+ * but kept here so it's ready when needed (e.g., the cinema page).
+ */
+interface PlaceInput {
+	name: string;
+	url: string;
+	address?: string;
+	geo?: { lat: number; lng: number };
+	image?: string;
+}
+
+export function place(input: PlaceInput): JsonLd {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'Place',
+		name: input.name,
+		url: absoluteUrl(input.url),
+		...(input.address ? { address: input.address } : {}),
+		...(input.image ? { image: absoluteUrl(input.image) } : {}),
+		...(input.geo
+			? {
+					geo: {
+						'@type': 'GeoCoordinates',
+						latitude: input.geo.lat,
+						longitude: input.geo.lng,
+					},
+			  }
+			: {}),
 	};
 }

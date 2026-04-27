@@ -1,0 +1,72 @@
+@use '../../styles/abstracts/variables' as *;
+
+.section {
+	margin: $space-7 0 $space-5;
+	border-top: 1px dotted $color-primary;
+	padding-block-start: $space-5;
+}
+
+.heading {
+	margin: 0 0 $space-4;
+	font-size: 1.4rem;
+	color: $color-heading;
+}
+
+.grid {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: $space-4;
+}
+
+.item {
+	margin: 0;
+}
+
+.link {
+	display: flex;
+	flex-direction: column;
+	gap: $space-2;
+	text-decoration: none;
+	color: inherit;
+	border-radius: $radius-md;
+	overflow: hidden;
+	transition: transform 0.2s ease;
+
+	&:hover,
+	&:focus-visible {
+		transform: translateY(-2px);
+	}
+}
+
+.media {
+	background: $color-bg-alt;
+	border-radius: $radius-md;
+	overflow: hidden;
+	aspect-ratio: 4 / 3;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+}
+
+.body {
+	padding: $space-2 $space-1;
+}
+
+.title {
+	margin: 0;
+	font-size: 1rem;
+	color: $color-primary;
+	font-weight: 700;
+}
+
+.summary {
+	margin: $space-1 0 0;
+	font-size: 0.9rem;
+	color: $color-text-muted;
+}

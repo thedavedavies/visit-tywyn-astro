@@ -2,27 +2,10 @@
 User-agent: *
 Allow: /
 
-# Common WP/admin paths that don't exist on this site but bots
-# probe for anyway. Save them (and us) the round-trip.
+# Common WP/admin paths bots probe for. Save them (and us) the
+# round-trip — these endpoints don't exist on this site.
 Disallow: /wp-admin/
 Disallow: /wp-login.php
 Disallow: /xmlrpc.php
-
-# AI scrapers — opt-out friendly. Remove these blocks if you want
-# the site indexed by training datasets.
-User-agent: GPTBot
-Disallow: /
-
-User-agent: ClaudeBot
-Disallow: /
-
-User-agent: anthropic-ai
-Disallow: /
-
-User-agent: CCBot
-Disallow: /
-
-User-agent: Google-Extended
-Disallow: /
 
 Sitemap: https://visit-tywyn.co.uk/sitemap-index.xml

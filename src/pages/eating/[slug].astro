@@ -13,18 +13,30 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import VenueMap from '../../components/VenueMap/VenueMap.astro';
 import Icon from '../../components/Icon/Icon.astro';
+import RelatedItems from '../../components/RelatedItems/RelatedItems.astro';
 import { restaurant } from '../../lib/jsonld';
 
 export async function getStaticPaths() {
 	const venues = await getCollection('eating');
 	return venues.map((venue) => ({
 		params: { slug: venue.id },
-		props: { venue },
+		props: { venue, allVenues: venues },
 	}));
 }
 
-const { venue } = Astro.props;
+const { venue, allVenues } = Astro.props;
 const { Content } = await render(venue);
+
+// Pick up to 4 related venues. If this one is dog-friendly, prefer
+// other dog-friendly entries; otherwise show 4 alphabetically-near
+// neighbours so users have somewhere obvious to click next.
+const others = allVenues.filter((v) => v.id !== venue.id);
+const relatedPool = venue.data.dog_friendly
+	? others.filter((v) => v.data.dog_friendly)
+	: others;
+const related = (relatedPool.length >= 4 ? relatedPool : others)
+	.sort(() => Math.random() - 0.5)
+	.slice(0, 4);
 
 const breadcrumbs = [
 	{ label: 'Home', href: '/' },
@@ -122,6 +134,17 @@ const jsonLd = restaurant({
 			)
 		}
 	</div>
+
+	<RelatedItems
+		heading={venue.data.dog_friendly ? 'More dog-friendly places to eat' : 'More places to eat in Tywyn'}
+		headingId="related-eating"
+		items={related.map((v) => ({
+			href: `/eating/${v.id}/`,
+			title: v.data.title,
+			image: v.data.photo,
+			summary: v.data.summary,
+		}))}
+	/>
 </PageLayout>
 
 <style lang="scss">
