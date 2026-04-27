@@ -1,0 +1,35 @@
+---
+import Nav from '../Nav/Nav.astro';
+import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.astro';
+import BannerImage from '../BannerImage/BannerImage.astro';
+import { SITE } from '../../lib/site';
+import styles from './Header.module.scss';
+
+interface Props {
+	heroImage?: { src: string; alt?: string } | null;
+	breadcrumbs?: { label: string; href?: string }[];
+	isFrontPage?: boolean;
+}
+
+const { heroImage = null, breadcrumbs = [], isFrontPage = false } = Astro.props;
+const TitleTag = isFrontPage ? 'h1' : 'p';
+---
+
+<header id="masthead" class={styles.siteHeader}>
+	<div class={styles.container}>
+		<div class={styles.branding}>
+			<a href="/" rel="home" class={styles.logoLink} aria-label={`${SITE.name} home`}>
+				<span class={styles.logo} aria-hidden="true"></span>
+			</a>
+			<TitleTag class={styles.title}>
+				<a href="/" rel="home">{SITE.name}</a>
+			</TitleTag>
+		</div>
+
+		<Nav />
+	</div>
+</header>
+
+{heroImage && <BannerImage src={heroImage.src} alt={heroImage.alt} />}
+
+<Breadcrumbs items={breadcrumbs} />

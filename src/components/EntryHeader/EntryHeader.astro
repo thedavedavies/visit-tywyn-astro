@@ -1,0 +1,23 @@
+---
+/**
+ * The standard `<h1>` + optional subtitle pattern that opens a
+ * page or single-CPT view. Centralising it keeps title sizing and
+ * spacing consistent across content types.
+ */
+import styles from './EntryHeader.module.scss';
+
+interface Props {
+	title: string;
+	subtitle?: string | null;
+	level?: 1 | 2;
+}
+
+const { title, subtitle, level = 1 } = Astro.props;
+const Heading = level === 1 ? 'h1' : 'h2';
+const Sub = level === 1 ? 'p' : 'p';
+---
+
+<header class={styles.header}>
+	<Heading class={styles.title}>{title}</Heading>
+	{subtitle && <Sub class={styles.subtitle}>{subtitle}</Sub>}
+</header>

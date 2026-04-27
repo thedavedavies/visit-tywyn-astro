@@ -7,18 +7,15 @@
  * Excluded:
  *   - `home-page` (handled by `src/pages/index.astro`)
  *   - any slug that conflicts with a hand-rolled route file
- *     (e.g. `/eating/`, `/things-to-do/`, `/where-to-stay/`,
- *     `/holiday-accommodation/...`). Astro's filesystem routing
- *     resolves the explicit file before this catch-all.
+ *     (e.g. `/where-to-stay/`, `/webcam/`, `/dog-friendly-cafes/`).
+ *     Astro's filesystem routing resolves the explicit file before
+ *     this catch-all.
  */
 import { getCollection, render } from 'astro:content';
 import PageLayout from '../layouts/PageLayout.astro';
+import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
 
 export async function getStaticPaths() {
-	// Slugs that have hand-rolled route files — exclude them from
-	// the catch-all so we don't double-emit (and to satisfy Astro's
-	// "duplicate route" check at build time). Keep this list in
-	// sync with the bespoke .astro files in src/pages/.
 	const bespokeSlugs = new Set(['home-page', 'webcam', 'dog-friendly-cafes', 'where-to-stay']);
 	const pages = await getCollection('pages', (entry) => !bespokeSlugs.has(entry.id));
 	return pages.map((page) => ({
@@ -45,10 +42,7 @@ const breadcrumbs = [
 	heroImage={page.data.hero_image}
 	breadcrumbs={breadcrumbs}
 >
-	<header class="entry-header">
-		<h1 class="entry-title">{page.data.title}</h1>
-		{page.data.subtitle && <h2 class="entry-subtitle">{page.data.subtitle}</h2>}
-	</header>
+	<EntryHeader title={page.data.title} subtitle={page.data.subtitle} />
 	<div class="entry-content">
 		<Content />
 	</div>

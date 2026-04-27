@@ -1,0 +1,54 @@
+@use '../../styles/abstracts/variables' as *;
+
+.widget {
+	color: #fff;
+	font-size: 0.95rem;
+}
+
+.list {
+	display: grid;
+	gap: $space-2;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto auto;
+	align-items: center;
+	gap: $space-3;
+	padding: $space-2 $space-3;
+	background: rgba(0, 0, 0, 0.18);
+	border-radius: $radius-sm;
+}
+
+.rowHigh {
+	background: rgba(0, 0, 0, 0.25);
+}
+
+.when {
+	font-weight: 700;
+}
+
+.type {
+	color: $color-sidebar-link;
+	font-weight: 600;
+}
+
+.height {
+	color: $color-sidebar-link;
+	font-weight: 700;
+}
+
+.stale {
+	margin: $space-3 0 0;
+	font-size: 0.8rem;
+	color: rgba(255, 255, 255, 0.7);
+	font-style: italic;
+}
+
+.empty {
+	margin: 0;
+	color: rgba(255, 255, 255, 0.85);
+}

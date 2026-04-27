@@ -1,6 +1,7 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import EventsSection from '../../components/events/EventsSection.astro';
+import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
+import EventsSection from '../../components/EventsSection/EventsSection.astro';
 
 const breadcrumbs = [
 	{ label: 'Home', href: '/' },
@@ -13,16 +14,15 @@ const breadcrumbs = [
 	description="Upcoming festivals, fairs, and events in Tywyn and the surrounding villages."
 	breadcrumbs={breadcrumbs}
 >
-	<header class="entry-header">
-		<h1 class="entry-title">Events in Tywyn</h1>
-		<p class="entry-subtitle">Plan your visit around the next events taking place in Tywyn and nearby.</p>
-	</header>
+	<EntryHeader
+		title="Events in Tywyn"
+		subtitle="Plan your visit around the next events taking place in Tywyn and nearby."
+	/>
 
 	<EventsSection
 		title="All upcoming events"
 		intro=""
 		sectionId="vt-events-page"
-		className="vt-events-section--page"
 		showAllLink={false}
 	/>
 </PageLayout>

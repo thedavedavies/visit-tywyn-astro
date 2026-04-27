@@ -17,6 +17,10 @@
 		@media (min-width: $breakpoint-xl) {
 			@content;
 		}
+	} @else if $size == xxl {
+		@media (min-width: $breakpoint-xxl) {
+			@content;
+		}
 	}
 }
 
@@ -32,8 +36,16 @@
 	border: 0;
 }
 
-@mixin container {
-	max-width: $container-max;
+@mixin container($max: $container-max) {
+	width: 100%;
+	max-width: $max;
 	margin-inline: auto;
-	padding-inline: 1rem;
+	padding-inline: $space-4;
+}
+
+/* Reset native list styling — common pattern in this codebase. */
+@mixin reset-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }

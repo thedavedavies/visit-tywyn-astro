@@ -1,0 +1,31 @@
+---
+/**
+ * Google Maps embed wrapper. Used on `eating` and `things-to-do`
+ * detail pages where the entry has a `geo` block.
+ *
+ * Uses the iframe Embed API (no API key needed) instead of the
+ * full Maps JavaScript API to keep the page lightweight.
+ */
+import styles from './VenueMap.module.scss';
+
+interface Props {
+	lat: number;
+	lng: number;
+	title: string;
+	zoom?: number;
+}
+
+const { lat, lng, title, zoom = 15 } = Astro.props;
+const src = `https://www.google.com/maps?q=${lat},${lng}&z=${zoom}&output=embed`;
+---
+
+<section class={styles.section} aria-labelledby={`map-${title}`}>
+	<h2 id={`map-${title}`} class={styles.heading}>Find {title}</h2>
+	<div class={styles.frame}>
+		<iframe
+			title={`Map showing ${title}`}
+			loading="lazy"
+			referrerpolicy="no-referrer-when-downgrade"
+			src={src}></iframe>
+	</div>
+</section>

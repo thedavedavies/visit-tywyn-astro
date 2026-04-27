@@ -1,0 +1,46 @@
+---
+import Icon from '../Icon/Icon.astro';
+import { FOOTER_COLUMNS, SOCIAL_LINKS } from '../../lib/nav';
+import { SITE } from '../../lib/site';
+import styles from './Footer.module.scss';
+
+const year = new Date().getFullYear();
+---
+
+<footer id="colophon" class={styles.footer}>
+	<div class={styles.container}>
+		<div class={styles.grid}>
+			{
+				FOOTER_COLUMNS.map((col) => (
+					<div class={styles.column}>
+						<h2 class={styles.columnTitle}>{col.title}</h2>
+						<ul class={styles.columnList}>
+							{col.links.map((link) => (
+								<li>
+									<a href={link.href}>{link.label}</a>
+								</li>
+							))}
+						</ul>
+						{col.title.startsWith('Contact') && (
+							<ul class={styles.social} aria-label={`${SITE.name} social media`}>
+								{SOCIAL_LINKS.map((s) => (
+									<li>
+										<a href={s.href} target="_blank" rel="noopener noreferrer">
+											<Icon name={s.icon} />
+											<span class="sr-only">{`${SITE.name} on ${s.name}`}</span>
+											<span class="sr-only"> (opens in new tab)</span>
+										</a>
+									</li>
+								))}
+							</ul>
+						)}
+					</div>
+				))
+			}
+		</div>
+		<div class={styles.siteInfo}>
+			<hr class={styles.rule} />
+			<p>&copy; {SITE.name} {year}</p>
+		</div>
+	</div>
+</footer>

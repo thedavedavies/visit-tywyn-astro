@@ -1,0 +1,93 @@
+@use '../../styles/abstracts/variables' as *;
+
+.gallery {
+	margin: $space-7 0;
+}
+
+.grid {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: grid;
+	gap: $space-3;
+	grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+
+	li {
+		margin: 0;
+	}
+}
+
+.thumb {
+	all: unset;
+	cursor: pointer;
+	display: block;
+	width: 100%;
+	border-radius: $radius-md;
+	overflow: hidden;
+	background: $color-bg-alt;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+	&:hover,
+	&:focus-visible {
+		transform: scale(1.02);
+		box-shadow: $shadow-md;
+		outline: 2px solid $color-primary;
+		outline-offset: 2px;
+	}
+
+	img {
+		display: block;
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+	}
+}
+
+.lightbox {
+	border: 0;
+	padding: 0;
+	background: transparent;
+	max-width: 90vw;
+	max-height: 90vh;
+	overflow: visible;
+
+	&::backdrop {
+		background: rgba(0, 0, 0, 0.85);
+	}
+
+	img {
+		display: block;
+		max-width: 100%;
+		max-height: 90vh;
+		object-fit: contain;
+		border-radius: $radius-md;
+	}
+}
+
+.lightboxForm {
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top: -$space-7;
+	right: 0;
+}
+
+.lightboxClose {
+	all: unset;
+	cursor: pointer;
+	width: 44px;
+	height: 44px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.75rem;
+	line-height: 1;
+	color: #fff;
+	background: rgba(0, 0, 0, 0.4);
+	border-radius: 50%;
+
+	&:hover,
+	&:focus-visible {
+		background: rgba(0, 0, 0, 0.7);
+	}
+}

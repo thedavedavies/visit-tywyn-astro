@@ -1,0 +1,47 @@
+---
+/**
+ * List of external booking-site search links. Rendered on each
+ * stay-category landing under "Search for a place to stay".
+ *
+ * Items are configured per-category in the markdown frontmatter
+ * (`booking_search_links` array).
+ */
+import styles from './BookingSearchList.module.scss';
+
+interface Link {
+	label: string;
+	url: string;
+	note?: string;
+}
+
+interface Props {
+	links: Link[];
+	heading?: string;
+}
+
+const { links, heading = 'Search for a place to stay' } = Astro.props;
+---
+
+{
+	links.length > 0 && (
+		<section class={styles.section} aria-labelledby="booking-search-title">
+			<h2 id="booking-search-title" class={styles.heading}>{heading}</h2>
+			<ul class={styles.list} role="list">
+				{links.map((link) => (
+					<li class={styles.item}>
+						<a href={link.url} target="_blank" rel="noopener noreferrer">
+							<span class={styles.label}>{link.label}</span>
+							<span class={styles.arrow} aria-hidden="true">→</span>
+							<span class="sr-only"> (opens in new tab)</span>
+						</a>
+						{link.note && <p class={styles.note}>{link.note}</p>}
+					</li>
+				))}
+			</ul>
+			<p class={styles.disclaimer}>
+				Visit Tywyn doesn't book stays directly. These external sites handle reservations and
+				payments — please check each provider's terms before booking.
+			</p>
+		</section>
+	)
+}

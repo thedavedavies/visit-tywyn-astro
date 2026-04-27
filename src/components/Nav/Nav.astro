@@ -1,0 +1,28 @@
+---
+import { PRIMARY_NAV } from '../../lib/nav';
+import styles from './Nav.module.scss';
+
+const currentPath = Astro.url.pathname;
+
+function isActive(href: string): boolean {
+	if (href === '/') return currentPath === '/';
+	return currentPath === href || currentPath.startsWith(href);
+}
+---
+
+<nav id="site-navigation" class={styles.nav} aria-label="Primary">
+	<details class={styles.toggle}>
+		<summary class={styles.toggleSummary} aria-controls="primary-menu">Primary Menu</summary>
+		<ul id="primary-menu" class={styles.menu}>
+			{
+				PRIMARY_NAV.map((item) => (
+					<li class:list={[styles.item, { [styles.itemActive]: isActive(item.href) }]}>
+						<a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+							{item.label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</details>
+</nav>

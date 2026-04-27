@@ -1,30 +1,81 @@
-/* Visit Tywyn design tokens.
- * Placeholders during migration — will be replaced with values
- * extracted from the legacy theme's _variables.scss. */
+/* Visit Tywyn design tokens — extracted from legacy style.css.
+ *
+ * These are the *only* tokens components should reach for. If you
+ * find yourself hardcoding a colour or spacing value in a
+ * component module, consider whether it belongs here first. */
 
-$color-primary: #b8d8d8;
-$color-secondary: #4f6367;
-$color-accent: #e26d5c;
-$color-text: #1c2321;
-$color-muted: #6c757d;
+// ── Brand palette ──────────────────────────────────────────────
+$color-primary: #046d8b; // header bar, links, primary buttons
+$color-primary-dark: #03566d; // primary hover
+$color-primary-darker: #034659; // nav-item hover
+
+$color-sidebar-bg: #13729b; // sidebar widget background
+$color-sidebar-header: #43464f; // dark gray header in sidebar boxes
+$color-sidebar-link: #fff0b4; // cream link color in sidebar
+$color-sidebar-icon-bg: #5caa59; // green chip behind sidebar icons
+
+$color-footer-bg: #333333;
+$color-footer-rule: #656565;
+$color-footer-meta: #a8a8a8;
+
+// ── Surface / neutrals ─────────────────────────────────────────
 $color-bg: #ffffff;
-$color-bg-alt: #f5f7f7;
-$color-border: #e0e4e4;
+$color-bg-alt: #f7fbfc;
+$color-border: #d7e0e3;
+$color-border-soft: rgba($color-primary, 0.2);
+$color-divider: rgba($color-primary, 0.15);
 
-$font-body: 'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+// ── Text ───────────────────────────────────────────────────────
+$color-text: #050505; // body paragraph
+$color-text-muted: #4f6368;
+$color-text-dim: #5c6d72;
+$color-heading: #444;
+
+// ── Typography ─────────────────────────────────────────────────
+$font-body:
+	'Lato',
+	system-ui,
+	-apple-system,
+	'Segoe UI',
+	Roboto,
+	'Helvetica Neue',
+	sans-serif;
 $font-heading: $font-body;
 
+$font-size-base: 17px;
+$line-height-body: 30px / $font-size-base; // matches legacy 30px on 17px
+
+$font-size-entry-title: 37px;
+$font-size-entry-subtitle: 20px;
+
+// ── Spacing ────────────────────────────────────────────────────
+$space-1: 0.25rem;
+$space-2: 0.5rem;
+$space-3: 0.75rem;
+$space-4: 1rem;
+$space-5: 1.5rem;
+$space-6: 2rem;
+$space-7: 2.5rem;
+$space-8: 3rem;
+
+// ── Radius / shadow ────────────────────────────────────────────
 $radius-sm: 4px;
 $radius-md: 8px;
-$radius-lg: 16px;
+$radius-lg: 12px;
+$radius-xl: 18px;
+$radius-pill: 999px;
 
 $shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-$shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 16px 40px rgba(5, 42, 52, 0.08);
 
+// ── Layout ─────────────────────────────────────────────────────
+$container-max: 1170px;
+$content-max: 877px; // legacy footer container width
+$sidebar-width: 390px;
+
+// ── Breakpoints ────────────────────────────────────────────────
 $breakpoint-sm: 480px;
-$breakpoint-md: 768px;
-$breakpoint-lg: 1024px;
-$breakpoint-xl: 1280px;
-
-$container-max: 1200px;
-$sidebar-width: 320px;
+$breakpoint-md: 600px;
+$breakpoint-lg: 768px;
+$breakpoint-xl: 1024px;
+$breakpoint-xxl: 1170px;

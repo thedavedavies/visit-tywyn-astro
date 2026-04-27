@@ -1,0 +1,148 @@
+---
+/**
+ * Aggregate sidebar. Pages opt into the boxes they need via props.
+ *
+ * Note: the WP sidebar had an `accommodation-details` box —
+ * removed in this port because individual accommodation listings
+ * have been retired in favour of category landing pages.
+ */
+import Icon from '../Icon/Icon.astro';
+import SidebarBox from '../SidebarBox/SidebarBox.astro';
+import WeatherWidget from '../WeatherWidget/WeatherWidget.astro';
+import TidesWidget from '../TidesWidget/TidesWidget.astro';
+import DogFriendlyPill from '../DogFriendlyPill/DogFriendlyPill.astro';
+import AdSlot from '../AdSlot/AdSlot.astro';
+import styles from './Sidebar.module.scss';
+
+interface ThingsToDoInfo {
+	title: string;
+	website?: string;
+	phone?: string;
+	grid_reference?: string;
+}
+
+interface EatingInfo {
+	title: string;
+	trip_advisor_link?: string;
+	facebook_link?: string;
+	dog_friendly?: boolean;
+	website?: string;
+	phone?: string;
+}
+
+interface Props {
+	thingsToDo?: ThingsToDoInfo;
+	eating?: EatingInfo;
+	showWeather?: boolean;
+	showTides?: boolean;
+	showAds?: boolean;
+}
+
+const {
+	thingsToDo,
+	eating,
+	showWeather = true,
+	showTides = true,
+	showAds = true,
+} = Astro.props;
+---
+
+<aside class={styles.sidebar} aria-label="Sidebar">
+	{
+		thingsToDo && (thingsToDo.website || thingsToDo.phone || thingsToDo.grid_reference) && (
+			<SidebarBox title={`${thingsToDo.title} Information`} iconName="marker">
+				<dl class={styles.contactList}>
+					{thingsToDo.website && (
+						<div class={styles.contactRow}>
+							<Icon name="link" />
+							<a target="_blank" rel="noopener noreferrer" href={thingsToDo.website}>
+								{thingsToDo.website}
+								<span class="sr-only"> (opens in new tab)</span>
+							</a>
+						</div>
+					)}
+					{thingsToDo.phone && (
+						<div class={styles.contactRow}>
+							<Icon name="phone" />
+							<span>{thingsToDo.phone}</span>
+						</div>
+					)}
+					{thingsToDo.grid_reference && (
+						<div class={styles.contactRow}>
+							<Icon name="marker" />
+							<span>Grid reference: {thingsToDo.grid_reference}</span>
+						</div>
+					)}
+				</dl>
+			</SidebarBox>
+		)
+	}
+
+	{
+		eating && (eating.trip_advisor_link || eating.facebook_link || eating.dog_friendly) && (
+			<div class={styles.eatingDetails}>
+				<h2 class={styles.leadTitle}>{eating.title} Details</h2>
+				<div class={styles.restaurantInfo}>
+					<ul class={styles.eatingIcons}>
+						{eating.trip_advisor_link && (
+							<li>
+								<a href={eating.trip_advisor_link} target="_blank" rel="noopener noreferrer">
+									<Icon name="tripadvisor" />
+									<span>{eating.title} on Trip Advisor</span>
+									<span class="sr-only"> (opens in new tab)</span>
+								</a>
+							</li>
+						)}
+						{eating.facebook_link && (
+							<li>
+								<a href={eating.facebook_link} target="_blank" rel="noopener noreferrer">
+									<Icon name="facebook" />
+									<span>{eating.title} on Facebook</span>
+									<span class="sr-only"> (opens in new tab)</span>
+								</a>
+							</li>
+						)}
+					</ul>
+					{eating.dog_friendly && <DogFriendlyPill />}
+					<div class={styles.eatingMeta}>
+						{eating.website && (
+							<p>
+								<a target="_blank" rel="noopener noreferrer" href={eating.website}>
+									{eating.website}
+									<span class="sr-only"> (opens in new tab)</span>
+								</a>
+							</p>
+						)}
+						{eating.phone && <p>Phone: {eating.phone}</p>}
+					</div>
+				</div>
+			</div>
+		)
+	}
+
+	<SidebarBox title="Plan your visit to Tywyn" iconName="marker">
+		<ul>
+			<li><a href="/cinema/">Tywyn Cinema</a></li>
+			<li><a href="/webcam/">Seafront Webcam</a></li>
+			<li><a href="/dog-friendly-cafes/">Dog friendly cafes</a></li>
+		</ul>
+	</SidebarBox>
+
+	{
+		showWeather && (
+			<SidebarBox title="Tywyn beach weather" iconName="marker">
+				<WeatherWidget />
+			</SidebarBox>
+		)
+	}
+
+	{
+		showTides && (
+			<SidebarBox title="Next tides" iconName="marker">
+				<TidesWidget />
+			</SidebarBox>
+		)
+	}
+
+	{showAds && <AdSlot slot="7221027714" />}
+</aside>

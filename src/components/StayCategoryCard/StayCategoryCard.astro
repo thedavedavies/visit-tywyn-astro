@@ -1,0 +1,33 @@
+---
+/**
+ * Card for the four stay-category landings, used on the
+ * `/where-to-stay/` parent page.
+ */
+import styles from './StayCategoryCard.module.scss';
+
+interface Props {
+	href: string;
+	title: string;
+	intro: string;
+	heroImage?: { src: string; alt?: string };
+}
+
+const { href, title, intro, heroImage } = Astro.props;
+---
+
+<article class={styles.card}>
+	<a href={href} class={styles.link}>
+		{
+			heroImage && (
+				<div class={styles.media}>
+					<img src={heroImage.src} alt={heroImage.alt ?? title} loading="lazy" />
+				</div>
+			)
+		}
+		<div class={styles.body}>
+			<h3 class={styles.title}>{title}</h3>
+			<p class={styles.intro}>{intro}</p>
+			<span class={styles.cta}>Browse {title.toLowerCase()} →</span>
+		</div>
+	</a>
+</article>

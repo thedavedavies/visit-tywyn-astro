@@ -1,0 +1,39 @@
+---
+import Icon from '../Icon/Icon.astro';
+import type { NormalisedEvent } from '../../lib/events';
+import styles from './EventCard.module.scss';
+
+interface Props {
+	event: NormalisedEvent;
+}
+
+const { event } = Astro.props;
+const showFinishedBadge = event.isPast;
+---
+
+<article class:list={[styles.card, { [styles.cardPast]: showFinishedBadge }]}>
+	{
+		event.image && (
+			<a href={event.primaryUrl ?? '#'} class={styles.media} tabindex="-1" aria-hidden="true">
+				<img src={event.image} alt={event.imageAlt} loading="lazy" />
+			</a>
+		)
+	}
+	<div class={styles.body}>
+		<p class={styles.date}>
+			<Icon name="calendar" />
+			<time datetime={event.startIso}>{event.dateLabel}</time>
+		</p>
+		<h3 class={styles.title}>
+			{event.primaryUrl ? <a href={event.primaryUrl}>{event.title}</a> : event.title}
+		</h3>
+		{event.location && (
+			<p class={styles.location}>
+				<Icon name="marker" />
+				{event.location}
+			</p>
+		)}
+		{event.summary && <p class={styles.summary}>{event.summary}</p>}
+		{showFinishedBadge && <p class={styles.badge} role="status">Event finished</p>}
+	</div>
+</article>

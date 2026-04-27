@@ -1,15 +1,17 @@
 /* ----------------------------------------------------------------------- *\
  * Visit Tywyn — global styles entry.
  *
- * Partials are organised in 7-1 style:
- *   abstracts/  variables, mixins (no output)
- *   base/       resets, typography, html element defaults
- *   layout/     header, footer, sidebar, breadcrumbs, page grid
- *   components/ buttons, cards, forms, sliders, conditions widgets
- *   pages/      page-specific overrides (kept thin)
+ * Most styling lives next to its component as `Component.module.scss`
+ * (CSS Modules, automatically scoped by Astro / Vite). This file
+ * carries only what _can't_ be scoped to a component:
  *
- * Most of these are stubs at the moment — they'll be filled out as
- * the SCSS port from the legacy theme proceeds.
+ *   - reset
+ *   - typography defaults
+ *   - rendered markdown (`.entry-content` h/p/img)
+ *   - skip-link / sr-only utilities
+ *   - the page-level grid (so layouts can hand out `grid-area` slots)
+ *
+ * Component modules pull design tokens from `abstracts/_variables.scss`.
 \* ----------------------------------------------------------------------- */
 
 @use 'abstracts/variables' as *;
@@ -18,16 +20,52 @@
 @use 'base/reset';
 @use 'base/typography';
 
-@use 'layout/page';
-@use 'layout/header';
-@use 'layout/footer';
-@use 'layout/sidebar';
-@use 'layout/breadcrumbs';
+/* ── Skip link / screen-reader utilities ─────────────────────── */
+.skip-link {
+	@include visually-hidden;
 
-@use 'components/buttons';
-@use 'components/cards';
-@use 'components/conditions';
-@use 'components/icon';
-@use 'components/skip-link';
+	&:focus,
+	&:focus-visible {
+		position: fixed;
+		top: $space-2;
+		left: $space-2;
+		width: auto;
+		height: auto;
+		padding: $space-2 $space-4;
+		background: $color-bg;
+		color: $color-text;
+		clip: auto;
+		z-index: 1000;
+		border-radius: $radius-md;
+		box-shadow: $shadow-md;
+	}
+}
 
-@use 'pages/home';
+.screen-reader-text,
+.sr-only {
+	@include visually-hidden;
+}
+
+/* ── Page grid (consumed by PageLayout) ──────────────────────── */
+.site-layout {
+	@include container;
+	display: grid;
+	gap: $space-6;
+	padding-block: $space-6;
+	grid-template-columns: 1fr;
+
+	@include breakpoint(xl) {
+		&[data-has-sidebar='true'] {
+			grid-template-columns: minmax(0, 1fr) $sidebar-width;
+			gap: $space-7;
+		}
+	}
+}
+
+.site-content {
+	min-width: 0; /* defend against overflow from wide images / tables */
+}
+
+#primary {
+	scroll-margin-top: $space-5;
+}

@@ -1,0 +1,11 @@
+@use '../../styles/abstracts/variables' as *;
+
+.slot {
+	margin: $space-5 0;
+
+	ins {
+		min-height: 90px;
+		background: $color-bg-alt;
+		border-radius: $radius-md;
+	}
+}

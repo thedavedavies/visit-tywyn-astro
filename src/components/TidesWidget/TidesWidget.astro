@@ -1,0 +1,28 @@
+---
+import { getTidesSnapshot } from '../../lib/conditions';
+import styles from './TidesWidget.module.scss';
+
+const snap = getTidesSnapshot();
+const events = snap?.upcoming.slice(0, 4) ?? [];
+---
+
+<div class={styles.widget} data-vt-conditions="tides">
+	{
+		!snap || events.length === 0 ? (
+			<p class={styles.empty}>Tide data is loading.</p>
+		) : (
+			<>
+				<ul class={styles.list}>
+					{events.map((event) => (
+						<li class:list={[styles.row, styles[`row${event.type === 'high' ? 'High' : 'Low'}`]]}>
+							<span class={styles.when}>{event.timeLabel}</span>
+							<span class={styles.type}>{event.type === 'high' ? 'High' : 'Low'}</span>
+							<span class={styles.height}>{event.heightM.toFixed(1)}m</span>
+						</li>
+					))}
+				</ul>
+				{snap.stale && <p class={styles.stale} role="status">Last good reading.</p>}
+			</>
+		)
+	}
+</div>

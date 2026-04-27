@@ -1,0 +1,36 @@
+---
+/**
+ * Card for sponsored / affiliate stay entries on category landings.
+ * Renders only when an entry exists in the markdown's `featured`
+ * array — empty by default.
+ */
+import styles from './FeaturedStayCard.module.scss';
+
+interface Props {
+	href: string;
+	name: string;
+	summary: string;
+	image?: { src: string; alt?: string };
+	sponsored?: boolean;
+}
+
+const { href, name, summary, image, sponsored = false } = Astro.props;
+---
+
+<article class={styles.card}>
+	<a href={href} target="_blank" rel="noopener" class={styles.link}>
+		{
+			image && (
+				<div class={styles.media}>
+					<img src={image.src} alt={image.alt ?? name} loading="lazy" />
+				</div>
+			)
+		}
+		<div class={styles.body}>
+			<h3 class={styles.title}>{name}</h3>
+			<p class={styles.summary}>{summary}</p>
+			{sponsored && <p class={styles.pill}>Sponsored</p>}
+			<span class="sr-only"> (opens in new tab)</span>
+		</div>
+	</a>
+</article>

@@ -1,0 +1,32 @@
+---
+/**
+ * Google AdSense slot. Renders the ad container and pushes one
+ * impression on load.
+ *
+ * Important: `is:inline` on the push call so Astro doesn't try to
+ * bundle the global `adsbygoogle` reference.
+ */
+import { SITE } from '../../lib/site';
+import styles from './AdSlot.module.scss';
+
+interface Props {
+	slot: string;
+	format?: string;
+	fullWidth?: boolean;
+}
+
+const { slot, format = 'auto', fullWidth = true } = Astro.props;
+---
+
+<div class={styles.slot}>
+	<ins
+		class="adsbygoogle"
+		style="display:block"
+		data-ad-client={SITE.adsenseClient}
+		data-ad-slot={slot}
+		data-ad-format={format}
+		data-full-width-responsive={fullWidth ? 'true' : 'false'}></ins>
+	<script is:inline>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script>
+</div>

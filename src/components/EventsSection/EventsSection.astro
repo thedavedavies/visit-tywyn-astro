@@ -1,0 +1,52 @@
+---
+import EventCard from '../EventCard/EventCard.astro';
+import { upcomingEvents } from '../../lib/events';
+import styles from './EventsSection.module.scss';
+
+interface Props {
+	limit?: number;
+	title?: string;
+	intro?: string;
+	sectionId?: string;
+	showAllLink?: boolean;
+}
+
+const {
+	limit,
+	title = 'Upcoming events in Tywyn',
+	intro = 'Plan your visit around the next events taking place in Tywyn and nearby.',
+	sectionId = 'vt-events',
+	showAllLink = false,
+} = Astro.props;
+
+const events = upcomingEvents(limit);
+---
+
+<section id={sectionId} class={styles.section} aria-labelledby={`${sectionId}-title`}>
+	<header class={styles.header}>
+		<h2 id={`${sectionId}-title`} class={styles.title}>{title}</h2>
+		{intro && <p class={styles.intro}>{intro}</p>}
+	</header>
+	{
+		events.length === 0 ? (
+			<p class={styles.empty}>
+				There are no upcoming events listed at the moment — check back soon.
+			</p>
+		) : (
+			<>
+				<ul class={styles.grid} role="list">
+					{events.map((event) => (
+						<li>
+							<EventCard event={event} />
+						</li>
+					))}
+				</ul>
+				{showAllLink && (
+					<p class={styles.cta}>
+						<a href="/events/">See all upcoming Tywyn events →</a>
+					</p>
+				)}
+			</>
+		)
+	}
+</section>

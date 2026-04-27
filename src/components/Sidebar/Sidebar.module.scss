@@ -1,0 +1,99 @@
+@use '../../styles/abstracts/variables' as *;
+
+.sidebar {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+}
+
+/* Things-to-do contact rows inside a SidebarBox. */
+.contactList {
+	display: flex;
+	flex-direction: column;
+	gap: $space-3;
+	margin: 0;
+	padding: $space-3 0;
+	color: #fff;
+	text-align: center;
+}
+
+.contactRow {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: $space-3;
+	letter-spacing: 0.3px;
+
+	:global(svg) {
+		width: 20px;
+		height: 20px;
+		flex: 0 0 auto;
+
+		:global(path) {
+			fill: #fff;
+		}
+	}
+
+	a {
+		color: #fff;
+	}
+}
+
+/* Eating-details box (different colour from the teal sidebar boxes). */
+.eatingDetails {
+	margin-bottom: $space-5;
+}
+
+.leadTitle {
+	background-color: $color-sidebar-header;
+	color: #fff;
+	padding: $space-3;
+	font-size: 1.2rem;
+	font-weight: 400;
+	margin: 0;
+	border-radius: $radius-md $radius-md 0 0;
+}
+
+.restaurantInfo {
+	background-color: rgba($color-primary, 0.07);
+	padding: $space-5;
+	border-radius: 0 0 $radius-md $radius-md;
+}
+
+.eatingIcons {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	li {
+		padding-bottom: $space-4;
+
+		a {
+			display: flex;
+			align-items: center;
+			gap: $space-3;
+			text-decoration: none;
+			color: $color-text;
+
+			:global(svg) {
+				width: 41px;
+				height: 41px;
+				flex: 0 0 auto;
+			}
+		}
+	}
+}
+
+.eatingMeta {
+	margin-top: $space-4;
+	font-size: 0.95rem;
+
+	p {
+		margin: 0 0 $space-2;
+		word-break: break-word;
+	}
+
+	a {
+		color: $color-primary;
+	}
+}

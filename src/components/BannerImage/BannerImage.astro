@@ -1,0 +1,15 @@
+---
+import styles from './BannerImage.module.scss';
+
+interface Props {
+	src: string;
+	alt?: string;
+	loading?: 'eager' | 'lazy';
+}
+
+const { src, alt = '', loading = 'eager' } = Astro.props;
+---
+
+<div class={styles.wrap}>
+	<img class={styles.image} src={src} alt={alt} loading={loading} />
+</div>

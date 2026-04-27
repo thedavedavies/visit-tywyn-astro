@@ -1,0 +1,98 @@
+@use '../../styles/abstracts/variables' as *;
+@use '../../styles/abstracts/mixins' as *;
+
+.footer {
+	background: $color-footer-bg;
+	margin-top: $space-6;
+	color: #fff;
+}
+
+.container {
+	@include container($content-max);
+	padding-block: $space-6;
+}
+
+.grid {
+	display: grid;
+	gap: $space-6;
+	grid-template-columns: 1fr;
+
+	@include breakpoint(lg) {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+.column {
+	min-width: 0;
+}
+
+.columnTitle {
+	color: #fff;
+	font-weight: 200;
+	font-size: 1.2rem;
+	margin: 0 0 $space-3;
+	padding: 0;
+}
+
+.columnList {
+	@include reset-list;
+
+	a {
+		display: inline-block;
+		color: #fff;
+		font-size: 0.9rem;
+		text-decoration: none;
+		border-bottom: 2px solid transparent;
+		padding-block: $space-1;
+		transition: border-color 0.2s ease;
+
+		&:hover,
+		&:focus-visible {
+			border-bottom-color: #fff;
+		}
+	}
+}
+
+.social {
+	display: flex;
+	align-items: center;
+	gap: $space-5;
+	margin-top: $space-4;
+	padding: 0;
+	list-style: none;
+
+	a {
+		display: block;
+		text-decoration: none;
+		border-bottom: none;
+		padding: 0;
+
+		svg {
+			width: 20px;
+			height: 20px;
+			fill: #fff;
+
+			path {
+				fill: #fff;
+			}
+		}
+	}
+}
+
+.siteInfo {
+	text-align: center;
+}
+
+.rule {
+	background-color: $color-footer-rule;
+	border: 0;
+	height: 1px;
+	margin: $space-7 0 $space-3;
+}
+
+.siteInfo p {
+	color: $color-footer-meta;
+	font-size: 0.8rem;
+	margin: 0;
+	padding: $space-3 0;
+}

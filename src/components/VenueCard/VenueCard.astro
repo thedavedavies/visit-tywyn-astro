@@ -1,0 +1,60 @@
+---
+/**
+ * Reusable card for `eating` venues. Used on:
+ *   - /eating/                index listing
+ *   - /dog-friendly-cafes/    filtered listing
+ *
+ * Accepts the minimum data needed to render a card; pages decide
+ * whether to extract that from a content collection entry or pass
+ * static props for hand-curated lists.
+ */
+import Icon from '../Icon/Icon.astro';
+import DogFriendlyPill from '../DogFriendlyPill/DogFriendlyPill.astro';
+import styles from './VenueCard.module.scss';
+
+interface Props {
+	href: string;
+	title: string;
+	summary?: string;
+	address?: string;
+	dogFriendly?: boolean;
+	photo?: { src: string; alt?: string };
+}
+
+const { href, title, summary, address, dogFriendly = false, photo } = Astro.props;
+---
+
+<article class={styles.card}>
+	<a href={href} class={styles.link}>
+		{
+			photo ? (
+				<div class={styles.media}>
+					<img src={photo.src} alt={photo.alt ?? title} loading="lazy" />
+				</div>
+			) : (
+				<div class={styles.mediaPlaceholder} aria-hidden="true" />
+			)
+		}
+		<div class={styles.body}>
+			<h2 class={styles.title}>{title}</h2>
+			{summary && <p class={styles.summary}>{summary}</p>}
+			{
+				(address || dogFriendly) && (
+					<ul class={styles.meta}>
+						{address && (
+							<li class={styles.metaRow}>
+								<Icon name="marker" />
+								<span>{address}</span>
+							</li>
+						)}
+						{dogFriendly && (
+							<li>
+								<DogFriendlyPill compact />
+							</li>
+						)}
+					</ul>
+				)
+			}
+		</div>
+	</a>
+</article>

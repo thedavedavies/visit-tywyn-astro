@@ -1,0 +1,71 @@
+---
+/**
+ * Gallery grid. Replaces the legacy flexslider + lity stack with
+ * a native `<dialog>`-based lightbox — zero JS framework needed.
+ *
+ * Behaviour:
+ *   - Thumbnails laid out in a responsive grid.
+ *   - Clicking a thumbnail opens the corresponding `<dialog>`.
+ *   - Escape / clicking the backdrop closes it.
+ *
+ * The dialog wiring lives in a small inline `<script>` at the
+ * bottom of this component so it travels with the markup.
+ */
+import styles from './Gallery.module.scss';
+
+interface Image {
+	src: string;
+	alt?: string;
+}
+
+interface Props {
+	images: Image[];
+	label?: string;
+}
+
+const { images, label = 'Gallery' } = Astro.props;
+---
+
+{
+	images.length > 0 && (
+		<section class={styles.gallery} aria-label={label}>
+			<ul class={styles.grid} role="list">
+				{images.map((img, idx) => (
+					<li>
+						<button class={styles.thumb} type="button" data-gallery-open={idx}>
+							<img src={img.src} alt={img.alt ?? ''} loading="lazy" />
+						</button>
+					</li>
+				))}
+			</ul>
+
+			{images.map((img, idx) => (
+				<dialog class={styles.lightbox} data-gallery-dialog={idx}>
+					<form method="dialog" class={styles.lightboxForm}>
+						<button class={styles.lightboxClose} type="submit" aria-label="Close gallery">×</button>
+					</form>
+					<img src={img.src} alt={img.alt ?? ''} />
+				</dialog>
+			))}
+
+			<script is:inline>
+				(() => {
+					document.querySelectorAll('[data-gallery-open]').forEach((btn) => {
+						btn.addEventListener('click', () => {
+							const id = btn.getAttribute('data-gallery-open');
+							const dialog = document.querySelector(`[data-gallery-dialog="${id}"]`);
+							if (dialog && typeof dialog.showModal === 'function') {
+								dialog.showModal();
+							}
+						});
+					});
+					document.querySelectorAll('[data-gallery-dialog]').forEach((dialog) => {
+						dialog.addEventListener('click', (event) => {
+							if (event.target === dialog) dialog.close();
+						});
+					});
+				})();
+			</script>
+		</section>
+	)
+}

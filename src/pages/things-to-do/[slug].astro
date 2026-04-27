@@ -1,6 +1,9 @@
 ---
 import { getCollection, render } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
+import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
+import VenueMap from '../../components/VenueMap/VenueMap.astro';
+import Gallery from '../../components/Gallery/Gallery.astro';
 
 export async function getStaticPaths() {
 	const activities = await getCollection('things-to-do');
@@ -57,43 +60,22 @@ const jsonLd = {
 		},
 	}}
 >
-	<header class="entry-header">
-		<h1 class="entry-title">{activity.data.title}</h1>
-		{activity.data.subtitle && <h2 class="entry-subtitle">{activity.data.subtitle}</h2>}
-	</header>
+	<EntryHeader title={activity.data.title} subtitle={activity.data.subtitle ?? activity.data.summary} />
 
 	<div class="entry-content">
 		<Content />
 	</div>
 
-	{
-		activity.data.gallery.length > 0 && (
-			<section class="entry-gallery" aria-label={`${activity.data.title} gallery`}>
-				<ul class="entry-gallery__list" role="list">
-					{activity.data.gallery.map((img) => (
-						<li>
-							<img src={img.src} alt={img.alt} loading="lazy" />
-						</li>
-					))}
-				</ul>
-			</section>
-		)
-	}
+	<Gallery images={activity.data.gallery} label={`${activity.data.title} gallery`} />
 
 	{
 		activity.data.geo && (
-			<section class="venue-map" aria-labelledby="activity-map-title">
-				<h2 id="activity-map-title">Find {activity.data.title}</h2>
-				<iframe
-					title={`Map showing ${activity.data.title}`}
-					loading="lazy"
-					width="100%"
-					height="400"
-					style="border:0"
-					referrerpolicy="no-referrer-when-downgrade"
-					src={`https://www.google.com/maps?q=${activity.data.geo.lat},${activity.data.geo.lng}&output=embed`}
-				/>
-			</section>
+			<VenueMap
+				lat={activity.data.geo.lat}
+				lng={activity.data.geo.lng}
+				title={activity.data.title}
+				zoom={activity.data.geo.zoom}
+			/>
 		)
 	}
 </PageLayout>

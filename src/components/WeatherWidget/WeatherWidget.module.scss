@@ -1,0 +1,80 @@
+@use '../../styles/abstracts/variables' as *;
+
+.widget {
+	color: #fff;
+	font-size: 0.95rem;
+}
+
+.location {
+	margin: 0 0 $space-2;
+	font-size: 0.85rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: $color-sidebar-link;
+}
+
+.headline {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: $space-3;
+	margin: 0 0 $space-3;
+}
+
+.temp {
+	font-size: 1.6rem;
+	font-weight: 700;
+	line-height: 1;
+	white-space: nowrap;
+}
+
+.summary {
+	font-size: 1.05rem;
+	font-weight: 700;
+	text-align: right;
+}
+
+.facts {
+	display: grid;
+	gap: $space-2;
+	margin: 0;
+}
+
+.fact {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: $space-3;
+	font-size: 0.95rem;
+
+	dt,
+	dd {
+		margin: 0;
+	}
+
+	dt {
+		color: rgba(255, 255, 255, 0.85);
+	}
+
+	dd {
+		font-weight: 700;
+		text-align: right;
+	}
+}
+
+.stamp {
+	margin: $space-3 0 0;
+	font-size: 0.8rem;
+	color: rgba(255, 255, 255, 0.85);
+}
+
+.stale {
+	font-style: italic;
+	color: rgba(255, 255, 255, 0.7);
+}
+
+.empty {
+	margin: 0;
+	color: rgba(255, 255, 255, 0.85);
+}

@@ -1,0 +1,46 @@
+---
+/**
+ * Reusable card for `things-to-do` entries. Visually identical to
+ * VenueCard today but kept as a separate component so the two can
+ * diverge — activities are likely to grow features like opening
+ * hours, age suitability, and entry price.
+ */
+import Icon from '../Icon/Icon.astro';
+import styles from './ActivityCard.module.scss';
+
+interface Props {
+	href: string;
+	title: string;
+	summary?: string;
+	address?: string;
+	heroImage?: { src: string; alt?: string };
+}
+
+const { href, title, summary, address, heroImage } = Astro.props;
+---
+
+<article class={styles.card}>
+	<a href={href} class={styles.link}>
+		{
+			heroImage ? (
+				<div class={styles.media}>
+					<img src={heroImage.src} alt={heroImage.alt ?? title} loading="lazy" />
+				</div>
+			) : (
+				<div class={styles.mediaPlaceholder} aria-hidden="true" />
+			)
+		}
+		<div class={styles.body}>
+			<h2 class={styles.title}>{title}</h2>
+			{summary && <p class={styles.summary}>{summary}</p>}
+			{
+				address && (
+					<p class={styles.metaRow}>
+						<Icon name="marker" />
+						<span>{address}</span>
+					</p>
+				)
+			}
+		</div>
+	</a>
+</article>

@@ -1,0 +1,15 @@
+---
+import Icon from '../Icon/Icon.astro';
+import styles from './DogFriendlyPill.module.scss';
+
+interface Props {
+	compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<span class:list={[styles.pill, { [styles.compact]: compact }]}>
+	<Icon name="paw" />
+	<span>Dog friendly</span>
+</span>

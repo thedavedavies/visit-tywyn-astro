@@ -1,0 +1,92 @@
+@use '../../styles/abstracts/variables' as *;
+@use '../../styles/abstracts/mixins' as *;
+
+.nav {
+	display: flex;
+	align-items: center;
+	width: 100%;
+
+	@include breakpoint(md) {
+		width: auto;
+	}
+}
+
+.toggle {
+	width: 100%;
+
+	/* Override the native disclosure marker. */
+	> summary {
+		list-style: none;
+		&::-webkit-details-marker {
+			display: none;
+		}
+	}
+
+	@include breakpoint(md) {
+		/* On wide screens the menu is always open and the disclosure
+		 * collapses into a wrapper. */
+		&[open],
+		&:not([open]) {
+			.menu {
+				display: flex;
+			}
+		}
+	}
+}
+
+.toggleSummary {
+	cursor: pointer;
+	display: block;
+	padding: $space-3 $space-4;
+	background: $color-primary-darker;
+	color: #fff;
+	font-weight: 700;
+	text-align: center;
+	border: 0;
+	border-radius: $radius-sm;
+
+	@include breakpoint(md) {
+		display: none;
+	}
+}
+
+.menu {
+	@include reset-list;
+	display: none;
+	flex-direction: column;
+
+	.toggle[open] & {
+		display: flex;
+	}
+
+	@include breakpoint(md) {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+}
+
+.item {
+	background-color: $color-primary;
+
+	a {
+		display: flex;
+		align-items: center;
+		padding: $space-3 $space-5;
+		font-size: 1rem;
+		color: #fff;
+		text-decoration: none;
+		transition: background-color 0.2s ease;
+
+		&:hover,
+		&:focus-visible {
+			background-color: $color-primary-darker;
+		}
+	}
+}
+
+.itemActive {
+	a {
+		background-color: $color-primary-dark;
+	}
+}

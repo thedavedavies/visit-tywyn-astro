@@ -1,0 +1,33 @@
+@use '../../styles/abstracts/variables' as *;
+
+.pill {
+	display: inline-flex;
+	align-items: center;
+	gap: $space-2;
+	padding: $space-2 $space-5;
+	background: #fff;
+	color: $color-primary;
+	border: 1px solid $color-border;
+	border-radius: $radius-pill;
+	font-weight: 700;
+
+	:global(svg) {
+		width: 24px;
+		height: 22px;
+		flex: 0 0 auto;
+
+		:global(path) {
+			fill: $color-primary;
+		}
+	}
+}
+
+.compact {
+	padding: $space-1 $space-3;
+	font-size: 0.85rem;
+
+	:global(svg) {
+		width: 16px;
+		height: 14px;
+	}
+}

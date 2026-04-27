@@ -1,9 +1,12 @@
 ---
 import { getCollection } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
-import Icon from '../../components/ui/Icon.astro';
+import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
+import VenueCard from '../../components/VenueCard/VenueCard.astro';
 
-const venues = (await getCollection('eating')).sort((a, b) => a.data.title.localeCompare(b.data.title));
+const venues = (await getCollection('eating')).sort((a, b) =>
+	a.data.title.localeCompare(b.data.title)
+);
 
 const breadcrumbs = [
 	{ label: 'Home', href: '/' },
@@ -17,41 +20,42 @@ const breadcrumbs = [
 	heroImage={{ src: '/wp-content/uploads/2022/05/eating-banner.jpg', alt: 'Eating in Tywyn' }}
 	breadcrumbs={breadcrumbs}
 >
-	<header class="entry-header">
-		<h1 class="entry-title">Eating in Tywyn</h1>
-		<p class="entry-subtitle">From traditional Welsh pubs to seaside cafes — a guide to where to eat in and around Tywyn.</p>
-	</header>
+	<EntryHeader
+		title="Eating in Tywyn"
+		subtitle="From traditional Welsh pubs to seaside cafes — a guide to where to eat in and around Tywyn."
+	/>
 
-	<ul class="venue-grid" role="list">
+	<ul class="card-grid" role="list">
 		{
 			venues.map((venue) => (
-				<li class="venue-card">
-					<a href={`/eating/${venue.id}/`} class="venue-card__link">
-						{venue.data.photo && (
-							<div class="venue-card__media">
-								<img src={venue.data.photo.src} alt={venue.data.photo.alt} loading="lazy" />
-							</div>
-						)}
-						<div class="venue-card__body">
-							<h2 class="venue-card__title">{venue.data.title}</h2>
-							{venue.data.summary && <p class="venue-card__summary">{venue.data.summary}</p>}
-							<ul class="venue-card__meta">
-								{venue.data.address && (
-									<li>
-										<Icon name="marker" />
-										<span>{venue.data.address}</span>
-									</li>
-								)}
-								{venue.data.dog_friendly && (
-									<li class="venue-card__pill">
-										<Icon name="paw" /> Dog friendly
-									</li>
-								)}
-							</ul>
-						</div>
-					</a>
+				<li>
+					<VenueCard
+						href={`/eating/${venue.id}/`}
+						title={venue.data.title}
+						summary={venue.data.summary}
+						address={venue.data.address}
+						dogFriendly={venue.data.dog_friendly}
+						photo={venue.data.photo}
+					/>
 				</li>
 			))
 		}
 	</ul>
 </PageLayout>
+
+<style lang="scss">
+	@use '../../styles/abstracts/variables' as *;
+
+	.card-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+		gap: $space-5;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+
+		li {
+			margin: 0;
+		}
+	}
+</style>

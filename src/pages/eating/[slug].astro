@@ -1,6 +1,8 @@
 ---
 import { getCollection, render } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
+import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
+import VenueMap from '../../components/VenueMap/VenueMap.astro';
 
 export async function getStaticPaths() {
 	const venues = await getCollection('eating');
@@ -34,7 +36,9 @@ const jsonLd = {
 				longitude: venue.data.geo.lng,
 		  }
 		: undefined,
-	sameAs: [venue.data.website, venue.data.facebook_link, venue.data.trip_advisor_link].filter(Boolean),
+	sameAs: [venue.data.website, venue.data.facebook_link, venue.data.trip_advisor_link].filter(
+		Boolean
+	),
 };
 ---
 
@@ -57,10 +61,7 @@ const jsonLd = {
 		},
 	}}
 >
-	<header class="entry-header">
-		<h1 class="entry-title">{venue.data.title}</h1>
-		{venue.data.summary && <p class="entry-subtitle">{venue.data.summary}</p>}
-	</header>
+	<EntryHeader title={venue.data.title} subtitle={venue.data.summary} />
 
 	{
 		venue.data.photo && (
@@ -76,18 +77,28 @@ const jsonLd = {
 
 	{
 		venue.data.geo && (
-			<section class="venue-map" aria-labelledby="venue-map-title">
-				<h2 id="venue-map-title">Find {venue.data.title}</h2>
-				<iframe
-					title={`Map showing ${venue.data.title}`}
-					loading="lazy"
-					width="100%"
-					height="400"
-					style="border:0"
-					referrerpolicy="no-referrer-when-downgrade"
-					src={`https://www.google.com/maps?q=${venue.data.geo.lat},${venue.data.geo.lng}&output=embed`}
-				/>
-			</section>
+			<VenueMap
+				lat={venue.data.geo.lat}
+				lng={venue.data.geo.lng}
+				title={venue.data.title}
+				zoom={venue.data.geo.zoom}
+			/>
 		)
 	}
 </PageLayout>
+
+<style lang="scss">
+	@use '../../styles/abstracts/variables' as *;
+
+	.entry-hero {
+		margin: 0 0 $space-5;
+		border-radius: $radius-lg;
+		overflow: hidden;
+
+		img {
+			width: 100%;
+			height: auto;
+			display: block;
+		}
+	}
+</style>

@@ -1,0 +1,67 @@
+@use '../../styles/abstracts/variables' as *;
+
+.section {
+	margin: $space-7 0;
+	padding: $space-5;
+	background: $color-bg-alt;
+	border: 1px solid $color-border;
+	border-radius: $radius-lg;
+}
+
+.heading {
+	margin: 0 0 $space-4;
+	font-size: 1.4rem;
+	color: $color-heading;
+}
+
+.list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: grid;
+	gap: $space-3;
+}
+
+.item {
+	a {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: $space-4;
+		padding: $space-4 $space-5;
+		background: #fff;
+		border: 1px solid $color-border;
+		border-radius: $radius-md;
+		color: $color-primary;
+		font-weight: 700;
+		text-decoration: none;
+		transition: border-color 0.2s ease, transform 0.2s ease;
+
+		&:hover,
+		&:focus-visible {
+			border-color: $color-primary;
+			transform: translateX(2px);
+		}
+	}
+}
+
+.label {
+	flex: 1 1 auto;
+}
+
+.arrow {
+	flex: 0 0 auto;
+	font-size: 1.2rem;
+}
+
+.note {
+	margin: $space-2 0 0 $space-4;
+	color: $color-text-muted;
+	font-size: 0.9rem;
+}
+
+.disclaimer {
+	margin: $space-4 0 0;
+	color: $color-text-muted;
+	font-size: 0.85rem;
+}

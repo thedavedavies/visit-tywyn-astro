@@ -2,8 +2,8 @@
 
 body {
 	font-family: $font-body;
-	font-size: 1rem;
-	line-height: 1.6;
+	font-size: $font-size-base;
+	line-height: $line-height-body;
 	color: $color-text;
 	background: $color-bg;
 }
@@ -14,23 +14,81 @@ h3,
 h4 {
 	font-family: $font-heading;
 	font-weight: 700;
-	line-height: 1.2;
-	margin-bottom: 0.5em;
-}
-
-h1 {
-	font-size: 2.25rem;
-}
-h2 {
-	font-size: 1.75rem;
-}
-h3 {
-	font-size: 1.375rem;
-}
-h4 {
-	font-size: 1.125rem;
+	line-height: 1.25;
+	margin: 0 0 $space-2;
+	color: $color-heading;
 }
 
 p + p {
-	margin-top: 1em;
+	margin-top: $space-4;
+}
+
+/* Editorial entry styles — used by the page header inside main
+ * content. Keep these here (not in a component module) because they
+ * also style markdown content rendered through `<Content />` which
+ * doesn't pass through any component. */
+.entry-title {
+	color: $color-heading;
+	font-size: $font-size-entry-title;
+	line-height: 1.25;
+	margin: 0 0 $space-2;
+}
+
+.entry-subtitle {
+	color: $color-primary;
+	font-size: $font-size-entry-subtitle;
+	margin: 0 0 $space-5;
+	font-weight: 400;
+}
+
+.entry-content {
+	margin-block-start: $space-5;
+
+	a {
+		color: $color-primary;
+		text-decoration-thickness: 0.125em;
+		text-underline-offset: 1.5px;
+	}
+
+	p {
+		font-size: $font-size-base;
+		line-height: $line-height-body;
+		color: $color-text;
+	}
+
+	h2 {
+		margin-top: $space-7;
+		font-size: 1.5rem;
+	}
+
+	h3 {
+		margin-top: $space-6;
+		font-size: 1.25rem;
+	}
+
+	h4 {
+		margin-top: $space-5;
+		font-size: 1.125rem;
+	}
+
+	ul,
+	ol {
+		margin: 0 0 $space-4 $space-5;
+		padding: 0;
+
+		li {
+			list-style: revert;
+			margin-bottom: $space-2;
+		}
+	}
+
+	img {
+		border-radius: $radius-md;
+		margin-block: $space-4;
+	}
+
+	iframe {
+		max-width: 100%;
+		border-radius: $radius-md;
+	}
 }

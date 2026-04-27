@@ -6,7 +6,8 @@
  * page. We reproduce that here.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
-import EventsSection from '../components/events/EventsSection.astro';
+import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
+import EventsSection from '../components/EventsSection/EventsSection.astro';
 import { SITE } from '../lib/site';
 
 const jsonLd = {
@@ -29,50 +30,46 @@ const jsonLd = {
 	isFrontPage={true}
 	jsonLd={jsonLd}
 >
-	<div class="home-content">
-		<header class="entry-header">
-			<h1 class="entry-title">Welcome to Visit Tywyn</h1>
-		</header>
+	<div class="site-layout" data-has-sidebar="false">
+		<article class="site-content">
+			<EntryHeader title="Welcome to Visit Tywyn" />
 
-		<div class="entry-content">
-			<p>
-				<strong>
-					From the rolling hills and mountains to the tranquil golden beachfront and stunning
-					sunsets, the Cardigan Bay Coastline is known across the World for its vast beauty —
-					and Tywyn, right in the heart of Wales where the mountains meet the sea, is no
-					exception.
-				</strong>
-			</p>
+			<div class="entry-content">
+				<p>
+					<strong>
+						From the rolling hills and mountains to the tranquil golden beachfront and stunning
+						sunsets, the Cardigan Bay Coastline is known across the World for its vast beauty —
+						and Tywyn, right in the heart of Wales where the mountains meet the sea, is no
+						exception.
+					</strong>
+				</p>
 
-			<p>
-				The <a href="/wales-coastal-path/">Wales Coastal Path</a> runs right through the town and
-				onto the Blue Flag Award beach, and affords views to take your breath away, while the
-				promenade is the perfect place for dolphin spotting. On a clear day you can see up the
-				coast with amazing views towards Bardsey Island &amp; Pwllheli on the Lleyn Peninsula
-				and South towards Fishguard, Aberporth &amp; Aberystwyth.
-			</p>
+				<p>
+					The <a href="/wales-coastal-path/">Wales Coastal Path</a> runs right through the town and
+					onto the Blue Flag Award beach, and affords views to take your breath away, while the
+					promenade is the perfect place for dolphin spotting. On a clear day you can see up the
+					coast with amazing views towards Bardsey Island &amp; Pwllheli on the Lleyn Peninsula
+					and South towards Fishguard, Aberporth &amp; Aberystwyth.
+				</p>
 
-			<p>
-				Families have a huge choice of <a href="/things-to-do/">attractions</a> and <a
-					href="/events/">events</a> that will create lasting memories. And at the end of the
-				day, head out to a <a href="/eating/">pub or restaurant</a> to sample the finest Welsh
-				food and drink and to recount the day's events.
-			</p>
+				<p>
+					Families have a huge choice of <a href="/things-to-do/">attractions</a> and <a
+						href="/events/">events</a> that will create lasting memories. And at the end of the
+					day, head out to a <a href="/eating/">pub or restaurant</a> to sample the finest Welsh
+					food and drink and to recount the day's events.
+				</p>
 
-			<p>
-				When you can no longer keep your eyes open, find the perfect <a href="/where-to-stay/"
-					>accommodation</a>: a <a href="/holiday-accommodation/bed-and-breakfast/">seaside B&amp;B</a>,
-				<a href="/holiday-accommodation/self-catering/">cosy self-catering cottage</a> or one
-				of the popular <a href="/holiday-accommodation/caravan/">caravan parks</a>, knowing
-				that in the morning you can do it all over again.
-			</p>
-		</div>
+				<p>
+					When you can no longer keep your eyes open, find the perfect <a href="/where-to-stay/"
+						>accommodation</a>: a <a href="/holiday-accommodation/bed-and-breakfast/"
+						>seaside B&amp;B</a>,
+					<a href="/holiday-accommodation/self-catering/">cosy self-catering cottage</a> or one
+					of the popular <a href="/holiday-accommodation/caravan/">caravan parks</a>, knowing
+					that in the morning you can do it all over again.
+				</p>
+			</div>
 
-		<EventsSection
-			limit={6}
-			sectionId="vt-home-events"
-			className="vt-events-section--home"
-			showAllLink={true}
-		/>
+			<EventsSection limit={6} sectionId="vt-home-events" showAllLink={true} />
+		</article>
 	</div>
 </BaseLayout>

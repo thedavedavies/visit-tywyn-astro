@@ -1,7 +1,8 @@
 ---
 import { getCollection, getEntry, render } from 'astro:content';
 import PageLayout from '../layouts/PageLayout.astro';
-import Icon from '../components/ui/Icon.astro';
+import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
+import VenueCard from '../components/VenueCard/VenueCard.astro';
 
 const page = await getEntry('pages', 'dog-friendly-cafes');
 const Content = page ? (await render(page)).Content : null;
@@ -22,38 +23,32 @@ const breadcrumbs = [
 	heroImage={page?.data.hero_image}
 	breadcrumbs={breadcrumbs}
 >
-	<header class="entry-header">
-		<h1 class="entry-title">{page?.data.title ?? 'Dog friendly cafes in Tywyn'}</h1>
-		{page?.data.subtitle && <h2 class="entry-subtitle">{page.data.subtitle}</h2>}
-	</header>
+	<EntryHeader
+		title={page?.data.title ?? 'Dog friendly cafes in Tywyn'}
+		subtitle={page?.data.subtitle}
+	/>
 
 	<div class="entry-content">
 		{Content && <Content />}
 	</div>
 
-	<section class="venue-grid-section" aria-labelledby="dog-friendly-list">
+	<section class="dog-friendly" aria-labelledby="dog-friendly-list">
 		<h2 id="dog-friendly-list">Dog friendly places to eat</h2>
 		{
 			dogFriendly.length === 0 ? (
 				<p>We're updating our list — check back soon.</p>
 			) : (
-				<ul class="venue-grid" role="list">
+				<ul role="list">
 					{dogFriendly.map((venue) => (
-						<li class="venue-card">
-							<a href={`/eating/${venue.id}/`} class="venue-card__link">
-								{venue.data.photo && (
-									<div class="venue-card__media">
-										<img src={venue.data.photo.src} alt={venue.data.photo.alt} loading="lazy" />
-									</div>
-								)}
-								<div class="venue-card__body">
-									<h3 class="venue-card__title">{venue.data.title}</h3>
-									{venue.data.summary && <p class="venue-card__summary">{venue.data.summary}</p>}
-									<p class="venue-card__pill">
-										<Icon name="paw" /> Dog friendly
-									</p>
-								</div>
-							</a>
+						<li>
+							<VenueCard
+								href={`/eating/${venue.id}/`}
+								title={venue.data.title}
+								summary={venue.data.summary}
+								address={venue.data.address}
+								dogFriendly={true}
+								photo={venue.data.photo}
+							/>
 						</li>
 					))}
 				</ul>
@@ -61,3 +56,29 @@ const breadcrumbs = [
 		}
 	</section>
 </PageLayout>
+
+<style lang="scss">
+	@use '../styles/abstracts/variables' as *;
+
+	.dog-friendly {
+		margin: $space-7 0;
+
+		h2 {
+			margin: 0 0 $space-4;
+			font-size: 1.4rem;
+		}
+
+		ul {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+			gap: $space-5;
+
+			li {
+				margin: 0;
+			}
+		}
+	}
+</style>

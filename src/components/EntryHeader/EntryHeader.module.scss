@@ -1,0 +1,23 @@
+@use '../../styles/abstracts/variables' as *;
+
+.header {
+	margin-bottom: $space-5;
+}
+
+.title {
+	color: $color-heading;
+	font-size: $font-size-entry-title;
+	line-height: 1.15;
+	margin: 0;
+
+	@media (max-width: 640px) {
+		font-size: 1.85rem;
+	}
+}
+
+.subtitle {
+	color: $color-primary;
+	font-size: $font-size-entry-subtitle;
+	margin: $space-2 0 0;
+	font-weight: 400;
+}

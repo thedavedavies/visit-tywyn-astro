@@ -1,0 +1,36 @@
+---
+/**
+ * Reusable wrapper for the dark-teal sidebar widgets.
+ *
+ * Mirrors the WP `.widget-area .sidebar-box` markup: a dark-grey
+ * header bar with a green icon chip and a title, followed by a
+ * teal body. Use the `iconName` prop for the standard chip; pass
+ * children into the default slot for the body.
+ */
+import Icon from '../Icon/Icon.astro';
+import styles from './SidebarBox.module.scss';
+
+interface Props {
+	title: string;
+	iconName?: string;
+	headingLevel?: 2 | 3;
+	tone?: 'primary' | 'plain';
+}
+
+const { title, iconName = 'marker', headingLevel = 3, tone = 'primary' } = Astro.props;
+const HTag: 'h2' | 'h3' = headingLevel === 2 ? 'h2' : 'h3';
+---
+
+<div class:list={[styles.box, styles[tone]]}>
+	<div class={styles.header}>
+		<HTag class={styles.heading}>
+			<span class={styles.iconChip}>
+				<Icon name={iconName} />
+			</span>
+			{title}
+		</HTag>
+	</div>
+	<div class={styles.body}>
+		<slot />
+	</div>
+</div>

@@ -1,0 +1,24 @@
+---
+/**
+ * 16:9 iframe wrapper. Used by the webcam page; could host any
+ * external embed. Mirrors the legacy `.embed-container` markup.
+ */
+import styles from './EmbedFrame.module.scss';
+
+interface Props {
+	src: string;
+	title: string;
+	allowFullscreen?: boolean;
+}
+
+const { src, title, allowFullscreen = true } = Astro.props;
+---
+
+<div class={styles.frame}>
+	<iframe
+		src={src}
+		title={title}
+		loading="lazy"
+		allowfullscreen={allowFullscreen}
+		referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
