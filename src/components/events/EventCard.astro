@@ -1,0 +1,38 @@
+---
+import Icon from '../ui/Icon.astro';
+import type { NormalisedEvent } from '../../lib/events';
+
+interface Props {
+	event: NormalisedEvent;
+}
+
+const { event } = Astro.props;
+const showFinishedBadge = event.isPast;
+---
+
+<article class:list={['vt-event-card', { 'vt-event-card--past': showFinishedBadge }]}>
+	{
+		event.image && (
+			<a href={event.primaryUrl ?? '#'} class="vt-event-card__media" tabindex="-1" aria-hidden="true">
+				<img src={event.image} alt={event.imageAlt} loading="lazy" />
+			</a>
+		)
+	}
+	<div class="vt-event-card__body">
+		<p class="vt-event-card__date">
+			<Icon name="calendar" />
+			<time datetime={event.startIso}>{event.dateLabel}</time>
+		</p>
+		<h3 class="vt-event-card__title">
+			{event.primaryUrl ? <a href={event.primaryUrl}>{event.title}</a> : event.title}
+		</h3>
+		{event.location && (
+			<p class="vt-event-card__location">
+				<Icon name="marker" />
+				{event.location}
+			</p>
+		)}
+		{event.summary && <p class="vt-event-card__summary">{event.summary}</p>}
+		{showFinishedBadge && <p class="vt-event-card__badge" role="status">Event finished</p>}
+	</div>
+</article>

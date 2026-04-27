@@ -1,0 +1,120 @@
+---
+/**
+ * Root layout. Owns the entire `<html>` tree.
+ *
+ * Header order intentionally mirrors the Capo.js-inspired ordering
+ * from header.php: charset > viewport > title > preconnect > styles
+ * > scripts > icons > meta.
+ */
+import '../styles/global.scss';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import { SITE } from '../lib/site';
+
+interface Props {
+	title: string;
+	description?: string;
+	canonical?: string | URL;
+	ogImage?: string;
+	noindex?: boolean;
+	heroImage?: { src: string; alt?: string } | null;
+	breadcrumbs?: { label: string; href?: string }[];
+	isFrontPage?: boolean;
+	bodyClass?: string;
+	jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+	title,
+	description = SITE.description,
+	canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url),
+	ogImage,
+	noindex = false,
+	heroImage = null,
+	breadcrumbs = [],
+	isFrontPage = false,
+	bodyClass = '',
+	jsonLd,
+} = Astro.props;
+
+const fullTitle = isFrontPage ? `${SITE.name} | ${SITE.tagline}` : `${title} | ${SITE.name}`;
+const canonicalHref = canonical instanceof URL ? canonical.toString() : canonical;
+const jsonLdBlocks = jsonLd
+	? Array.isArray(jsonLd)
+		? jsonLd
+		: [jsonLd]
+	: [];
+---
+
+<!doctype html>
+<html lang="en-GB">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{fullTitle}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalHref} />
+		{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="preconnect" href="https://www.googletagmanager.com" />
+		<link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css?family=Lato:wght@400;700&display=swap"
+		/>
+
+		<meta property="og:type" content={isFrontPage ? 'website' : 'article'} />
+		<meta property="og:title" content={fullTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalHref} />
+		<meta property="og:site_name" content={SITE.name} />
+		<meta property="og:locale" content={SITE.locale} />
+		{ogImage && <meta property="og:image" content={ogImage} />}
+		<meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+		{SITE.twitter && <meta name="twitter:site" content={SITE.twitter} />}
+
+		<link rel="icon" href="https://visit-tywyn.s3.amazonaws.com/favicon.ico" />
+		<link rel="profile" href="https://gmpg.org/xfn/11" />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+
+		<script
+			defer
+			src={`https://www.googletagmanager.com/gtag/js?id=${SITE.googleAnalyticsId}`}></script>
+		<script is:inline define:vars={{ gaId: SITE.googleAnalyticsId }}>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+			gtag('config', gaId);
+		</script>
+		<script
+			defer
+			src="https://analytics.ahrefs.com/analytics.js"
+			data-key="RHUgFDUqpEFNoIEFLipsjA"></script>
+
+		<script
+			defer
+			src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${SITE.adsenseClient}`}
+			crossorigin="anonymous"></script>
+
+		{
+			jsonLdBlocks.map((block) => (
+				<script type="application/ld+json" set:html={JSON.stringify(block)} />
+			))
+		}
+	</head>
+
+	<body class={bodyClass}>
+		<div id="page">
+			<Header heroImage={heroImage} breadcrumbs={breadcrumbs} isFrontPage={isFrontPage} />
+			<main id="primary" class="site-main">
+				<slot />
+			</main>
+			<Footer />
+		</div>
+	</body>
+</html>

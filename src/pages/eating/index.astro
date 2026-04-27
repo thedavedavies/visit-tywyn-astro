@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import Icon from '../../components/ui/Icon.astro';
+
+const venues = (await getCollection('eating')).sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+const breadcrumbs = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Eating in Tywyn' },
+];
+---
+
+<PageLayout
+	title="Eating in Tywyn"
+	description="Cafes, pubs, restaurants, and tea rooms in Tywyn and the surrounding area."
+	heroImage={{ src: '/wp-content/uploads/2022/05/eating-banner.jpg', alt: 'Eating in Tywyn' }}
+	breadcrumbs={breadcrumbs}
+>
+	<header class="entry-header">
+		<h1 class="entry-title">Eating in Tywyn</h1>
+		<p class="entry-subtitle">From traditional Welsh pubs to seaside cafes — a guide to where to eat in and around Tywyn.</p>
+	</header>
+
+	<ul class="venue-grid" role="list">
+		{
+			venues.map((venue) => (
+				<li class="venue-card">
+					<a href={`/eating/${venue.id}/`} class="venue-card__link">
+						{venue.data.photo && (
+							<div class="venue-card__media">
+								<img src={venue.data.photo.src} alt={venue.data.photo.alt} loading="lazy" />
+							</div>
+						)}
+						<div class="venue-card__body">
+							<h2 class="venue-card__title">{venue.data.title}</h2>
+							{venue.data.summary && <p class="venue-card__summary">{venue.data.summary}</p>}
+							<ul class="venue-card__meta">
+								{venue.data.address && (
+									<li>
+										<Icon name="marker" />
+										<span>{venue.data.address}</span>
+									</li>
+								)}
+								{venue.data.dog_friendly && (
+									<li class="venue-card__pill">
+										<Icon name="paw" /> Dog friendly
+									</li>
+								)}
+							</ul>
+						</div>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</PageLayout>

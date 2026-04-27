@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page not found" noindex={true}>
+	<section class="error-404 not-found" style="padding: 4rem 1rem; text-align: center;">
+		<header>
+			<h1>That page wasn't found</h1>
+			<p>The page you were looking for might have moved, or never existed.</p>
+		</header>
+		<p>
+			Try the <a href="/">home page</a>, or jump to one of these:
+		</p>
+		<ul style="list-style: none; padding: 0;">
+			<li><a href="/things-to-do/">Things to do in Tywyn</a></li>
+			<li><a href="/where-to-stay/">Where to stay</a></li>
+			<li><a href="/eating/">Eating in Tywyn</a></li>
+			<li><a href="/events/">Events</a></li>
+		</ul>
+	</section>
+</BaseLayout>

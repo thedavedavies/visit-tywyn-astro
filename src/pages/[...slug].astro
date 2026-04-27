@@ -1,0 +1,55 @@
+---
+/**
+ * Catch-all for editorial pages stored in the `pages` collection.
+ *
+ * Maps `src/content/pages/<slug>.md` → `/<slug>/`.
+ *
+ * Excluded:
+ *   - `home-page` (handled by `src/pages/index.astro`)
+ *   - any slug that conflicts with a hand-rolled route file
+ *     (e.g. `/eating/`, `/things-to-do/`, `/where-to-stay/`,
+ *     `/holiday-accommodation/...`). Astro's filesystem routing
+ *     resolves the explicit file before this catch-all.
+ */
+import { getCollection, render } from 'astro:content';
+import PageLayout from '../layouts/PageLayout.astro';
+
+export async function getStaticPaths() {
+	// Slugs that have hand-rolled route files — exclude them from
+	// the catch-all so we don't double-emit (and to satisfy Astro's
+	// "duplicate route" check at build time). Keep this list in
+	// sync with the bespoke .astro files in src/pages/.
+	const bespokeSlugs = new Set(['home-page', 'webcam', 'dog-friendly-cafes', 'where-to-stay']);
+	const pages = await getCollection('pages', (entry) => !bespokeSlugs.has(entry.id));
+	return pages.map((page) => ({
+		params: { slug: page.id },
+		props: { page },
+	}));
+}
+
+const { page } = Astro.props;
+const { Content } = await render(page);
+
+const breadcrumbs = [
+	{ label: 'Home', href: '/' },
+	{ label: page.data.title },
+];
+---
+
+<PageLayout
+	title={page.data.seo?.title ?? page.data.title}
+	description={page.data.seo?.description ?? page.data.subtitle}
+	canonical={page.data.seo?.canonical}
+	ogImage={page.data.seo?.og_image ?? page.data.hero_image?.src}
+	noindex={page.data.seo?.noindex}
+	heroImage={page.data.hero_image}
+	breadcrumbs={breadcrumbs}
+>
+	<header class="entry-header">
+		<h1 class="entry-title">{page.data.title}</h1>
+		{page.data.subtitle && <h2 class="entry-subtitle">{page.data.subtitle}</h2>}
+	</header>
+	<div class="entry-content">
+		<Content />
+	</div>
+</PageLayout>

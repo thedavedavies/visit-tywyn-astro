@@ -1,0 +1,93 @@
+---
+import { getCollection, render } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+
+export async function getStaticPaths() {
+	const venues = await getCollection('eating');
+	return venues.map((venue) => ({
+		params: { slug: venue.id },
+		props: { venue },
+	}));
+}
+
+const { venue } = Astro.props;
+const { Content } = await render(venue);
+
+const breadcrumbs = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Eating', href: '/eating/' },
+	{ label: venue.data.title },
+];
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@type': venue.data.dog_friendly ? 'Restaurant' : 'FoodEstablishment',
+	name: venue.data.title,
+	url: `https://visit-tywyn.co.uk/eating/${venue.id}/`,
+	telephone: venue.data.phone,
+	address: venue.data.address,
+	image: venue.data.photo?.src,
+	geo: venue.data.geo
+		? {
+				'@type': 'GeoCoordinates',
+				latitude: venue.data.geo.lat,
+				longitude: venue.data.geo.lng,
+		  }
+		: undefined,
+	sameAs: [venue.data.website, venue.data.facebook_link, venue.data.trip_advisor_link].filter(Boolean),
+};
+---
+
+<PageLayout
+	title={venue.data.seo?.title ?? venue.data.title}
+	description={venue.data.seo?.description ?? venue.data.summary}
+	canonical={venue.data.seo?.canonical}
+	ogImage={venue.data.seo?.og_image ?? venue.data.photo?.src}
+	noindex={venue.data.seo?.noindex}
+	breadcrumbs={breadcrumbs}
+	jsonLd={jsonLd}
+	sidebarProps={{
+		eating: {
+			title: venue.data.title,
+			trip_advisor_link: venue.data.trip_advisor_link,
+			facebook_link: venue.data.facebook_link,
+			dog_friendly: venue.data.dog_friendly,
+			website: venue.data.website,
+			phone: venue.data.phone,
+		},
+	}}
+>
+	<header class="entry-header">
+		<h1 class="entry-title">{venue.data.title}</h1>
+		{venue.data.summary && <p class="entry-subtitle">{venue.data.summary}</p>}
+	</header>
+
+	{
+		venue.data.photo && (
+			<figure class="entry-hero">
+				<img src={venue.data.photo.src} alt={venue.data.photo.alt} />
+			</figure>
+		)
+	}
+
+	<div class="entry-content">
+		<Content />
+	</div>
+
+	{
+		venue.data.geo && (
+			<section class="venue-map" aria-labelledby="venue-map-title">
+				<h2 id="venue-map-title">Find {venue.data.title}</h2>
+				<iframe
+					title={`Map showing ${venue.data.title}`}
+					loading="lazy"
+					width="100%"
+					height="400"
+					style="border:0"
+					referrerpolicy="no-referrer-when-downgrade"
+					src={`https://www.google.com/maps?q=${venue.data.geo.lat},${venue.data.geo.lng}&output=embed`}
+				/>
+			</section>
+		)
+	}
+</PageLayout>

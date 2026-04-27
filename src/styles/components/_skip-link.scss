@@ -1,0 +1,25 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/variables' as *;
+
+.skip-link {
+	@include visually-hidden;
+
+	&:focus,
+	&:focus-visible {
+		position: fixed;
+		top: 0.5rem;
+		left: 0.5rem;
+		width: auto;
+		height: auto;
+		padding: 0.5rem 1rem;
+		background: $color-bg;
+		color: $color-text;
+		clip: auto;
+		z-index: 1000;
+	}
+}
+
+.screen-reader-text,
+.sr-only {
+	@include visually-hidden;
+}

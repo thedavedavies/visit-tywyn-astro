@@ -1,0 +1,20 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.site-layout {
+	@include container;
+	display: grid;
+	gap: 2rem;
+	padding-block: 2rem;
+	grid-template-columns: 1fr;
+
+	@include breakpoint(lg) {
+		&[data-has-sidebar='true'] {
+			grid-template-columns: minmax(0, 1fr) $sidebar-width;
+		}
+	}
+}
+
+.site-content {
+	min-width: 0;
+}

@@ -1,0 +1,49 @@
+---
+import { getEntry, render } from 'astro:content';
+import PageLayout from '../layouts/PageLayout.astro';
+import Icon from '../components/ui/Icon.astro';
+
+const page = await getEntry('pages', 'webcam');
+const Content = page ? (await render(page)).Content : null;
+
+const breadcrumbs = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Webcam' },
+];
+---
+
+<PageLayout
+	title={page?.data.seo?.title ?? page?.data.title ?? 'Tywyn beach webcam'}
+	description={page?.data.seo?.description ?? page?.data.subtitle}
+	heroImage={page?.data.hero_image}
+	breadcrumbs={breadcrumbs}
+>
+	<header class="entry-header">
+		<h1 class="entry-title">{page?.data.title ?? 'Tywyn beach webcam'}</h1>
+		{page?.data.subtitle && <h2 class="entry-subtitle">{page.data.subtitle}</h2>}
+	</header>
+
+	<div class="entry-content">
+		{Content && <Content />}
+
+		<div class="webcam-container">
+			<small class="webcam-instruction">
+				Just press the <Icon name="play" /> button below to view the Tywyn Seafront livestream.
+			</small>
+			<div class="embed-container">
+				<iframe
+					src="https://www.tywynctc.co.uk/webrufg-hdd-h09ys.html"
+					title="Tywyn seafront live webcam"
+					name="webcam-498"
+					scrolling="no"
+					allowfullscreen
+					frameborder="0"
+					loading="lazy"></iframe>
+			</div>
+			<p>
+				The Tywyn webcam is provided by <a href="https://tywynctc.co.uk/" target="_blank" rel="noopener noreferrer nofollow"
+					>Tywyn CTC<span class="sr-only"> (opens in new tab)</span></a>.
+			</p>
+		</div>
+	</div>
+</PageLayout>

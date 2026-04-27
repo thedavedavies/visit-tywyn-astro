@@ -1,0 +1,29 @@
+---
+/**
+ * Standard editorial page layout — content + sidebar, like the WP
+ * page.php / single.php. Pass through any BaseLayout props and
+ * forward sidebar config via the `sidebar` slot or `sidebarProps`.
+ */
+import BaseLayout from './BaseLayout.astro';
+import Sidebar from '../components/layout/Sidebar.astro';
+import type { ComponentProps } from 'astro/types';
+
+type BaseProps = ComponentProps<typeof BaseLayout>;
+type SidebarProps = ComponentProps<typeof Sidebar>;
+
+interface Props extends BaseProps {
+	sidebarProps?: SidebarProps;
+	hideSidebar?: boolean;
+}
+
+const { sidebarProps = {}, hideSidebar = false, ...baseProps } = Astro.props;
+---
+
+<BaseLayout {...baseProps}>
+	<div class="site-layout" data-has-sidebar={!hideSidebar}>
+		<article class="site-content">
+			<slot />
+		</article>
+		{!hideSidebar && <Sidebar {...sidebarProps} />}
+	</div>
+</BaseLayout>

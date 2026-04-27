@@ -1,0 +1,27 @@
+---
+import { getTidesSnapshot } from '../../lib/conditions';
+
+const snap = getTidesSnapshot();
+const events = snap?.upcoming.slice(0, 4) ?? [];
+---
+
+<div class="tides" data-vt-conditions="tides">
+	{
+		!snap || events.length === 0 ? (
+			<p class="tides__empty">Tide data is loading.</p>
+		) : (
+			<>
+				<ul class="tides__list" role="list">
+					{events.map((event) => (
+						<li class:list={['tides__row', `tides__row--${event.type}`]}>
+							<span class="tides__when">{event.timeLabel}</span>
+							<span class="tides__type">{event.type === 'high' ? 'High' : 'Low'}</span>
+							<span class="tides__height">{event.heightM.toFixed(1)}m</span>
+						</li>
+					))}
+				</ul>
+				{snap.stale && <p class="tides__stale" role="status">Last good reading.</p>}
+			</>
+		)
+	}
+</div>

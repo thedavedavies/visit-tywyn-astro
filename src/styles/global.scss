@@ -1,0 +1,33 @@
+/* ----------------------------------------------------------------------- *\
+ * Visit Tywyn — global styles entry.
+ *
+ * Partials are organised in 7-1 style:
+ *   abstracts/  variables, mixins (no output)
+ *   base/       resets, typography, html element defaults
+ *   layout/     header, footer, sidebar, breadcrumbs, page grid
+ *   components/ buttons, cards, forms, sliders, conditions widgets
+ *   pages/      page-specific overrides (kept thin)
+ *
+ * Most of these are stubs at the moment — they'll be filled out as
+ * the SCSS port from the legacy theme proceeds.
+\* ----------------------------------------------------------------------- */
+
+@use 'abstracts/variables' as *;
+@use 'abstracts/mixins' as *;
+
+@use 'base/reset';
+@use 'base/typography';
+
+@use 'layout/page';
+@use 'layout/header';
+@use 'layout/footer';
+@use 'layout/sidebar';
+@use 'layout/breadcrumbs';
+
+@use 'components/buttons';
+@use 'components/cards';
+@use 'components/conditions';
+@use 'components/icon';
+@use 'components/skip-link';
+
+@use 'pages/home';

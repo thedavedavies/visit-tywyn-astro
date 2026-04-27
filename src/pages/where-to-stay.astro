@@ -1,0 +1,59 @@
+---
+/**
+ * Where-to-stay parent page. Renders the WP `where-to-stay` page
+ * content followed by 4 category cards linking to the holiday-
+ * accommodation landings.
+ */
+import { getCollection, getEntry, render } from 'astro:content';
+import PageLayout from '../layouts/PageLayout.astro';
+
+const page = await getEntry('pages', 'where-to-stay');
+const Content = page ? (await render(page)).Content : null;
+
+const categories = (await getCollection('stay-categories')).sort(
+	(a, b) => a.data.menu_order - b.data.menu_order
+);
+
+const breadcrumbs = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Where to stay' },
+];
+---
+
+<PageLayout
+	title={page?.data.seo?.title ?? page?.data.title ?? 'Where to stay in Tywyn'}
+	description={
+		page?.data.seo?.description ?? 'Find holiday accommodation in Tywyn — camping, caravans, self-catering cottages, and B&Bs.'
+	}
+	heroImage={page?.data.hero_image}
+	breadcrumbs={breadcrumbs}
+>
+	<header class="entry-header">
+		<h1 class="entry-title">{page?.data.title ?? 'Where to stay in Tywyn'}</h1>
+		{page?.data.subtitle && <h2 class="entry-subtitle">{page.data.subtitle}</h2>}
+	</header>
+
+	{
+		Content && (
+			<div class="entry-content">
+				<Content />
+			</div>
+		)
+	}
+
+	<section class="stay-categories" aria-labelledby="stay-categories-title">
+		<h2 id="stay-categories-title">Browse by type</h2>
+		<ul class="stay-categories__grid" role="list">
+			{
+				categories.map((category) => (
+					<li class="stay-categories__card">
+						<a href={`/holiday-accommodation/${category.id}/`}>
+							<h3>{category.data.title}</h3>
+							<p>{category.data.intro}</p>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+</PageLayout>

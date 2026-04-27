@@ -1,0 +1,22 @@
+{
+	"_notes": [
+		"Edit only the items inside the events array.",
+		"Use dates in YYYY-MM-DD format and times in 24-hour HH:MM format.",
+		"Use internal_url for a page on this website and external_url for the official event website."
+	],
+	"_example": {
+		"title": "Tywyn Example Event",
+		"summary": "A short summary for the event card.",
+		"start_date": "2026-07-18",
+		"end_date": "2026-07-18",
+		"start_time": "11:00",
+		"end_time": "16:00",
+		"location": "Tywyn Promenade",
+		"image": "/img/uploads/example-event.jpg",
+		"image_alt": "Crowds gathered at an outdoor Tywyn event",
+		"internal_url": "/events/example-event/",
+		"external_url": "https://example.com/events/example-event",
+		"external_label": "Official event website"
+	},
+	"events": []
+}

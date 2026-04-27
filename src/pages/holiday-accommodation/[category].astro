@@ -1,0 +1,87 @@
+---
+import { getCollection, render } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+
+export async function getStaticPaths() {
+	const categories = await getCollection('stay-categories');
+	return categories.map((category) => ({
+		params: { category: category.id },
+		props: { category },
+	}));
+}
+
+const { category } = Astro.props;
+const { Content } = await render(category);
+
+const breadcrumbs = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Where to stay', href: '/where-to-stay/' },
+	{ label: category.data.title },
+];
+---
+
+<PageLayout
+	title={category.data.seo?.title ?? category.data.title}
+	description={category.data.seo?.description ?? category.data.intro}
+	canonical={category.data.seo?.canonical}
+	ogImage={category.data.seo?.og_image ?? category.data.hero_image?.src}
+	heroImage={category.data.hero_image}
+	breadcrumbs={breadcrumbs}
+>
+	<header class="entry-header">
+		<h1 class="entry-title">{category.data.title}</h1>
+		<p class="entry-subtitle">{category.data.intro}</p>
+	</header>
+
+	{
+		category.data.featured.length > 0 && (
+			<section class="featured-stays" aria-labelledby="featured-stays-title">
+				<h2 id="featured-stays-title">Featured stays</h2>
+				<ul class="featured-stays__list" role="list">
+					{category.data.featured.map((entry) => (
+						<li class="featured-stays__card">
+							<a href={entry.url} target="_blank" rel="noopener">
+								{entry.image && (
+									<div class="featured-stays__media">
+										<img src={entry.image.src} alt={entry.image.alt} loading="lazy" />
+									</div>
+								)}
+								<div class="featured-stays__body">
+									<h3>{entry.name}</h3>
+									<p>{entry.summary}</p>
+									{entry.sponsored && <p class="featured-stays__pill">Sponsored</p>}
+								</div>
+							</a>
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+
+	{
+		category.data.booking_search_links.length > 0 && (
+			<section class="booking-search" aria-labelledby="booking-search-title">
+				<h2 id="booking-search-title">Search for a place to stay</h2>
+				<ul class="booking-search__list" role="list">
+					{category.data.booking_search_links.map((link) => (
+						<li>
+							<a href={link.url} target="_blank" rel="noopener">
+								{link.label}
+							</a>
+							{link.note && <p class="booking-search__note">{link.note}</p>}
+						</li>
+					))}
+				</ul>
+				<p class="booking-search__note">
+					Visit Tywyn doesn't book stays directly. These external sites handle reservations and
+					payments — please check each provider's terms before booking.
+				</p>
+			</section>
+		)
+	}
+
+	<div class="entry-content">
+		<Content />
+	</div>
+</PageLayout>

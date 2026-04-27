@@ -1,0 +1,39 @@
+@use 'variables' as *;
+
+@mixin breakpoint($size) {
+	@if $size == sm {
+		@media (min-width: $breakpoint-sm) {
+			@content;
+		}
+	} @else if $size == md {
+		@media (min-width: $breakpoint-md) {
+			@content;
+		}
+	} @else if $size == lg {
+		@media (min-width: $breakpoint-lg) {
+			@content;
+		}
+	} @else if $size == xl {
+		@media (min-width: $breakpoint-xl) {
+			@content;
+		}
+	}
+}
+
+@mixin visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+@mixin container {
+	max-width: $container-max;
+	margin-inline: auto;
+	padding-inline: 1rem;
+}

@@ -1,0 +1,99 @@
+---
+import { getCollection, render } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+
+export async function getStaticPaths() {
+	const activities = await getCollection('things-to-do');
+	return activities.map((activity) => ({
+		params: { slug: activity.id },
+		props: { activity },
+	}));
+}
+
+const { activity } = Astro.props;
+const { Content } = await render(activity);
+
+const breadcrumbs = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Things to do', href: '/things-to-do/' },
+	{ label: activity.data.title },
+];
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'TouristAttraction',
+	name: activity.data.title,
+	url: `https://visit-tywyn.co.uk/things-to-do/${activity.id}/`,
+	description: activity.data.summary,
+	telephone: activity.data.phone,
+	address: activity.data.address,
+	image: activity.data.hero_image?.src,
+	geo: activity.data.geo
+		? {
+				'@type': 'GeoCoordinates',
+				latitude: activity.data.geo.lat,
+				longitude: activity.data.geo.lng,
+		  }
+		: undefined,
+	sameAs: activity.data.social ? Object.values(activity.data.social).filter(Boolean) : undefined,
+};
+---
+
+<PageLayout
+	title={activity.data.seo?.title ?? activity.data.title}
+	description={activity.data.seo?.description ?? activity.data.summary}
+	canonical={activity.data.seo?.canonical}
+	ogImage={activity.data.seo?.og_image ?? activity.data.hero_image?.src}
+	noindex={activity.data.seo?.noindex}
+	heroImage={activity.data.hero_image}
+	breadcrumbs={breadcrumbs}
+	jsonLd={jsonLd}
+	sidebarProps={{
+		thingsToDo: {
+			title: activity.data.title,
+			website: activity.data.website,
+			phone: activity.data.phone,
+			grid_reference: activity.data.grid_reference,
+		},
+	}}
+>
+	<header class="entry-header">
+		<h1 class="entry-title">{activity.data.title}</h1>
+		{activity.data.subtitle && <h2 class="entry-subtitle">{activity.data.subtitle}</h2>}
+	</header>
+
+	<div class="entry-content">
+		<Content />
+	</div>
+
+	{
+		activity.data.gallery.length > 0 && (
+			<section class="entry-gallery" aria-label={`${activity.data.title} gallery`}>
+				<ul class="entry-gallery__list" role="list">
+					{activity.data.gallery.map((img) => (
+						<li>
+							<img src={img.src} alt={img.alt} loading="lazy" />
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+
+	{
+		activity.data.geo && (
+			<section class="venue-map" aria-labelledby="activity-map-title">
+				<h2 id="activity-map-title">Find {activity.data.title}</h2>
+				<iframe
+					title={`Map showing ${activity.data.title}`}
+					loading="lazy"
+					width="100%"
+					height="400"
+					style="border:0"
+					referrerpolicy="no-referrer-when-downgrade"
+					src={`https://www.google.com/maps?q=${activity.data.geo.lat},${activity.data.geo.lng}&output=embed`}
+				/>
+			</section>
+		)
+	}
+</PageLayout>

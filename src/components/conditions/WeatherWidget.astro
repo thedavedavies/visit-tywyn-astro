@@ -1,0 +1,47 @@
+---
+import { getWeatherSnapshot } from '../../lib/conditions';
+
+const snap = getWeatherSnapshot();
+---
+
+<div class="conditions" data-vt-conditions="weather">
+	{
+		!snap ? (
+			<p class="conditions__empty">Tywyn weather is loading.</p>
+		) : (
+			<>
+				<p class="conditions__location">{snap.location}</p>
+				<p class="conditions__primary">
+					<span class="conditions__temp">{snap.tempC?.toFixed(0)}&deg;C</span>
+					<span class="conditions__summary">{snap.summary}</span>
+				</p>
+				<dl class="conditions__details">
+					{snap.feelsLikeC !== null && (
+						<>
+							<dt>Feels like</dt>
+							<dd>{snap.feelsLikeC.toFixed(0)}&deg;C</dd>
+						</>
+					)}
+					{snap.windMph !== null && (
+						<>
+							<dt>Wind</dt>
+							<dd>
+								{snap.windMph.toFixed(0)}mph {snap.windDir ?? ''}
+							</dd>
+						</>
+					)}
+					{snap.rainChance !== null && (
+						<>
+							<dt>Rain</dt>
+							<dd>{snap.rainChance}% chance</dd>
+						</>
+					)}
+				</dl>
+				<p class="conditions__updated">
+					Updated {snap.observedLabel}
+					{snap.stale && <span class="conditions__stale" role="status"> · last good reading</span>}
+				</p>
+			</>
+		)
+	}
+</div>

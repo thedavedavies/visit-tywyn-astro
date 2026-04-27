@@ -1,0 +1,18 @@
+---
+title: Pendre Garden Centre and Cafe
+address: Pendre Garden Centre, Tywyn, LL36 9LW
+phone: 01654 711747
+website: 'http://www.pendregardencentre.co.uk/'
+dog_friendly: false
+published: 2022-05-28
+geo:
+  lat: 52.5881817
+  lng: -4.080178
+  address: Pendre Garden Centre and Cafe
+photo:
+  src: /wp-content/uploads/2022/05/pendre-garden-centre-3.jpg
+  alt: Pendre Garden Centre and Cafe
+trip_advisor_link: 'https://www.tripadvisor.co.uk/Restaurant_Review-g552038-d4072256-Reviews-Pendre_Garden_Centre_and_Cafe-Tywyn_Gwynedd_North_Wales_Wales.html'
+---
+
+

@@ -1,0 +1,51 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import Icon from '../../components/ui/Icon.astro';
+
+const activities = (await getCollection('things-to-do')).sort((a, b) =>
+	a.data.title.localeCompare(b.data.title)
+);
+
+const breadcrumbs = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Things to do' },
+];
+---
+
+<PageLayout
+	title="Things to do in Tywyn"
+	description="Attractions, walks, beaches, and family days out in and around Tywyn."
+	breadcrumbs={breadcrumbs}
+>
+	<header class="entry-header">
+		<h1 class="entry-title">Things to do in Tywyn</h1>
+		<p class="entry-subtitle">From the famous Talyllyn Railway to the long sandy beach — here's what to do during your visit.</p>
+	</header>
+
+	<ul class="activity-grid" role="list">
+		{
+			activities.map((activity) => (
+				<li class="activity-card">
+					<a href={`/things-to-do/${activity.id}/`} class="activity-card__link">
+						{activity.data.hero_image && (
+							<div class="activity-card__media">
+								<img src={activity.data.hero_image.src} alt={activity.data.hero_image.alt} loading="lazy" />
+							</div>
+						)}
+						<div class="activity-card__body">
+							<h2 class="activity-card__title">{activity.data.title}</h2>
+							{activity.data.summary && <p class="activity-card__summary">{activity.data.summary}</p>}
+							{activity.data.address && (
+								<p class="activity-card__meta">
+									<Icon name="marker" />
+									<span>{activity.data.address}</span>
+								</p>
+							)}
+						</div>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</PageLayout>

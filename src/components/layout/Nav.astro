@@ -1,0 +1,32 @@
+---
+/**
+ * Primary site navigation. Replaces wp_nav_menu().
+ * The mobile toggle is upgraded from the WP version: uses a
+ * native `<details>` so it works without JavaScript.
+ */
+import { PRIMARY_NAV } from '../../lib/nav';
+
+const currentPath = Astro.url.pathname;
+
+function isActive(href: string): boolean {
+	if (href === '/') return currentPath === '/';
+	return currentPath === href || currentPath.startsWith(href);
+}
+---
+
+<nav id="site-navigation" class="main-navigation" aria-label="Primary">
+	<details class="nav-toggle">
+		<summary class="menu-toggle" aria-controls="primary-menu">Primary Menu</summary>
+		<ul id="primary-menu" class="menu">
+			{
+				PRIMARY_NAV.map((item) => (
+					<li class:list={['menu-item', { 'current-menu-item': isActive(item.href) }]}>
+						<a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+							{item.label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</details>
+</nav>

@@ -1,0 +1,30 @@
+/* Visit Tywyn design tokens.
+ * Placeholders during migration — will be replaced with values
+ * extracted from the legacy theme's _variables.scss. */
+
+$color-primary: #b8d8d8;
+$color-secondary: #4f6367;
+$color-accent: #e26d5c;
+$color-text: #1c2321;
+$color-muted: #6c757d;
+$color-bg: #ffffff;
+$color-bg-alt: #f5f7f7;
+$color-border: #e0e4e4;
+
+$font-body: 'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+$font-heading: $font-body;
+
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-lg: 16px;
+
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+
+$breakpoint-sm: 480px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+
+$container-max: 1200px;
+$sidebar-width: 320px;
