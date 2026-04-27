@@ -1,15 +1,18 @@
 ---
 /**
- * Reusable card for `eating` venues. Used on:
- *   - /eating/                index listing
- *   - /dog-friendly-cafes/    filtered listing
+ * Horizontal list row for an `eating` venue.
  *
- * Accepts the minimum data needed to render a card; pages decide
- * whether to extract that from a content collection entry or pass
- * static props for hand-curated lists.
+ * Mirrors the legacy `archive-eating.php` markup:
+ *   - image left (large-4 columns)
+ *   - title + address + intro right (large-8 columns)
+ *   - dotted blue 1px border-bottom between items
+ *
+ * Used by /eating/ and /dog-friendly-cafes/. The dog-friendly
+ * variant in the legacy theme uses a `.cafe-list` style with
+ * solid border and 250px image cap; I've consolidated the two
+ * into one component because the differences are cosmetic.
  */
 import Icon from '../Icon/Icon.astro';
-import DogFriendlyPill from '../DogFriendlyPill/DogFriendlyPill.astro';
 import styles from './VenueCard.module.scss';
 
 interface Props {
@@ -17,44 +20,30 @@ interface Props {
 	title: string;
 	summary?: string;
 	address?: string;
-	dogFriendly?: boolean;
 	photo?: { src: string; alt?: string };
+	headingLevel?: 2 | 3;
 }
 
-const { href, title, summary, address, dogFriendly = false, photo } = Astro.props;
+const { href, title, summary, address, photo, headingLevel = 3 } = Astro.props;
+const HTag = `h${headingLevel}` as 'h2' | 'h3';
 ---
 
-<article class={styles.card}>
-	<a href={href} class={styles.link}>
+<article class={styles.row}>
+	<a href={href} class={styles.media}>
+		{photo && <img src={photo.src} alt={photo.alt ?? title} loading="lazy" />}
+	</a>
+	<div class={styles.body}>
+		<HTag class={styles.title}>
+			<a href={href}>{title}</a>
+		</HTag>
 		{
-			photo ? (
-				<div class={styles.media}>
-					<img src={photo.src} alt={photo.alt ?? title} loading="lazy" />
-				</div>
-			) : (
-				<div class={styles.mediaPlaceholder} aria-hidden="true" />
+			address && (
+				<p class={styles.address}>
+					<Icon name="marker" />
+					<span>{address}</span>
+				</p>
 			)
 		}
-		<div class={styles.body}>
-			<h2 class={styles.title}>{title}</h2>
-			{summary && <p class={styles.summary}>{summary}</p>}
-			{
-				(address || dogFriendly) && (
-					<ul class={styles.meta}>
-						{address && (
-							<li class={styles.metaRow}>
-								<Icon name="marker" />
-								<span>{address}</span>
-							</li>
-						)}
-						{dogFriendly && (
-							<li>
-								<DogFriendlyPill compact />
-							</li>
-						)}
-					</ul>
-				)
-			}
-		</div>
-	</a>
+		{summary && <p class={styles.summary}>{summary}</p>}
+	</div>
 </article>

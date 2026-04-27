@@ -1,4 +1,12 @@
 ---
+/**
+ * Primary navigation. Replaces wp_nav_menu().
+ *
+ * Toggle behaviour: hidden by default on mobile; revealed by a
+ * button click which flips `aria-expanded` and adds the `.toggled`
+ * class to the nav (matching the legacy Underscores convention).
+ * On desktop the menu is always visible and the toggle is hidden.
+ */
 import { PRIMARY_NAV } from '../../lib/nav';
 import styles from './Nav.module.scss';
 
@@ -11,18 +19,35 @@ function isActive(href: string): boolean {
 ---
 
 <nav id="site-navigation" class={styles.nav} aria-label="Primary">
-	<details class={styles.toggle}>
-		<summary class={styles.toggleSummary} aria-controls="primary-menu">Primary Menu</summary>
-		<ul id="primary-menu" class={styles.menu}>
-			{
-				PRIMARY_NAV.map((item) => (
-					<li class:list={[styles.item, { [styles.itemActive]: isActive(item.href) }]}>
-						<a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
-							{item.label}
-						</a>
-					</li>
-				))
-			}
-		</ul>
-	</details>
+	<button
+		type="button"
+		class={styles.toggle}
+		aria-controls="primary-menu"
+		aria-expanded="false"
+		data-vt-nav-toggle
+	>
+		Primary Menu
+	</button>
+	<ul id="primary-menu" class={styles.menu}>
+		{
+			PRIMARY_NAV.map((item) => (
+				<li class:list={[styles.item, { [styles.itemActive]: isActive(item.href) }]}>
+					<a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+						{item.label}
+					</a>
+				</li>
+			))
+		}
+	</ul>
 </nav>
+
+<script is:inline>
+	(() => {
+		const toggle = document.querySelector('[data-vt-nav-toggle]');
+		if (!toggle) return;
+		toggle.addEventListener('click', () => {
+			const expanded = toggle.getAttribute('aria-expanded') === 'true';
+			toggle.setAttribute('aria-expanded', String(!expanded));
+		});
+	})();
+</script>

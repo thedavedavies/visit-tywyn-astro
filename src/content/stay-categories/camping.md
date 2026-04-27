@@ -1,5 +1,6 @@
 ---
 title: Camping in Tywyn
+subtitle: Top campsites in Tywyn
 slug: camping
 menu_order: 1
 intro: Tywyn sits between the sea and the southern edge of Eryri (Snowdonia), and the campsites here run the full range from quiet farm fields to fully serviced parks with shops and pubs on site.

@@ -65,6 +65,8 @@ const eating = defineCollection({
 		address: z.string().optional(),
 		dog_friendly: z.boolean().default(false),
 		geo: geoSchema,
+		trip_advisor_link: z.string().url().optional(),
+		facebook_link: z.string().url().optional(),
 		published: z.coerce.date().optional(),
 		seo: seoSchema,
 	}),
@@ -110,6 +112,7 @@ const stayCategories = defineCollection({
 	loader: glob({ pattern: '**/*.md', base: './src/content/stay-categories' }),
 	schema: z.object({
 		title: z.string(),
+		subtitle: z.string().optional(),
 		slug: z.string(),
 		intro: z.string(),
 		hero_image: imageSchema.optional(),

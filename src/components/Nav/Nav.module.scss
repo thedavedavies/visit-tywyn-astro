@@ -8,42 +8,22 @@
 
 	@include breakpoint(md) {
 		width: auto;
+		height: 83px;
 	}
 }
 
 .toggle {
-	width: 100%;
-
-	/* Override the native disclosure marker. */
-	> summary {
-		list-style: none;
-		&::-webkit-details-marker {
-			display: none;
-		}
-	}
-
-	@include breakpoint(md) {
-		/* On wide screens the menu is always open and the disclosure
-		 * collapses into a wrapper. */
-		&[open],
-		&:not([open]) {
-			.menu {
-				display: flex;
-			}
-		}
-	}
-}
-
-.toggleSummary {
 	cursor: pointer;
 	display: block;
+	width: 100%;
 	padding: $space-3 $space-4;
 	background: $color-primary-darker;
 	color: #fff;
 	font-weight: 700;
+	font-size: 1rem;
 	text-align: center;
 	border: 0;
-	border-radius: $radius-sm;
+	border-radius: 0;
 
 	@include breakpoint(md) {
 		display: none;
@@ -54,15 +34,19 @@
 	@include reset-list;
 	display: none;
 	flex-direction: column;
+	width: 100%;
 
-	.toggle[open] & {
+	/* When the toggle is expanded, the menu shows. */
+	.toggle[aria-expanded='true'] ~ & {
 		display: flex;
 	}
 
 	@include breakpoint(md) {
-		display: flex;
+		display: flex !important;
 		flex-direction: row;
-		align-items: center;
+		align-items: stretch;
+		width: auto;
+		height: 100%;
 	}
 }
 
@@ -72,8 +56,9 @@
 	a {
 		display: flex;
 		align-items: center;
-		padding: $space-3 $space-5;
-		font-size: 1rem;
+		padding: $space-2 $space-5;
+		font-family: $font-body;
+		font-size: 16px;
 		color: #fff;
 		text-decoration: none;
 		transition: background-color 0.2s ease;
@@ -81,6 +66,12 @@
 		&:hover,
 		&:focus-visible {
 			background-color: $color-primary-darker;
+		}
+	}
+
+	@include breakpoint(md) {
+		a {
+			height: 100%;
 		}
 	}
 }

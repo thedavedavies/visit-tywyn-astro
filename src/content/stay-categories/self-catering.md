@@ -1,5 +1,6 @@
 ---
 title: Self catering in Tywyn
+subtitle: Find your perfect self catering holiday in Tywyn today
 slug: self-catering
 menu_order: 0
 intro: 'Self-catering cottages and apartments give you the run of the place — a kitchen for fish and chips on the porch, sandy boots by the door, and the freedom to come and go on your own schedule. Browse the booking sites below for places in and around Tywyn.'

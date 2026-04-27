@@ -1,8 +1,18 @@
 ---
+/**
+ * Single eating venue. Mirrors `template-parts/content-eating.php`:
+ *   - entry-header: H1 + single-address (icon + address)
+ *   - photo (full size)
+ *   - <h2>About <Title></h2> + about field
+ *   - the_content() (post body)
+ *   - dog-friendly note (if applicable)
+ *   - <h2>Where is <Title></h2> + map + Get directions link
+ */
 import { getCollection, render } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import VenueMap from '../../components/VenueMap/VenueMap.astro';
+import Icon from '../../components/Icon/Icon.astro';
 
 export async function getStaticPaths() {
 	const venues = await getCollection('eating');
@@ -20,6 +30,10 @@ const breadcrumbs = [
 	{ label: 'Eating', href: '/eating/' },
 	{ label: venue.data.title },
 ];
+
+const directionsHref = venue.data.geo
+	? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${venue.data.geo.lat},${venue.data.geo.lng}`)}`
+	: null;
 
 const jsonLd = {
 	'@context': 'https://schema.org',
@@ -61,44 +75,95 @@ const jsonLd = {
 		},
 	}}
 >
-	<EntryHeader title={venue.data.title} subtitle={venue.data.summary} />
-
-	{
-		venue.data.photo && (
-			<figure class="entry-hero">
-				<img src={venue.data.photo.src} alt={venue.data.photo.alt} />
-			</figure>
-		)
-	}
+	<header class="entry-header">
+		<EntryHeader title={venue.data.title} />
+		{
+			venue.data.address && (
+				<p class="single-address">
+					<Icon name="marker" />
+					<span>{venue.data.address}</span>
+				</p>
+			)
+		}
+	</header>
 
 	<div class="entry-content">
-		<Content />
-	</div>
+		{
+			venue.data.photo && (
+				<div class="entry-photo">
+					<img src={venue.data.photo.src} alt={venue.data.photo.alt ?? venue.data.title} />
+				</div>
+			)
+		}
 
-	{
-		venue.data.geo && (
-			<VenueMap
-				lat={venue.data.geo.lat}
-				lng={venue.data.geo.lng}
-				title={venue.data.title}
-				zoom={venue.data.geo.zoom}
-			/>
-		)
-	}
+		<h2>About {venue.data.title}</h2>
+		<Content />
+
+		{
+			venue.data.dog_friendly && (
+				<p class="dog-friendly-note">
+					{venue.data.title} is dog friendly, and is a brilliant place to bring your well-behaved
+					pup! <a href="/dog-friendly-cafes/">Discover more dog friendly bars, restaurants and cafes</a>.
+				</p>
+			)
+		}
+
+		{
+			venue.data.geo && (
+				<>
+					<h2>Where is {venue.data.title}</h2>
+					<VenueMap
+						lat={venue.data.geo.lat}
+						lng={venue.data.geo.lng}
+						title={venue.data.title}
+						zoom={venue.data.geo.zoom ?? 16}
+					/>
+					<p>
+						<a href={directionsHref!} target="_blank" rel="noopener noreferrer">
+							Get directions in Google Maps
+							<span class="sr-only"> (opens in new tab)</span>
+						</a>
+					</p>
+				</>
+			)
+		}
+	</div>
 </PageLayout>
 
 <style lang="scss">
 	@use '../../styles/abstracts/variables' as *;
 
-	.entry-hero {
+	.single-address {
+		display: flex;
+		align-items: center;
+		gap: $space-2;
 		margin: 0 0 $space-5;
-		border-radius: $radius-lg;
-		overflow: hidden;
+		color: #6f6f6f;
+		line-height: 22px;
+
+		:global(svg) {
+			width: 20px;
+			height: 20px;
+			flex: 0 0 auto;
+		}
+	}
+
+	.entry-photo {
+		margin-block: 0 $space-5;
 
 		img {
 			width: 100%;
 			height: auto;
 			display: block;
+			border-radius: $radius-md;
 		}
+	}
+
+	.dog-friendly-note {
+		margin: $space-5 0;
+		padding: $space-4 $space-5;
+		background: rgba($color-primary, 0.06);
+		border-left: 4px solid $color-primary;
+		border-radius: $radius-sm;
 	}
 </style>

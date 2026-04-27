@@ -1,5 +1,6 @@
 ---
 title: 'Bed & Breakfast in Tywyn'
+subtitle: 'Find your perfect B&B holiday in Tywyn today'
 slug: bed-and-breakfast
 menu_order: 3
 intro: 'A friendly Welsh welcome and a proper cooked breakfast — the B&Bs in Tywyn are mostly small, family-run, and well placed for the seafront, the railway, and the town centre.'

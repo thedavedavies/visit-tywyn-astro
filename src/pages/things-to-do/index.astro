@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import ActivityCard from '../../components/ActivityCard/ActivityCard.astro';
+import AdSlot from '../../components/AdSlot/AdSlot.astro';
 
 const activities = (await getCollection('things-to-do')).sort((a, b) =>
 	a.data.title.localeCompare(b.data.title)
@@ -21,13 +22,20 @@ const breadcrumbs = [
 >
 	<EntryHeader
 		title="Things to do in Tywyn"
-		subtitle="From the famous Talyllyn Railway to the long sandy beach — here's what to do during your visit."
+		subtitle="Top things to see and do in Tywyn this year"
 	/>
 
-	<ul class="card-grid" role="list">
+	<div class="entry-content">
+		<p>
+			Come and discover all of the best things to do and places to see in Tywyn this year. From
+			stunning walks in some of Wales' most iconic landscapes, to trips out and museums.
+		</p>
+	</div>
+
+	<div class="activity-list">
 		{
-			activities.map((activity) => (
-				<li>
+			activities.map((activity, idx) => (
+				<>
 					<ActivityCard
 						href={`/things-to-do/${activity.id}/`}
 						title={activity.data.title}
@@ -35,25 +43,20 @@ const breadcrumbs = [
 						address={activity.data.address}
 						heroImage={activity.data.hero_image}
 					/>
-				</li>
+					{(idx + 1) % 3 === 0 && idx < activities.length - 1 && <AdSlot slot="7221027714" />}
+				</>
 			))
 		}
-	</ul>
+	</div>
 </PageLayout>
 
 <style lang="scss">
 	@use '../../styles/abstracts/variables' as *;
 
-	.card-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-		gap: $space-5;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-
-		li {
-			margin: 0;
-		}
+	.activity-list {
+		margin-block-start: $space-6;
+		display: flex;
+		flex-direction: column;
+		gap: $space-4;
 	}
 </style>

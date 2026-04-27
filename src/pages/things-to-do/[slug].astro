@@ -1,9 +1,20 @@
 ---
+/**
+ * Single things-to-do entry. Mirrors `template-parts/content.php`
+ * (the fallback used because no content-things_to_do.php exists):
+ *   - entry-header: H1 + optional H2 entry-subtitle + optional
+ *     single-address paragraph
+ *   - the_content() (post body)
+ *   - <h2>{title} Gallery</h2> + flexslider (if gallery has items)
+ *
+ * The legacy template does NOT render a map for things-to-do
+ * detail pages even when `google_map` is set — we mirror that.
+ */
 import { getCollection, render } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
-import VenueMap from '../../components/VenueMap/VenueMap.astro';
 import Gallery from '../../components/Gallery/Gallery.astro';
+import Icon from '../../components/Icon/Icon.astro';
 
 export async function getStaticPaths() {
 	const activities = await getCollection('things-to-do');
@@ -60,22 +71,47 @@ const jsonLd = {
 		},
 	}}
 >
-	<EntryHeader title={activity.data.title} subtitle={activity.data.subtitle ?? activity.data.summary} />
+	<header class="entry-header">
+		<EntryHeader title={activity.data.title} subtitle={activity.data.subtitle} />
+		{
+			activity.data.address && (
+				<p class="single-address">
+					<Icon name="marker" />
+					<span>{activity.data.address}</span>
+				</p>
+			)
+		}
+	</header>
 
 	<div class="entry-content">
 		<Content />
+
+		{
+			activity.data.gallery.length > 0 && (
+				<>
+					<h2>{activity.data.title} Gallery</h2>
+					<Gallery images={activity.data.gallery} label={`${activity.data.title} gallery`} />
+				</>
+			)
+		}
 	</div>
-
-	<Gallery images={activity.data.gallery} label={`${activity.data.title} gallery`} />
-
-	{
-		activity.data.geo && (
-			<VenueMap
-				lat={activity.data.geo.lat}
-				lng={activity.data.geo.lng}
-				title={activity.data.title}
-				zoom={activity.data.geo.zoom}
-			/>
-		)
-	}
 </PageLayout>
+
+<style lang="scss">
+	@use '../../styles/abstracts/variables' as *;
+
+	.single-address {
+		display: flex;
+		align-items: center;
+		gap: $space-2;
+		margin: 0 0 $space-5;
+		color: #6f6f6f;
+		line-height: 22px;
+
+		:global(svg) {
+			width: 20px;
+			height: 20px;
+			flex: 0 0 auto;
+		}
+	}
+</style>

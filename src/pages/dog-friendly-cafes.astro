@@ -1,8 +1,15 @@
 ---
+/**
+ * Dog friendly cafes page. Mirrors
+ * `template-parts/content-dog-friendly-cafes.php`:
+ *   - page entry-header (H1 + page_subtitle)
+ *   - the_content() (page body)
+ *   - <ul class="cafe-list"> with image-left, h2-title-right
+ *     items pulled from the `eating` CPT where dog_friendly=yes
+ */
 import { getCollection, getEntry, render } from 'astro:content';
 import PageLayout from '../layouts/PageLayout.astro';
 import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
-import VenueCard from '../components/VenueCard/VenueCard.astro';
 
 const page = await getEntry('pages', 'dog-friendly-cafes');
 const Content = page ? (await render(page)).Content : null;
@@ -30,53 +37,92 @@ const breadcrumbs = [
 
 	<div class="entry-content">
 		{Content && <Content />}
-	</div>
 
-	<section class="dog-friendly" aria-labelledby="dog-friendly-list">
-		<h2 id="dog-friendly-list">Dog friendly places to eat</h2>
 		{
-			dogFriendly.length === 0 ? (
-				<p>We're updating our list — check back soon.</p>
-			) : (
-				<ul role="list">
+			dogFriendly.length > 0 && (
+				<ul class="cafe-list" role="list">
 					{dogFriendly.map((venue) => (
 						<li>
-							<VenueCard
-								href={`/eating/${venue.id}/`}
-								title={venue.data.title}
-								summary={venue.data.summary}
-								address={venue.data.address}
-								dogFriendly={true}
-								photo={venue.data.photo}
-							/>
+							<a href={`/eating/${venue.id}/`} class="cafe-list__media">
+								{venue.data.photo && (
+									<img src={venue.data.photo.src} alt={venue.data.photo.alt ?? venue.data.title} loading="lazy" />
+								)}
+							</a>
+							<div class="cafe-list__body">
+								<h2>
+									<a href={`/eating/${venue.id}/`}>{venue.data.title}</a>
+								</h2>
+								{venue.data.summary && <p>{venue.data.summary}</p>}
+							</div>
 						</li>
 					))}
 				</ul>
 			)
 		}
-	</section>
+	</div>
 </PageLayout>
 
 <style lang="scss">
 	@use '../styles/abstracts/variables' as *;
+	@use '../styles/abstracts/mixins' as *;
 
-	.dog-friendly {
-		margin: $space-7 0;
+	.cafe-list {
+		margin: $space-6 0 0;
+		padding: 0;
+		list-style: none;
 
-		h2 {
-			margin: 0 0 $space-4;
-			font-size: 1.4rem;
+		li {
+			display: grid;
+			gap: $space-5;
+			grid-template-columns: 1fr;
+			margin-bottom: $space-5;
+			padding-bottom: $space-5;
+			border-bottom: 1px solid rgba($color-sidebar-bg, 0.15);
+
+			@include breakpoint(md) {
+				grid-template-columns: minmax(0, 250px) minmax(0, 1fr);
+				align-items: start;
+			}
+
+			&:last-child {
+				border-bottom: 0;
+			}
 		}
 
-		ul {
-			margin: 0;
-			padding: 0;
-			list-style: none;
-			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-			gap: $space-5;
+		.cafe-list__media {
+			display: block;
+			overflow: hidden;
+			border-radius: $radius-md;
+			background: $color-bg-alt;
 
-			li {
+			img {
+				width: 100%;
+				aspect-ratio: 4 / 3;
+				object-fit: cover;
+				display: block;
+			}
+		}
+
+		.cafe-list__body {
+			min-width: 0;
+
+			h2 {
+				margin: 0 0 $space-2;
+				font-size: 1.25rem;
+
+				a {
+					color: $color-primary;
+					text-decoration: none;
+					border-bottom: 2px solid rgba($color-primary, 0.2);
+
+					&:hover,
+					&:focus-visible {
+						border-bottom-color: $color-primary;
+					}
+				}
+			}
+
+			p {
 				margin: 0;
 			}
 		}

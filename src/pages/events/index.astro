@@ -1,7 +1,11 @@
 ---
+import { getEntry, render } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import EventsSection from '../../components/EventsSection/EventsSection.astro';
+
+const page = await getEntry('pages', 'events');
+const Content = page ? (await render(page)).Content : null;
 
 const breadcrumbs = [
 	{ label: 'Home', href: '/' },
@@ -10,14 +14,19 @@ const breadcrumbs = [
 ---
 
 <PageLayout
-	title="Events in Tywyn"
-	description="Upcoming festivals, fairs, and events in Tywyn and the surrounding villages."
+	title={page?.data.seo?.title ?? page?.data.title ?? 'Events in Tywyn'}
+	description={
+		page?.data.seo?.description ??
+		'Upcoming festivals, fairs, and events in Tywyn and the surrounding villages.'
+	}
+	heroImage={page?.data.hero_image}
 	breadcrumbs={breadcrumbs}
 >
-	<EntryHeader
-		title="Events in Tywyn"
-		subtitle="Plan your visit around the next events taking place in Tywyn and nearby."
-	/>
+	<EntryHeader title={page?.data.title ?? 'Events in Tywyn'} subtitle={page?.data.subtitle} />
+
+	<div class="entry-content">
+		{Content && <Content />}
+	</div>
 
 	<EventsSection
 		title="All upcoming events"

@@ -1,9 +1,9 @@
 ---
 /**
- * Reusable card for `things-to-do` entries. Visually identical to
- * VenueCard today but kept as a separate component so the two can
- * diverge — activities are likely to grow features like opening
- * hours, age suitability, and entry price.
+ * Horizontal list row for `things-to-do`. Mirrors the legacy
+ * `archive-things_to_do.php` structure (image left + h3/excerpt
+ * right). Visually identical to VenueCard but kept separate so
+ * activity-specific fields can grow without affecting eating.
  */
 import Icon from '../Icon/Icon.astro';
 import styles from './ActivityCard.module.scss';
@@ -14,33 +14,29 @@ interface Props {
 	summary?: string;
 	address?: string;
 	heroImage?: { src: string; alt?: string };
+	headingLevel?: 2 | 3;
 }
 
-const { href, title, summary, address, heroImage } = Astro.props;
+const { href, title, summary, address, heroImage, headingLevel = 3 } = Astro.props;
+const HTag = `h${headingLevel}` as 'h2' | 'h3';
 ---
 
-<article class={styles.card}>
-	<a href={href} class={styles.link}>
+<article class={styles.row}>
+	<a href={href} class={styles.media}>
+		{heroImage && <img src={heroImage.src} alt={heroImage.alt ?? title} loading="lazy" />}
+	</a>
+	<div class={styles.body}>
+		<HTag class={styles.title}>
+			<a href={href}>{title}</a>
+		</HTag>
 		{
-			heroImage ? (
-				<div class={styles.media}>
-					<img src={heroImage.src} alt={heroImage.alt ?? title} loading="lazy" />
-				</div>
-			) : (
-				<div class={styles.mediaPlaceholder} aria-hidden="true" />
+			address && (
+				<p class={styles.address}>
+					<Icon name="marker" />
+					<span>{address}</span>
+				</p>
 			)
 		}
-		<div class={styles.body}>
-			<h2 class={styles.title}>{title}</h2>
-			{summary && <p class={styles.summary}>{summary}</p>}
-			{
-				address && (
-					<p class={styles.metaRow}>
-						<Icon name="marker" />
-						<span>{address}</span>
-					</p>
-				)
-			}
-		</div>
-	</a>
+		{summary && <p class={styles.summary}>{summary}</p>}
+	</div>
 </article>

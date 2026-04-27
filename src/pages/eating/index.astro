@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import VenueCard from '../../components/VenueCard/VenueCard.astro';
+import AdSlot from '../../components/AdSlot/AdSlot.astro';
 
 const venues = (await getCollection('eating')).sort((a, b) =>
 	a.data.title.localeCompare(b.data.title)
@@ -15,47 +16,49 @@ const breadcrumbs = [
 ---
 
 <PageLayout
-	title="Eating in Tywyn"
+	title="Where to eat in Tywyn?"
 	description="Cafes, pubs, restaurants, and tea rooms in Tywyn and the surrounding area."
 	heroImage={{ src: '/wp-content/uploads/2022/05/eating-banner.jpg', alt: 'Eating in Tywyn' }}
 	breadcrumbs={breadcrumbs}
 >
 	<EntryHeader
-		title="Eating in Tywyn"
-		subtitle="From traditional Welsh pubs to seaside cafes — a guide to where to eat in and around Tywyn."
+		title="Where to eat in Tywyn?"
+		subtitle="Love eating? Then you'll love Tywyn's food."
 	/>
 
-	<ul class="card-grid" role="list">
+	<div class="entry-content">
+		<p>
+			After a long day having fun in Tywyn — why not head to one of Tywyn's great restaurants or
+			cafés — and enjoy food cooked by our top local chefs using locally sourced meats and fish.
+			With so many to choose from, the problem will be deciding where to eat first!
+		</p>
+	</div>
+
+	<div class="venue-list">
 		{
-			venues.map((venue) => (
-				<li>
+			venues.map((venue, idx) => (
+				<>
 					<VenueCard
 						href={`/eating/${venue.id}/`}
 						title={venue.data.title}
 						summary={venue.data.summary}
 						address={venue.data.address}
-						dogFriendly={venue.data.dog_friendly}
 						photo={venue.data.photo}
 					/>
-				</li>
+					{(idx + 1) % 3 === 0 && idx < venues.length - 1 && <AdSlot slot="7221027714" />}
+				</>
 			))
 		}
-	</ul>
+	</div>
 </PageLayout>
 
 <style lang="scss">
 	@use '../../styles/abstracts/variables' as *;
 
-	.card-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-		gap: $space-5;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-
-		li {
-			margin: 0;
-		}
+	.venue-list {
+		margin-block-start: $space-6;
+		display: flex;
+		flex-direction: column;
+		gap: $space-4;
 	}
 </style>

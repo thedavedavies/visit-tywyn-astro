@@ -31,7 +31,11 @@ const breadcrumbs = [
 	heroImage={category.data.hero_image}
 	breadcrumbs={breadcrumbs}
 >
-	<EntryHeader title={category.data.title} subtitle={category.data.intro} />
+	<EntryHeader title={category.data.title} subtitle={category.data.subtitle} />
+
+	<div class="entry-content">
+		<p>{category.data.intro}</p>
+	</div>
 
 	{
 		category.data.featured.length > 0 && (

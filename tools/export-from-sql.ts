@@ -36,9 +36,10 @@ const SQL_PATH =
 const PROJECT_ROOT = path.resolve(import.meta.dirname, '..');
 const PREFIX = 'fhsst_';
 
-// Skip these page IDs (they're handled bespoke or replaced by collections).
+// Skip these page IDs (they're handled bespoke). Home is fully
+// replaced by `pages/index.astro`. The events page IS exported so
+// `/events/` can render its body intro before the events list.
 const HOME_PAGE_ID = '8';
-const EVENTS_PAGE_ID = '14';
 
 // Map WP category term_id → stay category slug.
 // Confirmed from the SQL: terms 3 (Self catering), 4 (Camping),
@@ -50,11 +51,21 @@ const STAY_CATEGORY_SLUGS: Record<string, string> = {
 	'6': 'bed-and-breakfast',
 };
 
+// Title pattern + subtitle mirror `archive-accommodation.php`,
+// where $cat_name (the WP category name) is concatenated with
+// "in Tywyn" and a hand-written subtitle per category.
 const STAY_CATEGORY_TITLES: Record<string, string> = {
 	'self-catering': 'Self catering in Tywyn',
 	camping: 'Camping in Tywyn',
-	caravan: 'Caravan parks in Tywyn',
+	caravan: 'Caravan in Tywyn',
 	'bed-and-breakfast': 'Bed & Breakfast in Tywyn',
+};
+
+const STAY_CATEGORY_SUBTITLES: Record<string, string> = {
+	'self-catering': 'Find your perfect self catering holiday in Tywyn today',
+	camping: 'Top campsites in Tywyn',
+	caravan: 'Find your perfect caravan holiday in Tywyn today',
+	'bed-and-breakfast': 'Find your perfect B&B holiday in Tywyn today',
 };
 
 const STAY_CATEGORY_INTROS: Record<string, string> = {
@@ -563,7 +574,7 @@ function writeFile(rel: string, body: string): void {
 // Emit: pages
 // ──────────────────────────────────────────────────────────────────────────────
 
-const SKIP_PAGE_IDS = new Set([HOME_PAGE_ID, EVENTS_PAGE_ID]);
+const SKIP_PAGE_IDS = new Set([HOME_PAGE_ID]);
 
 let pagesWritten = 0;
 for (const post of posts.values()) {
@@ -571,7 +582,7 @@ for (const post of posts.values()) {
 	if (SKIP_PAGE_IDS.has(post.id)) continue;
 	const meta = postmeta.get(post.id) ?? {};
 	const subtitle = meta.page_subtitle;
-	const heroId = meta.header_image ?? meta._thumbnail_id;
+	const heroId = meta.header_image || meta._thumbnail_id;
 	const heroSrc = attachmentUrl(heroId);
 	const fm: Record<string, unknown> = {
 		title: post.title,
@@ -599,7 +610,7 @@ let eatingWritten = 0;
 for (const post of posts.values()) {
 	if (post.type !== 'eating' || post.status !== 'publish') continue;
 	const meta = postmeta.get(post.id) ?? {};
-	const photo = attachmentUrl(meta.photo ?? meta._thumbnail_id);
+	const photo = attachmentUrl(meta.photo || meta._thumbnail_id);
 	const dogFriendly = decodeAcfArray(meta.dog_friendly).includes('yes');
 	const fm: Record<string, unknown> = {
 		title: post.title,
@@ -633,7 +644,7 @@ let ttdWritten = 0;
 for (const post of posts.values()) {
 	if (post.type !== 'things_to_do' || post.status !== 'publish') continue;
 	const meta = postmeta.get(post.id) ?? {};
-	const heroSrc = attachmentUrl(meta.header_image ?? meta._thumbnail_id);
+	const heroSrc = attachmentUrl(meta.header_image || meta._thumbnail_id);
 	const galleryIds = decodeAcfArray(meta.gallery);
 	const gallery = galleryIds
 		.map((id) => attachmentUrl(id))
@@ -680,6 +691,7 @@ let scWritten = 0;
 for (const [slug, title] of Object.entries(STAY_CATEGORY_TITLES)) {
 	const fm: Record<string, unknown> = {
 		title,
+		subtitle: STAY_CATEGORY_SUBTITLES[slug] ?? '',
 		slug,
 		menu_order: scWritten,
 		intro: STAY_CATEGORY_INTROS[slug] ?? '',

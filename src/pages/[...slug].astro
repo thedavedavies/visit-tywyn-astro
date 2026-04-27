@@ -16,7 +16,7 @@ import PageLayout from '../layouts/PageLayout.astro';
 import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
 
 export async function getStaticPaths() {
-	const bespokeSlugs = new Set(['home-page', 'webcam', 'dog-friendly-cafes', 'where-to-stay']);
+	const bespokeSlugs = new Set(['home-page', 'webcam', 'dog-friendly-cafes', 'where-to-stay', 'events']);
 	const pages = await getCollection('pages', (entry) => !bespokeSlugs.has(entry.id));
 	return pages.map((page) => ({
 		params: { slug: page.id },

@@ -29,29 +29,16 @@
 	text-decoration: none;
 }
 
-/* Logo placeholder — kept as a span so the layout doesn't shift
- * before the asset has been migrated. Swap in the real `<img>`
- * once `/wp-content/uploads/2022/05/tywyn-logo.png` ships. */
 .logo {
 	display: block;
 	width: 261px;
 	height: 39px;
-	background: transparent;
+	max-width: 100%;
+	height: auto;
 }
 
-.title {
-	margin: 0 0 0 $space-4;
-	padding: 0;
-	font-size: 1.5rem;
-	font-weight: 700;
-	color: #fff;
-
-	a {
-		color: inherit;
-		text-decoration: none;
-	}
-
-	/* The original site hides the heading entirely behind the logo.
-	 * Until the logo asset is wired up we keep the text visible to
-	 * avoid an empty header. */
+/* The legacy site keeps the site-title in the DOM for SEO but
+ * visually hides it behind the logo image. */
+.titleHidden {
+	@include visually-hidden;
 }

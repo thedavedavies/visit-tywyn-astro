@@ -29,11 +29,12 @@ echo "Syncing uploads…"
 echo "  from: $SRC"
 echo "  to:   $DEST"
 
-rsync -a --delete --info=stats2 \
+rsync -a --delete --stats \
 	--exclude '*.bak' \
 	--exclude 'cache/' \
 	--exclude 'shortpixel-meta/' \
 	--exclude 'smush-webp/' \
-	"$SRC" "$DEST"
+	"$SRC" "$DEST" \
+	| tail -20
 
 echo "Done."

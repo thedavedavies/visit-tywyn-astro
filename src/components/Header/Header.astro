@@ -19,10 +19,16 @@ const TitleTag = isFrontPage ? 'h1' : 'p';
 	<div class={styles.container}>
 		<div class={styles.branding}>
 			<a href="/" rel="home" class={styles.logoLink} aria-label={`${SITE.name} home`}>
-				<span class={styles.logo} aria-hidden="true"></span>
+				<img
+					class={styles.logo}
+					src="/wp-content/uploads/2022/05/tywyn-logo.png"
+					alt={SITE.name}
+					width="261"
+					height="39"
+				/>
 			</a>
-			<TitleTag class={styles.title}>
-				<a href="/" rel="home">{SITE.name}</a>
+			<TitleTag class={styles.titleHidden} aria-hidden="true">
+				<a href="/" rel="home" tabindex="-1">{SITE.name}</a>
 			</TitleTag>
 		</div>
 

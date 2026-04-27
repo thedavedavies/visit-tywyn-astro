@@ -7,6 +7,9 @@ geo:
   lat: 52.5880051
   lng: -4.0846715
   address: Tywyn magic lantern cinema
+hero_image:
+  src: /wp-content/uploads/2022/10/MagicLantern2.jpg
+  alt: The Secret Garden
 gallery:
   - src: /wp-content/uploads/2022/10/MagicLantern2.jpg
     alt: The Secret Garden
