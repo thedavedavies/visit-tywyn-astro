@@ -505,6 +505,18 @@ function rewriteContent(html: string): string {
 		uploadReferences.add(m[0]);
 	}
 
+	// Strip WP shortcodes — these were expanded by plugins server-side
+	// (Gravity Forms, Search & Filter, etc) and don't render in Astro.
+	// We replace the contact-form shortcode with a placeholder so the
+	// page still has a sensible "contact us" call-to-action; the rest
+	// are simply removed.
+	out = out.replace(
+		/\[gravityform[^\]]*\]/gi,
+		'<p class="form-placeholder"><em>The contact form is being rebuilt — for now, please reach us via the social links above or by email.</em></p>'
+	);
+	out = out.replace(/\[searchandfilter[^\]]*\]/gi, '');
+	out = out.replace(/\[\/?[a-z][a-z0-9_-]*(?:\s[^\]]*)?\]/gi, '');
+
 	// Strip leading/trailing whitespace runs
 	out = out.replace(/^\s+|\s+$/g, '');
 

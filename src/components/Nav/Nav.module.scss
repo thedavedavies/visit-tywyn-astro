@@ -2,11 +2,11 @@
 @use '../../styles/abstracts/mixins' as *;
 
 .nav {
-	display: flex;
-	align-items: center;
 	width: 100%;
 
 	@include breakpoint(md) {
+		display: flex;
+		align-items: center;
 		width: auto;
 		height: 83px;
 	}
@@ -36,13 +36,12 @@
 	flex-direction: column;
 	width: 100%;
 
-	/* When the toggle is expanded, the menu shows. */
-	.toggle[aria-expanded='true'] ~ & {
+	&:global(.is-open) {
 		display: flex;
 	}
 
 	@include breakpoint(md) {
-		display: flex !important;
+		display: flex;
 		flex-direction: row;
 		align-items: stretch;
 		width: auto;

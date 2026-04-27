@@ -44,10 +44,12 @@ function isActive(href: string): boolean {
 <script is:inline>
 	(() => {
 		const toggle = document.querySelector('[data-vt-nav-toggle]');
-		if (!toggle) return;
+		const menu = document.getElementById('primary-menu');
+		if (!toggle || !menu) return;
 		toggle.addEventListener('click', () => {
 			const expanded = toggle.getAttribute('aria-expanded') === 'true';
 			toggle.setAttribute('aria-expanded', String(!expanded));
+			menu.classList.toggle('is-open', !expanded);
 		});
 	})();
 </script>
