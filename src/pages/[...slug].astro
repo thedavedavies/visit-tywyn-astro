@@ -14,6 +14,7 @@
 import { getCollection, render } from 'astro:content';
 import PageLayout from '../layouts/PageLayout.astro';
 import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
+import { webPage } from '../lib/jsonld';
 
 export async function getStaticPaths() {
 	const bespokeSlugs = new Set(['home-page', 'webcam', 'dog-friendly-cafes', 'where-to-stay', 'events']);
@@ -31,6 +32,15 @@ const breadcrumbs = [
 	{ label: 'Home', href: '/' },
 	{ label: page.data.title },
 ];
+
+const updatedIso = page.data.updated ? page.data.updated.toISOString() : undefined;
+const jsonLd = webPage({
+	title: page.data.seo?.title ?? page.data.title,
+	description: page.data.seo?.description ?? page.data.subtitle,
+	url: Astro.url,
+	image: page.data.seo?.og_image ?? page.data.hero_image?.src,
+	dateModified: updatedIso,
+});
 ---
 
 <PageLayout
@@ -41,6 +51,8 @@ const breadcrumbs = [
 	noindex={page.data.seo?.noindex}
 	heroImage={page.data.hero_image}
 	breadcrumbs={breadcrumbs}
+	jsonLd={jsonLd}
+	modifiedTime={updatedIso}
 >
 	<EntryHeader title={page.data.title} subtitle={page.data.subtitle} />
 	<div class="entry-content">

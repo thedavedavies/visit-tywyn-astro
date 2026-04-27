@@ -4,6 +4,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import VenueCard from '../../components/VenueCard/VenueCard.astro';
 import AdSlot from '../../components/AdSlot/AdSlot.astro';
+import { itemList } from '../../lib/jsonld';
 
 const venues = (await getCollection('eating')).sort((a, b) =>
 	a.data.title.localeCompare(b.data.title)
@@ -13,6 +14,16 @@ const breadcrumbs = [
 	{ label: 'Home', href: '/' },
 	{ label: 'Eating in Tywyn' },
 ];
+
+const jsonLd = itemList(
+	'Places to eat in Tywyn',
+	venues.map((venue) => ({
+		url: `/eating/${venue.id}/`,
+		name: venue.data.title,
+		image: venue.data.photo?.src,
+		description: venue.data.summary,
+	}))
+);
 ---
 
 <PageLayout
@@ -20,6 +31,7 @@ const breadcrumbs = [
 	description="Cafes, pubs, restaurants, and tea rooms in Tywyn and the surrounding area."
 	heroImage={{ src: '/wp-content/uploads/2022/05/eating-banner.jpg', alt: 'Eating in Tywyn' }}
 	breadcrumbs={breadcrumbs}
+	jsonLd={jsonLd}
 >
 	<EntryHeader
 		title="Where to eat in Tywyn?"

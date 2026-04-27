@@ -4,6 +4,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import BookingSearchList from '../../components/BookingSearchList/BookingSearchList.astro';
 import FeaturedStayCard from '../../components/FeaturedStayCard/FeaturedStayCard.astro';
+import { webPage, itemList } from '../../lib/jsonld';
 
 export async function getStaticPaths() {
 	const categories = await getCollection('stay-categories');
@@ -21,6 +22,28 @@ const breadcrumbs = [
 	{ label: 'Where to stay', href: '/where-to-stay/' },
 	{ label: category.data.title },
 ];
+
+const jsonLd: Record<string, unknown>[] = [
+	webPage({
+		title: category.data.seo?.title ?? category.data.title,
+		description: category.data.seo?.description ?? category.data.intro,
+		url: Astro.url,
+		image: category.data.hero_image?.src,
+	}),
+];
+if (category.data.featured.length > 0) {
+	jsonLd.push(
+		itemList(
+			`${category.data.title} — featured stays`,
+			category.data.featured.map((entry) => ({
+				url: entry.url,
+				name: entry.name,
+				image: entry.image?.src,
+				description: entry.summary,
+			}))
+		)
+	);
+}
 ---
 
 <PageLayout
@@ -30,6 +53,7 @@ const breadcrumbs = [
 	ogImage={category.data.seo?.og_image ?? category.data.hero_image?.src}
 	heroImage={category.data.hero_image}
 	breadcrumbs={breadcrumbs}
+	jsonLd={jsonLd}
 >
 	<EntryHeader title={category.data.title} subtitle={category.data.subtitle} />
 

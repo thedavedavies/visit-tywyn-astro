@@ -4,6 +4,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import ActivityCard from '../../components/ActivityCard/ActivityCard.astro';
 import AdSlot from '../../components/AdSlot/AdSlot.astro';
+import { itemList } from '../../lib/jsonld';
 
 const activities = (await getCollection('things-to-do')).sort((a, b) =>
 	a.data.title.localeCompare(b.data.title)
@@ -13,12 +14,23 @@ const breadcrumbs = [
 	{ label: 'Home', href: '/' },
 	{ label: 'Things to do' },
 ];
+
+const jsonLd = itemList(
+	'Things to do in Tywyn',
+	activities.map((activity) => ({
+		url: `/things-to-do/${activity.id}/`,
+		name: activity.data.title,
+		image: activity.data.hero_image?.src,
+		description: activity.data.summary,
+	}))
+);
 ---
 
 <PageLayout
 	title="Things to do in Tywyn"
 	description="Attractions, walks, beaches, and family days out in and around Tywyn."
 	breadcrumbs={breadcrumbs}
+	jsonLd={jsonLd}
 >
 	<EntryHeader
 		title="Things to do in Tywyn"

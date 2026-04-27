@@ -3,6 +3,8 @@ import { getEntry, render } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import EventsSection from '../../components/EventsSection/EventsSection.astro';
+import { upcomingEvents } from '../../lib/events';
+import { event as eventSchema } from '../../lib/jsonld';
 
 const page = await getEntry('pages', 'events');
 const Content = page ? (await render(page)).Content : null;
@@ -11,6 +13,18 @@ const breadcrumbs = [
 	{ label: 'Home', href: '/' },
 	{ label: 'Events' },
 ];
+
+const jsonLd = upcomingEvents().map((ev) =>
+	eventSchema({
+		name: ev.title,
+		startIso: ev.startIso,
+		endIso: ev.endIso,
+		location: ev.location || undefined,
+		url: ev.primaryUrl,
+		image: ev.image,
+		description: ev.summary || undefined,
+	})
+);
 ---
 
 <PageLayout
@@ -21,6 +35,7 @@ const breadcrumbs = [
 	}
 	heroImage={page?.data.hero_image}
 	breadcrumbs={breadcrumbs}
+	jsonLd={jsonLd}
 >
 	<EntryHeader title={page?.data.title ?? 'Events in Tywyn'} subtitle={page?.data.subtitle} />
 

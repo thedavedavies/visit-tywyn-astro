@@ -16,8 +16,27 @@ export default defineConfig({
 	},
 	integrations: [
 		sitemap({
-			changefreq: 'weekly',
-			priority: 0.7,
+			// Don't index the 404 page or any redirected legacy URLs.
+			filter: (page) => !page.includes('/404'),
+			// Set per-route priority + changefreq based on URL pattern,
+			// so the home page and high-traffic listings outrank deep
+			// editorial content in crawl prioritisation.
+			serialize: (item) => {
+				const url = item.url;
+				if (url === 'https://visit-tywyn.co.uk/') {
+					return { ...item, priority: 1.0, changefreq: 'daily' };
+				}
+				if (
+					/\/(eating|things-to-do|where-to-stay|events|holiday-accommodation)\/?$/.test(url) ||
+					/\/holiday-accommodation\/[^/]+\/$/.test(url)
+				) {
+					return { ...item, priority: 0.9, changefreq: 'weekly' };
+				}
+				if (/\/(eating|things-to-do)\/[^/]+\/$/.test(url)) {
+					return { ...item, priority: 0.8, changefreq: 'monthly' };
+				}
+				return { ...item, priority: 0.6, changefreq: 'monthly' };
+			},
 			lastmod: new Date(),
 		}),
 	],

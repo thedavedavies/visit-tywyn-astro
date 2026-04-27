@@ -12,6 +12,11 @@ export const SITE = {
 	facebook: 'https://www.facebook.com/visittywyn',
 	googleAnalyticsId: 'UA-28386547-1',
 	adsenseClient: 'ca-pub-4920514279045356',
+	// Default Open Graph image — used on pages that don't supply
+	// their own (home, simple content pages). Pick something
+	// recognisably Tywyn so social shares aren't generic.
+	defaultOgImage: '/wp-content/uploads/2022/05/explore.jpg',
+	themeColor: '#046d8b',
 	location: {
 		lat: 52.58643,
 		lng: -4.08916,

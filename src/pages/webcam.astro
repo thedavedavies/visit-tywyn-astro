@@ -4,6 +4,7 @@ import PageLayout from '../layouts/PageLayout.astro';
 import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
 import EmbedFrame from '../components/EmbedFrame/EmbedFrame.astro';
 import Icon from '../components/Icon/Icon.astro';
+import { webPage } from '../lib/jsonld';
 
 const page = await getEntry('pages', 'webcam');
 const Content = page ? (await render(page)).Content : null;
@@ -12,6 +13,13 @@ const breadcrumbs = [
 	{ label: 'Home', href: '/' },
 	{ label: 'Webcam' },
 ];
+
+const jsonLd = webPage({
+	title: page?.data.seo?.title ?? page?.data.title ?? 'Tywyn beach webcam',
+	description: page?.data.seo?.description ?? page?.data.subtitle,
+	url: Astro.url,
+	image: page?.data.hero_image?.src,
+});
 ---
 
 <PageLayout
@@ -19,6 +27,7 @@ const breadcrumbs = [
 	description={page?.data.seo?.description ?? page?.data.subtitle}
 	heroImage={page?.data.hero_image}
 	breadcrumbs={breadcrumbs}
+	jsonLd={jsonLd}
 >
 	<EntryHeader
 		title={page?.data.title ?? 'Tywyn beach webcam'}

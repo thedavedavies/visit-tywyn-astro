@@ -5,23 +5,36 @@
  * Header order intentionally mirrors the Capo.js-inspired ordering
  * from header.php: charset > viewport > title > preconnect > styles
  * > scripts > icons > meta.
+ *
+ * Pages pass page-specific schema via `jsonLd` (object or array).
+ * We additionally auto-emit a BreadcrumbList whenever `breadcrumbs`
+ * is non-empty so individual pages don't have to remember to do it.
  */
 import '../styles/global.scss';
 import Header from '../components/Header/Header.astro';
 import Footer from '../components/Footer/Footer.astro';
 import { SITE } from '../lib/site';
+import { breadcrumbList, absoluteUrl } from '../lib/jsonld';
+
+interface BreadcrumbItem {
+	label: string;
+	href?: string;
+}
 
 interface Props {
 	title: string;
 	description?: string;
 	canonical?: string | URL;
 	ogImage?: string;
+	ogType?: 'website' | 'article';
 	noindex?: boolean;
 	heroImage?: { src: string; alt?: string } | null;
-	breadcrumbs?: { label: string; href?: string }[];
+	breadcrumbs?: BreadcrumbItem[];
 	isFrontPage?: boolean;
 	bodyClass?: string;
 	jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+	publishedTime?: string;
+	modifiedTime?: string;
 }
 
 const {
@@ -29,21 +42,28 @@ const {
 	description = SITE.description,
 	canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url),
 	ogImage,
+	ogType,
 	noindex = false,
 	heroImage = null,
 	breadcrumbs = [],
 	isFrontPage = false,
 	bodyClass = '',
 	jsonLd,
+	publishedTime,
+	modifiedTime,
 } = Astro.props;
 
 const fullTitle = isFrontPage ? `${SITE.name} | ${SITE.tagline}` : `${title} | ${SITE.name}`;
 const canonicalHref = canonical instanceof URL ? canonical.toString() : canonical;
-const jsonLdBlocks = jsonLd
-	? Array.isArray(jsonLd)
-		? jsonLd
-		: [jsonLd]
-	: [];
+const resolvedOgImage = absoluteUrl(ogImage ?? SITE.defaultOgImage);
+const resolvedOgType = ogType ?? (isFrontPage ? 'website' : 'article');
+
+const autoSchema: Record<string, unknown>[] = [];
+const crumbSchema = breadcrumbList(breadcrumbs, canonicalHref);
+if (crumbSchema) autoSchema.push(crumbSchema);
+
+const pageSchema = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+const jsonLdBlocks = [...autoSchema, ...pageSchema];
 ---
 
 <!doctype html>
@@ -54,7 +74,19 @@ const jsonLdBlocks = jsonLd
 		<title>{fullTitle}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonicalHref} />
-		{noindex && <meta name="robots" content="noindex, nofollow" />}
+		{
+			noindex ? (
+				<meta name="robots" content="noindex, nofollow" />
+			) : (
+				<meta
+					name="robots"
+					content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+				/>
+			)
+		}
+
+		<meta name="theme-color" content={SITE.themeColor} />
+		<meta name="format-detection" content="telephone=no" />
 
 		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -66,19 +98,22 @@ const jsonLdBlocks = jsonLd
 			href="https://fonts.googleapis.com/css?family=Lato:wght@400;700&display=swap"
 		/>
 
-		<meta property="og:type" content={isFrontPage ? 'website' : 'article'} />
+		<meta property="og:type" content={resolvedOgType} />
 		<meta property="og:title" content={fullTitle} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonicalHref} />
 		<meta property="og:site_name" content={SITE.name} />
 		<meta property="og:locale" content={SITE.locale} />
-		{ogImage && <meta property="og:image" content={ogImage} />}
-		<meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+		{resolvedOgImage && <meta property="og:image" content={resolvedOgImage} />}
+		{resolvedOgImage && <meta property="og:image:alt" content={`${title} – ${SITE.name}`} />}
+		{publishedTime && <meta property="article:published_time" content={publishedTime} />}
+		{modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+		<meta name="twitter:card" content={resolvedOgImage ? 'summary_large_image' : 'summary'} />
 		{SITE.twitter && <meta name="twitter:site" content={SITE.twitter} />}
 
 		<link rel="icon" href="https://visit-tywyn.s3.amazonaws.com/favicon.ico" />
 		<link rel="profile" href="https://gmpg.org/xfn/11" />
-		<link rel="sitemap" href="/sitemap-index.xml" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
 
 		<script
 			defer

@@ -9,19 +9,27 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
 import EventsSection from '../components/EventsSection/EventsSection.astro';
 import { SITE } from '../lib/site';
+import { organization, website, touristDestination, event as eventSchema } from '../lib/jsonld';
+import { upcomingEvents } from '../lib/events';
 
-const jsonLd = {
-	'@context': 'https://schema.org',
-	'@type': 'TouristDestination',
-	name: SITE.name,
-	url: SITE.url,
-	description: SITE.description,
-	geo: {
-		'@type': 'GeoCoordinates',
-		latitude: SITE.location.lat,
-		longitude: SITE.location.lng,
-	},
-};
+const jsonLd = [
+	organization(),
+	website(),
+	touristDestination(),
+	// One Event node per upcoming event so each is individually
+	// eligible for rich results in search.
+	...upcomingEvents().map((ev) =>
+		eventSchema({
+			name: ev.title,
+			startIso: ev.startIso,
+			endIso: ev.endIso,
+			location: ev.location || undefined,
+			url: ev.primaryUrl,
+			image: ev.image,
+			description: ev.summary || undefined,
+		})
+	),
+];
 ---
 
 <BaseLayout

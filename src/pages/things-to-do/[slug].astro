@@ -15,6 +15,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import Gallery from '../../components/Gallery/Gallery.astro';
 import Icon from '../../components/Icon/Icon.astro';
+import { touristAttraction } from '../../lib/jsonld';
 
 export async function getStaticPaths() {
 	const activities = await getCollection('things-to-do');
@@ -33,24 +34,17 @@ const breadcrumbs = [
 	{ label: activity.data.title },
 ];
 
-const jsonLd = {
-	'@context': 'https://schema.org',
-	'@type': 'TouristAttraction',
-	name: activity.data.title,
-	url: `https://visit-tywyn.co.uk/things-to-do/${activity.id}/`,
+const jsonLd = touristAttraction({
+	id: activity.id,
+	title: activity.data.title,
 	description: activity.data.summary,
-	telephone: activity.data.phone,
 	address: activity.data.address,
-	image: activity.data.hero_image?.src,
-	geo: activity.data.geo
-		? {
-				'@type': 'GeoCoordinates',
-				latitude: activity.data.geo.lat,
-				longitude: activity.data.geo.lng,
-		  }
-		: undefined,
-	sameAs: activity.data.social ? Object.values(activity.data.social).filter(Boolean) : undefined,
-};
+	phone: activity.data.phone,
+	website: activity.data.website,
+	heroImage: activity.data.hero_image?.src,
+	geo: activity.data.geo,
+	sameAs: activity.data.social ? Object.values(activity.data.social) : [],
+});
 ---
 
 <PageLayout

@@ -13,6 +13,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import VenueMap from '../../components/VenueMap/VenueMap.astro';
 import Icon from '../../components/Icon/Icon.astro';
+import { restaurant } from '../../lib/jsonld';
 
 export async function getStaticPaths() {
 	const venues = await getCollection('eating');
@@ -35,25 +36,18 @@ const directionsHref = venue.data.geo
 	? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${venue.data.geo.lat},${venue.data.geo.lng}`)}`
 	: null;
 
-const jsonLd = {
-	'@context': 'https://schema.org',
-	'@type': venue.data.dog_friendly ? 'Restaurant' : 'FoodEstablishment',
-	name: venue.data.title,
-	url: `https://visit-tywyn.co.uk/eating/${venue.id}/`,
-	telephone: venue.data.phone,
+const jsonLd = restaurant({
+	id: venue.id,
+	title: venue.data.title,
+	description: venue.data.summary,
 	address: venue.data.address,
-	image: venue.data.photo?.src,
-	geo: venue.data.geo
-		? {
-				'@type': 'GeoCoordinates',
-				latitude: venue.data.geo.lat,
-				longitude: venue.data.geo.lng,
-		  }
-		: undefined,
-	sameAs: [venue.data.website, venue.data.facebook_link, venue.data.trip_advisor_link].filter(
-		Boolean
-	),
-};
+	phone: venue.data.phone,
+	website: venue.data.website,
+	dogFriendly: venue.data.dog_friendly,
+	photo: venue.data.photo?.src,
+	geo: venue.data.geo,
+	sameAs: [venue.data.facebook_link, venue.data.trip_advisor_link],
+});
 ---
 
 <PageLayout

@@ -8,6 +8,7 @@ import { getCollection, getEntry, render } from 'astro:content';
 import PageLayout from '../layouts/PageLayout.astro';
 import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
 import StayCategoryCard from '../components/StayCategoryCard/StayCategoryCard.astro';
+import { itemList, webPage } from '../lib/jsonld';
 
 const page = await getEntry('pages', 'where-to-stay');
 const Content = page ? (await render(page)).Content : null;
@@ -20,6 +21,26 @@ const breadcrumbs = [
 	{ label: 'Home', href: '/' },
 	{ label: 'Where to stay' },
 ];
+
+const jsonLd = [
+	webPage({
+		title: page?.data.seo?.title ?? page?.data.title ?? 'Where to stay in Tywyn',
+		description:
+			page?.data.seo?.description ??
+			'Find holiday accommodation in Tywyn — camping, caravans, self-catering cottages, and B&Bs.',
+		url: Astro.url,
+		image: page?.data.hero_image?.src,
+	}),
+	itemList(
+		'Tywyn accommodation categories',
+		categories.map((category) => ({
+			url: `/holiday-accommodation/${category.id}/`,
+			name: category.data.title,
+			image: category.data.hero_image?.src,
+			description: category.data.intro,
+		}))
+	),
+];
 ---
 
 <PageLayout
@@ -29,6 +50,7 @@ const breadcrumbs = [
 	}
 	heroImage={page?.data.hero_image}
 	breadcrumbs={breadcrumbs}
+	jsonLd={jsonLd}
 >
 	<EntryHeader
 		title={page?.data.title ?? 'Where to stay in Tywyn'}

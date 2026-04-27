@@ -10,6 +10,7 @@
 import { getCollection, getEntry, render } from 'astro:content';
 import PageLayout from '../layouts/PageLayout.astro';
 import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
+import { itemList } from '../lib/jsonld';
 
 const page = await getEntry('pages', 'dog-friendly-cafes');
 const Content = page ? (await render(page)).Content : null;
@@ -22,6 +23,16 @@ const breadcrumbs = [
 	{ label: 'Home', href: '/' },
 	{ label: 'Dog friendly cafes' },
 ];
+
+const jsonLd = itemList(
+	'Dog friendly cafes and restaurants in Tywyn',
+	dogFriendly.map((venue) => ({
+		url: `/eating/${venue.id}/`,
+		name: venue.data.title,
+		image: venue.data.photo?.src,
+		description: venue.data.summary,
+	}))
+);
 ---
 
 <PageLayout
@@ -29,6 +40,7 @@ const breadcrumbs = [
 	description={page?.data.seo?.description ?? page?.data.subtitle}
 	heroImage={page?.data.hero_image}
 	breadcrumbs={breadcrumbs}
+	jsonLd={jsonLd}
 >
 	<EntryHeader
 		title={page?.data.title ?? 'Dog friendly cafes in Tywyn'}
