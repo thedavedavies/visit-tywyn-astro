@@ -1,0 +1,294 @@
+{
+  "reviewer": "adversarial",
+  "findings": [
+    {
+      "id": "adversarial-001",
+      "title": "JSON-LD set:html lets editor-controlled </script> escape the script block",
+      "severity": "high",
+      "confidence": 0.85,
+      "category": "composition-failure",
+      "evidence": [
+        "Trigger: a content editor sets a venue/page/event field to a value containing the literal substring '</script>' (e.g., a satirical title 'Cafe </script>' or address with '</script>').",
+        "Step 1 — src/lib/jsonld.ts builds an object whose 'name' or 'description' or 'address' is the verbatim user string. Schema builders never sanitise.",
+        "Step 2 — src/layouts/BaseLayout.astro line 154 emits the block via <script type=\"application/ld+json\" set:html={JSON.stringify(block)} />.",
+        "Step 3 — JSON.stringify does NOT escape forward slashes or '<' or '>'. Confirmed at runtime: JSON.stringify({name:'</script><img src=x onerror=alert(1)>'}) returns the literal '</script>'.",
+        "Step 4 — Astro set:html (node_modules/astro/dist/runtime/server/render/util.js: STATIC_DIRECTIVES) emits the string verbatim. No escaping.",
+        "Step 5 — HTML parser sees the inline </script> inside the JSON-LD block and ends the script context, after which '<img src=x onerror=alert(1)>' is parsed as an active HTML element on the page.",
+        "Outcome: Editor input is a low-trust path (multiple contributors, future expansion, third-party data feeds). The same regex-pattern XSS sink exists everywhere webPage()/restaurant()/touristAttraction()/event()/itemList()/breadcrumbList() consume frontmatter. Fix: replace JSON.stringify(block) with JSON.stringify(block).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026') (or set:html guard helper) so closing tags can never appear literally.",
+        "Surfaces: title, subtitle, address, summary, description, og_image, photo.alt, hero_image.alt, eating[].title, things-to-do[].title, stay-categories[].featured[].name/summary, src/data/events.json title/summary/location/external_label, breadcrumb labels."
+      ],
+      "files": [
+        "src/layouts/BaseLayout.astro:152-156",
+        "src/lib/jsonld.ts"
+      ],
+      "autofix_class": "manual",
+      "owner": "downstream-resolver"
+    },
+    {
+      "id": "adversarial-002",
+      "title": "FAQPage extraction silently captures non-FAQ <h4> content when no .faqs container exists",
+      "severity": "high",
+      "confidence": 0.95,
+      "category": "assumption-violation",
+      "evidence": [
+        "Trigger: any future editorial markdown page (catch-all route) uses an <h4> for a subheading without wrapping it in <div class=\"faqs\">.",
+        "src/pages/[...slug].astro:42-44 — sliceMatch falls back to the WHOLE body when no .faqs container exists: 'const scope = sliceMatch ? sliceMatch[1]! : body;'.",
+        "Reproduction: ran extractFaq on body '<h2>Intro</h2><h4>Specs</h4>Speed: 30mph<h4>Materials</h4>Steel and bronze' (no .faqs wrapper). Result: [{question:'Specs',answer:'Speed: 30mph'},{question:'Materials',answer:'Steel and bronze'}] — a fully-formed FAQPage emitted from non-FAQ content.",
+        "Step 1 — extractFaq returns 2+ entries.",
+        "Step 2 — faqPage(entries) returns a non-null FAQPage schema.",
+        "Step 3 — BaseLayout emits FAQPage JSON-LD on a page that doesn't have FAQs.",
+        "Step 4 — Google indexes a FAQPage rich result for arbitrary editorial content; if Google detects the FAQ-snippet content doesn't match what users see (per their FAQ rich-result policy, the question must be a genuine user question), Google can issue a manual structured-data spam penalty.",
+        "Comment in extractFaq says 'Only run inside an .faqs container or after an FAQ heading to avoid false positives' but the actual implementation only honours the container; the 'after an FAQ heading' guardrail is documented but not implemented.",
+        "Cascade: a year from now an editor adds a 'Coast Path Specs' page with <h4>Distance</h4>...<h4>Difficulty</h4>... and the site silently submits a FAQPage schema for it, exposing the site to a Google manual action."
+      ],
+      "files": [
+        "src/pages/[...slug].astro:38-55"
+      ],
+      "autofix_class": "manual",
+      "owner": "downstream-resolver"
+    },
+    {
+      "id": "adversarial-003",
+      "title": "Speakable cssSelector targets entry-title/entry-subtitle classes that the build hashes away",
+      "severity": "med",
+      "confidence": 0.95,
+      "category": "composition-failure",
+      "evidence": [
+        "Trigger: every editorial page that flows through src/pages/[...slug].astro emits speakableSelector: ['.entry-title', '.entry-subtitle', '.entry-content > p:first-of-type'].",
+        "Step 1 — EntryHeader (src/components/EntryHeader/EntryHeader.astro) imports CSS from EntryHeader.module.scss and applies styles.title / styles.subtitle (CSS Modules).",
+        "Step 2 — Verified in built dist/explore-tywyn/index.html: the rendered DOM uses class=\"_title_6n5xu_11\" and class=\"_subtitle_6n5xu_23\" (hashed CSS-module classnames).",
+        "Step 3 — The literal class names .entry-title and .entry-subtitle never appear in any rendered page (grep on dist/ confirms 0 occurrences as actual classes — only inside the JSON-LD speakable selector itself).",
+        "Step 4 — Google parses the SpeakableSpecification, applies the cssSelectors against the page, finds zero matches for two of three selectors, and the speakable feature is non-functional.",
+        "Step 5 — The third selector '.entry-content > p:first-of-type' works on cinema.md (first child is <p>) but NOT on explore-tywyn.md, getting-around.md, wales-coastal-path.md, tywyn-beach.md, privacy-policy.md, accessibility-statement, cookie-policy.md — verified all 8 of these have <article>, <div>, <h2>, or <h3> as the first child of .entry-content. So speakable is broken across most editorial pages.",
+        "Outcome: voice-assistant feature cannot work; the schema is technically valid but pragmatically inert. If Astro's behaviour changes and emits something that DOES match 'entry-title' (e.g., a future component refactor), the speakable claim could suddenly designate the wrong DOM region for voice playback."
+      ],
+      "files": [
+        "src/pages/[...slug].astro:77",
+        "src/components/EntryHeader/EntryHeader.astro:20-22"
+      ],
+      "autofix_class": "manual",
+      "owner": "downstream-resolver"
+    },
+    {
+      "id": "adversarial-004",
+      "title": "Math.random() shuffle gives non-deterministic Related Items across builds and biased ordering",
+      "severity": "med",
+      "confidence": 0.9,
+      "category": "abuse-case",
+      "evidence": [
+        "Trigger: every static build of src/pages/eating/[slug].astro:38 and src/pages/things-to-do/[slug].astro:34 calls .sort(() => Math.random() - 0.5).",
+        "Step 1 — Empirical test of Math.random()-0.5 over 100,000 samples on 5-element array showed first-position frequencies of {a:32%, b:12%, c:16%, e:17%, d:22%}; the V8 sort produces strong positional bias rather than uniform shuffle.",
+        "Step 2 — Each build produces a different order (4 consecutive runs gave 4 different orderings).",
+        "Step 3 — Cascade: Astro static build emits HTML containing different RelatedItems for /eating/coast-deli-dining/ on every deploy. Even with no content change, the page hash differs.",
+        "Step 4 — Downstream effect: CDN cache keys based on content hash invalidate on every deploy. Search engines re-crawl pages they already have, attribute internal-link anchor text to different targets each time, and dilute internal link signals.",
+        "Step 5 — Worse: dog-friendly venues with relatedPool >= 4 always pick from dog-friendly subset (so users always see dog-friendly internal links from a dog-friendly page) but non-dog-friendly venues pull from `others` which includes dog-friendly venues. The bias means a venue might never link to a particular sibling in its first slot. With 18 venues, position-1 frequency ranges 6%-32%.",
+        "Reproducible: ran four builds back-to-back, observed dist/eating/coast-deli-dining/index.html had different Related anchor hrefs in each. Proven non-deterministic."
+      ],
+      "files": [
+        "src/pages/eating/[slug].astro:33-39",
+        "src/pages/things-to-do/[slug].astro:32-35"
+      ],
+      "autofix_class": "manual",
+      "owner": "downstream-resolver"
+    },
+    {
+      "id": "adversarial-005",
+      "title": "Sitemap lastmod uses build-time Date for every page, hiding genuine modification signal",
+      "severity": "med",
+      "confidence": 0.9,
+      "category": "composition-failure",
+      "evidence": [
+        "Trigger: astro.config.mjs:40 sets `lastmod: new Date()` at config load time. Every page in the sitemap gets the same build timestamp.",
+        "Verified in dist/sitemap-0.xml (built moments ago): all 49 URLs have identical <lastmod>2026-04-27T20:07:19.655Z</lastmod>.",
+        "Step 1 — Pages with `updated` frontmatter (e.g., contact.md updated 2024-05-20, accessibility-statement updated 2025-02-14) lose that real signal in the sitemap. They report 'modified now' instead of their real update date.",
+        "Step 2 — Google's sitemap crawler treats lastmod as a hint; when EVERY url's lastmod equals the build time, Google's reputation algorithm de-trusts the sitemap's lastmod entirely (per Google Search Central docs: 'we ignore lastmod if we can't trust it').",
+        "Step 3 — Result: the optimisation intent of the diff (use lastmod to drive crawl priority) is undermined; Google falls back to its own recrawl heuristics.",
+        "Step 4 — Worse: the catch-all already has access to page.data.updated and webPage() emits dateModified per-page. So the per-page truth IS encoded in JSON-LD but ALSO contradicted by the sitemap's blanket build-time lastmod.",
+        "Cascade: contradictory signals (sitemap claims everything-updated-now, JSON-LD claims dateModified=2024-05-20) produce ambiguity in Google's understanding of what's recently updated."
+      ],
+      "files": [
+        "astro.config.mjs:40"
+      ],
+      "autofix_class": "manual",
+      "owner": "downstream-resolver"
+    },
+    {
+      "id": "adversarial-006",
+      "title": "Default OG image 1908x397 has 4.81:1 aspect ratio outside Twitter summary_large_image bounds",
+      "severity": "med",
+      "confidence": 0.85,
+      "category": "abuse-case",
+      "evidence": [
+        "Trigger: any page that doesn't supply its own ogImage (e.g., the home page, contact, accessibility statement, several catch-all editorial pages) falls back to SITE.defaultOgImage = '/wp-content/uploads/2022/05/explore.jpg'.",
+        "Step 1 — Verified actual file: 1908x397 progressive JPEG (47KB).",
+        "Step 2 — BaseLayout emits og:image:width=1908, og:image:height=397, og:image:type=image/jpeg, plus twitter:card=summary_large_image (because resolvedOgImage is truthy).",
+        "Step 3 — Twitter Card validator policy for summary_large_image requires aspect ratio between 1.91:1 and 2:1. 1908/397 = 4.81:1 — outside range.",
+        "Step 4 — Outcome: Twitter falls back to no-image card or rejects entirely; the share preview shows tiny text-only summary. This regresses social-share CTR.",
+        "Step 5 — Facebook's Open Graph guidelines recommend 1200x630 (1.91:1). The page WILL render but FB letterboxes the wide-thin image with white bars.",
+        "Step 6 — LinkedIn's og:image fetcher specifically rejects images with aspect ratio outside 1.91:1 (per LinkedIn share debugger).",
+        "Comment at src/lib/site.ts:18-19 acknowledges 'if you swap in a 1200x630 social-card image later, update these values to match' — a known concern but the swap hasn't happened.",
+        "Bonus: usingDefaultOgImage flag at BaseLayout:60 is the only path that emits width/height/type metadata. A page that explicitly sets ogImage to the same default file gets NO width/height tags emitted (because !ogImage gates the branch). Asymmetric behaviour for what should be identical output."
+      ],
+      "files": [
+        "src/lib/site.ts:18-22",
+        "src/layouts/BaseLayout.astro:60,113-121"
+      ],
+      "autofix_class": "advisory",
+      "owner": "human"
+    },
+    {
+      "id": "adversarial-007",
+      "title": "Cascade: webPage url uses Astro.url but BaseLayout canonical can be overridden via seo.canonical, splitting identity signals",
+      "severity": "med",
+      "confidence": 0.8,
+      "category": "composition-failure",
+      "evidence": [
+        "Trigger: an editor sets seo.canonical in markdown frontmatter to a URL that differs from the page's actual path (e.g., to deduplicate against another canonical, or to point at an external authoritative source).",
+        "Step 1 — src/pages/[...slug].astro:71 passes `url: Astro.url` to webPage(). Astro.url is the literal current page URL.",
+        "Step 2 — BaseLayout.astro:43 derives canonical from `canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url)` if no override, OR uses page.data.seo.canonical as-is.",
+        "Step 3 — When seo.canonical is set, the JSON-LD WebPage.url disagrees with <link rel=canonical>. Google reads two URLs claiming to identify the same page.",
+        "Step 4 — Google's canonicalization algorithm prefers the link tag, BUT the JSON-LD url is also signal that Google may use to resolve the entity. Disagreement is interpreted as confused author intent.",
+        "Step 5 — Same vector exists in webcam.astro, where-to-stay.astro, holiday-accommodation/[category].astro, events/index.astro: all pass Astro.url to webPage() while accepting a separate canonical override on the layout.",
+        "Currently only cinema.md sets canonical (and to the same URL). But the divergence path exists for any future override.",
+        "Bonus: BaseLayout uses crumbSchema = breadcrumbList(breadcrumbs, canonicalHref) — so BREADCRUMB schema's terminal item URL respects the canonical override, while WEBPAGE schema's url respects Astro.url. The two schemas would point to different URLs for the 'current page'."
+      ],
+      "files": [
+        "src/pages/[...slug].astro:71",
+        "src/layouts/BaseLayout.astro:43,63",
+        "src/pages/webcam.astro:20",
+        "src/pages/where-to-stay.astro:31",
+        "src/pages/holiday-accommodation/[category].astro:30"
+      ],
+      "autofix_class": "manual",
+      "owner": "downstream-resolver"
+    },
+    {
+      "id": "adversarial-008",
+      "title": "Sitemap collision: /tywyn-beach/ AND /things-to-do/tywyn-beach/ both indexed at same priority tier",
+      "severity": "med",
+      "confidence": 0.95,
+      "category": "abuse-case",
+      "evidence": [
+        "Trigger: two markdown files exist for the same topic. src/content/pages/tywyn-beach.md (editorial page, slug tywyn-beach, subtitle 'Tywyn's Sandy beach is perfect for dog walks and sunsets'). src/content/things-to-do/tywyn-beach.md (things-to-do entry).",
+        "Step 1 — Catch-all [...slug].astro builds /tywyn-beach/ from the editorial page.",
+        "Step 2 — things-to-do/[slug].astro builds /things-to-do/tywyn-beach/ from the things-to-do entry.",
+        "Step 3 — Verified in dist/sitemap-0.xml: both URLs are present. /tywyn-beach/ at priority 0.6, /things-to-do/tywyn-beach/ at priority 0.8.",
+        "Step 4 — Both pages have similar content about Tywyn beach, both eligible for the query 'Tywyn beach'. Google must choose a canonical between them.",
+        "Step 5 — Cascade: dog-friendly-cafes.md links to '/things-to-do/tywyn-beach/' but the home page indirectly references the broader concept; users may bookmark either; backlinks from external sites split. Result: keyword cannibalisation, neither ranks as well as a single consolidated page would.",
+        "Same pattern: /cinema/ (editorial) vs /things-to-do/magic-lantern-cinema/ (attraction). Two entries for one venue.",
+        "Suggested resolution: redirect one to the other, OR set seo.canonical on the editorial page to point at the things-to-do entry."
+      ],
+      "files": [
+        "src/content/pages/tywyn-beach.md",
+        "src/content/things-to-do/tywyn-beach.md",
+        "src/content/pages/cinema.md",
+        "src/content/things-to-do/magic-lantern-cinema.md"
+      ],
+      "autofix_class": "advisory",
+      "owner": "human"
+    },
+    {
+      "id": "adversarial-009",
+      "title": "absoluteUrl silently rewrites protocol-relative and javascript: URLs, exposing schema fields to bad inputs",
+      "severity": "low",
+      "confidence": 0.7,
+      "category": "abuse-case",
+      "evidence": [
+        "Trigger: editor input or future events.json data containing '//evil.example/img.png' or 'javascript:alert(1)' in a URL field.",
+        "Step 1 — src/lib/jsonld.ts:18-23 absoluteUrl checks input.startsWith /^https?:\\/\\// — only rejects fields with explicit http(s) scheme. '//cdn.example.com/x' fails the regex (no http/https prefix), goes to `new URL(input, SITE.url)` which resolves it as 'https://cdn.example.com/x'. The schema thus claims the page's image lives on cdn.example.com.",
+        "Step 2 — 'javascript:alert(1)' fails the http/https regex but new URL('javascript:alert(1)', site) returns 'javascript:alert(1)' verbatim. The schema's url field becomes a javascript URL.",
+        "Step 3 — Empty string '' returns the fallback (or undefined). All other unrecognised schemes (mailto:, tel:, file://, ftp://) pass through without warning.",
+        "Step 4 — If editor input is trusted today, future expansion (a content management UI, a third-party events feed in events.json) makes this a vector. The system has no guardrail.",
+        "Step 5 — Combined with finding-001, an editor inputting a URL with '</script>' inside a query parameter causes both untrusted-URL pollution and JSON-LD breakout.",
+        "Mitigation surface: validate/whitelist URL schemes in absoluteUrl, or wrap with a stricter helper for fields that flow into structured data."
+      ],
+      "files": [
+        "src/lib/jsonld.ts:18-23"
+      ],
+      "autofix_class": "advisory",
+      "owner": "human"
+    },
+    {
+      "id": "adversarial-010",
+      "title": "BreadcrumbList collapses multiple href-less items to identical URL, producing malformed itemListElement",
+      "severity": "low",
+      "confidence": 0.8,
+      "category": "assumption-violation",
+      "evidence": [
+        "Trigger: a page passes a breadcrumbs array where two or more items have no href, e.g., [{label:'Home'},{label:'Where to stay'}]. (Currently no production page does this; every detail page passes Home with href.) But the helper does NOT defend against it.",
+        "Step 1 — src/lib/jsonld.ts:104 — for each item, if no href, the helper assigns `current` (the page URL).",
+        "Step 2 — Reproduced: breadcrumbList([{label:'Home'},{label:'Current'}],'https://x/y/') returns two ListItems both with item:'https://x/y/', resulting in a malformed BreadcrumbList where positions 1 and 2 share an URL.",
+        "Step 3 — Google's structured-data validator flags this as a malformed breadcrumb (each item should be unique). The whole BreadcrumbList block can be dropped from rich results.",
+        "Step 4 — Cascade: The auto-emit BreadcrumbList in BaseLayout means this misuse silently produces invalid schema across many pages if a developer forgets href on a parent crumb.",
+        "Adjacent: an item with `label: undefined` and href set produces a ListItem with no `name` field at all (verified). Schema.org specifies name is required on ListItem; Google may skip the item or fail validation.",
+        "Suggested fix: filter out items without href except for the final/current item, OR validate uniqueness/required-fields before emitting."
+      ],
+      "files": [
+        "src/lib/jsonld.ts:94-107"
+      ],
+      "autofix_class": "advisory",
+      "owner": "human"
+    },
+    {
+      "id": "adversarial-011",
+      "title": "webPage references @id of organization/website that exist only on home page, leaving dangling JSON-LD references on every editorial page",
+      "severity": "low",
+      "confidence": 0.85,
+      "category": "composition-failure",
+      "evidence": [
+        "Trigger: any page that uses webPage() outside the home page — confirmed: catch-all [...slug].astro, webcam.astro, where-to-stay.astro, holiday-accommodation/[category].astro, events/index.astro.",
+        "Step 1 — webPage() emits `isPartOf: { '@id': '${SITE.url}/#website' }` and `publisher: { '@id': '${SITE.url}/#organization' }`.",
+        "Step 2 — organization() and website() ARE defined helpers in jsonld.ts (lines 29-57) but are ONLY called from src/pages/index.astro:16-17.",
+        "Step 3 — Detail pages (eating/[slug].astro, things-to-do/[slug].astro) emit Restaurant/TouristAttraction nodes that don't include publisher refs, so they're not affected.",
+        "Step 4 — Catch-all and webcam and where-to-stay emit a WebPage that references the home page's nodes via @id, but those nodes aren't on the same page. Schema.org technically allows cross-page @id references, but Google's structured-data tester treats publisher/isPartOf as expecting embedded definitions.",
+        "Step 5 — Cascade: Google's knowledge graph entity resolution may downgrade the page's relation to the Organization brand because the Organization isn't asserted on the same page. Brand-name SERP features (e.g., site name in results) depend on consistent Organization signal.",
+        "Mitigation: emit organization() and website() in BaseLayout so every page reasserts them, OR drop publisher/isPartOf from webPage()."
+      ],
+      "files": [
+        "src/lib/jsonld.ts:300-302",
+        "src/pages/index.astro:16-17"
+      ],
+      "autofix_class": "advisory",
+      "owner": "human"
+    },
+    {
+      "id": "adversarial-012",
+      "title": "Cascade: missing description on schema + no fallback to SITE.description leaves WebPage schemas with no description on pages without subtitle/seo",
+      "severity": "low",
+      "confidence": 0.7,
+      "category": "assumption-violation",
+      "evidence": [
+        "Trigger: a markdown page has neither seo.description nor subtitle (e.g., accessibility-statement-for-visit-tywyn.md has seo.description set, but a future page might miss both fields).",
+        "Step 1 — src/pages/[...slug].astro:70 — `description: page.data.seo?.description ?? page.data.subtitle` — if both undefined, description is undefined.",
+        "Step 2 — webPage() at line 288 spreads `...(input.description ? { description: input.description } : {})` — undefined is correctly skipped, no description in JSON-LD.",
+        "Step 3 — But BaseLayout at line 76 emits `<meta name=\"description\" content={description} />` where description = undefined gets coerced to literal 'undefined'. Confirmed: BaseLayout has `description = SITE.description` default in destructure (line 42), so this defaults to SITE description. So meta tag is fine.",
+        "Step 4 — BUT: the JSON-LD WebPage description and the meta description now disagree: meta says SITE.description (about Tywyn the town), JSON-LD says nothing. The home page emits both (touristDestination has description = SITE.description), but every other page has a JSON-LD WebPage with no description while emitting a generic SITE.description meta tag.",
+        "Step 5 — Google ingestion: meta description claims the page is about Tywyn generally; JSON-LD WebPage offers no description; Google decides which to surface in SERPs and may choose the generic one, masking the page's actual focus.",
+        "Bonus: the same pattern in eating/[slug].astro:67 — description falls back to summary, not SITE.description. So fallback chains differ across surface points."
+      ],
+      "files": [
+        "src/pages/[...slug].astro:70",
+        "src/layouts/BaseLayout.astro:42,76"
+      ],
+      "autofix_class": "advisory",
+      "owner": "human"
+    }
+  ],
+  "residual_risks": [
+    "Editor adds inline event with a malicious title in events.json — flows directly through eventSchema() → JSON.stringify → set:html with no validation step. The home page and /events/ index both emit the schema unsanitised. (Tied to adversarial-001.)",
+    "Future developer changes EntryHeader to use a non-CSS-Modules class name for the title — speakable selectors might suddenly become functional but at the wrong DOM target if a different component happens to claim .entry-title.",
+    "Site owner adds a new editorial page with <h4> tags for genuine subheadings; FAQPage schema silently emitted unbeknownst to author. (Tied to adversarial-002.)",
+    "Astro's @astrojs/sitemap upgrade changes how serialize callback's return value is merged with the input item; the spread `...item` could lose lastmod or change shape silently.",
+    "The astro.config.mjs sitemap regex /\\/(eating|things-to-do)\\/[^/]+\\/$/ matches anything in /eating/ tree, including a future /eating/index/ or /eating/featured-this-week/ even if those aren't standard detail pages — they'd be classified as detail (0.8) regardless of editorial intent.",
+    "trailingSlash:'always' + Astro.url combined with serialize regex assumes URLs always end with /. Any non-standard route file or static asset that lacks trailing slash bypasses priority assignment and falls into the default 0.6 bucket."
+  ],
+  "testing_gaps": [
+    "No test verifies that JSON-LD output is HTML-safe (specifically: no test confirms </script> in any field cannot escape).",
+    "No test for extractFaq fallback behavior when .faqs container is absent — and no test asserting that pages without .faqs do NOT emit FAQPage schema.",
+    "No test for related-items determinism across builds (dist/eating/coast-deli-dining/index.html should be byte-identical between sequential builds).",
+    "No test for Speakable selectors actually matching elements in the rendered DOM. A test could parse dist/explore-tywyn/index.html with cheerio and assert .entry-title etc. match >= 1 element each.",
+    "No test for sitemap correctness — the priority/changefreq classification regex is unverified; an inadvertent regex change could mis-rank URLs.",
+    "No test for OG image dimensions matching SITE config (a swap to a 1200x630 image without updating SITE.defaultOgImageWidth/Height would not be caught).",
+    "No test for breadcrumb edge cases (empty array correctly omits schema; multiple href-less items don't collapse to identical URLs)."
+  ]
+}

@@ -10,6 +10,11 @@
  *     (e.g. `/where-to-stay/`, `/webcam/`, `/dog-friendly-cafes/`).
  *     Astro's filesystem routing resolves the explicit file before
  *     this catch-all.
+ *   - any slug that is already handled by a 301 in
+ *     `public/_redirects` (currently `/cinema/`, `/tywyn-beach/`).
+ *     We don't want both a built page and a redirect for the same
+ *     URL — the sitemap would advertise duplicates and the host
+ *     would serve a 200 ahead of the redirect.
  *
  * For pages whose body content has an `<h4>question</h4>` /
  * answer pattern (currently only `/explore-tywyn/`) we additionally
@@ -19,39 +24,31 @@ import { getCollection, render } from 'astro:content';
 import PageLayout from '../layouts/PageLayout.astro';
 import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
 import { webPage, faqPage } from '../lib/jsonld';
+import { extractFaq } from '../lib/markdown';
 
 export async function getStaticPaths() {
-	const bespokeSlugs = new Set(['home-page', 'webcam', 'dog-friendly-cafes', 'where-to-stay', 'events']);
-	const pages = await getCollection('pages', (entry) => !bespokeSlugs.has(entry.id));
+	// Slugs that have hand-rolled route files — exclude them from
+	// the catch-all so we don't double-emit.
+	const bespokeSlugs = new Set([
+		'home-page',
+		'webcam',
+		'dog-friendly-cafes',
+		'where-to-stay',
+		'events',
+	]);
+	// Slugs whose URL is owned by a 301 redirect in public/_redirects.
+	// Building these as pages would create duplicate URLs in the
+	// sitemap and a 200/301 race at the host edge.
+	const redirectedSlugs = new Set(['cinema', 'tywyn-beach']);
+
+	const pages = await getCollection(
+		'pages',
+		(entry) => !bespokeSlugs.has(entry.id) && !redirectedSlugs.has(entry.id)
+	);
 	return pages.map((page) => ({
 		params: { slug: page.id },
 		props: { page },
 	}));
-}
-
-/**
- * Extract Q/A pairs from raw markdown body. Each `<h4>` becomes a
- * question; everything between it and the next h4 (or h3/h2/end-of-
- * faq-block) becomes the answer. Stripped of HTML tags so the JSON-LD
- * is valid plain text.
- */
-function extractFaq(body: string): { question: string; answer: string }[] {
-	const out: { question: string; answer: string }[] = [];
-	// Only run inside an `.faqs` container or after an "FAQ" heading
-	// to avoid false positives on pages that happen to use h4.
-	const sliceMatch = body.match(/<div class="faqs">([\s\S]*?)<\/div>/i);
-	const scope = sliceMatch ? sliceMatch[1]! : body;
-	const re = /<h4[^>]*>([\s\S]*?)<\/h4>([\s\S]*?)(?=<h[1-4][^>]*>|$)/gi;
-	let m: RegExpExecArray | null;
-	while ((m = re.exec(scope))) {
-		const question = m[1]!.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
-		const answer = m[2]!
-			.replace(/<[^>]+>/g, ' ')
-			.replace(/\s+/g, ' ')
-			.trim();
-		if (question && answer) out.push({ question, answer });
-	}
-	return out;
 }
 
 const { page } = Astro.props;
@@ -64,31 +61,37 @@ const breadcrumbs = [
 
 const updatedIso = page.data.updated ? page.data.updated.toISOString() : undefined;
 
-const jsonLd: Record<string, unknown>[] = [
-	webPage({
-		title: page.data.seo?.title ?? page.data.title,
-		description: page.data.seo?.description ?? page.data.subtitle,
-		url: Astro.url,
-		image: page.data.seo?.og_image ?? page.data.hero_image?.src,
-		dateModified: updatedIso,
-		// Encourage voice assistants to read the headline + first
-		// paragraph aloud. Conservative selectors so we don't ask
-		// them to read sidebars or footer.
-		speakableSelector: ['.entry-title', '.entry-subtitle', '.entry-content > p:first-of-type'],
-	}),
-];
+// Use `||` (not `??`) on string fallbacks: empty strings from
+// frontmatter should fall through to the next option, not stick.
+const seoTitle = page.data.seo?.title || page.data.title;
+const seoDescription = page.data.seo?.description || page.data.subtitle;
+const seoOgImage = page.data.seo?.og_image || page.data.hero_image?.src;
 
-// FAQPage rich-result eligibility — currently /explore-tywyn/ only.
-const faqEntries = extractFaq(page.body ?? '');
-const faqSchema = faqPage(faqEntries);
-if (faqSchema) jsonLd.push(faqSchema);
+const jsonLd: (Record<string, unknown> | null)[] = [
+	webPage({
+		title: seoTitle,
+		description: seoDescription,
+		url: Astro.url,
+		image: seoOgImage,
+		dateModified: updatedIso,
+		// Speakable selectors must match the rendered DOM. CSS
+		// modules hash component-scoped class names, so we target
+		// data-attributes set by EntryHeader instead. Voice
+		// assistants will read this and stop.
+		speakableSelector: ['[data-speakable="title"]'],
+	}),
+	// FAQPage rich-result eligibility — only the /explore-tywyn/
+	// page has a `<div class="faqs">` block; extractFaq returns
+	// an empty array for everything else.
+	faqPage(extractFaq(page.body ?? '')),
+];
 ---
 
 <PageLayout
-	title={page.data.seo?.title ?? page.data.title}
-	description={page.data.seo?.description ?? page.data.subtitle}
+	title={seoTitle}
+	description={seoDescription}
 	canonical={page.data.seo?.canonical}
-	ogImage={page.data.seo?.og_image ?? page.data.hero_image?.src}
+	ogImage={seoOgImage}
 	noindex={page.data.seo?.noindex}
 	heroImage={page.data.hero_image}
 	breadcrumbs={breadcrumbs}

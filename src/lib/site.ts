@@ -13,13 +13,11 @@ export const SITE = {
 	googleAnalyticsId: 'UA-28386547-1',
 	adsenseClient: 'ca-pub-4920514279045356',
 	// Default Open Graph image — used on pages that don't supply
-	// their own (home, simple content pages). The dimensions match
-	// the actual file; if you swap in a 1200x630 social-card image
-	// later, update these values to match.
+	// their own. The current asset is 1908x397, outside the 1.91:1
+	// / 2:1 range social platforms expect; BaseLayout omits
+	// og:image:width/height for that reason. Follow-up: generate a
+	// 1200x630 social card and re-add the width/height/type tags.
 	defaultOgImage: '/wp-content/uploads/2022/05/explore.jpg',
-	defaultOgImageWidth: 1908,
-	defaultOgImageHeight: 397,
-	defaultOgImageType: 'image/jpeg',
 	themeColor: '#046d8b',
 	location: {
 		lat: 52.58643,

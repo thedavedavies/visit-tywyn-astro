@@ -1,0 +1,371 @@
+{
+  "run_id": "20260427-212057-rev1",
+  "reviewer": "agent-native-reviewer",
+  "model": "claude-opus-4-7",
+  "scope": "HEAD vs c11dd24",
+  "verdict": "PASS",
+  "summary": "Static Astro tourism site for visit-tywyn.co.uk. The relevant 'agents' here are search engine and AI crawlers consuming server-rendered HTML. The SEO pass establishes strong agent-native parity: every meaningful user-visible asset (venue, attraction, event, FAQ, accommodation category) is exposed via stable URLs, server-rendered markup, and structured data (JSON-LD). robots.txt allows all bots without AI-blocking rules, the sitemap is published with sensible priority weighting, and there is no JS-only content gating. The one pre-existing gap (placeholder contact form) is acknowledged in content and routed around via social links and the per-venue website/phone/sameAs metadata in JSON-LD.",
+  "context": {
+    "app_type": "static_site",
+    "agent_consumers": [
+      "search_crawlers",
+      "ai_assistants",
+      "llm_retrieval"
+    ],
+    "interactivity_level": "minimal",
+    "has_on_site_search": false,
+    "has_pagination": false,
+    "has_infinite_scroll": false,
+    "ssg_framework": "Astro 6 (output: static)",
+    "sitemap": "https://visit-tywyn.co.uk/sitemap-index.xml",
+    "robots": "public/robots.txt allows * (no AI-block rules)"
+  },
+  "capability_map": [
+    {
+      "user_capability": "Discover all crawlable URLs",
+      "ui_location": "internal nav + footer",
+      "agent_mechanism": "/sitemap-index.xml + robots.txt Sitemap directive",
+      "in_prompt_or_schema": true,
+      "priority": "must_have",
+      "status": "ok"
+    },
+    {
+      "user_capability": "Browse places to eat",
+      "ui_location": "src/pages/eating/index.astro",
+      "agent_mechanism": "ItemList JSON-LD + server-rendered VenueCard list",
+      "in_prompt_or_schema": true,
+      "priority": "must_have",
+      "status": "ok"
+    },
+    {
+      "user_capability": "View a single venue (address, phone, website, dog-friendly, geo)",
+      "ui_location": "src/pages/eating/[slug].astro",
+      "agent_mechanism": "Restaurant/FoodEstablishment JSON-LD with telephone/address/geo/sameAs",
+      "in_prompt_or_schema": true,
+      "priority": "must_have",
+      "status": "ok"
+    },
+    {
+      "user_capability": "Browse things to do",
+      "ui_location": "src/pages/things-to-do/index.astro",
+      "agent_mechanism": "ItemList JSON-LD + server-rendered ActivityCard list",
+      "in_prompt_or_schema": true,
+      "priority": "must_have",
+      "status": "ok"
+    },
+    {
+      "user_capability": "View a single attraction",
+      "ui_location": "src/pages/things-to-do/[slug].astro",
+      "agent_mechanism": "TouristAttraction JSON-LD with geo/website/sameAs",
+      "in_prompt_or_schema": true,
+      "priority": "must_have",
+      "status": "ok"
+    },
+    {
+      "user_capability": "Find accommodation by category (B&B, self-catering, caravan, camping)",
+      "ui_location": "src/pages/where-to-stay.astro + src/pages/holiday-accommodation/[category].astro",
+      "agent_mechanism": "WebPage + ItemList JSON-LD; FeaturedStayCard list rendered server-side",
+      "in_prompt_or_schema": true,
+      "priority": "must_have",
+      "status": "ok"
+    },
+    {
+      "user_capability": "See upcoming events",
+      "ui_location": "src/pages/index.astro + src/pages/events/index.astro",
+      "agent_mechanism": "Per-event Event JSON-LD (startDate/endDate/location/eventStatus) + server-rendered cards",
+      "in_prompt_or_schema": true,
+      "priority": "must_have",
+      "status": "ok"
+    },
+    {
+      "user_capability": "Read FAQ answers",
+      "ui_location": "src/content/pages/explore-tywyn.md",
+      "agent_mechanism": "FAQPage JSON-LD auto-extracted from h4 questions in [...slug].astro",
+      "in_prompt_or_schema": true,
+      "priority": "must_have",
+      "status": "ok"
+    },
+    {
+      "user_capability": "Find dog-friendly cafes",
+      "ui_location": "src/pages/dog-friendly-cafes.astro",
+      "agent_mechanism": "ItemList JSON-LD + server-rendered list",
+      "in_prompt_or_schema": true,
+      "priority": "should_have",
+      "status": "ok"
+    },
+    {
+      "user_capability": "Open related items at end of detail pages",
+      "ui_location": "src/components/RelatedItems/RelatedItems.astro",
+      "agent_mechanism": "Plain <a href> in semantic <ul role=list>; no JS gating",
+      "in_prompt_or_schema": false,
+      "priority": "should_have",
+      "status": "ok",
+      "note": "Crawlable links; no schema needed for nav graph"
+    },
+    {
+      "user_capability": "Get directions to a venue",
+      "ui_location": "Detail page Get-directions link",
+      "agent_mechanism": "Plain <a href> to maps.google.com with lat/lng query; geo also in JSON-LD",
+      "in_prompt_or_schema": true,
+      "priority": "should_have",
+      "status": "ok"
+    },
+    {
+      "user_capability": "Read breadcrumb path",
+      "ui_location": "All pages via BaseLayout breadcrumbs prop",
+      "agent_mechanism": "BreadcrumbList JSON-LD auto-emitted in BaseLayout",
+      "in_prompt_or_schema": true,
+      "priority": "should_have",
+      "status": "ok"
+    },
+    {
+      "user_capability": "Identify the publisher / brand",
+      "ui_location": "Header/Footer",
+      "agent_mechanism": "Organization + WebSite JSON-LD on home page with sameAs links",
+      "in_prompt_or_schema": true,
+      "priority": "should_have",
+      "status": "ok"
+    },
+    {
+      "user_capability": "View image gallery on attraction page",
+      "ui_location": "src/components/Gallery/Gallery.astro",
+      "agent_mechanism": "<img> tags rendered server-side with alt text; lightbox is progressive enhancement",
+      "in_prompt_or_schema": false,
+      "priority": "low",
+      "status": "ok",
+      "note": "Crawlable images; lightbox is JS-only but base content not gated"
+    },
+    {
+      "user_capability": "Watch the live webcam",
+      "ui_location": "src/pages/webcam.astro",
+      "agent_mechanism": "WebPage JSON-LD; iframe to third-party stream — agents can identify the URL but cannot consume the stream",
+      "in_prompt_or_schema": true,
+      "priority": "low",
+      "status": "ok",
+      "note": "Live video is inherently human-only; URL is discoverable"
+    },
+    {
+      "user_capability": "Book accommodation",
+      "ui_location": "BookingSearchList component on holiday-accommodation/[category]",
+      "agent_mechanism": "Plain <a href> to third-party booking URLs",
+      "in_prompt_or_schema": false,
+      "priority": "should_have",
+      "status": "ok",
+      "note": "Booking handoff is third-party; links are crawlable"
+    },
+    {
+      "user_capability": "Contact the site owner",
+      "ui_location": "src/content/pages/contact.md",
+      "agent_mechanism": "Placeholder copy + crawlable Facebook/Twitter links; no email or form action",
+      "in_prompt_or_schema": false,
+      "priority": "should_have",
+      "status": "warning",
+      "note": "Contact form is a placeholder. There is no mailto link or usable form endpoint, so neither humans nor agents can submit a structured contact request."
+    },
+    {
+      "user_capability": "Subscribe to events feed (RSS/iCal)",
+      "ui_location": "n/a",
+      "agent_mechanism": "Per-event Event JSON-LD on /events/ and home; no /events.rss or .ics feed",
+      "in_prompt_or_schema": "partial",
+      "priority": "low",
+      "status": "observation",
+      "note": "JSON-LD covers AI extraction; an RSS/iCal feed would help calendar agents subscribe rather than re-crawl."
+    }
+  ],
+  "findings": {
+    "critical": [],
+    "warnings": [
+      {
+        "title": "Contact mechanism is human-only and currently a placeholder",
+        "location": "src/content/pages/contact.md:16",
+        "description": "The contact page reads 'The contact form is being rebuilt' with no email mailto: or form endpoint. Agents (and humans) have no programmatic way to send a structured contact request. The Facebook/Twitter links point to web.archive.org snapshots, which are not live channels. This pre-dates the SEO pass but the SEO pass did not address it.",
+        "recommendation": "Add a mailto: link or bring back a real form (Netlify Forms, FormSpree, or simple Cloudflare Worker). A mailto: alone is enough for the agent-parity bar — agents can compose a message via the user's mail client.",
+        "confidence": 0.9,
+        "introduced_in_diff": false
+      }
+    ],
+    "observations": [
+      {
+        "title": "No RSS/Atom feed for events",
+        "description": "Events are discoverable via JSON-LD (Event nodes on home and /events/) and crawlable HTML cards. There is no /events.xml RSS feed or .ics calendar export. For the AI-crawler bar this is sufficient, but a feed would let calendar agents subscribe instead of re-crawling.",
+        "recommendation": "Optional: add an RSS feed at /events.xml using @astrojs/rss and an .ics export if calendar subscription is a desired use case.",
+        "confidence": 0.7,
+        "introduced_in_diff": false
+      },
+      {
+        "title": "Default OG image dimensions are 1908x397 — not the recommended 1200x630",
+        "location": "src/lib/site.ts:19-22",
+        "description": "The diff added og:image:width/height to BaseLayout. The values reflect the existing image (1908x397). That is wider/shorter than the 1.91:1 aspect that Facebook/Twitter/LinkedIn previewers expect, so social cards will letterbox or crop. Comment in site.ts already flags this for a future swap.",
+        "recommendation": "Replace defaultOgImage with a 1200x630 social card and update the dimensions. Tracked in the SITE comment already.",
+        "confidence": 0.85,
+        "introduced_in_diff": true
+      },
+      {
+        "title": "Twitter sameAs URL constructed by stripping '@' from a handle",
+        "location": "src/lib/jsonld.ts:36",
+        "description": "organization() builds the Twitter URL with `https://twitter.com/${SITE.twitter.replace(/^@/, '')}`. That works but is brittle if SITE.twitter is ever set without an @. Also: twitter.com permanently redirects to x.com — schema.org sameAs accepts either, but search engines prefer canonical x.com URLs.",
+        "recommendation": "Either store the full URL in SITE or migrate to x.com. Low priority.",
+        "confidence": 0.6,
+        "introduced_in_diff": false
+      },
+      {
+        "title": "Speakable selector uses '.entry-title' / '.entry-content > p:first-of-type'",
+        "location": "src/pages/[...slug].astro:77",
+        "description": "Speakable schema is included for editorial pages. The selectors target .entry-title and the first paragraph of .entry-content. Worth verifying those classes are actually present in the rendered DOM (they are, via EntryHeader and the entry-content wrapper).",
+        "confidence": 0.7,
+        "introduced_in_diff": true
+      },
+      {
+        "title": "robots.txt has no Disallow for AI bots",
+        "location": "public/robots.txt",
+        "description": "Per the SEO brief, the AI-block rules were removed. This is intentional — the site wants AI crawlers to ingest the content. Worth flagging only because it is a deliberate trade-off (training opt-in) and should be documented in the repo if it is not already (commit a91b65a message says 'training opt-in').",
+        "confidence": 0.95,
+        "introduced_in_diff": true,
+        "is_intentional": true
+      }
+    ]
+  },
+  "agent_native_checks": {
+    "interactive_elements_machine_discoverable": {
+      "status": "ok",
+      "detail": "No on-site search; nav and footer links rendered server-side; Gallery thumbnails are progressive-enhancement <button>s but each <img> is in the static markup."
+    },
+    "pagination_or_load_more_hidden_behind_js": {
+      "status": "ok",
+      "detail": "All listing pages render full collections server-side. No pagination, no infinite scroll, no load-more button anywhere in the diff."
+    },
+    "events_exposed_via_structured_data": {
+      "status": "ok",
+      "detail": "Per-event Event JSON-LD on / and /events/ via lib/jsonld.ts event(). Includes startDate, endDate, location, eventStatus, eventAttendanceMode, organizer."
+    },
+    "events_exposed_via_feed": {
+      "status": "missing",
+      "detail": "No RSS or iCal feed. Acceptable for AI-crawler use case; would be nicer for calendar-subscription agents."
+    },
+    "related_items_semantically_linked": {
+      "status": "ok",
+      "detail": "RelatedItems uses plain <a href> inside <ul role=list>. Each card heading is an <h3>. Fully crawlable; no client-side hydration."
+    },
+    "every_meaningful_page_has_stable_url": {
+      "status": "ok",
+      "detail": "Astro static output with trailingSlash: 'always'. All routes via getStaticPaths(). Sitemap excludes /404 and any redirected legacy URLs (filter)."
+    },
+    "forms_downloads_contact_agent_accessible": {
+      "status": "warning",
+      "detail": "Contact form is a placeholder with no endpoint. Social links go to archive.org snapshots. No mailto. Pre-existing issue not introduced by this diff but blocks contact-action parity."
+    },
+    "faq_exposed_as_faqpage_schema": {
+      "status": "ok",
+      "detail": "/explore-tywyn/ extracts h4-Q/p-A pairs from a .faqs container and emits FAQPage JSON-LD via faqPage()."
+    },
+    "canonical_urls_present": {
+      "status": "ok",
+      "detail": "BaseLayout sets <link rel=canonical> from Astro.url; per-page seo.canonical override supported."
+    },
+    "open_graph_complete": {
+      "status": "ok",
+      "detail": "og:type, title, description, url, site_name, locale, image (with alt + width/height when default), twitter:card. og:image:width/height were added in this diff."
+    },
+    "shared_workspace": {
+      "status": "n/a",
+      "detail": "Static site; no separate agent data store."
+    }
+  },
+  "noun_inventory": [
+    {
+      "noun": "venue (eating)",
+      "knowable": true,
+      "actionable": true,
+      "documented_in_schema": true,
+      "schema_types": ["Restaurant", "FoodEstablishment"]
+    },
+    {
+      "noun": "attraction (things-to-do)",
+      "knowable": true,
+      "actionable": true,
+      "documented_in_schema": true,
+      "schema_types": ["TouristAttraction"]
+    },
+    {
+      "noun": "event",
+      "knowable": true,
+      "actionable": true,
+      "documented_in_schema": true,
+      "schema_types": ["Event"]
+    },
+    {
+      "noun": "accommodation category",
+      "knowable": true,
+      "actionable": true,
+      "documented_in_schema": true,
+      "schema_types": ["WebPage", "ItemList"]
+    },
+    {
+      "noun": "FAQ entry",
+      "knowable": true,
+      "actionable": true,
+      "documented_in_schema": true,
+      "schema_types": ["FAQPage", "Question", "Answer"]
+    },
+    {
+      "noun": "destination (Tywyn itself)",
+      "knowable": true,
+      "actionable": true,
+      "documented_in_schema": true,
+      "schema_types": ["TouristDestination", "GeoCoordinates"]
+    },
+    {
+      "noun": "publisher",
+      "knowable": true,
+      "actionable": true,
+      "documented_in_schema": true,
+      "schema_types": ["Organization", "WebSite"]
+    },
+    {
+      "noun": "page (editorial)",
+      "knowable": true,
+      "actionable": true,
+      "documented_in_schema": true,
+      "schema_types": ["WebPage", "SpeakableSpecification"]
+    },
+    {
+      "noun": "breadcrumb trail",
+      "knowable": true,
+      "actionable": true,
+      "documented_in_schema": true,
+      "schema_types": ["BreadcrumbList"]
+    },
+    {
+      "noun": "related-items navigation",
+      "knowable": true,
+      "actionable": true,
+      "documented_in_schema": false,
+      "note": "Semantic markup only; sufficient for crawlers"
+    },
+    {
+      "noun": "contact channel",
+      "knowable": true,
+      "actionable": false,
+      "documented_in_schema": false,
+      "note": "Placeholder copy; no agent (or human) can submit"
+    }
+  ],
+  "score": {
+    "high_priority_capabilities_total": 8,
+    "high_priority_capabilities_agent_accessible": 8,
+    "should_have_capabilities_total": 6,
+    "should_have_capabilities_agent_accessible": 5,
+    "verdict": "PASS"
+  },
+  "whats_working_well": [
+    "Centralised JSON-LD builder in src/lib/jsonld.ts: every schema type composed from one place, easy to audit when search engines tighten requirements.",
+    "BaseLayout auto-emits BreadcrumbList from the same breadcrumbs array passed to the visual component — no chance of HTML/schema drift.",
+    "[...slug].astro auto-extracts FAQPage JSON-LD from raw markdown body, so editors can add a new FAQ page without touching schema code.",
+    "Per-page priority weighting in astro.config.mjs sitemap serializer — home 1.0/daily, listings 0.9/weekly, detail 0.8/monthly, editorial 0.6/monthly.",
+    "Static output + trailingSlash: 'always' yields canonical, stable URLs for every route.",
+    "Per-venue JSON-LD includes telephone, address, geo, image, and sameAs (Facebook, TripAdvisor, website) — gives AI agents everything needed to act on a venue.",
+    "Speakable schema added for editorial pages; voice assistants can read headline + first paragraph aloud.",
+    "Open Graph image dimensions added so social previewers do not need to fetch the image to size it.",
+    "robots.txt deliberately allows AI crawlers — training opt-in (commit a91b65a)."
+  ]
+}

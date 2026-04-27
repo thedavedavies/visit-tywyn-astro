@@ -1,0 +1,111 @@
+{
+  "reviewer": "project-standards",
+  "findings": [
+    {
+      "id": "ps-1",
+      "title": "Non-deterministic Math.random() sort breaks build reproducibility convention",
+      "severity": "medium",
+      "confidence": 0.78,
+      "autofix_class": "needs_human",
+      "category": "convention-drift",
+      "files": [
+        "/Users/dave/Documents/Projects/visit-tywyn-astro/src/pages/eating/[slug].astro",
+        "/Users/dave/Documents/Projects/visit-tywyn-astro/src/pages/things-to-do/[slug].astro"
+      ],
+      "rule_source": "Codebase convention — src/lib/events.ts line 105 sorts deterministically with `out.sort((a, b) => a.startIso.localeCompare(b.startIso))`; src/pages/eating/index.astro and things-to-do/index.astro both use `localeCompare` for stable ordering. README declares output is fully static (`output: 'static'` in astro.config.mjs).",
+      "violation": "src/pages/eating/[slug].astro lines 37-39 and src/pages/things-to-do/[slug].astro lines 32-35 use `.sort(() => Math.random() - 0.5)` to pick related items. Each build emits a different RelatedItems set per page, which means rendered HTML diverges between builds. Combined with `lastmod: new Date()` in astro.config.mjs the sitemap signals freshness on every deploy without real content change, and human-reviewable git diffs of `dist/` become noisy. Every other ordering in the project uses a deterministic comparator.",
+      "evidence": "eating/[slug].astro:37-39 — `const related = (relatedPool.length >= 4 ? relatedPool : others).sort(() => Math.random() - 0.5).slice(0, 4);`; things-to-do/[slug].astro:32-35 — same pattern. src/lib/events.ts:105 — `out.sort((a, b) => a.startIso.localeCompare(b.startIso));`. src/pages/eating/index.astro:8 — `(await getCollection('eating')).sort((a, b) => a.data.title.localeCompare(b.data.title))`. README line 96 — `Output is fully static`.",
+      "recommendation": "Switch to a deterministic selection: hash the venue.id (e.g. simple string-hash modulo) to pick a stable rotation, or sort by `.data.title.localeCompare(other.data.title)` and slice a window starting from the current item's alphabetical index. Either makes per-page output stable across builds.",
+      "pre_existing": false
+    },
+    {
+      "id": "ps-2",
+      "title": "BannerImage aspect-ratio + max-height creates stretched image on tall narrow viewports",
+      "severity": "low",
+      "confidence": 0.62,
+      "autofix_class": "needs_human",
+      "category": "convention-drift",
+      "files": [
+        "/Users/dave/Documents/Projects/visit-tywyn-astro/src/components/BannerImage/BannerImage.module.scss"
+      ],
+      "rule_source": "Codebase convention — design tokens declared in src/styles/abstracts/_variables.scss, referenced by every component module that uses spacing/colour. BannerImage already imports nothing from abstracts (so this finding is about the new constraint geometry, not tokens).",
+      "violation": "Adding `aspect-ratio: 16 / 5` and `max-height: 480px` on `.wrap` while keeping `.image { width: 100%; height: 100%; object-fit: cover }` means below ~1500px viewport width the wrapper height is governed by aspect-ratio (viewport-w * 5/16), but above that the wrapper height saturates at 480px while the image is forced to fill the wrapper. The legacy site capped image height only — it never imposed an aspect ratio on the container. Mobile (e.g. 375px) gives a 117px-tall banner where the legacy was governed by intrinsic image height, which previously could be taller. Worth a manual visual check against the legacy banner heights.",
+      "evidence": "Diff src/components/BannerImage/BannerImage.module.scss lines 5-8 (added aspect-ratio + max-height to .wrap) and lines 13-14 (image now fills wrapper with `height: 100%`, lost its own `max-height: 480px`).",
+      "recommendation": "Verify visually on mobile / tablet / desktop that the new fixed 16:5 ratio matches the legacy proportions, particularly for hero images that were near-square or 4:1. If a single ratio is wrong for some pages, either widen the ratio (e.g. 24:7 ≈ 3.43) or accept CLS impact and revert.",
+      "pre_existing": false
+    },
+    {
+      "id": "ps-3",
+      "title": "Unused exported helper `place()` violates lib/ minimalism convention",
+      "severity": "low",
+      "confidence": 0.65,
+      "autofix_class": "advisory",
+      "category": "convention-drift",
+      "files": [
+        "/Users/dave/Documents/Projects/visit-tywyn-astro/src/lib/jsonld.ts"
+      ],
+      "rule_source": "Codebase convention — every existing export in src/lib/{events.ts, conditions.ts, nav.ts, site.ts} is consumed somewhere in src/pages/ or src/components/. lib/ acts as small focused single-source-of-truth modules.",
+      "violation": "src/lib/jsonld.ts lines 343-363 export `place()` with a comment `Currently unused but kept here so it's ready when needed (e.g., the cinema page).` The other lib modules don't carry speculative dead code; they keep helpers focused on actual usage. Strict TS won't flag this (it's exported), but it adds maintenance surface and the comment admits the function isn't proven against any caller's data shape.",
+      "evidence": "src/lib/jsonld.ts:343 comment states unused; grep for `place(` callers in src/pages and src/components returns no matches.",
+      "recommendation": "Remove `place()` until the cinema page actually needs it. It's three lines to re-add when the use case surfaces and the shape will be informed by the real call site.",
+      "pre_existing": false
+    },
+    {
+      "id": "ps-4",
+      "title": "extractFaq() in [...slug].astro lives in the page file rather than src/lib",
+      "severity": "low",
+      "confidence": 0.68,
+      "autofix_class": "advisory",
+      "category": "convention-drift",
+      "files": [
+        "/Users/dave/Documents/Projects/visit-tywyn-astro/src/pages/[...slug].astro"
+      ],
+      "rule_source": "README line 86 — `lib/  # site config, nav, events, conditions`. Every reusable text-processing helper in the codebase (events normalisation, conditions snapshots, jsonld builders) sits in src/lib/. Page files contain only data-binding glue and JSX.",
+      "violation": "src/pages/[...slug].astro lines 39-58 define `extractFaq(body)` inline. This is a 20-line text-processing function with regexes — exactly the kind of helper that sits in src/lib/. Co-locating it in the page also makes it untestable in isolation if a tooling layer is added later, and the comment `currently only /explore-tywyn/` admits it's deliberately page-specific behaviour without a test fixture.",
+      "evidence": "src/pages/[...slug].astro:39-58 — function definition. Compare with src/pages/eating/[slug].astro:51 — calls `restaurant({...})` from src/lib/jsonld.ts; no inline helpers.",
+      "recommendation": "Move `extractFaq` into src/lib/jsonld.ts (or a new src/lib/markdown.ts) so the page file is purely composition. Keeps the lib/ as the single home for build-time text utilities.",
+      "pre_existing": false
+    },
+    {
+      "id": "ps-5",
+      "title": "absoluteUrl non-null assertion in breadcrumbList masks edge case",
+      "severity": "low",
+      "confidence": 0.55,
+      "autofix_class": "advisory",
+      "category": "convention-drift",
+      "files": [
+        "/Users/dave/Documents/Projects/visit-tywyn-astro/src/lib/jsonld.ts"
+      ],
+      "rule_source": "tsconfig.json extends astro/tsconfigs/strict — strict null checks on. The codebase otherwise avoids non-null assertions: grep across src/lib returns zero `!` postfix assertions outside the new file.",
+      "violation": "src/lib/jsonld.ts line 78 — `const current = absoluteUrl(currentUrl)!;` uses a non-null assertion to silence strict null checks. `absoluteUrl` returns `undefined` when the input is falsy and no fallback is provided. BaseLayout always passes a non-empty `canonicalHref` today, but the assertion hides that contract from any future caller. Other lib functions return `undefined` or `null` cleanly and propagate.",
+      "evidence": "src/lib/jsonld.ts:78 — `const current = absoluteUrl(currentUrl)!;`. src/lib/events.ts and conditions.ts contain zero `!` assertions; functions return null/undefined and callers branch.",
+      "recommendation": "Either narrow `currentUrl` to `string | URL` (no undefined) and remove the assertion, or guard with an early return if `absoluteUrl` returns undefined. Keeps the file consistent with the rest of lib/.",
+      "pre_existing": false
+    },
+    {
+      "id": "ps-6",
+      "title": "Sitemap serialize uses regex literal logic without comment-traced URL examples",
+      "severity": "low",
+      "confidence": 0.6,
+      "autofix_class": "advisory",
+      "category": "documentation-convention",
+      "files": [
+        "/Users/dave/Documents/Projects/visit-tywyn-astro/astro.config.mjs"
+      ],
+      "rule_source": "Codebase convention — every multi-step lib/ helper (events.ts, conditions.ts) opens with a JSDoc block explaining inputs, outputs, and edge cases. site.ts has inline `//` comments next to non-obvious values (e.g., the tideStationId comment).",
+      "violation": "astro.config.mjs lines 24-39: the `serialize` callback nests three regex matches against `item.url` with no example URLs or expected priorities documented. Reader has to mentally parse `/\\/(eating|things-to-do|where-to-stay|events|holiday-accommodation)\\/?$/` to figure out which routes are 0.9 vs 0.8 vs 0.6. Other multi-branch logic in the project (e.g. events.ts isPast/isOngoing/isUpcoming) is preceded by an explanatory comment.",
+      "evidence": "astro.config.mjs:21-23 — has a one-line intent comment but no per-branch examples. Compare src/lib/events.ts:1-7 JSDoc + line-level comments on each branch.",
+      "recommendation": "Add a one-line example URL above each regex, e.g. `// /eating/, /things-to-do/, /holiday-accommodation/seaside-cottages/ → 0.9 weekly`. Future maintainers can verify the priority table at a glance.",
+      "pre_existing": false
+    }
+  ],
+  "residual_risks": [
+    "Sitemap+lastmod feedback loop: `lastmod: new Date()` in astro.config.mjs combined with new Math.random() RelatedItems means every build signals fresh content for every URL, even when source markdown is unchanged. Search engines may eventually deprioritize lastmod signals from this sitemap. Pre-existing for the lastmod line, but ps-1 amplifies the actual HTML divergence.",
+    "JSON-LD currentUrl coverage is untested: BaseLayout always passes a constructed canonicalHref so today this works, but no test/build assertion guards against a future page passing an empty string and producing schema with `item: ''` (invalid breadcrumb)."
+  ],
+  "testing_gaps": [
+    "No test or build assertion validates JSON-LD output is parseable JSON (e.g., does not produce `undefined` keys when optional source fields are missing). With ~9 builder functions in src/lib/jsonld.ts this is the single biggest correctness surface introduced.",
+    "No fixture or unit test exercises extractFaq() — the regex `<h4[^>]*>([\\s\\S]*?)<\\/h4>([\\s\\S]*?)(?=<h[1-4][^>]*>|$)` has subtle behaviour at boundaries (last h4 before EOF, h4 inside nested div, escaped HTML in question text) that won't show up until /explore-tywyn/ visibly degrades in search results.",
+    "robots.txt and sitemap-index.xml format compliance is not asserted in any check; manual verification via `dist/robots.txt` and `dist/sitemap-index.xml` is required after each release."
+  ]
+}

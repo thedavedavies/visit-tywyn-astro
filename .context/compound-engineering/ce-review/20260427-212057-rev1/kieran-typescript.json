@@ -1,0 +1,159 @@
+{
+  "reviewer": "kieran-typescript",
+  "findings": [
+    {
+      "id": "kieran-1",
+      "severity": "low",
+      "confidence": 0.7,
+      "tier": "nit",
+      "category": "type-safety",
+      "title": "JsonLd = Record<string, unknown> is loose and never reused externally",
+      "file": "/Users/dave/Documents/Projects/visit-tywyn-astro/src/lib/jsonld.ts",
+      "line": 12,
+      "summary": "JsonLd is exported but only used inside jsonld.ts itself; BaseLayout independently re-declares Record<string, unknown>[] for autoSchema and the Props.jsonLd type. The alias offers no compile-time guarantees against producing an invalid schema (no '@type', wrong shape per @type).",
+      "evidence": "src/lib/jsonld.ts:12 declares export type JsonLd = Record<string, unknown>. src/layouts/BaseLayout.astro:60 declares const autoSchema: Record<string, unknown>[] inline rather than importing JsonLd. Props.jsonLd in BaseLayout uses the same inline shape. Output is always JSON.stringify'd so the loss is bounded, but a discriminated union on '@type' (e.g. {'@type': 'Restaurant'; name: string; ...} | {'@type': 'TouristAttraction'; ...}) would let the compiler catch a typo'd '@typr' or a missing required field at the builder level.",
+      "recommendation": "Either (a) tighten JsonLd to a discriminated union on '@type' for the dozen schemas this module emits and reuse from BaseLayout, or (b) accept the looseness and stop exporting JsonLd at all. Current shape is the worst of both — nominal alias, no extra safety, duplicated downstream."
+    },
+    {
+      "id": "kieran-2",
+      "severity": "medium",
+      "confidence": 0.78,
+      "tier": "should-fix",
+      "category": "consistency",
+      "title": "itemList returns a schema for empty entries while breadcrumbList/faqPage return null",
+      "file": "/Users/dave/Documents/Projects/visit-tywyn-astro/src/lib/jsonld.ts",
+      "line": 121,
+      "summary": "itemList(name, []) emits {'@type':'ItemList', numberOfItems:0, itemListElement:[]} which is a meaningless block of structured data. breadcrumbList and faqPage both short-circuit to null for empty input. Asymmetric API; callers in eating/index.astro, things-to-do/index.astro, dog-friendly-cafes.astro and where-to-stay.astro do not guard against empty lists, so on a partially-built collection or filter mismatch the page will ship an empty ItemList to Search Console.",
+      "evidence": "src/lib/jsonld.ts:121-134 itemList signature returns JsonLd unconditionally. Compare with breadcrumbList (line 94, returns JsonLd | null with empty guard) and faqPage (line 316, same pattern).",
+      "recommendation": "Make itemList return JsonLd | null with `if (entries.length === 0) return null;` and let callers compose with the same `if (schema) jsonLd.push(schema)` pattern already used in [...slug].astro:84."
+    },
+    {
+      "id": "kieran-3",
+      "severity": "low",
+      "confidence": 0.62,
+      "tier": "nit",
+      "category": "type-safety",
+      "title": "Non-null assertion in breadcrumbList relies on absoluteUrl behaviour, not its type",
+      "file": "/Users/dave/Documents/Projects/visit-tywyn-astro/src/lib/jsonld.ts",
+      "line": 96,
+      "summary": "`const current = absoluteUrl(currentUrl)!;` uses a non-null assertion because absoluteUrl returns string | undefined. The return is undefined only when input is falsy, and currentUrl is typed string | URL — but TS cannot prove that empty-string `''` won't slip through (e.g. a page accidentally sets canonical to ''). The ! hides that.",
+      "evidence": "src/lib/jsonld.ts:18-23 absoluteUrl returns fallback when input is falsy. src/lib/jsonld.ts:96 asserts non-null without proving currentUrl !== ''. If BaseLayout ever passed canonicalHref derived from an empty Astro.url.pathname, breadcrumbs would emit `item: undefined`.",
+      "recommendation": "Either narrow absoluteUrl's return when called with a definitely-defined string (overload), or replace `!` with an explicit fallback: `const current = absoluteUrl(currentUrl) ?? SITE.url;`. Same applies to webPage/place/event when input.url is required by the interface but absoluteUrl still returns string | undefined."
+    },
+    {
+      "id": "kieran-4",
+      "severity": "low",
+      "confidence": 0.65,
+      "tier": "nit",
+      "category": "edge-cases",
+      "title": "absoluteUrl does not handle protocol-relative or non-http schemes",
+      "file": "/Users/dave/Documents/Projects/visit-tywyn-astro/src/lib/jsonld.ts",
+      "line": 18,
+      "summary": "The /^https?:\\/\\//i guard means a protocol-relative `//cdn.example.com/x.jpg` falls through to `new URL(input, SITE.url)` which prepends `https:` and works, but a `mailto:` or `tel:` href (potentially used in sameAs lists or on event URLs) would also be reparsed against SITE.url and produce nonsense like https://visit-tywyn.co.uk/mailto:foo@bar.",
+      "evidence": "src/lib/jsonld.ts:18-23 only special-cases http(s). The event() builder accepts arbitrary input.url and the sameAs array on restaurant/touristAttraction filters non-strings only. Frontmatter could plausibly carry a tel: link.",
+      "recommendation": "Either widen the absolute-protocol regex to /^[a-z][a-z0-9+.-]*:/i (any URI scheme), or document that absoluteUrl is only for http(s)/path inputs and validate at the call site. The current behaviour silently corrupts non-http URIs."
+    },
+    {
+      "id": "kieran-5",
+      "severity": "low",
+      "confidence": 0.6,
+      "tier": "nit",
+      "category": "duplication",
+      "title": "Spread-conditional optional-property pattern repeated across 6 builders",
+      "file": "/Users/dave/Documents/Projects/visit-tywyn-astro/src/lib/jsonld.ts",
+      "line": 0,
+      "summary": "The `...(input.x ? { x: input.x } : {})` idiom appears 20+ times across restaurant, touristAttraction, event, webPage, itemList, place. Each line is locally readable but the file's overall scan-time is dominated by the noise. A small helper `optional<K extends string, V>(k: K, v: V | null | undefined): Partial<Record<K, V>>` would compress the pattern without losing type safety.",
+      "evidence": "src/lib/jsonld.ts lines 130-131, 156-167, 196-209, 229-265, 285-300, 350-358 — same pattern in every builder.",
+      "recommendation": "Add `function opt<K extends string, V>(k: K, v: V | null | undefined): Partial<Record<K, V>> { return v == null ? {} : { [k]: v } as Partial<Record<K, V>>; }` and replace the conditional spreads. Keep the `geo` block as-is — it transforms the value, not just guards it."
+    },
+    {
+      "id": "kieran-6",
+      "severity": "medium",
+      "confidence": 0.82,
+      "tier": "should-fix",
+      "category": "correctness",
+      "title": "event() hardcodes Tywyn/Gwynedd/GB address regardless of input.location text",
+      "file": "/Users/dave/Documents/Projects/visit-tywyn-astro/src/lib/jsonld.ts",
+      "line": 240,
+      "summary": "When input.location is provided, the builder always emits `addressLocality: 'Tywyn', addressRegion: 'Gwynedd', addressCountry: 'GB'`, regardless of whether the location string is Aberdovey, Machynlleth or somewhere else entirely. This is a behavioural assumption baked into a typed schema builder where the type system can't catch it.",
+      "evidence": "src/lib/jsonld.ts:240-247 — Place.address is constant. EventInput.location is just `string` so callers cannot pass full address detail. Frontmatter today may only have Tywyn events but the field is untyped.",
+      "recommendation": "Either (a) widen EventInput.location to `string | { name: string; locality?: string; region?: string; country?: string }` and let callers be explicit, or (b) drop the address sub-object entirely (just emit Place.name) until structured address data is available. Hardcoding will misinform Search Console the moment a non-Tywyn event is added."
+    },
+    {
+      "id": "kieran-7",
+      "severity": "low",
+      "confidence": 0.7,
+      "tier": "nit",
+      "category": "consistency",
+      "title": "EventInput uses string | null for url/image while every other builder uses only ?:",
+      "file": "/Users/dave/Documents/Projects/visit-tywyn-astro/src/lib/jsonld.ts",
+      "line": 222,
+      "summary": "EventInput.url and EventInput.image are typed `string | null` (with optional `?`). Every other builder uses just `?: string`. The truthy-check `input.url ?` handles both, so behaviour is identical, but the inconsistency suggests a frontmatter shape that emits null. If callers pass `null` deliberately, that's fine; if it's incidental, the API would be cleaner with `?: string` only.",
+      "evidence": "src/lib/jsonld.ts:222-223 vs the rest of the file. RestaurantInput.photo, AttractionInput.heroImage, ArticleInput.image, PlaceInput.image are all `?: string`.",
+      "recommendation": "Pick one convention. If the events frontmatter actually emits `null` (zod-coerced), document that with a comment. Otherwise simplify to `url?: string; image?: string;`."
+    },
+    {
+      "id": "kieran-8",
+      "severity": "low",
+      "confidence": 0.68,
+      "tier": "nit",
+      "category": "duplication",
+      "title": "BreadcrumbItem interface duplicated between jsonld.ts and BaseLayout.astro",
+      "file": "/Users/dave/Documents/Projects/visit-tywyn-astro/src/layouts/BaseLayout.astro",
+      "line": 19,
+      "summary": "Both files define `interface BreadcrumbItem { label: string; href?: string }`. jsonld.ts does not export it. Header.astro likely has a third copy. A single exported type is the obvious fix — and would let us catch field renames at compile time across producer, layout, and consumer.",
+      "evidence": "src/lib/jsonld.ts:88-91 (not exported) vs src/layouts/BaseLayout.astro:19-22.",
+      "recommendation": "Export BreadcrumbItem from src/lib/jsonld.ts (or move it to src/lib/site.ts as a shared layout type) and import it everywhere. While there, audit Header/Breadcrumbs components for a third copy."
+    },
+    {
+      "id": "kieran-9",
+      "severity": "low",
+      "confidence": 0.6,
+      "tier": "nit",
+      "category": "performance",
+      "title": "BaseLayout calls absoluteUrl(SITE.defaultOgImage) twice per render to compute usingDefaultOgImage",
+      "file": "/Users/dave/Documents/Projects/visit-tywyn-astro/src/layouts/BaseLayout.astro",
+      "line": 60,
+      "summary": "`usingDefaultOgImage = !ogImage && resolvedOgImage === absoluteUrl(SITE.defaultOgImage)` parses the URL again. Cheap, but the comparison-by-string is fragile: any future change to absoluteUrl (e.g. trailing-slash normalisation) silently breaks this branch. The intent — `did the caller leave ogImage blank?` — is already encoded by `!ogImage`. The string equality test is redundant.",
+      "evidence": "src/layouts/BaseLayout.astro:58-60.",
+      "recommendation": "Replace with `const usingDefaultOgImage = !ogImage;`. The image-dimensions meta block is exactly correct iff the caller didn't supply ogImage."
+    },
+    {
+      "id": "kieran-10",
+      "severity": "info",
+      "confidence": 0.85,
+      "tier": "info",
+      "category": "naming",
+      "title": "File name jsonld.ts is consistent with project convention",
+      "file": "/Users/dave/Documents/Projects/visit-tywyn-astro/src/lib/jsonld.ts",
+      "line": 1,
+      "summary": "src/lib/ uses flat lowercase identifiers (site.ts, nav.ts, events.ts, conditions.ts). jsonld.ts fits. No change needed; flagging because the prompt asked.",
+      "evidence": "ls src/lib/.",
+      "recommendation": "Keep as-is."
+    },
+    {
+      "id": "kieran-11",
+      "severity": "info",
+      "confidence": 0.78,
+      "tier": "info",
+      "category": "type-safety",
+      "title": "extractFaq non-null assertions are safe under the regex contract",
+      "file": "/Users/dave/Documents/Projects/visit-tywyn-astro/src/pages/[...slug].astro",
+      "line": 43,
+      "summary": "`scope = sliceMatch ? sliceMatch[1]! : body` and `m[1]!`/`m[2]!` are guarded by the parent regex's capturing groups (one and two unconditional `(...)` groups respectively, with a successful match implying the groups exist as strings). The `!` is correct, but a maintainer adding an alternation `(<h4>|<h5>)` could break this without TS catching it.",
+      "evidence": "src/pages/[...slug].astro:38-55. The regex `/<h4[^>]*>([\\s\\S]*?)<\\/h4>([\\s\\S]*?)(?=<h[1-4][^>]*>|$)/gi` always populates groups 1 and 2 when matched.",
+      "recommendation": "Optional: replace `m[1]!` with `m[1] ?? ''` and `m[2]!` with `m[2] ?? ''` to make the safety self-evident at no cost. Same for `sliceMatch[1] ?? body`."
+    }
+  ],
+  "residual_risks": [
+    "JsonLd type's looseness means a builder can drift from the schema.org spec without compiler complaints — only Search Console / Rich Results test will surface the regression. No unit test for any builder.",
+    "absoluteUrl is the only URL normaliser in the codebase; if jsonld.ts grows mailto:/tel: handling, the silent re-parse against SITE.url will produce broken external links in sameAs arrays.",
+    "event() emits an unconditional Tywyn PostalAddress — any non-Tywyn event added later will misrepresent location to search engines without a build-time signal."
+  ],
+  "testing_gaps": [
+    "No tests cover absoluteUrl edge cases: relative path with leading slash, relative without leading slash, absolute URL with query/fragment, protocol-relative, mailto:, tel:, empty string, undefined.",
+    "No snapshot or shape test for any of the 12 schema builders. A typo in '@type' or a missing required field (e.g. removing position from itemListElement) would ship to production.",
+    "extractFaq has zero coverage — its regex behaviour on the actual /explore-tywyn/ markdown is the only validation. A markdown reformat that adds whitespace inside <h4> attributes or switches to ATX headings (#### Question) would silently disable FAQ rich results.",
+    "breadcrumbList/faqPage's null-return contract is tested only by inspection in [...slug].astro; no test verifies that callers actually short-circuit instead of pushing null into jsonLdBlocks."
+  ]
+}

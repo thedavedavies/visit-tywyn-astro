@@ -1,0 +1,126 @@
+{
+  "reviewer": "correctness",
+  "findings": [
+    {
+      "id": "C1",
+      "severity": "high",
+      "confidence": 0.9,
+      "title": "JSON-LD <script> injection: JSON.stringify does not escape '</script>' so any content containing it breaks the page",
+      "file": "src/layouts/BaseLayout.astro",
+      "lines": "152-156",
+      "evidence": "Line 154: <script type=\"application/ld+json\" set:html={JSON.stringify(block)} />. JSON.stringify does not escape the '<' character, so any value containing '</script>' (case-insensitive, including '</SCRIPT>', '</script >', '</script\\n>', or '<!--') would terminate the inline JSON-LD <script> block early and dump the rest of the JSON as raw HTML, potentially also enabling content injection. Astro itself ships a helper for exactly this case (node_modules/astro/dist/runtime/server/escape.d.ts: stringifyForScript escapes '<' to '\\u003c'). FAQ answers, page descriptions, and event names are extracted from author-controlled markdown, so the practical risk is currently low, but the bug is real and one stray '</script>' in any content field will silently corrupt the rendered page (and every JSON-LD block on it). Mitigation: replace JSON.stringify(block) with a wrapper that does .replace(/</g, '\\\\u003c') (or equivalent), or import Astro's stringifyForScript.",
+      "merge_blocking": false
+    },
+    {
+      "id": "C2",
+      "severity": "medium",
+      "confidence": 0.85,
+      "title": "extractFaq runs on the whole body when no .faqs div is found, contradicting its own comment and producing false-positive FAQPage schema for any future page that uses <h4>",
+      "file": "src/pages/[...slug].astro",
+      "lines": "38-55, 82-84",
+      "evidence": "The function comment states 'Only run inside an .faqs container or after an FAQ heading to avoid false positives on pages that happen to use h4.' The implementation is `const scope = sliceMatch ? sliceMatch[1]! : body;` — when there is no `<div class=\"faqs\">`, scope is the entire body and EVERY h4 in any page becomes a question. Today only explore-tywyn.md has h4 tags, so no immediate bug, but the moment another editorial page introduces an h4 section heading, that page will silently emit FAQPage JSON-LD with arbitrary headings as 'questions'. The intent (per comment) was to require .faqs scope OR an 'FAQ' heading; neither is enforced.",
+      "merge_blocking": false
+    },
+    {
+      "id": "C3",
+      "severity": "medium",
+      "confidence": 0.85,
+      "title": "extractFaq's outer .faqs slice uses lazy match on </div>, so any inner <div> inside the FAQ container truncates the scope and silently drops later questions",
+      "file": "src/pages/[...slug].astro",
+      "lines": "42-43",
+      "evidence": "Regex `/<div class=\"faqs\">([\\s\\S]*?)<\\/div>/i` is non-greedy. If an editor wraps any answer in a <div> (e.g., a note/callout block), the scope ends at the FIRST inner </div>, so all FAQs after that point are dropped from the schema. Currently explore-tywyn.md has no nested divs, so no live bug, but this is a foot-gun for future content. Two safer options: (a) require a sentinel like </div></article> at the end, or (b) match on a non-conflicting wrapper such as a comment marker.",
+      "merge_blocking": false
+    },
+    {
+      "id": "C4",
+      "severity": "low",
+      "confidence": 0.75,
+      "title": "extractFaq drops trailing answer fragments after a same-level h-tag inside an answer body",
+      "file": "src/pages/[...slug].astro",
+      "lines": "44-53",
+      "evidence": "The answer capture is bounded by lookahead `(?=<h[1-4][^>]*>|$)`. If an answer paragraph itself contains an h1/h2/h3 (e.g., a sub-heading inside the explanation), the capture truncates there and the remainder of the answer is silently lost. The next iteration of the regex won't pick the dropped text up because it requires a fresh `<h4>` to start matching again. Not a bug for explore-tywyn.md today (no nested h-tags), but worth flagging since the comment promises to handle nested h-tags safely.",
+      "merge_blocking": false
+    },
+    {
+      "id": "C5",
+      "severity": "low",
+      "confidence": 0.85,
+      "title": "Default OG-image width/height meta is suppressed when a page explicitly passes the same image path as the SITE default",
+      "file": "src/layouts/BaseLayout.astro",
+      "lines": "58-60, 113-121",
+      "evidence": "`usingDefaultOgImage = !ogImage && resolvedOgImage === absoluteUrl(SITE.defaultOgImage)`. The `!ogImage` short-circuit means that a page that ALSO points at /wp-content/uploads/2022/05/explore.jpg explicitly (e.g., the front page or any page using the same hero) will not get width/height meta even though the resolved image IS the configured default. Cosmetic — Facebook/Twitter still scrape the image, just without the dimension hint that helps avoid CLS in the share preview.",
+      "merge_blocking": false
+    },
+    {
+      "id": "C6",
+      "severity": "low",
+      "confidence": 0.7,
+      "title": "?? on seo.title vs seo.description: empty string in CMS is preserved (not falling back to the canonical title)",
+      "file": "src/pages/[...slug].astro, src/pages/eating/[slug].astro, src/pages/things-to-do/[slug].astro, src/pages/holiday-accommodation/[category].astro, src/pages/where-to-stay.astro",
+      "lines": "[...slug].astro 69-70, 88-89; eating/[slug] 66-67; things-to-do/[slug] 57-58; holiday-accommodation 28-29, 50-51",
+      "evidence": "Pattern `page.data.seo?.title ?? page.data.title` and `page.data.seo?.description ?? page.data.subtitle`. seo schema is `z.string().optional()`, which permits empty string. If an editor saves seo.title as '' (e.g., to clear a previous override), the empty value is kept and the page renders with an empty <title>. The earlier ?? bug fixed in this codebase was the same pattern. Switching to `||` (or normalising the schema to reject empty strings) would close it. Lower confidence because we don't have evidence that any current frontmatter actually has empty seo.title; this is a regression-risk pattern.",
+      "merge_blocking": false
+    },
+    {
+      "id": "C7",
+      "severity": "low",
+      "confidence": 0.6,
+      "title": "Math.random()-0.5 shuffle is biased — related-items distribution is not uniform",
+      "file": "src/pages/eating/[slug].astro, src/pages/things-to-do/[slug].astro",
+      "lines": "eating/[slug] 38; things-to-do/[slug] 34",
+      "evidence": "The `.sort(() => Math.random() - 0.5)` idiom is well-documented as biased — the comparator does not satisfy the strict-weak-ordering contract V8's TimSort relies on, and the resulting permutation distribution is markedly non-uniform (later positions are over-represented for some inputs). For 4-of-N selection on a small set this is benign in user impact but every detail page renders the same biased pick at build time, so visitors and search engines see a stable set rather than a fresh one anyway. Use a Fisher-Yates shuffle (or seed by venue.id) for either intent.",
+      "merge_blocking": false
+    },
+    {
+      "id": "C8",
+      "severity": "low",
+      "confidence": 0.7,
+      "title": "Sitemap filter excludes any URL containing the substring '/404', not just the actual /404/ page",
+      "file": "astro.config.mjs",
+      "lines": "20",
+      "evidence": "`filter: (page) => !page.includes('/404')` — substring match. A future page like /things-to-do/team-404/ or /events/the-404-festival/ would silently be excluded from the sitemap. Should be `!page.endsWith('/404/')` (or compare against the resolved 404 URL).",
+      "merge_blocking": false
+    },
+    {
+      "id": "C9",
+      "severity": "low",
+      "confidence": 0.65,
+      "title": "absoluteUrl with empty-string canonical produces undefined breadcrumb 'item', resulting in invalid JSON-LD",
+      "file": "src/lib/jsonld.ts, src/layouts/BaseLayout.astro",
+      "lines": "jsonld.ts 18-23, 94-107; BaseLayout.astro 57, 63",
+      "evidence": "`absoluteUrl('')` returns the fallback (undefined). `breadcrumbList()` then does `const current = absoluteUrl(currentUrl)!;` (non-null assertion swallows the undefined) and emits `{ item: undefined }` for the current page. JSON.stringify drops `undefined` properties, leaving the current breadcrumb item without an `item` field — invalid per Google's BreadcrumbList spec. Today no caller passes canonical=''; the prop default in BaseLayout always builds a URL. The risk is purely defensive: future callers passing an empty string would hit this. Lower confidence because no live trigger exists.",
+      "merge_blocking": false
+    },
+    {
+      "id": "C10",
+      "severity": "low",
+      "confidence": 0.7,
+      "title": "Event location address is hard-coded to Tywyn, Gwynedd, GB regardless of the actual event location",
+      "file": "src/lib/jsonld.ts",
+      "lines": "236-249",
+      "evidence": "`event()` builder fixes `addressLocality: 'Tywyn', addressRegion: 'Gwynedd', addressCountry: 'GB'` for every event with a location. Events in nearby villages (Aberdovey, Llanegryn, Bryncrug) — which are not uncommon for a regional events feed — will be reported to Google with an inaccurate locality. Functional but produces incorrect rich-result data.",
+      "merge_blocking": false
+    },
+    {
+      "id": "C11",
+      "severity": "info",
+      "confidence": 0.95,
+      "title": "Stale events at build time: upcomingEvents() snapshot is frozen until next deploy",
+      "file": "src/pages/index.astro, src/pages/events/index.astro, src/lib/events.ts",
+      "lines": "events.ts 109-112",
+      "evidence": "`upcomingEvents()` filters on `new Date()` at build time. For a static site, the JSON-LD Event nodes accurately reflect the build moment — but if the site isn't rebuilt for several weeks, both the rendered EventsSection and the JSON-LD will continue to advertise events that have since passed. Not a code bug — a build-cadence concern. Worth raising because the original ask flagged it: as long as the deploy hook runs after every events.json edit (and ideally on a daily cron), there's no problem. Without that, the structured data will get progressively misleading.",
+      "merge_blocking": false
+    }
+  ],
+  "residual_risks": [
+    "BreadcrumbList is auto-emitted whenever a page passes a non-empty `breadcrumbs` array. Pages that DON'T pass breadcrumbs (currently the home page) get no BreadcrumbList — that's intentional but worth confirming.",
+    "Restaurant/Attraction schema emits `address` as a plain string. Schema.org accepts this but Google may downgrade rich-result eligibility vs a structured PostalAddress; not a correctness issue.",
+    "Default OG image dimensions in src/lib/site.ts (1908x397) are unusual for social sharing — most platforms target 1200x630. Not a code bug; the comment warns about it, but social previews on Twitter/Facebook may end up letterboxed."
+  ],
+  "testing_gaps": [
+    "No test exercises extractFaq on a body with no <h4> tags, no .faqs div, malformed h4 markup, or nested divs/h-tags. Adding a unit test against src/content/pages/explore-tywyn.md and a synthetic 'no FAQ' page would catch C2/C3/C4 regressions.",
+    "No test verifies that JSON.stringify in BaseLayout produces script-safe output. A unit/integration test that sets a description containing '</script>' and asserts that the rendered <script type=\"application/ld+json\"> block is well-formed would catch C1.",
+    "No test for breadcrumbList(items, '') (empty canonical) or breadcrumbList([], url) — the null path is covered by the existing `if (crumbSchema)` guard but the empty-string path is not.",
+    "No test asserting upcomingEvents() returns an empty array when all entries are past — verifies that index.astro and events/index.astro still render a valid (non-empty) jsonLd array of just Organization/WebSite/TouristDestination."
+  ]
+}

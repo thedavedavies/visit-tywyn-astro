@@ -2,29 +2,24 @@
  * Schema.org JSON-LD builders.
  *
  * Each function returns a plain object that BaseLayout serialises
- * into a `<script type="application/ld+json">` block. Centralising
- * them here keeps every page's structured data consistent and easy
- * to audit when search engines tighten their requirements.
+ * into a `<script type="application/ld+json">` block (escaped via
+ * `safeJsonLd` so editor-controlled strings can't break out).
+ *
+ * Centralising the builders here keeps every page's structured
+ * data consistent and easy to audit when search engines tighten
+ * their requirements. Builders that have nothing to emit return
+ * `null` so callers can filter them out of jsonLd arrays without
+ * special-casing each one.
  */
 
 import { SITE } from './site';
+import { absoluteUrl } from './url';
 
 export type JsonLd = Record<string, unknown>;
 
 /**
- * Resolve a path or absolute URL against the configured site origin.
- * Lets call sites pass either form without thinking about it.
- */
-export function absoluteUrl(input: string | URL | undefined, fallback?: string): string | undefined {
-	if (!input) return fallback;
-	if (input instanceof URL) return input.toString();
-	if (/^https?:\/\//i.test(input)) return input;
-	return new URL(input, SITE.url).toString();
-}
-
-/**
  * Standalone Organization node — used as a publisher reference in
- * other schema objects.
+ * other schema objects via `@id`.
  */
 export function organization(): JsonLd {
 	return {
@@ -39,9 +34,9 @@ export function organization(): JsonLd {
 
 /**
  * Standalone WebSite node — emitted on the home page so search
- * engines can offer a sitelinks search box. We omit potentialAction
- * because there's no on-site search; including it without a real
- * endpoint would be a lie.
+ * engines can tie the site identity together. We omit
+ * `potentialAction` because there's no on-site search; including
+ * it without a real endpoint would be misleading markup.
  */
 export function website(): JsonLd {
 	return {
@@ -87,13 +82,13 @@ interface BreadcrumbItem {
 
 /**
  * BreadcrumbList from the same array we already pass to the
- * `<Breadcrumbs>` visual component. Items without `href` (the
- * current page) get the request URL so search engines have a
- * complete trail.
+ * `<Breadcrumbs>` visual component. Returns null when there's
+ * nothing to render so callers can filter the result out of
+ * their jsonLd arrays.
  */
 export function breadcrumbList(items: BreadcrumbItem[], currentUrl: string | URL): JsonLd | null {
 	if (items.length === 0) return null;
-	const current = absoluteUrl(currentUrl)!;
+	const current = absoluteUrl(currentUrl);
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'BreadcrumbList',
@@ -101,6 +96,7 @@ export function breadcrumbList(items: BreadcrumbItem[], currentUrl: string | URL
 			'@type': 'ListItem',
 			position: idx + 1,
 			name: item.label,
+			// Trailing items (no href) refer to the current page.
 			item: item.href ? absoluteUrl(item.href) : current,
 		})),
 	};
@@ -114,11 +110,12 @@ interface ListEntry {
 }
 
 /**
- * ItemList for archive / listing pages. Each entry must at minimum
- * have a URL and a name — image and description boost rich-result
- * eligibility but aren't required.
+ * ItemList for archive / listing pages. Returns null on empty
+ * input so we don't ship `numberOfItems: 0` to search engines —
+ * which Google explicitly calls out as low-quality markup.
  */
-export function itemList(name: string, entries: ListEntry[]): JsonLd {
+export function itemList(name: string, entries: ListEntry[]): JsonLd | null {
+	if (entries.length === 0) return null;
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'ItemList',
@@ -225,7 +222,18 @@ interface EventInput {
 	description?: string;
 }
 
-export function event(input: EventInput): JsonLd {
+/**
+ * Event node. Exported as `eventSchema` (not `event`) to avoid
+ * shadowing the global `Event` constructor and the `event`
+ * variable name commonly used in handlers.
+ *
+ * `location` is a string-only Place name — we no longer synthesise
+ * a Tywyn PostalAddress for it, since some events sit outside
+ * Tywyn (Aberdyfi, Dolgellau, etc.) and a hardcoded address would
+ * misrepresent them. If structured addresses become important,
+ * widen the input shape later.
+ */
+export function eventSchema(input: EventInput): JsonLd {
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'Event',
@@ -235,18 +243,7 @@ export function event(input: EventInput): JsonLd {
 		eventStatus: 'https://schema.org/EventScheduled',
 		eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
 		...(input.location
-			? {
-					location: {
-						'@type': 'Place',
-						name: input.location,
-						address: {
-							'@type': 'PostalAddress',
-							addressLocality: 'Tywyn',
-							addressRegion: 'Gwynedd',
-							addressCountry: 'GB',
-						},
-					},
-			  }
+			? { location: { '@type': 'Place', name: input.location } }
 			: {}),
 		...(input.url ? { url: absoluteUrl(input.url) } : {}),
 		...(input.image ? { image: absoluteUrl(input.image) } : {}),
@@ -275,9 +272,17 @@ interface ArticleInput {
  * Article (which is for news-style content) and avoids the schema
  * police flagging missing author/headline fields.
  *
+ * `isPartOf` / `publisher` references that pointed at @ids only
+ * defined on the home page have been removed — dangling cross-
+ * page references make some validators unhappy without measurable
+ * search-engine benefit. The Organization + WebSite nodes are
+ * still emitted on the home page where they belong.
+ *
  * Pass `speakableSelector` to mark sections that voice assistants
- * can read aloud (Google Speakable). For most editorial pages the
- * sensible default is the title and entry-content opening.
+ * can read aloud. Targets must be selectors present in the
+ * rendered DOM — CSS-modules-hashed class names won't match, so
+ * use data attributes (`[data-speakable="title"]`) or unscoped
+ * global classes.
  */
 export function webPage(input: ArticleInput): JsonLd {
 	return {
@@ -286,7 +291,9 @@ export function webPage(input: ArticleInput): JsonLd {
 		url: absoluteUrl(input.url),
 		name: input.title,
 		...(input.description ? { description: input.description } : {}),
-		...(input.image ? { primaryImageOfPage: { '@type': 'ImageObject', url: absoluteUrl(input.image) } } : {}),
+		...(input.image
+			? { primaryImageOfPage: { '@type': 'ImageObject', url: absoluteUrl(input.image) } }
+			: {}),
 		...(input.datePublished ? { datePublished: input.datePublished } : {}),
 		...(input.dateModified ? { dateModified: input.dateModified } : {}),
 		...(input.speakableSelector?.length
@@ -297,23 +304,20 @@ export function webPage(input: ArticleInput): JsonLd {
 					},
 			  }
 			: {}),
-		isPartOf: { '@id': `${SITE.url}/#website` },
 		inLanguage: SITE.locale,
-		publisher: { '@id': `${SITE.url}/#organization` },
 	};
 }
 
-interface FaqEntry {
+interface FaqInput {
 	question: string;
 	answer: string;
 }
 
 /**
- * FAQPage schema. Pass an array of {question, answer} pairs and
- * the helper builds the canonical structure that Google uses for
- * FAQ rich results in search.
+ * FAQPage schema. Returns null on empty input so callers can
+ * filter without checking length.
  */
-export function faqPage(entries: FaqEntry[]): JsonLd | null {
+export function faqPage(entries: FaqInput[]): JsonLd | null {
 	if (entries.length === 0) return null;
 	return {
 		'@context': 'https://schema.org',
@@ -326,38 +330,5 @@ export function faqPage(entries: FaqEntry[]): JsonLd | null {
 				text: entry.answer,
 			},
 		})),
-	};
-}
-
-/**
- * Local-business / opening hours / etc enrichment for editorial
- * places that aren't restaurants or attractions. Currently unused
- * but kept here so it's ready when needed (e.g., the cinema page).
- */
-interface PlaceInput {
-	name: string;
-	url: string;
-	address?: string;
-	geo?: { lat: number; lng: number };
-	image?: string;
-}
-
-export function place(input: PlaceInput): JsonLd {
-	return {
-		'@context': 'https://schema.org',
-		'@type': 'Place',
-		name: input.name,
-		url: absoluteUrl(input.url),
-		...(input.address ? { address: input.address } : {}),
-		...(input.image ? { image: absoluteUrl(input.image) } : {}),
-		...(input.geo
-			? {
-					geo: {
-						'@type': 'GeoCoordinates',
-						latitude: input.geo.lat,
-						longitude: input.geo.lng,
-					},
-			  }
-			: {}),
 	};
 }

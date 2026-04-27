@@ -1,0 +1,73 @@
+{
+  "reviewer": "testing",
+  "findings": [
+    {
+      "id": "testing-1",
+      "category": "behavioral_change_no_tests",
+      "severity": "high",
+      "confidence": 0.99,
+      "title": "Diff adds 837 lines of behavioral logic across 19 files with zero test additions",
+      "file": "package.json",
+      "lines": "1-26",
+      "evidence": "git diff c11dd24 --stat shows +837/-64 across new files (src/lib/jsonld.ts, RelatedItems.astro, BaseLayout changes, [...slug].astro extractFaq, plus 12 page-level jsonLd wirings). No *.test.ts / *.spec.ts / __tests__/ exist in the repo, package.json has no test script, no vitest/jest/playwright config is present, and no test file is added in the diff. Every behavioral change in this diff ships untested.",
+      "recommendation": "Add at minimum a unit test runner (vitest is the natural choice for an Astro project) and cover src/lib/jsonld.ts and the extractFaq parser. Wire `npm test` into package.json so CI can gate regressions."
+    },
+    {
+      "id": "testing-2",
+      "category": "missing_unit_tests",
+      "severity": "high",
+      "confidence": 0.98,
+      "title": "src/lib/jsonld.ts (12 pure-function schema builders, 363 lines) has no tests despite being trivially testable",
+      "file": "src/lib/jsonld.ts",
+      "lines": "1-363",
+      "evidence": "Module exports absoluteUrl, organization, website, touristDestination, breadcrumbList, itemList, restaurant, touristAttraction, event, webPage, faqPage, place. All are pure functions returning plain objects — the easiest possible code to unit-test. Bugs of the form missing @context, wrong @type, malformed sameAs, or absoluteUrl regressions on URL-vs-string inputs would all be caught by trivial assertions. Currently nothing verifies any builder produces correct Schema.org output. A typo like `'@typ'` or returning the wrong @id template would silently degrade SEO with zero feedback loop.",
+      "recommendation": "Add jsonld.test.ts asserting: (a) every builder includes '@context': 'https://schema.org' and the expected '@type'; (b) absoluteUrl behaviour for absolute, relative, URL-instance, and undefined inputs; (c) breadcrumbList returns null for empty input and uses currentUrl for items without href; (d) faqPage returns null for empty input; (e) restaurant @type flips between 'Restaurant' and 'FoodEstablishment' based on dogFriendly; (f) event location block is omitted when input.location is missing."
+    },
+    {
+      "id": "testing-3",
+      "category": "missing_edge_case_coverage",
+      "severity": "high",
+      "confidence": 0.97,
+      "title": "extractFaq regex parser in src/pages/[...slug].astro is non-trivial, error-prone logic with no tests",
+      "file": "src/pages/[...slug].astro",
+      "lines": "38-55",
+      "evidence": "extractFaq has multiple branches and edge cases that a regex parser usually gets wrong: (a) presence vs absence of `<div class=\"faqs\">` wrapper switches scope; (b) lookahead `(?=<h[1-4][^>]*>|$)` terminates on any subsequent h1-h4, including the same h4 that started the match (consider the answer-cutoff rule); (c) HTML stripping with `/<[^>]+>/g` mishandles `<` in text or unclosed tags; (d) the `if (question && answer)` guard silently drops malformed pairs without surfacing them. Untested branches include: empty body, body with `<div class=\"faqs\">` but no h4, multiple FAQ blocks, h4 with embedded HTML in question, h4 followed immediately by another h4, mixed h3/h4 boundaries, attribute-bearing h4 (e.g. `<h4 id=\"q1\">`).",
+      "recommendation": "Refactor extractFaq into a pure exported helper (e.g. `src/lib/extractFaq.ts`) and unit-test the cases above. Without isolation it can't even be tested without booting Astro. The current inline location guarantees it stays untested."
+    },
+    {
+      "id": "testing-4",
+      "category": "missing_unit_tests",
+      "severity": "medium",
+      "confidence": 0.95,
+      "title": "BaseLayout breadcrumb auto-emit branch and OG-image dimension branch are untested",
+      "file": "src/layouts/BaseLayout.astro",
+      "lines": "62-67, 113-121",
+      "evidence": "Two new conditional branches: (1) lines 62-64 only push BreadcrumbList when breadcrumbList() returns non-null — relies on jsonld.ts's empty-array short-circuit; (2) lines 113-121 only emit og:image:width/height/type when usingDefaultOgImage is true. The boolean for (2) compares `resolvedOgImage === absoluteUrl(SITE.defaultOgImage)`, which is brittle: if a page passes `ogImage: SITE.defaultOgImage` explicitly the branch incorrectly fires (or fails to fire depending on identity vs string comparison nuance). No test exercises either branch.",
+      "recommendation": "If component-level testing is too heavy, at least extract the `usingDefaultOgImage` resolution into a helper and unit-test it alongside jsonld.ts. The `breadcrumbs.length === 0` short-circuit can be covered by the breadcrumbList unit tests."
+    },
+    {
+      "id": "testing-5",
+      "category": "missing_validator_smoke_test",
+      "severity": "medium",
+      "confidence": 0.85,
+      "title": "Schema builders have no validator smoke test — easy to ship invalid Schema.org output",
+      "file": "src/lib/jsonld.ts",
+      "lines": "1-363",
+      "evidence": "Twelve builders, each emitting structured data that Google parses for rich results. There is no integration check that the JSON parses, that required fields are present, or that the output passes a Schema.org / structured-data validator. A subtle bug (e.g. `latitude` typed as string instead of number, missing required `name` on Event, or wrong @id pattern) ships invisibly and degrades SEO until a human checks Search Console weeks later.",
+      "recommendation": "Either add a unit test that round-trips each builder through JSON.parse(JSON.stringify(...)) and asserts known-required fields, or a build-time check that runs each page's emitted JSON-LD through schema-dts or a similar validator. Even a snapshot test on representative inputs would catch most regressions."
+    }
+  ],
+  "residual_risks": [
+    "Without any test runner, every future SEO change in this codebase carries the same coverage gap. The first test added has high marginal value because it establishes the pattern.",
+    "The dist/ directory is checked in; if a future contributor regenerates structured data the diff in dist/ is the only signal — and it requires manual inspection.",
+    "Astro components themselves (BaseLayout, RelatedItems) are difficult to unit-test without a component test harness; visual / e2e regression for SEO output (e.g. fetching built HTML and asserting on script[type=\"application/ld+json\"]) would be more pragmatic than mocking Astro internals."
+  ],
+  "testing_gaps": [
+    "src/lib/jsonld.ts: 12 builders, 0 tests — highest-value gap, lowest cost to fix.",
+    "src/pages/[...slug].astro extractFaq: regex parser with multiple edge cases and zero tests.",
+    "src/layouts/BaseLayout.astro: BreadcrumbList auto-emit and default-OG-image dimensions branches untested.",
+    "Per-page jsonLd wiring across 12 page files (eating, things-to-do, events, holiday-accommodation, etc.) has no integration test verifying the rendered <script type=\"application/ld+json\"> blocks are well-formed.",
+    "robots.txt and sitemap config changes have no smoke test — a regression that disallows / would silently tank indexing.",
+    "No test infrastructure at all: package.json has no test script, no vitest/jest/playwright config, no __tests__ directory."
+  ]
+}

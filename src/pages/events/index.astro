@@ -4,7 +4,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import EventsSection from '../../components/EventsSection/EventsSection.astro';
 import { upcomingEvents } from '../../lib/events';
-import { event as eventSchema } from '../../lib/jsonld';
+import { eventSchema } from '../../lib/jsonld';
 
 const page = await getEntry('pages', 'events');
 const Content = page ? (await render(page)).Content : null;

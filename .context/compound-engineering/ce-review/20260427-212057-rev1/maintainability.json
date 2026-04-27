@@ -1,0 +1,135 @@
+{
+  "reviewer": "maintainability",
+  "findings": [
+    {
+      "id": "M1",
+      "severity": "low",
+      "confidence": 0.9,
+      "category": "dead_code",
+      "title": "place() builder is unused; comment admits it's speculative",
+      "file": "src/lib/jsonld.ts",
+      "lines": "332-363",
+      "description": "The place() helper has no call sites. The doc comment explicitly says 'Currently unused but kept here so it's ready when needed (e.g., the cinema page)'. This is dead code preserved for a hypothetical future, not for an actual consumer. Tree-shaking will probably remove it from the bundle, but it still costs reading time, has to be kept in sync with the surrounding shape, and could drift before its first real caller arrives.",
+      "recommendation": "Delete place() and PlaceInput. Re-add it in the same commit as the first real consumer when/if the cinema page lands. Speculative scaffolding tends to be wrong by the time the real use case appears.",
+      "merge_blocking": false
+    },
+    {
+      "id": "M2",
+      "severity": "low",
+      "confidence": 0.85,
+      "category": "dead_code",
+      "title": "absoluteUrl's `fallback` parameter is never supplied",
+      "file": "src/lib/jsonld.ts",
+      "lines": "18-23",
+      "description": "absoluteUrl(input, fallback?) declares a fallback parameter that no call site uses — every internal call (within jsonld.ts) and the BaseLayout call passes a single argument. The branch `if (!input) return fallback;` therefore never returns anything but undefined.",
+      "recommendation": "Drop the second parameter. If you later need a 'default URL when input missing' helper, the call sites can use ?? at the call site (e.g. `absoluteUrl(x) ?? SITE.url`) without coupling the helper to that concern.",
+      "merge_blocking": false
+    },
+    {
+      "id": "M3",
+      "severity": "low",
+      "confidence": 0.85,
+      "category": "dead_code",
+      "title": "BaseLayout's `ogType` prop is never explicitly set",
+      "file": "src/layouts/BaseLayout.astro",
+      "lines": "29, 45, 59",
+      "description": "The ogType?: 'website' | 'article' prop is exposed on BaseLayout but no caller passes it — every page relies on the `isFrontPage ? 'website' : 'article'` default. This is an extension point with zero consumers.",
+      "recommendation": "Either remove the prop and inline the derivation, or remove the default and require callers that need 'article' to be explicit. Today the prop costs cognitive surface (one more prop on an already 14-prop layout) without earning its keep.",
+      "merge_blocking": false
+    },
+    {
+      "id": "M4",
+      "severity": "low",
+      "confidence": 0.85,
+      "category": "naming",
+      "title": "jsonld.ts exports `event` which collides with the global Event/event identifier",
+      "file": "src/lib/jsonld.ts",
+      "lines": "228",
+      "description": "The Event-schema builder is exported as `event`. Both consumers (src/pages/index.astro:12 and src/pages/events/index.astro:7) have to alias it: `import { event as eventSchema } from '../lib/jsonld'`. Whenever every importer renames an identifier, the source name is wrong. It also shadows the DOM Event constructor in the editor's autocomplete.",
+      "recommendation": "Rename the export to `eventSchema` (consistent with how callers already alias it) or `eventNode` (consistent with how organization()/website() return a 'node' object). For symmetry consider also renaming the others to eventSchema/organizationSchema/websiteSchema, or leave them and just fix `event`. A single-name rename is the smallest, safest move.",
+      "merge_blocking": false
+    },
+    {
+      "id": "M5",
+      "severity": "low",
+      "confidence": 0.7,
+      "category": "coupling",
+      "title": "extractFaq regex parser embedded in [...slug].astro mixes content extraction with page rendering",
+      "file": "src/pages/[...slug].astro",
+      "lines": "32-55",
+      "description": "extractFaq is a markdown-HTML parser (it scans for `<div class=\"faqs\">`, `<h4>`, strips tags, normalises whitespace) living inside a route file. The route file's job is to wire content to a layout; parsing markup is a separable concern. Two specific costs: (1) the same parser will need to be refactored away the first time a second page wants FAQ extraction; (2) it can't be unit-tested without booting the route. The doc comment even concedes 'currently only `/explore-tywyn/`', which suggests the parser is one-off, but it's still general-purpose enough (regex + scope detection + tag stripping) that future maintainers will be tempted to extend it in place.",
+      "recommendation": "Move extractFaq into src/lib/markdown.ts (new file) or co-locate with faqPage() in src/lib/jsonld.ts as `extractFaqFromBody(body)`. Then the route shrinks to `const faq = faqPage(extractFaqFromBody(page.body))`. Keeps each file responsible for one concern and makes the regex testable in isolation.",
+      "merge_blocking": false
+    },
+    {
+      "id": "M6",
+      "severity": "low",
+      "confidence": 0.75,
+      "category": "premature_abstraction",
+      "title": "`usingDefaultOgImage` predicate is doubly-defensive and harder to read than necessary",
+      "file": "src/layouts/BaseLayout.astro",
+      "lines": "58-60",
+      "description": "`const usingDefaultOgImage = !ogImage && resolvedOgImage === absoluteUrl(SITE.defaultOgImage)` does two things: (1) checks whether the caller supplied an ogImage, and (2) compares the already-resolved URL against absoluteUrl(SITE.defaultOgImage) — which calls absoluteUrl on the same value a second time. The second clause is a no-op given the first: if !ogImage is true, resolvedOgImage was computed from `ogImage ?? SITE.defaultOgImage` and therefore must equal absoluteUrl(SITE.defaultOgImage). The redundant equality makes a future reader pause and re-derive whether there's a corner case (there isn't).",
+      "recommendation": "Either reduce to `const usingDefaultOgImage = !ogImage;` (current behaviour, simpler), or — if you want to also cover the case where a caller passes the default image path explicitly — drop the !ogImage clause and just compare URLs. Picking one rule clarifies intent.",
+      "merge_blocking": false
+    },
+    {
+      "id": "M7",
+      "severity": "low",
+      "confidence": 0.65,
+      "category": "premature_abstraction",
+      "title": "restaurant() and touristAttraction() builders share most of their structure",
+      "file": "src/lib/jsonld.ts",
+      "lines": "138-216",
+      "description": "RestaurantInput and AttractionInput overlap heavily (id/title/description/address/phone/website/geo/sameAs) and the two builders differ only in: (1) the `@type` (Restaurant|FoodEstablishment vs TouristAttraction), (2) the URL prefix (/eating/ vs /things-to-do/), (3) the `@id` fragment, (4) image field name ('photo' vs 'heroImage'), and (5) sameAs ordering quirk (restaurant unshifts website; attraction prepends it via spread). With only two consumers each, separate functions are reasonable. But if a third venue type (cinema, accommodation) is added, the temptation will be to keep copying. Worth flagging now so the next addition consciously decides between extending the pattern or factoring a shared `localBusinessLike()` helper.",
+      "recommendation": "Not blocking. Note the duplication; reconsider when adding the third such builder. If extracted, the shape is something like `placeNode({ type, urlPrefix, idFragment, imageField, ...common })`.",
+      "merge_blocking": false
+    },
+    {
+      "id": "M8",
+      "severity": "low",
+      "confidence": 0.6,
+      "category": "duplication",
+      "title": "Pages duplicate the `[webPage(), itemList()]` jsonLd assembly pattern",
+      "file": "src/pages/where-to-stay.astro, src/pages/holiday-accommodation/[category].astro",
+      "lines": "where-to-stay.astro:25-43, [category].astro:26-46",
+      "description": "Three pages (where-to-stay, holiday-accommodation/[category], plus single-page pages) build a Record<string, unknown>[] array starting with webPage(...) and conditionally pushing an itemList(...). The pattern is inline and duplicated. It's only 8-15 lines per occurrence and each has slightly different fallback/conditional logic, so a helper like `pageWithList(webPageInput, listName, listEntries)` could compress them, but at the cost of a thinner abstraction. Borderline call; the current inline form is readable, and a helper would mostly save a few lines.",
+      "recommendation": "Acceptable as-is. Revisit only if a fourth or fifth page picks up the same pattern, at which point a `pageJsonLd({ webPage, itemList? })` helper earns its keep. Don't introduce the helper before the third repetition.",
+      "merge_blocking": false
+    },
+    {
+      "id": "M9",
+      "severity": "low",
+      "confidence": 0.7,
+      "category": "naming",
+      "title": "absoluteUrl is exported from a module named jsonld but isn't JSON-LD-specific",
+      "file": "src/lib/jsonld.ts, src/layouts/BaseLayout.astro",
+      "lines": "jsonld.ts:18, BaseLayout.astro:17",
+      "description": "absoluteUrl is a generic URL resolver — it has no schema.org coupling. BaseLayout imports it from lib/jsonld solely to resolve OG image paths, which is unrelated to structured data. As more non-JSON-LD callers want it (and they will: any page-level meta tag with an absolute URL), the import path will read as a lie.",
+      "recommendation": "Move absoluteUrl into src/lib/site.ts (or a new src/lib/url.ts) and re-export from jsonld.ts if you want to keep existing imports working. Low priority while there's only one external consumer, but the misleading namespace will accrue cost over time.",
+      "merge_blocking": false
+    },
+    {
+      "id": "M10",
+      "severity": "low",
+      "confidence": 0.65,
+      "category": "naming",
+      "title": "Mixed naming convention across builder return types",
+      "file": "src/lib/jsonld.ts",
+      "lines": "29, 46, 62, 94, 121, 151, 191, 228, 282, 316, 345",
+      "description": "Builders are named in three styles: noun-only nodes (organization, website, place, event, restaurant), action-like nouns (touristDestination, touristAttraction), and explicitly-typed (breadcrumbList, itemList, faqPage, webPage). They all return JSON-LD objects, but a quick glance doesn't tell you whether `event` returns an Event node or processes an event. The `Schema` suffix some callers use externally (`event as eventSchema`) shows that consumers find the bare nouns ambiguous.",
+      "recommendation": "Pick one convention and apply it consistently. Either: (a) all return `xxxNode()` (organizationNode, websiteNode, eventNode, restaurantNode, etc.) or (b) all return `xxxSchema()`. Both reduce ambiguity; the current mix obscures intent.",
+      "merge_blocking": false
+    }
+  ],
+  "residual_risks": [
+    "FAQ extraction is currently driven by a regex over rendered markdown HTML. If a future markdown change inserts wrappers (e.g. <p><h4></p>), the regex breaks silently — extractFaq returns [] and FAQPage schema vanishes from /explore-tywyn/ with no error. Consider a smoke test that asserts faqEntries.length > 0 for that route.",
+    "absoluteUrl(SITE.defaultOgImage) is invoked twice per page render (once for resolvedOgImage, once for usingDefaultOgImage). Trivial cost today; if URL parsing ever becomes hot, memoising or simplifying the predicate (M6) avoids it.",
+    "The sitemap serializer in astro.config.mjs hard-codes `https://visit-tywyn.co.uk/` and three regex patterns for high-priority sections. If the routes are ever renamed (e.g. `things-to-do` -> `attractions`), the sitemap silently de-prioritises them with no test failure. Consider deriving the patterns from a shared route-map constant."
+  ],
+  "testing_gaps": [
+    "extractFaq has no unit tests. As a regex parser with multiple branches (scope detection via .faqs container; tag stripping; whitespace normalisation; lookahead for closing heading levels), it's a prime candidate for table-driven tests. Recommended: extract to lib/markdown.ts (see M5) and add Vitest cases for: empty body, body with no h4, body with h4 outside .faqs (should be ignored), nested HTML inside h4, multi-paragraph answers.",
+    "No test asserts that BaseLayout emits the `og:image:width`/`og:image:height`/`og:image:type` meta tags only when the default image is used. M6 makes the predicate fragile enough that a regression test for both branches (default vs explicit ogImage) would have value.",
+    "The JSON-LD builders have no schema-shape tests. A small Vitest file calling each builder with a representative input and snapshot-comparing the output would catch silent drift when, e.g., schema.org renames a property or someone reorders spread operators in a way that changes serialisation."
+  ]
+}

@@ -17,6 +17,7 @@ import Gallery from '../../components/Gallery/Gallery.astro';
 import Icon from '../../components/Icon/Icon.astro';
 import RelatedItems from '../../components/RelatedItems/RelatedItems.astro';
 import { touristAttraction } from '../../lib/jsonld';
+import { seededShuffle } from '../../lib/random';
 
 export async function getStaticPaths() {
 	const activities = await getCollection('things-to-do');
@@ -29,10 +30,13 @@ export async function getStaticPaths() {
 const { activity, allActivities } = Astro.props;
 const { Content } = await render(activity);
 
-const related = allActivities
-	.filter((a) => a.id !== activity.id)
-	.sort(() => Math.random() - 0.5)
-	.slice(0, 4);
+// Deterministic shuffle so each activity page always offers the
+// same 4 "more to explore" entries; avoids the non-uniform bias
+// of `sort(Math.random)` and the per-build cache-thrash it causes.
+const related = seededShuffle(
+	allActivities.filter((a) => a.id !== activity.id),
+	activity.id
+).slice(0, 4);
 
 const breadcrumbs = [
 	{ label: 'Home', href: '/' },
