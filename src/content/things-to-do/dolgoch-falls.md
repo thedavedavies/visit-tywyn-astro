@@ -9,14 +9,14 @@ geo:
   lng: -3.9933268
   address: Dolgoch falls
 hero_image:
-  src: /wp-content/uploads/2022/06/dolgoch-falls.jpg
+  src: /img/2022/06/dolgoch-falls.jpg
   alt: Dolgoch Falls Waterfall Walk
 gallery:
-  - src: /wp-content/uploads/2022/06/dolgoch-1-scaled.jpg
+  - src: /img/2022/06/dolgoch-1-scaled.jpg
     alt: Dolgoch Falls Waterfall Walk
-  - src: /wp-content/uploads/2022/06/dolgoch-2-scaled.jpg
+  - src: /img/2022/06/dolgoch-2-scaled.jpg
     alt: Dolgoch Falls Waterfall Walk
-  - src: /wp-content/uploads/2022/06/p1103853043-5.jpg
+  - src: /img/2022/06/p1103853043-5.jpg
     alt: Dolgoch Falls Waterfall Walk
 seo:
   description: 'Dolgoch Falls are a series of three waterfalls forming part of the Nant Dol-Góch stream, and can be reached via a short walk or by the Talyllyn Railway.'

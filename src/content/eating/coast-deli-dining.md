@@ -11,7 +11,7 @@ geo:
   lng: -4.0446844
   address: 'Coast Deli & Dining aberdyfi'
 photo:
-  src: /wp-content/uploads/2022/05/IMG_20180818_084223.jpg
+  src: /img/2022/05/img_20180818_084223.jpg
   alt: 'Coast Deli & Dining'
 trip_advisor_link: 'https://www.tripadvisor.co.uk/Restaurant_Review-g191275-d3608893-Reviews-Coast_Deli_Dining-Aberdyfi_Aberdovey_Snowdonia_National_Park_North_Wales_Wales.html'
 facebook_link: 'https://www.facebook.com/coastdelianddining/'

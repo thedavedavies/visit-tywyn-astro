@@ -17,7 +17,7 @@ export const SITE = {
 	// / 2:1 range social platforms expect; BaseLayout omits
 	// og:image:width/height for that reason. Follow-up: generate a
 	// 1200x630 social card and re-add the width/height/type tags.
-	defaultOgImage: '/wp-content/uploads/2022/05/explore.jpg',
+	defaultOgImage: '/img/2022/05/explore.jpg',
 	themeColor: '#046d8b',
 	location: {
 		lat: 52.58643,

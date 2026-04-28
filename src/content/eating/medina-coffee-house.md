@@ -9,7 +9,7 @@ geo:
   lng: -4.0453702
   address: Medina Coffee House
 photo:
-  src: /wp-content/uploads/2022/05/rab8-Medina-Coffee-House-interior.jpg
+  src: /img/2022/05/rab8-medina-coffee-house-interior.jpg
   alt: Medina Coffee House
 trip_advisor_link: 'https://www.tripadvisor.co.uk/Restaurant_Review-g191275-d1724925-Reviews-Medina_Coffee_House-Aberdyfi_Aberdovey_Snowdonia_National_Park_North_Wales_Wales.html'
 facebook_link: 'https://www.facebook.com/medinacoffeehouse/'

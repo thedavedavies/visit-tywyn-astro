@@ -12,6 +12,7 @@
     "astro": "astro",
     "check": "astro check",
     "export": "tsx tools/export-from-sql.ts",
+    "migrate:uploads": "tsx tools/migrate-uploads.ts",
     "refresh:conditions": "tsx tools/refresh-conditions.ts"
   },
   "dependencies": {

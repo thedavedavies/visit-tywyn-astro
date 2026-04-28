@@ -11,7 +11,7 @@ geo:
   lng: -4.0877113
   address: Proper Gander Tywyn
 photo:
-  src: /wp-content/uploads/2022/05/10525865_1450665198517815_8812715232070215068_n.jpg
+  src: /img/2022/05/10525865_1450665198517815_8812715232070215068_n.jpg
   alt: Proper Gander
 trip_advisor_link: 'https://www.tripadvisor.co.uk/Restaurant_Review-g552038-d6883108-Reviews-Proper_Gander-Tywyn_Gwynedd_North_Wales_Wales.html'
 facebook_link: 'https://www.facebook.com/propergandertywyn'

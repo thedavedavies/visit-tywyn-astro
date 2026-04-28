@@ -4,7 +4,7 @@ slug: getting-around
 menu_order: 0
 subtitle: 'Find out how to get to Tywyn, and the best way to get around once you’re here!'
 hero_image:
-  src: /wp-content/uploads/2022/05/around-tywyn.jpg
+  src: /img/2022/05/around-tywyn.jpg
   alt: Getting around Tywyn
 updated: 2024-06-05
 ---

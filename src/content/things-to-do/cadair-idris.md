@@ -4,7 +4,7 @@ subtitle: 'Enjoy spectacular views from one of Wales'' most iconic mountains'
 summary: 'Cadair Idris is one of Wales’s most iconic mountains, standing around 893m in height, and situated in Southern Snowdonia, overlooking Dolgellau'
 published: 2022-07-12
 hero_image:
-  src: /wp-content/uploads/2022/07/Cadair_Idris-scaled.jpg
+  src: /img/2022/07/cadair_idris-scaled.jpg
   alt: Cadair Idris
 seo:
   description: 'Cadair Idris is one of Wales’s most iconic mountains, standing around 893m in height, and situated in Southern Snowdonia, overlooking Dolgellau'
@@ -14,6 +14,6 @@ Cadair Idris is one of Wales’s most iconic mountains, standing around 893m in 
 
 A few of the nearby lakes – such as Llyn Mwyngul (commonly known as Tal-y-llyn lake) are reputed to be bottomless, and those who venture up the mountain at night should take heed before sleeping on its slopes. It is said that those who sleep on the mountain will awaken either as a madman or as a poet.
 
-<img class="alignnone size-full wp-image-1304" src="/wp-content/uploads/2022/07/Cadair.jpg" alt="" width="750" height="510" />
+<img class="alignnone size-full wp-image-1304" src="/img/2022/07/cadair.jpg" alt="" width="750" height="510" />
 
 &nbsp;

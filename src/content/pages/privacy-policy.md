@@ -4,7 +4,7 @@ slug: privacy-policy
 menu_order: 0
 subtitle: How we keep your data safe.
 hero_image:
-  src: /wp-content/uploads/2022/06/privacy-policy.jpg
+  src: /img/2022/06/privacy-policy.jpg
   alt: Privacy Policy
 updated: 2025-01-31
 seo:

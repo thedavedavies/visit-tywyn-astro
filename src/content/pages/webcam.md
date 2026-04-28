@@ -4,7 +4,7 @@ slug: webcam
 menu_order: 0
 subtitle: 'Experience the incredible – from the comfort of your own home.'
 hero_image:
-  src: /wp-content/uploads/2022/05/tywyn-webcam.jpg
+  src: /img/2022/05/tywyn-webcam.jpg
   alt: Tywyn beach webcam
 updated: 2022-06-02
 ---

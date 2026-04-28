@@ -10,7 +10,7 @@ geo:
   lng: -4.087249
   address: 'Millie and Sid''s Tywyn'
 photo:
-  src: /wp-content/uploads/2022/10/289683167_5012743442169453_1843512149687219362_n-e1666021719438.jpg
+  src: /img/2022/10/289683167_5012743442169453_1843512149687219362_n-e1666021719438.jpg
   alt: 'Millie & Sid''s'
 seo:
   description: 'One of our favourite places to get coffee and cake, and with the cafe being named after the owners lovable dogs - it''s no surprise that Millie & Sid''s is very dog friendly.'

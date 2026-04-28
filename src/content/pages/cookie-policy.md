@@ -4,7 +4,7 @@ slug: cookie-policy
 menu_order: 0
 subtitle: 'What’s a cookie, and what do we do with it?'
 hero_image:
-  src: /wp-content/uploads/2022/06/cookies.jpg
+  src: /img/2022/06/cookies.jpg
   alt: Cookie Policy
 updated: 2025-01-31
 ---

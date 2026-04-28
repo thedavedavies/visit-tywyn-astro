@@ -10,18 +10,18 @@ geo:
   lng: -3.8502512
   address: King arthurs labrynth
 hero_image:
-  src: /wp-content/uploads/2024/06/king-arthurs-labyrinth-banner.jpg
+  src: /img/2024/06/king-arthurs-labyrinth-banner.jpg
   alt: 'King Arthur''s Labyrinth'
 gallery:
-  - src: /wp-content/uploads/2024/06/Boatman-in-tunnels-close-up-scaled.jpg
+  - src: /img/2024/06/boatman-in-tunnels-close-up-scaled.jpg
     alt: 'King Arthur''s Labyrinth'
-  - src: '/wp-content/uploads/2024/06/D0135700-©-Paul-Kay-scaled.jpg'
+  - src: '/img/2024/06/d0135700-©-paul-kay-scaled.jpg'
     alt: 'King Arthur''s Labyrinth'
-  - src: '/wp-content/uploads/2024/06/D0135711-©-Paul-Kay-scaled.jpg'
+  - src: '/img/2024/06/d0135711-©-paul-kay-scaled.jpg'
     alt: 'King Arthur''s Labyrinth'
-  - src: /wp-content/uploads/2024/06/Landscape-shot-of-dragon-scaled.jpg
+  - src: /img/2024/06/landscape-shot-of-dragon-scaled.jpg
     alt: 'King Arthur''s Labyrinth'
-  - src: /wp-content/uploads/2024/06/received_953000302184369-scaled.jpeg
+  - src: /img/2024/06/received_953000302184369-scaled.jpeg
     alt: 'King Arthur''s Labyrinth'
 social:
   facebook: 'https://www.facebook.com/pages/King-Arthurs-Labyrinth/118429064854987'

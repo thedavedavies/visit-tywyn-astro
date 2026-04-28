@@ -11,7 +11,7 @@ geo:
   lng: -3.9084959
   address: Pen-Y-Bont Hotel tywyn
 photo:
-  src: /wp-content/uploads/2022/05/Photo0565.jpg
+  src: /img/2022/05/photo0565.jpg
   alt: Pen-Y-Bont Hotel
 trip_advisor_link: 'https://www.tripadvisor.co.uk/Restaurant_Review-g552038-d1760744-Reviews-Pen_Y_Bont_Hotel-Tywyn_Gwynedd_North_Wales_Wales.html'
 ---

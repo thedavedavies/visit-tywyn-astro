@@ -11,7 +11,7 @@ geo:
   lng: -4.087249
   address: Toast Coffee Shop tywyn
 photo:
-  src: /wp-content/uploads/2022/10/305992739_135889815820109_3078904654636698527_n.jpg
+  src: /img/2022/10/305992739_135889815820109_3078904654636698527_n.jpg
   alt: Toast Coffee Shop
 facebook_link: 'https://www.facebook.com/toastcoffeehousetywyn/'
 ---

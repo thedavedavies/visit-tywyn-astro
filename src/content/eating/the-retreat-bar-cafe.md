@@ -10,7 +10,7 @@ geo:
   lng: -4.0863201
   address: 'The Retreat Bar & Cafe'
 photo:
-  src: /wp-content/uploads/2022/05/the-retreat-bar-and-cafe.jpg
+  src: /img/2022/05/the-retreat-bar-and-cafe.jpg
   alt: 'The Retreat Bar & Cafe'
 facebook_link: 'https://www.facebook.com/TheRetreatBarandCafe/'
 ---

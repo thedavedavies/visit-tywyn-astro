@@ -27,7 +27,7 @@ Requires Node 22.12+.
 
 ```bash
 npm install
-tools/copy-uploads.sh           # pulls legacy uploads (~315MB, gitignored)
+npm run migrate:uploads         # pulls referenced images from legacy backup (~50MB, gitignored)
 npm run refresh:conditions      # weather + tides snapshots
 npm run dev
 ```
@@ -86,8 +86,8 @@ src/
 ├── pages/            # routes — file-system + dynamic
 └── styles/           # SCSS, 7-1 architecture
 tools/
-├── copy-uploads.sh        # rsync legacy uploads into public/
 ├── export-from-sql.ts     # SQL dump → markdown + redirects
+├── migrate-uploads.ts     # reference-driven copy from legacy backup → public/img/
 └── refresh-conditions.ts  # Open-Meteo + EasyTide → JSON snapshots
 ```
 
@@ -96,16 +96,16 @@ tools/
 - Output is fully static (`output: 'static'` in `astro.config.mjs`).
 - `_redirects` lands in `dist/_redirects` after build — Netlify, Cloudflare
   Pages and Vercel all understand the format.
-- Legacy `/wp-content/uploads/...` URLs are preserved so existing
-  external links and image embeds keep working. The host needs to
-  serve `public/wp-content/uploads/*` alongside the rest of `dist/`.
+- Legacy `/wp-content/uploads/...` URLs are redirected to `/img/...` via
+  a wildcard 301 rule in `public/_redirects`. The host needs to serve
+  `public/img/*` alongside the rest of `dist/`.
 
 ## Open follow-ups
 
 - [ ] Port legacy SCSS into `src/styles/` (currently shells; build is
       green but visually un-styled compared to the live site)
-- [ ] Migrate `wp-content/uploads/` to S3/R2 and rewrite paths during
-      export so the repo stops needing a 315 MB sibling directory
+- [ ] Migrate `public/img/` to S3/R2 so the repo stops needing a
+      backup sibling directory at deploy time
 - [ ] Replace Gravity Forms contact form with Astro Actions or a host
       form handler
 - [ ] Decide on host (Netlify / Cloudflare Pages / Vercel) and codify

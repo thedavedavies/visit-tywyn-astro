@@ -8,12 +8,12 @@ geo:
   lng: -4.0846715
   address: Tywyn magic lantern cinema
 hero_image:
-  src: /wp-content/uploads/2022/10/MagicLantern2.jpg
+  src: /img/2022/10/magiclantern2.jpg
   alt: The Secret Garden
 gallery:
-  - src: /wp-content/uploads/2022/10/MagicLantern2.jpg
+  - src: /img/2022/10/magiclantern2.jpg
     alt: The Secret Garden
-  - src: /wp-content/uploads/2022/10/MagicLantern3.jpg
+  - src: /img/2022/10/magiclantern3.jpg
     alt: The Secret Garden
 seo:
   description: 'Come on a very special treasure hunt, and find The Secret Garden in Tywyn! Right next to the Magic Lantern Cinema, enjoy cocktails, mocktails and snacks.'
@@ -27,7 +27,7 @@ No, The Secret Garden doesn't take bookings. It’s first come first served unle
 <h2>Can I bring children?​</h2>
 Absolutely – children are very welcome.
 
-<img class="alignnone size-large wp-image-1279" src="/wp-content/uploads/2022/10/MagicLantern2-1024x681.jpg" alt="" width="640" height="426" />
+<img class="alignnone size-large wp-image-1279" src="/img/2022/10/magiclantern2-1024x681.jpg" alt="" width="640" height="426" />
 <h2>Can I bring dogs to the Secret Garden?</h2>
 Of course, but please keep them on a lead.​
 <h2>How does it work?</h2>

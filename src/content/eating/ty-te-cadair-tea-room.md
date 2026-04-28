@@ -6,7 +6,7 @@ phone: 01654 761505
 dog_friendly: true
 published: 2022-05-28
 photo:
-  src: /wp-content/uploads/2022/05/1610924_812328105504766_8095090684816791243_n.jpg
+  src: /img/2022/05/1610924_812328105504766_8095090684816791243_n.jpg
   alt: 'Tŷ Te Cadair Tea Room'
 trip_advisor_link: 'https://www.tripadvisor.co.uk/Restaurant_Review-g504112-d4372591-Reviews-Ty_Te_Cadair_Tea_Room-Tal_y_llyn_Snowdonia_National_Park_North_Wales_Wales.html'
 facebook_link: 'https://www.facebook.com/TyTeCadairTeaRoom'
