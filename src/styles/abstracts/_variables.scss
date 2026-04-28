@@ -4,6 +4,8 @@
  * find yourself hardcoding a colour or spacing value in a
  * component module, consider whether it belongs here first. */
 
+@use 'sass:math';
+
 // ── Brand palette ──────────────────────────────────────────────
 $color-primary: #046d8b; // header bar, links, primary buttons
 $color-primary-dark: #03566d; // primary hover
@@ -43,7 +45,7 @@ $font-body:
 $font-heading: $font-body;
 
 $font-size-base: 17px;
-$line-height-body: 30px / $font-size-base; // matches legacy 30px on 17px
+$line-height-body: math.div(30px, $font-size-base); // matches legacy 30px on 17px
 
 $font-size-entry-title: 37px;
 $font-size-entry-subtitle: 20px;

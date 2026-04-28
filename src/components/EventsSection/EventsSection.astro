@@ -22,31 +22,25 @@ const {
 const events = upcomingEvents(limit);
 ---
 
-<section id={sectionId} class={styles.section} aria-labelledby={`${sectionId}-title`}>
-	<header class={styles.header}>
-		<h2 id={`${sectionId}-title`} class={styles.title}>{title}</h2>
-		{intro && <p class={styles.intro}>{intro}</p>}
-	</header>
-	{
-		events.length === 0 ? (
-			<p class={styles.empty}>
-				There are no upcoming events listed at the moment — check back soon.
-			</p>
-		) : (
-			<>
-				<ul class={styles.grid} role="list">
-					{events.map((event) => (
-						<li>
-							<EventCard event={event} />
-						</li>
-					))}
-				</ul>
-				{showAllLink && (
-					<p class={styles.cta}>
-						<a href="/events/">See all upcoming Tywyn events →</a>
-					</p>
-				)}
-			</>
-		)
-	}
-</section>
+{
+	events.length > 0 && (
+		<section id={sectionId} class={styles.section} aria-labelledby={`${sectionId}-title`}>
+			<header class={styles.header}>
+				<h2 id={`${sectionId}-title`} class={styles.title}>{title}</h2>
+				{intro && <p class={styles.intro}>{intro}</p>}
+			</header>
+			<ul class={styles.grid} role="list">
+				{events.map((event) => (
+					<li>
+						<EventCard event={event} />
+					</li>
+				))}
+			</ul>
+			{showAllLink && (
+				<p class={styles.cta}>
+					<a href="/events/">See all upcoming Tywyn events →</a>
+				</p>
+			)}
+		</section>
+	)
+}
