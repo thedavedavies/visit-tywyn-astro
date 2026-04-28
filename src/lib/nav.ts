@@ -12,12 +12,22 @@ export interface NavItem {
 }
 
 export const PRIMARY_NAV: NavItem[] = [
-	{ label: 'Home', href: '/' },
+	{ label: 'Places to eat', href: '/eating/' },
 	{ label: 'Things to do', href: '/things-to-do/' },
 	{ label: 'Where to stay', href: '/where-to-stay/' },
-	{ label: 'Eating', href: '/eating/' },
-	{ label: 'Events', href: '/events/' },
-	{ label: 'Contact', href: '/contact/' },
+	{ label: 'Webcam', href: '/webcam/' },
+	{
+		label: 'Explore Tywyn',
+		href: '/explore-tywyn/',
+		children: [
+			{ label: 'Tywyn Cinema', href: '/cinema/' },
+			{ label: 'Getting around Tywyn', href: '/getting-around/' },
+			{
+				label: 'Discovering the Wales Coastal Path: Aberdyfi to Tywyn',
+				href: '/wales-coastal-path/',
+			},
+		],
+	},
 ];
 
 /**

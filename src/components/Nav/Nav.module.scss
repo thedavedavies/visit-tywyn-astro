@@ -80,3 +80,56 @@
 		background-color: $color-primary-dark;
 	}
 }
+
+.hasChildren {
+	position: relative;
+
+	&:hover,
+	&:focus-within {
+		.subMenu {
+			display: flex;
+		}
+	}
+}
+
+.subMenu {
+	@include reset-list;
+	display: none;
+	flex-direction: column;
+	position: absolute;
+	left: 0;
+	top: 100%;
+	min-width: 280px;
+	background-color: $color-primary;
+	box-shadow: 0 16px 40px rgba(5, 42, 52, 0.12);
+	z-index: 100;
+
+	@include breakpoint(md) {
+		min-width: 320px;
+	}
+}
+
+.subItem {
+	a {
+		display: flex;
+		align-items: center;
+		padding: $space-2 $space-5;
+		font-family: $font-body;
+		font-size: 16px;
+		color: #fff;
+		text-decoration: none;
+		transition: background-color 0.2s ease;
+		white-space: nowrap;
+
+		&:hover,
+		&:focus-visible {
+			background-color: $color-primary-darker;
+		}
+	}
+}
+
+.subItemActive {
+	a {
+		background-color: $color-primary-dark;
+	}
+}

@@ -31,10 +31,30 @@ function isActive(href: string): boolean {
 	<ul id="primary-menu" class={styles.menu}>
 		{
 			PRIMARY_NAV.map((item) => (
-				<li class:list={[styles.item, { [styles.itemActive]: isActive(item.href) }]}>
+				<li
+					class:list={[
+						styles.item,
+						{ [styles.itemActive]: isActive(item.href) },
+						{ [styles.hasChildren]: item.children && item.children.length > 0 },
+					]}
+				>
 					<a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
 						{item.label}
+						{item.children && item.children.length > 0 && (
+							<span aria-hidden="true"> ▼</span>
+						)}
 					</a>
+					{item.children && item.children.length > 0 && (
+						<ul class={styles.subMenu}>
+							{item.children.map((child) => (
+								<li class:list={[styles.subItem, { [styles.subItemActive]: isActive(child.href) }]}>
+									<a href={child.href} aria-current={isActive(child.href) ? 'page' : undefined}>
+										{child.label}
+									</a>
+								</li>
+							))}
+						</ul>
+					)}
 				</li>
 			))
 		}
