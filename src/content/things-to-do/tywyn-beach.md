@@ -31,7 +31,7 @@ seo:
   description: 'Spanning over 5 miles of pristine coastline from Tywyn in the north, to the harbour at Aberdyfi in the south, Tywyn has long golden sandy beaches which is perfect for picnics, long strolls and playing in the sea!'
 ---
 
-<div class="embed-container"><iframe src="https://www.youtube.com/embed//wLJ2cdcg5Mo" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
+<div class="embed-container"><iframe src="https://www.youtube.com/embed/wLJ2cdcg5Mo" title="Tywyn beach video" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
 <div>
 
 Spanning over 5 miles of pristine coastline from Tywyn in the north, to the harbour at Aberdyfi in the south, Tywyn has long golden sandy beaches which is perfect for picnics, long strolls and playing in the sea!

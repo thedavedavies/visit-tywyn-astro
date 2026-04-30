@@ -19,7 +19,7 @@ This short distance has some of the most stunning coastal scenery in Wales, maki
 
 If you’re walking through Tywyn at low tide, you’ll be able to walk right on the beach, and maybe even explore the historical peat diggings too!
 
-<iframe src="https://www.google.com/maps/d/embed?mid=1tZvuWQuHsLejYKxgYiHxrbyszdI&amp;ehbc=2E312F" width="640" height="480"></iframe>
+<iframe src="https://www.google.com/maps/d/embed?mid=1tZvuWQuHsLejYKxgYiHxrbyszdI&amp;ehbc=2E312F" width="640" height="480" title="Wales Coastal Path map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allow=""></iframe>
 
 <small>View <a href="https://maps.google.co.uk/maps/ms?msa=0&amp;msid=213277563762945259084.0004dd1ef608126266971&amp;ie=UTF8&amp;t=h&amp;ll=52.57711,-4.08621&amp;spn=0.068939,0.071381&amp;source=embed" target="_blank" rel="noopener">Wales Coastal Path - Tywyn to Aberdyfi </a> in a larger map</small>
 
