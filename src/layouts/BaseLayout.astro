@@ -57,7 +57,12 @@ const {
 	modifiedTime,
 } = Astro.props;
 
-const fullTitle = isFrontPage ? `${SITE.name} | ${SITE.tagline}` : `${title} | ${SITE.name}`;
+// Title formatting: every page is `<page-specific> | Visit Tywyn`,
+// home included. The previous home-only special case (which rendered
+// `Visit Tywyn | <tagline>` without the page title) drifted from the
+// Yoast-indexed WP title; now the home page passes its own title and
+// we get a consistent, SEO-preserving format everywhere.
+const fullTitle = `${title} | ${SITE.name}`;
 const canonicalHref = canonical instanceof URL ? canonical.toString() : canonical;
 const resolvedOgImage = absoluteUrl(ogImage ?? SITE.defaultOgImage);
 const ogType = isFrontPage ? 'website' : 'article';
