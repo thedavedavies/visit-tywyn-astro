@@ -6,6 +6,7 @@
  * activity-specific fields can grow without affecting eating.
  */
 import Icon from '../Icon/Icon.astro';
+import { probeImage } from '../../lib/image-dimensions';
 import styles from './ActivityCard.module.scss';
 
 interface Props {
@@ -19,11 +20,22 @@ interface Props {
 
 const { href, title, summary, address, heroImage, headingLevel = 3 } = Astro.props;
 const HTag = `h${headingLevel}` as 'h2' | 'h3';
+const heroDims = heroImage ? probeImage(heroImage.src) : null;
 ---
 
 <article class={styles.row}>
 	<a href={href} class={styles.media}>
-		{heroImage && <img src={heroImage.src} alt={heroImage.alt ?? title} loading="lazy" />}
+		{
+			heroImage && (
+				<img
+					src={heroImage.src}
+					alt={heroImage.alt ?? title}
+					loading="lazy"
+					width={heroDims?.width}
+					height={heroDims?.height}
+				/>
+			)
+		}
 	</a>
 	<div class={styles.body}>
 		<HTag class={styles.title}>

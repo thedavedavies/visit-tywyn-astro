@@ -3,6 +3,7 @@
  * Card for the four stay-category landings, used on the
  * `/where-to-stay/` parent page.
  */
+import { probeImage } from '../../lib/image-dimensions';
 import styles from './StayCategoryCard.module.scss';
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const { href, title, intro, heroImage } = Astro.props;
+const heroDims = heroImage ? probeImage(heroImage.src) : null;
 ---
 
 <article class={styles.card}>
@@ -20,7 +22,13 @@ const { href, title, intro, heroImage } = Astro.props;
 		{
 			heroImage && (
 				<div class={styles.media}>
-					<img src={heroImage.src} alt={heroImage.alt ?? title} loading="lazy" />
+					<img
+						src={heroImage.src}
+						alt={heroImage.alt ?? title}
+						loading="lazy"
+						width={heroDims?.width}
+						height={heroDims?.height}
+					/>
 				</div>
 			)
 		}

@@ -11,6 +11,7 @@
  * The dialog wiring lives in a small inline `<script>` at the
  * bottom of this component so it travels with the markup.
  */
+import { probeImage } from '../../lib/image-dimensions';
 import styles from './Gallery.module.scss';
 
 interface Image {
@@ -24,6 +25,7 @@ interface Props {
 }
 
 const { images, label = 'Gallery' } = Astro.props;
+const dims = images.map((img) => probeImage(img.src));
 ---
 
 {
@@ -33,7 +35,13 @@ const { images, label = 'Gallery' } = Astro.props;
 				{images.map((img, idx) => (
 					<li>
 						<button class={styles.thumb} type="button" data-gallery-open={idx}>
-							<img src={img.src} alt={img.alt ?? ''} loading="lazy" />
+							<img
+								src={img.src}
+								alt={img.alt ?? ''}
+								loading="lazy"
+								width={dims[idx]?.width}
+								height={dims[idx]?.height}
+							/>
 						</button>
 					</li>
 				))}
@@ -44,7 +52,12 @@ const { images, label = 'Gallery' } = Astro.props;
 					<form method="dialog" class={styles.lightboxForm}>
 						<button class={styles.lightboxClose} type="submit" aria-label="Close gallery">×</button>
 					</form>
-					<img src={img.src} alt={img.alt ?? ''} />
+					<img
+						src={img.src}
+						alt={img.alt ?? ''}
+						width={dims[idx]?.width}
+						height={dims[idx]?.height}
+					/>
 				</dialog>
 			))}
 

@@ -8,6 +8,7 @@
  * Generic over content type — pass items with `href`, `title`, an
  * optional thumbnail, and an optional one-line summary.
  */
+import { probeImage } from '../../lib/image-dimensions';
 import styles from './RelatedItems.module.scss';
 
 interface Item {
@@ -24,6 +25,7 @@ interface Props {
 }
 
 const { heading, items, headingId = 'related-items' } = Astro.props;
+const itemDims = items.map((item) => (item.image ? probeImage(item.image.src) : null));
 ---
 
 {
@@ -31,12 +33,18 @@ const { heading, items, headingId = 'related-items' } = Astro.props;
 		<section class={styles.section} aria-labelledby={headingId}>
 			<h2 id={headingId} class={styles.heading}>{heading}</h2>
 			<ul class={styles.grid} role="list">
-				{items.map((item) => (
+				{items.map((item, idx) => (
 					<li class={styles.item}>
 						<a href={item.href} class={styles.link}>
 							{item.image && (
 								<div class={styles.media}>
-									<img src={item.image.src} alt={item.image.alt ?? item.title} loading="lazy" />
+									<img
+										src={item.image.src}
+										alt={item.image.alt ?? item.title}
+										loading="lazy"
+										width={itemDims[idx]?.width}
+										height={itemDims[idx]?.height}
+									/>
 								</div>
 							)}
 							<div class={styles.body}>

@@ -4,6 +4,7 @@
  * Renders only when an entry exists in the markdown's `featured`
  * array — empty by default.
  */
+import { probeImage } from '../../lib/image-dimensions';
 import styles from './FeaturedStayCard.module.scss';
 
 interface Props {
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const { href, name, summary, image, sponsored = false } = Astro.props;
+const imageDims = image ? probeImage(image.src) : null;
 ---
 
 <article class={styles.card}>
@@ -22,7 +24,13 @@ const { href, name, summary, image, sponsored = false } = Astro.props;
 		{
 			image && (
 				<div class={styles.media}>
-					<img src={image.src} alt={image.alt ?? name} loading="lazy" />
+					<img
+						src={image.src}
+						alt={image.alt ?? name}
+						loading="lazy"
+						width={imageDims?.width}
+						height={imageDims?.height}
+					/>
 				</div>
 			)
 		}

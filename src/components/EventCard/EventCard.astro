@@ -1,6 +1,7 @@
 ---
 import Icon from '../Icon/Icon.astro';
 import type { NormalisedEvent } from '../../lib/events';
+import { probeImage } from '../../lib/image-dimensions';
 import styles from './EventCard.module.scss';
 
 interface Props {
@@ -9,13 +10,20 @@ interface Props {
 
 const { event } = Astro.props;
 const showFinishedBadge = event.isPast;
+const imageDims = event.image ? probeImage(event.image) : null;
 ---
 
 <article class:list={[styles.card, { [styles.cardPast]: showFinishedBadge }]}>
 	{
 		event.image && (
 			<a href={event.primaryUrl ?? '#'} class={styles.media} tabindex="-1" aria-hidden="true">
-				<img src={event.image} alt={event.imageAlt} loading="lazy" />
+				<img
+					src={event.image}
+					alt={event.imageAlt}
+					loading="lazy"
+					width={imageDims?.width}
+					height={imageDims?.height}
+				/>
 			</a>
 		)
 	}

@@ -16,6 +16,7 @@ import Icon from '../../components/Icon/Icon.astro';
 import RelatedItems from '../../components/RelatedItems/RelatedItems.astro';
 import { restaurant } from '../../lib/jsonld';
 import { seededShuffle } from '../../lib/random';
+import { probeImage } from '../../lib/image-dimensions';
 
 export async function getStaticPaths() {
 	const venues = await getCollection('eating');
@@ -60,6 +61,8 @@ const jsonLd = restaurant({
 	geo: venue.data.geo,
 	sameAs: [venue.data.facebook_link, venue.data.trip_advisor_link],
 });
+
+const photoDims = venue.data.photo ? probeImage(venue.data.photo.src) : null;
 ---
 
 <PageLayout
@@ -97,7 +100,12 @@ const jsonLd = restaurant({
 		{
 			venue.data.photo && (
 				<div class="entry-photo">
-					<img src={venue.data.photo.src} alt={venue.data.photo.alt ?? venue.data.title} />
+					<img
+						src={venue.data.photo.src}
+						alt={venue.data.photo.alt ?? venue.data.title}
+						width={photoDims?.width}
+						height={photoDims?.height}
+					/>
 				</div>
 			)
 		}

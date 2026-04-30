@@ -1,4 +1,5 @@
 ---
+import { probeImage } from '../../lib/image-dimensions';
 import styles from './BannerImage.module.scss';
 
 interface Props {
@@ -8,8 +9,16 @@ interface Props {
 }
 
 const { src, alt = '', loading = 'eager' } = Astro.props;
+const dims = probeImage(src);
 ---
 
 <div class={styles.wrap}>
-	<img class={styles.image} src={src} alt={alt} loading={loading} />
+	<img
+		class={styles.image}
+		src={src}
+		alt={alt}
+		loading={loading}
+		width={dims?.width}
+		height={dims?.height}
+	/>
 </div>

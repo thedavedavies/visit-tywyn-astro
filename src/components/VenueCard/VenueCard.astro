@@ -13,6 +13,7 @@
  * into one component because the differences are cosmetic.
  */
 import Icon from '../Icon/Icon.astro';
+import { probeImage } from '../../lib/image-dimensions';
 import styles from './VenueCard.module.scss';
 
 interface Props {
@@ -26,11 +27,22 @@ interface Props {
 
 const { href, title, summary, address, photo, headingLevel = 3 } = Astro.props;
 const HTag = `h${headingLevel}` as 'h2' | 'h3';
+const photoDims = photo ? probeImage(photo.src) : null;
 ---
 
 <article class={styles.row}>
 	<a href={href} class={styles.media}>
-		{photo && <img src={photo.src} alt={photo.alt ?? title} loading="lazy" />}
+		{
+			photo && (
+				<img
+					src={photo.src}
+					alt={photo.alt ?? title}
+					loading="lazy"
+					width={photoDims?.width}
+					height={photoDims?.height}
+				/>
+			)
+		}
 	</a>
 	<div class={styles.body}>
 		<HTag class={styles.title}>
