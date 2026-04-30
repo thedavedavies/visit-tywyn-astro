@@ -1,5 +1,6 @@
 ---
 title: Victorian Slipway
+summary: Seafront pub on Marine Parade in Tywyn, overlooking the beach with bar food, ales, and an outdoor terrace.
 address: Marine Parade, Tywyn LL36 0DG
 phone: 01654 712553
 dog_friendly: false

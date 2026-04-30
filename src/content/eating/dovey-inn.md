@@ -1,5 +1,6 @@
 ---
 title: Dovey Inn
+summary: Pub and hotel on Sea View Terrace in Aberdyfi, with rooms overlooking the Dovey estuary and a dog-friendly bar.
 address: 8 Sea View Terrace, Aberdyfi, Snowdonia National Park LL35 0EF
 phone: 01654 767332
 website: 'https://sabrainpubs.com/pubs-and-hotels/north-wales/gwynedd/the-dovey-inn'

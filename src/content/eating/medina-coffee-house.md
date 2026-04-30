@@ -1,5 +1,6 @@
 ---
 title: Medina Coffee House
+summary: Dog-friendly coffee house on Glandovey Terrace in Aberdyfi, serving speciality coffees, cakes, and light lunches.
 address: 18A Glandovey Terrace, Aberdyfi, Snowdonia National Park LL35 0EB Wales
 phone: 01654 767159
 dog_friendly: true

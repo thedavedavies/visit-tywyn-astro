@@ -1,5 +1,6 @@
 ---
 title: Dine India
+summary: Indian restaurant on College Green in central Tywyn, serving classic curries, tandoori dishes, and takeaway.
 address: Dine India, 12, College Green, Tywyn LL36 9BS
 phone: 01654 711909
 website: 'https://www.dineindia.co.uk'

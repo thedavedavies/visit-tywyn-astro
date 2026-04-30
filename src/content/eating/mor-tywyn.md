@@ -1,5 +1,6 @@
 ---
 title: Mor Tywyn
+summary: Independent café on Llys Awel in Tywyn, serving coffee, cakes, and light meals close to the seafront.
 address: Llys Awel, Tywyn LL36 9AD
 phone: 07763 409436
 dog_friendly: false
