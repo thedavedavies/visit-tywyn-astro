@@ -1,0 +1,583 @@
+{
+  "generatedAt": "2026-04-30T18:24:28.732Z",
+  "distRoot": "dist",
+  "pages": [
+    {
+      "path": "/",
+      "htmlPath": "dist/index.html",
+      "bytes": {
+        "document": 18367,
+        "image": 110863,
+        "font": 23580,
+        "css": 11555,
+        "js": 2231,
+        "external": 0,
+        "total": 166596
+      },
+      "counts": {
+        "imagesTotal": 2,
+        "imagesWithoutDims": 0,
+        "stylesheets": 2,
+        "scripts": 3,
+        "iframes": 0,
+        "iframesWithoutLazy": 0,
+        "externalRequests": 2
+      },
+      "largestImage": {
+        "url": "/img/2022/05/surfcam-1.jpg",
+        "bytes": 109718
+      },
+      "missingDimensionImages": [],
+      "resources": [
+        {
+          "url": "/img/2022/05/tywyn-logo.png",
+          "kind": "image",
+          "bytes": 1145,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/surfcam-1.jpg",
+          "kind": "image",
+          "bytes": 109718,
+          "external": false
+        },
+        {
+          "url": "/_astro/fonts/5d5b9bdb05fd0cd8.woff2",
+          "kind": "font",
+          "bytes": 23580,
+          "external": false
+        },
+        {
+          "url": "/_astro/BaseLayout.C6qaQY3y.css",
+          "kind": "css",
+          "bytes": 6963,
+          "external": false
+        },
+        {
+          "url": "/_astro/EntryHeader.C2m99Wbp.css",
+          "kind": "css",
+          "bytes": 4592,
+          "external": false
+        },
+        {
+          "url": "https://analytics.ahrefs.com/analytics.js",
+          "kind": "js",
+          "bytes": 0,
+          "external": true
+        },
+        {
+          "url": "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4920514279045356",
+          "kind": "js",
+          "bytes": 0,
+          "external": true
+        },
+        {
+          "url": "/_astro/page.C0k1DY2K.js",
+          "kind": "js",
+          "bytes": 2231,
+          "external": false
+        }
+      ]
+    },
+    {
+      "path": "/eating/",
+      "htmlPath": "dist/eating/index.html",
+      "bytes": {
+        "document": 40168,
+        "image": 1636947,
+        "font": 23580,
+        "css": 11555,
+        "js": 2231,
+        "external": 0,
+        "total": 1714481
+      },
+      "counts": {
+        "imagesTotal": 20,
+        "imagesWithoutDims": 0,
+        "stylesheets": 2,
+        "scripts": 3,
+        "iframes": 0,
+        "iframesWithoutLazy": 0,
+        "externalRequests": 2
+      },
+      "largestImage": {
+        "url": "/img/2022/05/photo0565.jpg",
+        "bytes": 249835
+      },
+      "missingDimensionImages": [],
+      "resources": [
+        {
+          "url": "/img/2022/05/tywyn-logo.png",
+          "kind": "image",
+          "bytes": 1145,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/eating-banner.jpg",
+          "kind": "image",
+          "bytes": 102402,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/img_20180818_084223.jpg",
+          "kind": "image",
+          "bytes": 106317,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/413686_10151893208065567_2050200225_o.jpg",
+          "kind": "image",
+          "bytes": 81178,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/summer-night-at-the-dovey.jpg",
+          "kind": "image",
+          "bytes": 65771,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/enjoy-afternoon-tea-at.jpg",
+          "kind": "image",
+          "bytes": 120349,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/rab8-medina-coffee-house-interior.jpg",
+          "kind": "image",
+          "bytes": 57595,
+          "external": false
+        },
+        {
+          "url": "/img/2022/10/289683167_5012743442169453_1843512149687219362_n-e1666021719438.jpg",
+          "kind": "image",
+          "bytes": 84166,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/mor-shop-front.jpg",
+          "kind": "image",
+          "bytes": 176541,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/photo0565.jpg",
+          "kind": "image",
+          "bytes": 249835,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/pendre-garden-centre-3.jpg",
+          "kind": "image",
+          "bytes": 127224,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/1800477_327363460793829_7600468649014334255_n.jpg",
+          "kind": "image",
+          "bytes": 27591,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/10525865_1450665198517815_8812715232070215068_n.jpg",
+          "kind": "image",
+          "bytes": 62022,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/119025880_3296588483762855_3538520526213428122_n.jpg",
+          "kind": "image",
+          "bytes": 59741,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/drilling-while-eating.jpg",
+          "kind": "image",
+          "bytes": 40219,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/the-retreat-bar-and-cafe.jpg",
+          "kind": "image",
+          "bytes": 39395,
+          "external": false
+        },
+        {
+          "url": "/img/2022/10/305992739_135889815820109_3078904654636698527_n.jpg",
+          "kind": "image",
+          "bytes": 56643,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/1610924_812328105504766_8095090684816791243_n.jpg",
+          "kind": "image",
+          "bytes": 103277,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/photo0jpg.jpg",
+          "kind": "image",
+          "bytes": 38548,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/screen-shot-2015-07-04-at-20.56.05.jpg",
+          "kind": "image",
+          "bytes": 36988,
+          "external": false
+        },
+        {
+          "url": "/_astro/fonts/5d5b9bdb05fd0cd8.woff2",
+          "kind": "font",
+          "bytes": 23580,
+          "external": false
+        },
+        {
+          "url": "/_astro/BaseLayout.C6qaQY3y.css",
+          "kind": "css",
+          "bytes": 6963,
+          "external": false
+        },
+        {
+          "url": "/_astro/EntryHeader.C2m99Wbp.css",
+          "kind": "css",
+          "bytes": 4592,
+          "external": false
+        },
+        {
+          "url": "https://analytics.ahrefs.com/analytics.js",
+          "kind": "js",
+          "bytes": 0,
+          "external": true
+        },
+        {
+          "url": "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4920514279045356",
+          "kind": "js",
+          "bytes": 0,
+          "external": true
+        },
+        {
+          "url": "/_astro/page.C0k1DY2K.js",
+          "kind": "js",
+          "bytes": 2231,
+          "external": false
+        }
+      ]
+    },
+    {
+      "path": "/eating/dovey-inn/",
+      "htmlPath": "dist/eating/dovey-inn/index.html",
+      "bytes": {
+        "document": 28475,
+        "image": 414103,
+        "font": 23580,
+        "css": 11555,
+        "js": 2231,
+        "external": 0,
+        "total": 479944
+      },
+      "counts": {
+        "imagesTotal": 6,
+        "imagesWithoutDims": 0,
+        "stylesheets": 2,
+        "scripts": 3,
+        "iframes": 1,
+        "iframesWithoutLazy": 0,
+        "externalRequests": 2
+      },
+      "largestImage": {
+        "url": "/img/2022/05/enjoy-afternoon-tea-at.jpg",
+        "bytes": 120349
+      },
+      "missingDimensionImages": [],
+      "resources": [
+        {
+          "url": "/img/2022/05/tywyn-logo.png",
+          "kind": "image",
+          "bytes": 1145,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/summer-night-at-the-dovey.jpg",
+          "kind": "image",
+          "bytes": 65771,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/enjoy-afternoon-tea-at.jpg",
+          "kind": "image",
+          "bytes": 120349,
+          "external": false
+        },
+        {
+          "url": "/img/2022/10/289683167_5012743442169453_1843512149687219362_n-e1666021719438.jpg",
+          "kind": "image",
+          "bytes": 84166,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/the-retreat-bar-and-cafe.jpg",
+          "kind": "image",
+          "bytes": 39395,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/1610924_812328105504766_8095090684816791243_n.jpg",
+          "kind": "image",
+          "bytes": 103277,
+          "external": false
+        },
+        {
+          "url": "/_astro/fonts/5d5b9bdb05fd0cd8.woff2",
+          "kind": "font",
+          "bytes": 23580,
+          "external": false
+        },
+        {
+          "url": "/_astro/BaseLayout.C6qaQY3y.css",
+          "kind": "css",
+          "bytes": 6963,
+          "external": false
+        },
+        {
+          "url": "/_astro/EntryHeader.C2m99Wbp.css",
+          "kind": "css",
+          "bytes": 4592,
+          "external": false
+        },
+        {
+          "url": "https://analytics.ahrefs.com/analytics.js",
+          "kind": "js",
+          "bytes": 0,
+          "external": true
+        },
+        {
+          "url": "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4920514279045356",
+          "kind": "js",
+          "bytes": 0,
+          "external": true
+        },
+        {
+          "url": "/_astro/page.C0k1DY2K.js",
+          "kind": "js",
+          "bytes": 2231,
+          "external": false
+        }
+      ]
+    },
+    {
+      "path": "/things-to-do/cadair-idris/",
+      "htmlPath": "dist/things-to-do/cadair-idris/index.html",
+      "bytes": {
+        "document": 21377,
+        "image": 888857,
+        "font": 23580,
+        "css": 11555,
+        "js": 2231,
+        "external": 0,
+        "total": 947600
+      },
+      "counts": {
+        "imagesTotal": 7,
+        "imagesWithoutDims": 0,
+        "stylesheets": 2,
+        "scripts": 3,
+        "iframes": 0,
+        "iframesWithoutLazy": 0,
+        "externalRequests": 2
+      },
+      "largestImage": {
+        "url": "/img/2022/07/cadair_idris-scaled.jpg",
+        "bytes": 296626
+      },
+      "missingDimensionImages": [],
+      "resources": [
+        {
+          "url": "/img/2022/05/tywyn-logo.png",
+          "kind": "image",
+          "bytes": 1145,
+          "external": false
+        },
+        {
+          "url": "/img/2022/07/cadair_idris-scaled.jpg",
+          "kind": "image",
+          "bytes": 296626,
+          "external": false
+        },
+        {
+          "url": "/img/2022/07/cadair.jpg",
+          "kind": "image",
+          "bytes": 107533,
+          "external": false
+        },
+        {
+          "url": "/img/2022/10/magiclantern2.jpg",
+          "kind": "image",
+          "bytes": 255112,
+          "external": false
+        },
+        {
+          "url": "/img/2022/07/honeyicecream.jpeg",
+          "kind": "image",
+          "bytes": 27183,
+          "external": false
+        },
+        {
+          "url": "/img/2024/06/king-arthurs-labyrinth-banner.jpg",
+          "kind": "image",
+          "bytes": 46763,
+          "external": false
+        },
+        {
+          "url": "/img/2022/06/talyllyn-banner.jpg",
+          "kind": "image",
+          "bytes": 154495,
+          "external": false
+        },
+        {
+          "url": "/_astro/fonts/5d5b9bdb05fd0cd8.woff2",
+          "kind": "font",
+          "bytes": 23580,
+          "external": false
+        },
+        {
+          "url": "/_astro/BaseLayout.C6qaQY3y.css",
+          "kind": "css",
+          "bytes": 6963,
+          "external": false
+        },
+        {
+          "url": "/_astro/EntryHeader.C2m99Wbp.css",
+          "kind": "css",
+          "bytes": 4592,
+          "external": false
+        },
+        {
+          "url": "https://analytics.ahrefs.com/analytics.js",
+          "kind": "js",
+          "bytes": 0,
+          "external": true
+        },
+        {
+          "url": "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4920514279045356",
+          "kind": "js",
+          "bytes": 0,
+          "external": true
+        },
+        {
+          "url": "/_astro/page.C0k1DY2K.js",
+          "kind": "js",
+          "bytes": 2231,
+          "external": false
+        }
+      ]
+    },
+    {
+      "path": "/things-to-do/magic-lantern-cinema/",
+      "htmlPath": "dist/things-to-do/magic-lantern-cinema/index.html",
+      "bytes": {
+        "document": 25282,
+        "image": 1453885,
+        "font": 23580,
+        "css": 11555,
+        "js": 2231,
+        "external": 0,
+        "total": 1516533
+      },
+      "counts": {
+        "imagesTotal": 7,
+        "imagesWithoutDims": 0,
+        "stylesheets": 2,
+        "scripts": 3,
+        "iframes": 0,
+        "iframesWithoutLazy": 0,
+        "externalRequests": 2
+      },
+      "largestImage": {
+        "url": "/img/2022/10/tywyn-cinema.png",
+        "bytes": 932599
+      },
+      "missingDimensionImages": [],
+      "resources": [
+        {
+          "url": "/img/2022/05/tywyn-logo.png",
+          "kind": "image",
+          "bytes": 1145,
+          "external": false
+        },
+        {
+          "url": "/img/2022/05/tywyn-cinema-banner.jpg",
+          "kind": "image",
+          "bytes": 86262,
+          "external": false
+        },
+        {
+          "url": "/img/2022/10/tywyn-cinema.png",
+          "kind": "image",
+          "bytes": 932599,
+          "external": false
+        },
+        {
+          "url": "/img/2022/06/dolgoch-falls.jpg",
+          "kind": "image",
+          "bytes": 162255,
+          "external": false
+        },
+        {
+          "url": "/img/2022/07/honeyicecream.jpeg",
+          "kind": "image",
+          "bytes": 27183,
+          "external": false
+        },
+        {
+          "url": "/img/2022/06/castell-y-bere-banner.jpg",
+          "kind": "image",
+          "bytes": 141737,
+          "external": false
+        },
+        {
+          "url": "/img/2023/03/new-page-banner.jpg",
+          "kind": "image",
+          "bytes": 102704,
+          "external": false
+        },
+        {
+          "url": "/_astro/fonts/5d5b9bdb05fd0cd8.woff2",
+          "kind": "font",
+          "bytes": 23580,
+          "external": false
+        },
+        {
+          "url": "/_astro/BaseLayout.C6qaQY3y.css",
+          "kind": "css",
+          "bytes": 6963,
+          "external": false
+        },
+        {
+          "url": "/_astro/EntryHeader.C2m99Wbp.css",
+          "kind": "css",
+          "bytes": 4592,
+          "external": false
+        },
+        {
+          "url": "https://analytics.ahrefs.com/analytics.js",
+          "kind": "js",
+          "bytes": 0,
+          "external": true
+        },
+        {
+          "url": "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4920514279045356",
+          "kind": "js",
+          "bytes": 0,
+          "external": true
+        },
+        {
+          "url": "/_astro/page.C0k1DY2K.js",
+          "kind": "js",
+          "bytes": 2231,
+          "external": false
+        }
+      ]
+    }
+  ]
+}
