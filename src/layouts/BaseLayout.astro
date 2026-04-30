@@ -19,7 +19,7 @@ import { Font } from 'astro:assets';
 import Header from '../components/Header/Header.astro';
 import Footer from '../components/Footer/Footer.astro';
 import { SITE } from '../lib/site';
-import { breadcrumbList } from '../lib/jsonld';
+import { breadcrumbList, organization, website } from '../lib/jsonld';
 import { absoluteUrl, safeJsonLd } from '../lib/url';
 
 interface BreadcrumbItem {
@@ -62,16 +62,30 @@ const canonicalHref = canonical instanceof URL ? canonical.toString() : canonica
 const resolvedOgImage = absoluteUrl(ogImage ?? SITE.defaultOgImage);
 const ogType = isFrontPage ? 'website' : 'article';
 
-const autoSchema: Record<string, unknown>[] = [];
+// Site identity schemas emit on every page. Yoast did the same on
+// WordPress; without them on subpages, sitelinks search box and
+// brand/Knowledge Graph signals are weaker than they were pre-launch.
+// `Organization` is referenced by `WebSite.publisher` via @id, so
+// emit both together to keep the graph self-consistent.
+const autoSchema: Record<string, unknown>[] = [organization(), website()];
 const crumbSchema = breadcrumbList(breadcrumbs, canonicalHref);
 if (crumbSchema) autoSchema.push(crumbSchema);
 
 const pageSchema = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 // Builders return null when there's nothing to emit (empty input).
-// Filter those out so we don't ship `<script>null</script>`.
-const jsonLdBlocks = [...autoSchema, ...pageSchema].filter(
-	(block): block is Record<string, unknown> => block != null
-);
+// Filter those out so we don't ship `<script>null</script>`. Dedup
+// by `@id` so a page that emits its own Organization or WebSite
+// (e.g. the home page, historically) doesn't ship duplicates.
+const seenIds = new Set<string>();
+const jsonLdBlocks = [...autoSchema, ...pageSchema]
+	.filter((block): block is Record<string, unknown> => block != null)
+	.filter((block) => {
+		const id = typeof block['@id'] === 'string' ? (block['@id'] as string) : null;
+		if (!id) return true;
+		if (seenIds.has(id)) return false;
+		seenIds.add(id);
+		return true;
+	});
 ---
 
 <!doctype html>
@@ -161,7 +175,7 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema].filter(
 
 	<body class={bodyClass}>
 		<div id="page">
-			<Header heroImage={heroImage} breadcrumbs={breadcrumbs} isFrontPage={isFrontPage} />
+			<Header heroImage={heroImage} breadcrumbs={breadcrumbs} />
 			<main id="primary" class="site-main">
 				<slot />
 			</main>

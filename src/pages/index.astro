@@ -9,15 +9,15 @@ import PageLayout from '../layouts/PageLayout.astro';
 import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
 import EventsSection from '../components/EventsSection/EventsSection.astro';
 import { SITE } from '../lib/site';
-import { organization, website, touristDestination, eventSchema } from '../lib/jsonld';
+import { touristDestination, eventSchema } from '../lib/jsonld';
 import { upcomingEvents } from '../lib/events';
 
+// `Organization` and `WebSite` are emitted globally by BaseLayout,
+// so the home page only needs to add the schemas unique to it:
+// `TouristDestination` (region-specific) and individual `Event`
+// nodes for upcoming events (each eligible for rich results).
 const jsonLd = [
-	organization(),
-	website(),
 	touristDestination(),
-	// One Event node per upcoming event so each is individually
-	// eligible for rich results in search.
 	...upcomingEvents().map((ev) =>
 		eventSchema({
 			name: ev.title,
