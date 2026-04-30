@@ -1,0 +1,3129 @@
+{
+  "generatedAt": "2026-04-30T20:53:07.858Z",
+  "pages": [
+    {
+      "path": "/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/",
+        "status": 200,
+        "title": "Tywyn Holiday Accommodation, Things to Do and Visit in Tywyn | Visit Tywyn",
+        "metaDescription": "Come and discover Tywyn. From the rolling hills and mountains to the golden beachfront - great food, stunning sunsets, long-lasting memories.",
+        "canonical": "https://visit-tywyn.co.uk/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Welcome to Visit Tywyn"
+        ],
+        "h2Texts": [
+          "Come and discover Tywyn"
+        ],
+        "ogTitle": "Tywyn Holiday Accommodation, Things to Do and Visit in Tywyn | Visit Tywyn",
+        "ogDescription": "Come and discover Tywyn. From the rolling hills and mountains to the golden beachfront - great food, stunning sunsets, long-lasting memories.",
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 254,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 21,
+        "externalLinkCount": 9
+      },
+      "astro": {
+        "url": "http://localhost:4322/",
+        "status": 200,
+        "title": "Tywyn Holiday Accommodation, Things to Do and Visit in Tywyn | Visit Tywyn",
+        "metaDescription": "Come and discover Tywyn. From the rolling hills and mountains to the golden beachfront - great food, stunning sunsets, long-lasting memories.",
+        "canonical": "https://visit-tywyn.co.uk/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Welcome to Visit Tywyn"
+        ],
+        "h2Texts": [
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Tywyn Holiday Accommodation, Things to Do and Visit in Tywyn | Visit Tywyn",
+        "ogDescription": "Come and discover Tywyn. From the rolling hills and mountains to the golden beachfront - great food, stunning sunsets, long-lasting memories.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/explore.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "Organization",
+          "TouristDestination",
+          "WebSite"
+        ],
+        "bodyWordCount": 249,
+        "imageCount": 2,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 30,
+        "externalLinkCount": 2
+      },
+      "deltas": [
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [Organization,TouristDestination,WebSite]"
+      ]
+    },
+    {
+      "path": "/accessibility-statement-for-visit-tywyn/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/accessibility-statement-for-visit-tywyn/",
+        "status": 200,
+        "title": "Accessibility Statement for Visit Tywyn | Visit Tywyn",
+        "metaDescription": "Visit Tywyn is committed to web accessibility. Read our Accessibility Statement to learn about our efforts to meet WCAG 2.1 AA standards, improve usability, and support all users. Last updated: 1st February 2025",
+        "canonical": "https://visit-tywyn.co.uk/accessibility-statement-for-visit-tywyn/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Accessibility Statement for Visit Tywyn"
+        ],
+        "h2Texts": [
+          "Measures to Support Accessibility",
+          "Ongoing Improvements",
+          "Known Issues",
+          "Contact Information"
+        ],
+        "ogTitle": "Accessibility Statement for Visit Tywyn | Visit Tywyn",
+        "ogDescription": "Visit Tywyn is committed to web accessibility. Read our Accessibility Statement to learn about our efforts to meet WCAG 2.1 AA standards, improve usability, and support all users. Last updated: 1st February 2025",
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 318,
+        "imageCount": 0,
+        "imagesWithAlt": 0,
+        "internalLinkCount": 24,
+        "externalLinkCount": 4
+      },
+      "astro": {
+        "url": "http://localhost:4322/accessibility-statement-for-visit-tywyn/",
+        "status": 200,
+        "title": "Accessibility Statement for Visit Tywyn | Visit Tywyn",
+        "metaDescription": "Visit Tywyn is committed to web accessibility. Read our Accessibility Statement to learn about our efforts to meet WCAG 2.1 AA standards, improve usability, and support all users. Last updated: 1st February 2025",
+        "canonical": "https://visit-tywyn.co.uk/accessibility-statement-for-visit-tywyn/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Accessibility Statement for Visit Tywyn"
+        ],
+        "h2Texts": [
+          "Measures to Support Accessibility",
+          "Ongoing Improvements",
+          "Known Issues",
+          "Contact Information",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Accessibility Statement for Visit Tywyn | Visit Tywyn",
+        "ogDescription": "Visit Tywyn is committed to web accessibility. Read our Accessibility Statement to learn about our efforts to meet WCAG 2.1 AA standards, improve usability, and support all users. Last updated: 1st February 2025",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/explore.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 311,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 25,
+        "externalLinkCount": 4
+      },
+      "deltas": [
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,WebPage,WebSite]"
+      ]
+    },
+    {
+      "path": "/contact/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/contact/",
+        "status": 200,
+        "title": "Contact | Visit Tywyn",
+        "metaDescription": "Looking for some more specific information about Tywyn and the surrounding areas? You can find us on Facebook and Twitter – or email us using the form below",
+        "canonical": "https://visit-tywyn.co.uk/contact/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Contact"
+        ],
+        "h2Texts": [
+          "Contact us through email, Facebook & Twitter!"
+        ],
+        "ogTitle": "Contact | Visit Tywyn",
+        "ogDescription": "Looking for some more specific information about Tywyn and the surrounding areas? You can find us on Facebook and Twitter – or email us using the form below",
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 105,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 22,
+        "externalLinkCount": 4
+      },
+      "astro": {
+        "url": "http://localhost:4322/contact/",
+        "status": 200,
+        "title": "Contact | Visit Tywyn",
+        "metaDescription": "Looking for some more specific information about Tywyn and the surrounding areas? You can find us on Facebook and Twitter – or email us using the form below",
+        "canonical": "https://visit-tywyn.co.uk/contact/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Contact"
+        ],
+        "h2Texts": [
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Contact | Visit Tywyn",
+        "ogDescription": "Looking for some more specific information about Tywyn and the surrounding areas? You can find us on Facebook and Twitter – or email us using the form below",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/06/contact-banner-lake.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 112,
+        "imageCount": 2,
+        "imagesWithAlt": 2,
+        "internalLinkCount": 23,
+        "externalLinkCount": 4
+      },
+      "deltas": [
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,WebPage,WebSite]"
+      ]
+    },
+    {
+      "path": "/cookie-policy/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/cookie-policy/",
+        "status": 200,
+        "title": "Cookie Policy | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/cookie-policy/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Cookie Policy"
+        ],
+        "h2Texts": [
+          "What’s a cookie, and what do we do with it?",
+          "Cookie Policy for Visit Tywyn"
+        ],
+        "ogTitle": "Cookie Policy | Visit Tywyn",
+        "ogDescription": "Cookie Policy for Visit Tywyn Last updated: 01/02/2025 Like most websites, visit-tywyn.co.uk uses cookies to improve your browsing experience. This policy explains what cookies we use, why we use them, and how you can manage your preferences. 1. What Are Cookies? Cookies are small text files placed on your device when you visit a website. […]",
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 376,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 22,
+        "externalLinkCount": 4
+      },
+      "astro": {
+        "url": "http://localhost:4322/cookie-policy/",
+        "status": 200,
+        "title": "Cookie Policy | Visit Tywyn",
+        "metaDescription": "What’s a cookie, and what do we do with it?",
+        "canonical": "https://visit-tywyn.co.uk/cookie-policy/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Cookie Policy"
+        ],
+        "h2Texts": [
+          "Cookie Policy for Visit Tywyn",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Cookie Policy | Visit Tywyn",
+        "ogDescription": "What’s a cookie, and what do we do with it?",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/06/cookies.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 369,
+        "imageCount": 2,
+        "imagesWithAlt": 2,
+        "internalLinkCount": 23,
+        "externalLinkCount": 4
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: What’s a cookie, and what do we do with it?",
+        "og:description differs\n    WP:    Cookie Policy for Visit Tywyn Last updated: 01/02/2025 Like most websites, visit-tywyn.co.uk uses cookies to improve your browsing experience. This policy explains what cookies we use, why we use them, and how you can manage your preferences. 1. What Are Cookies? Cookies are small text files placed on your device when you visit a website. […]\n    Astro: What’s a cookie, and what do we do with it?",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,WebPage,WebSite]"
+      ]
+    },
+    {
+      "path": "/dog-friendly-cafes/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/dog-friendly-cafes/",
+        "status": 200,
+        "title": "Dog Friendly Bars, Pubs, Restaurants, and Cafes in Tywyn",
+        "metaDescription": "We love a good coffee and cake, especially when we can bring our dogs along. Discover the best dog friendly cafes and restaurants in and around Tywyn.",
+        "canonical": "https://visit-tywyn.co.uk/dog-friendly-cafes/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Dog friendly cafes in Tywyn"
+        ],
+        "h2Texts": [
+          "The best places around Tywyn to enjoy a coffee and cake with your dog",
+          "Medina Coffee House",
+          "Coast Deli & Dining",
+          "Dovey Inn",
+          "King’s Cafe at Talyllyn Railway",
+          "Millie & Sid’s",
+          "Tŷ Te Cadair Tea Room",
+          "Peniarth Arms at Bryncrug",
+          "Toast Coffee Shop",
+          "The Retreat Bar & Cafe"
+        ],
+        "ogTitle": "Dog Friendly Bars, Pubs, Restaurants, and Cafes in Tywyn",
+        "ogDescription": "We love a good coffee and cake, especially when we can bring our dogs along. Discover the best dog friendly cafes and restaurants in and around Tywyn.",
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 398,
+        "imageCount": 10,
+        "imagesWithAlt": 10,
+        "internalLinkCount": 41,
+        "externalLinkCount": 2
+      },
+      "astro": {
+        "url": "http://localhost:4322/dog-friendly-cafes/",
+        "status": 200,
+        "title": "Dog Friendly Bars, Pubs, Restaurants, and Cafes in Tywyn | Visit Tywyn",
+        "metaDescription": "We love a good coffee and cake, especially when we can bring our dogs along. Discover the best dog friendly cafes and restaurants in and around Tywyn.",
+        "canonical": "https://visit-tywyn.co.uk/dog-friendly-cafes/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Dog friendly cafes in Tywyn"
+        ],
+        "h2Texts": [
+          "Coast Deli & Dining",
+          "Dovey Inn",
+          "King's Cafe at Talyllyn Railway",
+          "Medina Coffee House",
+          "Millie & Sid's",
+          "Peniarth Arms at Bryncrug",
+          "The Retreat Bar & Cafe",
+          "Toast Coffee Shop",
+          "Tŷ Te Cadair Tea Room",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Dog Friendly Bars, Pubs, Restaurants, and Cafes in Tywyn | Visit Tywyn",
+        "ogDescription": "We love a good coffee and cake, especially when we can bring our dogs along. Discover the best dog friendly cafes and restaurants in and around Tywyn.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/explore.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "ItemList",
+          "Organization",
+          "WebSite"
+        ],
+        "bodyWordCount": 425,
+        "imageCount": 11,
+        "imagesWithAlt": 11,
+        "internalLinkCount": 42,
+        "externalLinkCount": 2
+      },
+      "deltas": [
+        "title differs\n    WP:    Dog Friendly Bars, Pubs, Restaurants, and Cafes in Tywyn\n    Astro: Dog Friendly Bars, Pubs, Restaurants, and Cafes in Tywyn | Visit Tywyn",
+        "og:title differs\n    WP:    Dog Friendly Bars, Pubs, Restaurants, and Cafes in Tywyn\n    Astro: Dog Friendly Bars, Pubs, Restaurants, and Cafes in Tywyn | Visit Tywyn",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,ItemList,Organization,WebSite]"
+      ]
+    },
+    {
+      "path": "/eating/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/eating/",
+        "status": 200,
+        "title": "Top restaurants and places to eat in Tywyn | Visit Tywyn",
+        "metaDescription": "View all the local Restaurants, Cafe's and Takeaways in Tywyn. Find somewhere great to eat with your family and friends tonight.",
+        "canonical": "https://visit-tywyn.co.uk/eating/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Where to eat in Tywyn?"
+        ],
+        "h2Texts": [
+          "Love eating? Then you’ll love Tywyn's food."
+        ],
+        "ogTitle": "Top restaurants and places to eat in Tywyn | Visit Tywyn",
+        "ogDescription": "View all the local Restaurants, Cafe's and Takeaways in Tywyn. Find somewhere great to eat with your family and friends tonight.",
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "CollectionPage",
+          "ImageObject",
+          "WebSite"
+        ],
+        "bodyWordCount": 645,
+        "imageCount": 19,
+        "imagesWithAlt": 19,
+        "internalLinkCount": 58,
+        "externalLinkCount": 2
+      },
+      "astro": {
+        "url": "http://localhost:4322/eating/",
+        "status": 200,
+        "title": "Top restaurants and places to eat in Tywyn | Visit Tywyn",
+        "metaDescription": "View all the local Restaurants, Cafe's and Takeaways in Tywyn. Find somewhere great to eat with your family and friends tonight.",
+        "canonical": "https://visit-tywyn.co.uk/eating/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Where to eat in Tywyn?"
+        ],
+        "h2Texts": [
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Top restaurants and places to eat in Tywyn | Visit Tywyn",
+        "ogDescription": "View all the local Restaurants, Cafe's and Takeaways in Tywyn. Find somewhere great to eat with your family and friends tonight.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/explore.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "ItemList",
+          "Organization",
+          "WebSite"
+        ],
+        "bodyWordCount": 751,
+        "imageCount": 20,
+        "imagesWithAlt": 20,
+        "internalLinkCount": 59,
+        "externalLinkCount": 2
+      },
+      "deltas": [
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,CollectionPage,ImageObject,WebSite]\n    Astro: [BreadcrumbList,ItemList,Organization,WebSite]"
+      ]
+    },
+    {
+      "path": "/eating/coast-deli-dining/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/eating/coast-deli-dining/",
+        "status": 200,
+        "title": "Coast Deli & Dining | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/eating/coast-deli-dining/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Coast Deli & Dining"
+        ],
+        "h2Texts": [
+          "About Coast Deli & Dining",
+          "Where is Coast Deli & Dining",
+          "Coast Deli & Dining Details"
+        ],
+        "ogTitle": "Coast Deli & Dining | Visit Tywyn",
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 139,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 24,
+        "externalLinkCount": 5
+      },
+      "astro": {
+        "url": "http://localhost:4322/eating/coast-deli-dining/",
+        "status": 200,
+        "title": "Coast Deli & Dining | Visit Tywyn",
+        "metaDescription": "Offering the very best of Welsh food and drink overlooking Church Bay, Aberdyfi.",
+        "canonical": "https://visit-tywyn.co.uk/eating/coast-deli-dining/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Coast Deli & Dining"
+        ],
+        "h2Texts": [
+          "About Coast Deli & Dining",
+          "Where is Coast Deli & Dining",
+          "Find Coast Deli & Dining",
+          "More dog-friendly places to eat",
+          "Coast Deli & Dining Details",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Coast Deli & Dining | Visit Tywyn",
+        "ogDescription": "Offering the very best of Welsh food and drink overlooking Church Bay, Aberdyfi.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/img_20180818_084223.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "Restaurant",
+          "WebSite"
+        ],
+        "bodyWordCount": 334,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 29,
+        "externalLinkCount": 6
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: Offering the very best of Welsh food and drink overlooking Church Bay, Aberdyfi.",
+        "og:description differs\n    WP:    null\n    Astro: Offering the very best of Welsh food and drink overlooking Church Bay, Aberdyfi.",
+        "body word count differs >20%\n    WP:    139\n    Astro: 334",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,Restaurant,WebSite]"
+      ]
+    },
+    {
+      "path": "/eating/dine-india/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/eating/dine-india/",
+        "status": 200,
+        "title": "Dine India | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/eating/dine-india/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Dine India"
+        ],
+        "h2Texts": [
+          "About Dine India",
+          "Where is Dine India",
+          "Dine India Details"
+        ],
+        "ogTitle": "Dine India | Visit Tywyn",
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 88,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 23,
+        "externalLinkCount": 5
+      },
+      "astro": {
+        "url": "http://localhost:4322/eating/dine-india/",
+        "status": 200,
+        "title": "Dine India | Visit Tywyn",
+        "metaDescription": "Indian restaurant on College Green in central Tywyn, serving classic curries, tandoori dishes, and takeaway.",
+        "canonical": "https://visit-tywyn.co.uk/eating/dine-india/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Dine India"
+        ],
+        "h2Texts": [
+          "About Dine India",
+          "Where is Dine India",
+          "Find Dine India",
+          "More places to eat in Tywyn",
+          "Dine India Details",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Dine India | Visit Tywyn",
+        "ogDescription": "Indian restaurant on College Green in central Tywyn, serving classic curries, tandoori dishes, and takeaway.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/413686_10151893208065567_2050200225_o.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "FoodEstablishment",
+          "Organization",
+          "WebSite"
+        ],
+        "bodyWordCount": 215,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 28,
+        "externalLinkCount": 6
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: Indian restaurant on College Green in central Tywyn, serving classic curries, tandoori dishes, and takeaway.",
+        "og:description differs\n    WP:    null\n    Astro: Indian restaurant on College Green in central Tywyn, serving classic curries, tandoori dishes, and takeaway.",
+        "body word count differs >20%\n    WP:    88\n    Astro: 215",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,FoodEstablishment,Organization,WebSite]"
+      ]
+    },
+    {
+      "path": "/eating/dovey-inn/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/eating/dovey-inn/",
+        "status": 200,
+        "title": "Dovey Inn | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/eating/dovey-inn/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Dovey Inn"
+        ],
+        "h2Texts": [
+          "About Dovey Inn",
+          "Where is Dovey Inn",
+          "Dovey Inn Details"
+        ],
+        "ogTitle": "Dovey Inn | Visit Tywyn",
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 114,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 24,
+        "externalLinkCount": 5
+      },
+      "astro": {
+        "url": "http://localhost:4322/eating/dovey-inn/",
+        "status": 200,
+        "title": "Dovey Inn | Visit Tywyn",
+        "metaDescription": "Pub and hotel on Sea View Terrace in Aberdyfi, with rooms overlooking the Dovey estuary and a dog-friendly bar.",
+        "canonical": "https://visit-tywyn.co.uk/eating/dovey-inn/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Dovey Inn"
+        ],
+        "h2Texts": [
+          "About Dovey Inn",
+          "Where is Dovey Inn",
+          "Find Dovey Inn",
+          "More dog-friendly places to eat",
+          "Dovey Inn Details",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Dovey Inn | Visit Tywyn",
+        "ogDescription": "Pub and hotel on Sea View Terrace in Aberdyfi, with rooms overlooking the Dovey estuary and a dog-friendly bar.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/summer-night-at-the-dovey.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "Restaurant",
+          "WebSite"
+        ],
+        "bodyWordCount": 273,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 29,
+        "externalLinkCount": 6
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: Pub and hotel on Sea View Terrace in Aberdyfi, with rooms overlooking the Dovey estuary and a dog-friendly bar.",
+        "og:description differs\n    WP:    null\n    Astro: Pub and hotel on Sea View Terrace in Aberdyfi, with rooms overlooking the Dovey estuary and a dog-friendly bar.",
+        "body word count differs >20%\n    WP:    114\n    Astro: 273",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,Restaurant,WebSite]"
+      ]
+    },
+    {
+      "path": "/eating/kings-cafe-at-talyllyn-railway/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/eating/kings-cafe-at-talyllyn-railway/",
+        "status": 200,
+        "title": "King's Cafe at Talyllyn Railway | Visit Tywyn",
+        "metaDescription": "Whether you're waiting for a train, or just enjoying the sights - a stop at the King's Cafe at the Talyllyn Railway is a very enjoyable experience.",
+        "canonical": "https://visit-tywyn.co.uk/eating/kings-cafe-at-talyllyn-railway/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "King’s Cafe at Talyllyn Railway"
+        ],
+        "h2Texts": [
+          "About King’s Cafe at Talyllyn Railway",
+          "Where is King’s Cafe at Talyllyn Railway",
+          "King’s Cafe at Talyllyn Railway Details"
+        ],
+        "ogTitle": "King's Cafe at Talyllyn Railway | Visit Tywyn",
+        "ogDescription": "Whether you're waiting for a train, or just enjoying the sights - a stop at the King's Cafe at the Talyllyn Railway is a very enjoyable experience.",
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 189,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 25,
+        "externalLinkCount": 5
+      },
+      "astro": {
+        "url": "http://localhost:4322/eating/kings-cafe-at-talyllyn-railway/",
+        "status": 200,
+        "title": "King's Cafe at Talyllyn Railway | Visit Tywyn",
+        "metaDescription": "Whether you're waiting for a train, or just enjoying the sights - a stop at the King's Cafe at the Talyllyn Railway is a very enjoyable experience.",
+        "canonical": "https://visit-tywyn.co.uk/eating/kings-cafe-at-talyllyn-railway/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "King's Cafe at Talyllyn Railway"
+        ],
+        "h2Texts": [
+          "About King's Cafe at Talyllyn Railway",
+          "Where is King's Cafe at Talyllyn Railway",
+          "Find King's Cafe at Talyllyn Railway",
+          "More dog-friendly places to eat",
+          "King's Cafe at Talyllyn Railway Details",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "King's Cafe at Talyllyn Railway | Visit Tywyn",
+        "ogDescription": "Whether you're waiting for a train, or just enjoying the sights - a stop at the King's Cafe at the Talyllyn Railway is a very enjoyable experience.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/enjoy-afternoon-tea-at.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "Restaurant",
+          "WebSite"
+        ],
+        "bodyWordCount": 318,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 30,
+        "externalLinkCount": 6
+      },
+      "deltas": [
+        "body word count differs >20%\n    WP:    189\n    Astro: 318",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,Restaurant,WebSite]"
+      ]
+    },
+    {
+      "path": "/eating/medina-coffee-house/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/eating/medina-coffee-house/",
+        "status": 200,
+        "title": "Medina Coffee House | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/eating/medina-coffee-house/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Medina Coffee House"
+        ],
+        "h2Texts": [
+          "About Medina Coffee House",
+          "Where is Medina Coffee House",
+          "Medina Coffee House Details"
+        ],
+        "ogTitle": "Medina Coffee House | Visit Tywyn",
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 119,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 24,
+        "externalLinkCount": 4
+      },
+      "astro": {
+        "url": "http://localhost:4322/eating/medina-coffee-house/",
+        "status": 200,
+        "title": "Medina Coffee House | Visit Tywyn",
+        "metaDescription": "Dog-friendly coffee house on Glandovey Terrace in Aberdyfi, serving speciality coffees, cakes, and light lunches.",
+        "canonical": "https://visit-tywyn.co.uk/eating/medina-coffee-house/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Medina Coffee House"
+        ],
+        "h2Texts": [
+          "About Medina Coffee House",
+          "Where is Medina Coffee House",
+          "Find Medina Coffee House",
+          "More dog-friendly places to eat",
+          "Medina Coffee House Details",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Medina Coffee House | Visit Tywyn",
+        "ogDescription": "Dog-friendly coffee house on Glandovey Terrace in Aberdyfi, serving speciality coffees, cakes, and light lunches.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/rab8-medina-coffee-house-interior.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "Restaurant",
+          "WebSite"
+        ],
+        "bodyWordCount": 318,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 29,
+        "externalLinkCount": 5
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: Dog-friendly coffee house on Glandovey Terrace in Aberdyfi, serving speciality coffees, cakes, and light lunches.",
+        "og:description differs\n    WP:    null\n    Astro: Dog-friendly coffee house on Glandovey Terrace in Aberdyfi, serving speciality coffees, cakes, and light lunches.",
+        "body word count differs >20%\n    WP:    119\n    Astro: 318",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,Restaurant,WebSite]"
+      ]
+    },
+    {
+      "path": "/eating/millie-sids/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/eating/millie-sids/",
+        "status": 200,
+        "title": "Millie & Sid's | Visit Tywyn",
+        "metaDescription": "One of our favourite places to get coffee and cake, and with the cafe being named after the owners lovable dogs - it's no surprise that Millie & Sid's is very dog friendly.",
+        "canonical": "https://visit-tywyn.co.uk/eating/millie-sids/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Millie & Sid’s"
+        ],
+        "h2Texts": [
+          "About Millie & Sid’s",
+          "Where is Millie & Sid’s",
+          "Millie & Sid’s Details"
+        ],
+        "ogTitle": "Millie & Sid's | Visit Tywyn",
+        "ogDescription": "One of our favourite places to get coffee and cake, and with the cafe being named after the owners lovable dogs - it's no surprise that Millie & Sid's is very dog friendly.",
+        "ogImage": "https://visit-tywyn.co.uk/wp-content/uploads/2022/10/289683167_5012743442169453_1843512149687219362_n-e1666021719438.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "ImageObject",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 172,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 24,
+        "externalLinkCount": 3
+      },
+      "astro": {
+        "url": "http://localhost:4322/eating/millie-sids/",
+        "status": 200,
+        "title": "Millie & Sid's | Visit Tywyn",
+        "metaDescription": "One of our favourite places to get coffee and cake, and with the cafe being named after the owners lovable dogs - it's no surprise that Millie & Sid's is very dog friendly.",
+        "canonical": "https://visit-tywyn.co.uk/eating/millie-sids/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Millie & Sid's"
+        ],
+        "h2Texts": [
+          "About Millie & Sid's",
+          "Where is Millie & Sid's",
+          "Find Millie & Sid's",
+          "More dog-friendly places to eat",
+          "Millie & Sid's Details",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Millie & Sid's | Visit Tywyn",
+        "ogDescription": "One of our favourite places to get coffee and cake, and with the cafe being named after the owners lovable dogs - it's no surprise that Millie & Sid's is very dog friendly.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/10/289683167_5012743442169453_1843512149687219362_n-e1666021719438.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "Restaurant",
+          "WebSite"
+        ],
+        "bodyWordCount": 359,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 29,
+        "externalLinkCount": 4
+      },
+      "deltas": [
+        "body word count differs >20%\n    WP:    172\n    Astro: 359",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,ImageObject,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,Restaurant,WebSite]"
+      ]
+    },
+    {
+      "path": "/eating/mor-tywyn/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/eating/mor-tywyn/",
+        "status": 200,
+        "title": "Mor Tywyn | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/eating/mor-tywyn/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Mor Tywyn"
+        ],
+        "h2Texts": [
+          "About Mor Tywyn",
+          "Where is Mor Tywyn",
+          "Mor Tywyn Details"
+        ],
+        "ogTitle": "Mor Tywyn | Visit Tywyn",
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 87,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 23,
+        "externalLinkCount": 4
+      },
+      "astro": {
+        "url": "http://localhost:4322/eating/mor-tywyn/",
+        "status": 200,
+        "title": "Mor Tywyn | Visit Tywyn",
+        "metaDescription": "Independent café on Llys Awel in Tywyn, serving coffee, cakes, and light meals close to the seafront.",
+        "canonical": "https://visit-tywyn.co.uk/eating/mor-tywyn/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Mor Tywyn"
+        ],
+        "h2Texts": [
+          "About Mor Tywyn",
+          "Where is Mor Tywyn",
+          "Find Mor Tywyn",
+          "More places to eat in Tywyn",
+          "Mor Tywyn Details",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Mor Tywyn | Visit Tywyn",
+        "ogDescription": "Independent café on Llys Awel in Tywyn, serving coffee, cakes, and light meals close to the seafront.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/mor-shop-front.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "FoodEstablishment",
+          "Organization",
+          "WebSite"
+        ],
+        "bodyWordCount": 239,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 28,
+        "externalLinkCount": 5
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: Independent café on Llys Awel in Tywyn, serving coffee, cakes, and light meals close to the seafront.",
+        "og:description differs\n    WP:    null\n    Astro: Independent café on Llys Awel in Tywyn, serving coffee, cakes, and light meals close to the seafront.",
+        "body word count differs >20%\n    WP:    87\n    Astro: 239",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,FoodEstablishment,Organization,WebSite]"
+      ]
+    },
+    {
+      "path": "/eating/pen-y-bont-hotel/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/eating/pen-y-bont-hotel/",
+        "status": 200,
+        "title": "Pen-Y-Bont Hotel | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/eating/pen-y-bont-hotel/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Pen-Y-Bont Hotel"
+        ],
+        "h2Texts": [
+          "About Pen-Y-Bont Hotel",
+          "Where is Pen-Y-Bont Hotel",
+          "Pen-Y-Bont Hotel Details"
+        ],
+        "ogTitle": "Pen-Y-Bont Hotel | Visit Tywyn",
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 113,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 23,
+        "externalLinkCount": 4
+      },
+      "astro": {
+        "url": "http://localhost:4322/eating/pen-y-bont-hotel/",
+        "status": 200,
+        "title": "Pen-Y-Bont Hotel | Visit Tywyn",
+        "metaDescription": "The Pen-y-Bont Hotel, near Tywyn, is a 16th Century Lakeside Hotel offering 2 bars, 2 Restaurants, a Patio and glorious Beer Garden overlooking the picturesque Tal y Llyn lake.",
+        "canonical": "https://visit-tywyn.co.uk/eating/pen-y-bont-hotel/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Pen-Y-Bont Hotel"
+        ],
+        "h2Texts": [
+          "About Pen-Y-Bont Hotel",
+          "Where is Pen-Y-Bont Hotel",
+          "Find Pen-Y-Bont Hotel",
+          "More places to eat in Tywyn",
+          "Pen-Y-Bont Hotel Details",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Pen-Y-Bont Hotel | Visit Tywyn",
+        "ogDescription": "The Pen-y-Bont Hotel, near Tywyn, is a 16th Century Lakeside Hotel offering 2 bars, 2 Restaurants, a Patio and glorious Beer Garden overlooking the picturesque Tal y Llyn lake.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/photo0565.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "FoodEstablishment",
+          "Organization",
+          "WebSite"
+        ],
+        "bodyWordCount": 225,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 28,
+        "externalLinkCount": 5
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: The Pen-y-Bont Hotel, near Tywyn, is a 16th Century Lakeside Hotel offering 2 bars, 2 Restaurants, a Patio and glorious Beer Garden overlooking the picturesque Tal y Llyn lake.",
+        "og:description differs\n    WP:    null\n    Astro: The Pen-y-Bont Hotel, near Tywyn, is a 16th Century Lakeside Hotel offering 2 bars, 2 Restaurants, a Patio and glorious Beer Garden overlooking the picturesque Tal y Llyn lake.",
+        "body word count differs >20%\n    WP:    113\n    Astro: 225",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,FoodEstablishment,Organization,WebSite]"
+      ]
+    },
+    {
+      "path": "/eating/pendre-garden-centre-and-cafe/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/eating/pendre-garden-centre-and-cafe/",
+        "status": 200,
+        "title": "Pendre Garden Centre and Cafe | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/eating/pendre-garden-centre-and-cafe/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Pendre Garden Centre and Cafe"
+        ],
+        "h2Texts": [
+          "About Pendre Garden Centre and Cafe",
+          "Where is Pendre Garden Centre and Cafe",
+          "Pendre Garden Centre and Cafe Details"
+        ],
+        "ogTitle": "Pendre Garden Centre and Cafe | Visit Tywyn",
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 96,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 23,
+        "externalLinkCount": 4
+      },
+      "astro": {
+        "url": "http://localhost:4322/eating/pendre-garden-centre-and-cafe/",
+        "status": 200,
+        "title": "Pendre Garden Centre and Cafe | Visit Tywyn",
+        "metaDescription": "Family-run garden centre in Tywyn with an on-site café serving home-baked cakes, light lunches, and afternoon teas.",
+        "canonical": "https://visit-tywyn.co.uk/eating/pendre-garden-centre-and-cafe/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Pendre Garden Centre and Cafe"
+        ],
+        "h2Texts": [
+          "About Pendre Garden Centre and Cafe",
+          "Where is Pendre Garden Centre and Cafe",
+          "Find Pendre Garden Centre and Cafe",
+          "More places to eat in Tywyn",
+          "Pendre Garden Centre and Cafe Details",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Pendre Garden Centre and Cafe | Visit Tywyn",
+        "ogDescription": "Family-run garden centre in Tywyn with an on-site café serving home-baked cakes, light lunches, and afternoon teas.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/pendre-garden-centre-3.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "FoodEstablishment",
+          "Organization",
+          "WebSite"
+        ],
+        "bodyWordCount": 248,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 28,
+        "externalLinkCount": 5
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: Family-run garden centre in Tywyn with an on-site café serving home-baked cakes, light lunches, and afternoon teas.",
+        "og:description differs\n    WP:    null\n    Astro: Family-run garden centre in Tywyn with an on-site café serving home-baked cakes, light lunches, and afternoon teas.",
+        "body word count differs >20%\n    WP:    96\n    Astro: 248",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,FoodEstablishment,Organization,WebSite]"
+      ]
+    },
+    {
+      "path": "/eating/peniarth-arms-at-bryncrug/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/eating/peniarth-arms-at-bryncrug/",
+        "status": 200,
+        "title": "Peniarth Arms at Bryncrug | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/eating/peniarth-arms-at-bryncrug/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Peniarth Arms at Bryncrug"
+        ],
+        "h2Texts": [
+          "About Peniarth Arms at Bryncrug",
+          "Where is Peniarth Arms at Bryncrug",
+          "Peniarth Arms at Bryncrug Details"
+        ],
+        "ogTitle": "Peniarth Arms at Bryncrug | Visit Tywyn",
+        "ogDescription": "The Peniarth Arms is a family owned business. It has many things to offer, including a dining room area, bar, a beer garden and accommodation. Dogs are welcome in the Peniarth Arms, so enjoy a meal in the indoor bar area or outside at the outdoor bar hut. The beer garden has a heated and […]",
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 190,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 24,
+        "externalLinkCount": 4
+      },
+      "astro": {
+        "url": "http://localhost:4322/eating/peniarth-arms-at-bryncrug/",
+        "status": 200,
+        "title": "Peniarth Arms at Bryncrug | Visit Tywyn",
+        "metaDescription": "The Peniarth Arms is a family owned business. It has many things to offer, including a dining room area, bar, a beer garden and accommodation.",
+        "canonical": "https://visit-tywyn.co.uk/eating/peniarth-arms-at-bryncrug/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Peniarth Arms at Bryncrug"
+        ],
+        "h2Texts": [
+          "About Peniarth Arms at Bryncrug",
+          "Where is Peniarth Arms at Bryncrug",
+          "Find Peniarth Arms at Bryncrug",
+          "More dog-friendly places to eat",
+          "Peniarth Arms at Bryncrug Details",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Peniarth Arms at Bryncrug | Visit Tywyn",
+        "ogDescription": "The Peniarth Arms is a family owned business. It has many things to offer, including a dining room area, bar, a beer garden and accommodation.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/1800477_327363460793829_7600468649014334255_n.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "Restaurant",
+          "WebSite"
+        ],
+        "bodyWordCount": 367,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 29,
+        "externalLinkCount": 5
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: The Peniarth Arms is a family owned business. It has many things to offer, including a dining room area, bar, a beer garden and accommodation.",
+        "og:description differs\n    WP:    The Peniarth Arms is a family owned business. It has many things to offer, including a dining room area, bar, a beer garden and accommodation. Dogs are welcome in the Peniarth Arms, so enjoy a meal in the indoor bar area or outside at the outdoor bar hut. The beer garden has a heated and […]\n    Astro: The Peniarth Arms is a family owned business. It has many things to offer, including a dining room area, bar, a beer garden and accommodation.",
+        "body word count differs >20%\n    WP:    190\n    Astro: 367",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,Restaurant,WebSite]"
+      ]
+    },
+    {
+      "path": "/eating/proper-gander/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/eating/proper-gander/",
+        "status": 200,
+        "title": "Proper Gander | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/eating/proper-gander/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Proper Gander"
+        ],
+        "h2Texts": [
+          "About Proper Gander",
+          "Where is Proper Gander",
+          "Proper Gander Details"
+        ],
+        "ogTitle": "Proper Gander | Visit Tywyn",
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 128,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 23,
+        "externalLinkCount": 5
+      },
+      "astro": {
+        "url": "http://localhost:4322/eating/proper-gander/",
+        "status": 200,
+        "title": "Proper Gander | Visit Tywyn",
+        "metaDescription": "The Proper Gander on Tywyn High Street, serves high quality meals made using local Welsh produce. Specialising in quality home cooked food, the Proper Gander uses only the best locally caught fish, locally reared Welsh Lamb, Beef and Pork.",
+        "canonical": "https://visit-tywyn.co.uk/eating/proper-gander/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Proper Gander"
+        ],
+        "h2Texts": [
+          "About Proper Gander",
+          "Where is Proper Gander",
+          "Find Proper Gander",
+          "More places to eat in Tywyn",
+          "Proper Gander Details",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Proper Gander | Visit Tywyn",
+        "ogDescription": "The Proper Gander on Tywyn High Street, serves high quality meals made using local Welsh produce. Specialising in quality home cooked food, the Proper Gander uses only the best locally caught fish, locally reared Welsh Lamb, Beef and Pork.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/10525865_1450665198517815_8812715232070215068_n.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "FoodEstablishment",
+          "Organization",
+          "WebSite"
+        ],
+        "bodyWordCount": 248,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 28,
+        "externalLinkCount": 6
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: The Proper Gander on Tywyn High Street, serves high quality meals made using local Welsh produce. Specialising in quality home cooked food, the Proper Gander uses only the best locally caught fish, locally reared Welsh Lamb, Beef and Pork.",
+        "og:description differs\n    WP:    null\n    Astro: The Proper Gander on Tywyn High Street, serves high quality meals made using local Welsh produce. Specialising in quality home cooked food, the Proper Gander uses only the best locally caught fish, locally reared Welsh Lamb, Beef and Pork.",
+        "body word count differs >20%\n    WP:    128\n    Astro: 248",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,FoodEstablishment,Organization,WebSite]"
+      ]
+    },
+    {
+      "path": "/eating/salt-marsh-kitchen/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/eating/salt-marsh-kitchen/",
+        "status": 200,
+        "title": "Salt Marsh Kitchen | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/eating/salt-marsh-kitchen/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Salt Marsh Kitchen"
+        ],
+        "h2Texts": [
+          "About Salt Marsh Kitchen",
+          "Where is Salt Marsh Kitchen",
+          "Salt Marsh Kitchen Details"
+        ],
+        "ogTitle": "Salt Marsh Kitchen | Visit Tywyn",
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 145,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 23,
+        "externalLinkCount": 4
+      },
+      "astro": {
+        "url": "http://localhost:4322/eating/salt-marsh-kitchen/",
+        "status": 200,
+        "title": "Salt Marsh Kitchen | Visit Tywyn",
+        "metaDescription": "Serving the best quality food, made from the wonderful produce we have growing locally the in area. Meat that has been born, bred and butchered just 3 miles from the restaurant, and fish plucked from the Cardigan Bay.",
+        "canonical": "https://visit-tywyn.co.uk/eating/salt-marsh-kitchen/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Salt Marsh Kitchen"
+        ],
+        "h2Texts": [
+          "About Salt Marsh Kitchen",
+          "Where is Salt Marsh Kitchen",
+          "Find Salt Marsh Kitchen",
+          "More places to eat in Tywyn",
+          "Salt Marsh Kitchen Details",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Salt Marsh Kitchen | Visit Tywyn",
+        "ogDescription": "Serving the best quality food, made from the wonderful produce we have growing locally the in area. Meat that has been born, bred and butchered just 3 miles from the restaurant, and fish plucked from the Cardigan Bay.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/119025880_3296588483762855_3538520526213428122_n.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "FoodEstablishment",
+          "Organization",
+          "WebSite"
+        ],
+        "bodyWordCount": 270,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 28,
+        "externalLinkCount": 5
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: Serving the best quality food, made from the wonderful produce we have growing locally the in area. Meat that has been born, bred and butchered just 3 miles from the restaurant, and fish plucked from the Cardigan Bay.",
+        "og:description differs\n    WP:    null\n    Astro: Serving the best quality food, made from the wonderful produce we have growing locally the in area. Meat that has been born, bred and butchered just 3 miles from the restaurant, and fish plucked from the Cardigan Bay.",
+        "body word count differs >20%\n    WP:    145\n    Astro: 270",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,FoodEstablishment,Organization,WebSite]"
+      ]
+    },
+    {
+      "path": "/eating/seabreeze/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/eating/seabreeze/",
+        "status": 200,
+        "title": "Seabreeze | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/eating/seabreeze/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Seabreeze"
+        ],
+        "h2Texts": [
+          "About Seabreeze",
+          "Where is Seabreeze",
+          "Seabreeze Details"
+        ],
+        "ogTitle": "Seabreeze | Visit Tywyn",
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 141,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 23,
+        "externalLinkCount": 5
+      },
+      "astro": {
+        "url": "http://localhost:4322/eating/seabreeze/",
+        "status": 200,
+        "title": "Seabreeze | Visit Tywyn",
+        "metaDescription": "Soak up a relaxed atmosphere and enjoy a seasonal selection of Welsh food and drink at this restaurant offering a feast of local produce.",
+        "canonical": "https://visit-tywyn.co.uk/eating/seabreeze/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Seabreeze"
+        ],
+        "h2Texts": [
+          "About Seabreeze",
+          "Where is Seabreeze",
+          "Find Seabreeze",
+          "More places to eat in Tywyn",
+          "Seabreeze Details",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Seabreeze | Visit Tywyn",
+        "ogDescription": "Soak up a relaxed atmosphere and enjoy a seasonal selection of Welsh food and drink at this restaurant offering a feast of local produce.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/drilling-while-eating.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "FoodEstablishment",
+          "Organization",
+          "WebSite"
+        ],
+        "bodyWordCount": 287,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 28,
+        "externalLinkCount": 6
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: Soak up a relaxed atmosphere and enjoy a seasonal selection of Welsh food and drink at this restaurant offering a feast of local produce.",
+        "og:description differs\n    WP:    null\n    Astro: Soak up a relaxed atmosphere and enjoy a seasonal selection of Welsh food and drink at this restaurant offering a feast of local produce.",
+        "body word count differs >20%\n    WP:    141\n    Astro: 287",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,FoodEstablishment,Organization,WebSite]"
+      ]
+    },
+    {
+      "path": "/eating/the-retreat-bar-cafe/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/eating/the-retreat-bar-cafe/",
+        "status": 200,
+        "title": "The Retreat Bar & Cafe | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/eating/the-retreat-bar-cafe/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "The Retreat Bar & Cafe"
+        ],
+        "h2Texts": [
+          "About The Retreat Bar & Cafe",
+          "Where is The Retreat Bar & Cafe",
+          "The Retreat Bar & Cafe Details"
+        ],
+        "ogTitle": "The Retreat Bar & Cafe | Visit Tywyn",
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 163,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 24,
+        "externalLinkCount": 3
+      },
+      "astro": {
+        "url": "http://localhost:4322/eating/the-retreat-bar-cafe/",
+        "status": 200,
+        "title": "The Retreat Bar & Cafe | Visit Tywyn",
+        "metaDescription": "A friendly and relaxed small bar & cafe situated in the historic Old Market Hall in Tywyn, offering freshly cooked food made using mainly local ingredients and serving beers, a selection of carefully chosen wines & gins, and fabulous cocktails.",
+        "canonical": "https://visit-tywyn.co.uk/eating/the-retreat-bar-cafe/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "The Retreat Bar & Cafe"
+        ],
+        "h2Texts": [
+          "About The Retreat Bar & Cafe",
+          "Where is The Retreat Bar & Cafe",
+          "Find The Retreat Bar & Cafe",
+          "More dog-friendly places to eat",
+          "The Retreat Bar & Cafe Details",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "The Retreat Bar & Cafe | Visit Tywyn",
+        "ogDescription": "A friendly and relaxed small bar & cafe situated in the historic Old Market Hall in Tywyn, offering freshly cooked food made using mainly local ingredients and serving beers, a selection of carefully chosen wines & gins, and fabulous cocktails.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/the-retreat-bar-and-cafe.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "Restaurant",
+          "WebSite"
+        ],
+        "bodyWordCount": 327,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 29,
+        "externalLinkCount": 4
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: A friendly and relaxed small bar & cafe situated in the historic Old Market Hall in Tywyn, offering freshly cooked food made using mainly local ingredients and serving beers, a selection of carefully chosen wines & gins, and fabulous cocktails.",
+        "og:description differs\n    WP:    null\n    Astro: A friendly and relaxed small bar & cafe situated in the historic Old Market Hall in Tywyn, offering freshly cooked food made using mainly local ingredients and serving beers, a selection of carefully chosen wines & gins, and fabulous cocktails.",
+        "body word count differs >20%\n    WP:    163\n    Astro: 327",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,Restaurant,WebSite]"
+      ]
+    },
+    {
+      "path": "/eating/toast-coffee-shop/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/eating/toast-coffee-shop/",
+        "status": 200,
+        "title": "Toast Coffee Shop | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/eating/toast-coffee-shop/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Toast Coffee Shop"
+        ],
+        "h2Texts": [
+          "About Toast Coffee Shop",
+          "Where is Toast Coffee Shop",
+          "Toast Coffee Shop Details"
+        ],
+        "ogTitle": "Toast Coffee Shop | Visit Tywyn",
+        "ogDescription": "Toast Coffee House is the perfect place to enjoy a great cup of coffee and bite to eat. They use only the best local produce to make their coffee and food, and they’re passionate about making sure that everything is just perfect. Toast’s Toasties are made with freshly-baked bread from Tywyn Bakery, and the coffees […]",
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 194,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 24,
+        "externalLinkCount": 3
+      },
+      "astro": {
+        "url": "http://localhost:4322/eating/toast-coffee-shop/",
+        "status": 200,
+        "title": "Toast Coffee Shop | Visit Tywyn",
+        "metaDescription": "Toast Coffee House is the perfect place to enjoy a great cup of coffee and bite to eat.\nThey use only the best local produce to make their coffee and food, and they're passionate about making sure that everything is just perfect. Toast's Toasties are made with freshly-baked bread from Tywyn Bakery, and the coffees are made with locally-roasted beans from Poblado Coffi.",
+        "canonical": "https://visit-tywyn.co.uk/eating/toast-coffee-shop/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Toast Coffee Shop"
+        ],
+        "h2Texts": [
+          "About Toast Coffee Shop",
+          "Where is Toast Coffee Shop",
+          "Find Toast Coffee Shop",
+          "More dog-friendly places to eat",
+          "Toast Coffee Shop Details",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Toast Coffee Shop | Visit Tywyn",
+        "ogDescription": "Toast Coffee House is the perfect place to enjoy a great cup of coffee and bite to eat.\nThey use only the best local produce to make their coffee and food, and they're passionate about making sure that everything is just perfect. Toast's Toasties are made with freshly-baked bread from Tywyn Bakery, and the coffees are made with locally-roasted beans from Poblado Coffi.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/10/305992739_135889815820109_3078904654636698527_n.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "Restaurant",
+          "WebSite"
+        ],
+        "bodyWordCount": 329,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 29,
+        "externalLinkCount": 4
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: Toast Coffee House is the perfect place to enjoy a great cup of coffee and bite to eat.\nThey use only the best local produce to make their coffee and food, and they're passionate about making sure that everything is just perfect. Toast's Toasties are made with freshly-baked bread from Tywyn Bakery, and the coffees are made with locally-roasted beans from Poblado Coffi.",
+        "og:description differs\n    WP:    Toast Coffee House is the perfect place to enjoy a great cup of coffee and bite to eat. They use only the best local produce to make their coffee and food, and they’re passionate about making sure that everything is just perfect. Toast’s Toasties are made with freshly-baked bread from Tywyn Bakery, and the coffees […]\n    Astro: Toast Coffee House is the perfect place to enjoy a great cup of coffee and bite to eat.\nThey use only the best local produce to make their coffee and food, and they're passionate about making sure that everything is just perfect. Toast's Toasties are made with freshly-baked bread from Tywyn Bakery, and the coffees are made with locally-roasted beans from Poblado Coffi.",
+        "body word count differs >20%\n    WP:    194\n    Astro: 329",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,Restaurant,WebSite]"
+      ]
+    },
+    {
+      "path": "/eating/ty-te-cadair-tea-room/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/eating/ty-te-cadair-tea-room/",
+        "status": 200,
+        "title": "Tŷ Te Cadair Tea Room | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/eating/ty-te-cadair-tea-room/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Tŷ Te Cadair Tea Room"
+        ],
+        "h2Texts": [
+          "About Tŷ Te Cadair Tea Room",
+          "Where is Tŷ Te Cadair Tea Room",
+          "Tŷ Te Cadair Tea Room Details"
+        ],
+        "ogTitle": "Tŷ Te Cadair Tea Room | Visit Tywyn",
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 244,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 24,
+        "externalLinkCount": 4
+      },
+      "astro": {
+        "url": "http://localhost:4322/eating/ty-te-cadair-tea-room/",
+        "status": 200,
+        "title": "Tŷ Te Cadair Tea Room | Visit Tywyn",
+        "metaDescription": "Traditional home made cakes, scrumptious soups, freshly made sandwiches, baguettes & hot lunches. Ingredients locally sourced where possible.",
+        "canonical": "https://visit-tywyn.co.uk/eating/ty-te-cadair-tea-room/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Tŷ Te Cadair Tea Room"
+        ],
+        "h2Texts": [
+          "About Tŷ Te Cadair Tea Room",
+          "More dog-friendly places to eat",
+          "Tŷ Te Cadair Tea Room Details",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Tŷ Te Cadair Tea Room | Visit Tywyn",
+        "ogDescription": "Traditional home made cakes, scrumptious soups, freshly made sandwiches, baguettes & hot lunches. Ingredients locally sourced where possible.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/1610924_812328105504766_8095090684816791243_n.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "Restaurant",
+          "WebSite"
+        ],
+        "bodyWordCount": 375,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 29,
+        "externalLinkCount": 4
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: Traditional home made cakes, scrumptious soups, freshly made sandwiches, baguettes & hot lunches. Ingredients locally sourced where possible.",
+        "og:description differs\n    WP:    null\n    Astro: Traditional home made cakes, scrumptious soups, freshly made sandwiches, baguettes & hot lunches. Ingredients locally sourced where possible.",
+        "body word count differs >20%\n    WP:    244\n    Astro: 375",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,Restaurant,WebSite]"
+      ]
+    },
+    {
+      "path": "/eating/victorian-slipway/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/eating/victorian-slipway/",
+        "status": 200,
+        "title": "Victorian Slipway | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/eating/victorian-slipway/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Victorian Slipway"
+        ],
+        "h2Texts": [
+          "About Victorian Slipway",
+          "Where is Victorian Slipway",
+          "Victorian Slipway Details"
+        ],
+        "ogTitle": "Victorian Slipway | Visit Tywyn",
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 87,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 23,
+        "externalLinkCount": 4
+      },
+      "astro": {
+        "url": "http://localhost:4322/eating/victorian-slipway/",
+        "status": 200,
+        "title": "Victorian Slipway | Visit Tywyn",
+        "metaDescription": "Seafront pub on Marine Parade in Tywyn, overlooking the beach with bar food, ales, and an outdoor terrace.",
+        "canonical": "https://visit-tywyn.co.uk/eating/victorian-slipway/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Victorian Slipway"
+        ],
+        "h2Texts": [
+          "About Victorian Slipway",
+          "Where is Victorian Slipway",
+          "Find Victorian Slipway",
+          "More places to eat in Tywyn",
+          "Victorian Slipway Details",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Victorian Slipway | Visit Tywyn",
+        "ogDescription": "Seafront pub on Marine Parade in Tywyn, overlooking the beach with bar food, ales, and an outdoor terrace.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/photo0jpg.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "FoodEstablishment",
+          "Organization",
+          "WebSite"
+        ],
+        "bodyWordCount": 210,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 28,
+        "externalLinkCount": 5
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: Seafront pub on Marine Parade in Tywyn, overlooking the beach with bar food, ales, and an outdoor terrace.",
+        "og:description differs\n    WP:    null\n    Astro: Seafront pub on Marine Parade in Tywyn, overlooking the beach with bar food, ales, and an outdoor terrace.",
+        "body word count differs >20%\n    WP:    87\n    Astro: 210",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,FoodEstablishment,Organization,WebSite]"
+      ]
+    },
+    {
+      "path": "/eating/whitehall/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/eating/whitehall/",
+        "status": 200,
+        "title": "Whitehall | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/eating/whitehall/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Whitehall"
+        ],
+        "h2Texts": [
+          "About Whitehall",
+          "Where is Whitehall",
+          "Whitehall Details"
+        ],
+        "ogTitle": "Whitehall | Visit Tywyn",
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 79,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 23,
+        "externalLinkCount": 3
+      },
+      "astro": {
+        "url": "http://localhost:4322/eating/whitehall/",
+        "status": 200,
+        "title": "Whitehall | Visit Tywyn",
+        "metaDescription": "Restaurant on Corbett Square in central Tywyn, serving lunches and evening meals.",
+        "canonical": "https://visit-tywyn.co.uk/eating/whitehall/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Whitehall"
+        ],
+        "h2Texts": [
+          "About Whitehall",
+          "Where is Whitehall",
+          "Find Whitehall",
+          "More places to eat in Tywyn",
+          "Whitehall Details",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Whitehall | Visit Tywyn",
+        "ogDescription": "Restaurant on Corbett Square in central Tywyn, serving lunches and evening meals.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/screen-shot-2015-07-04-at-20.56.05.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "FoodEstablishment",
+          "Organization",
+          "WebSite"
+        ],
+        "bodyWordCount": 198,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 28,
+        "externalLinkCount": 4
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: Restaurant on Corbett Square in central Tywyn, serving lunches and evening meals.",
+        "og:description differs\n    WP:    null\n    Astro: Restaurant on Corbett Square in central Tywyn, serving lunches and evening meals.",
+        "body word count differs >20%\n    WP:    79\n    Astro: 198",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,FoodEstablishment,Organization,WebSite]"
+      ]
+    },
+    {
+      "path": "/events/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/events/",
+        "status": 200,
+        "title": "Events in Tywyn | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/events/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Events in Tywyn"
+        ],
+        "h2Texts": [
+          "What’s happening around Tywyn?",
+          "Weekly events in Tywyn"
+        ],
+        "ogTitle": "Events in Tywyn | Visit Tywyn",
+        "ogDescription": "Great events and activities happen all year round in Tywyn, Aberdyfi and the surrounding villages. From the Abergynolwyn Carnival in July, to the famous Talyllyn Railway Race the Train event every August. Weekly events in Tywyn  ",
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 101,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 23,
+        "externalLinkCount": 2
+      },
+      "astro": {
+        "url": "http://localhost:4322/events/",
+        "status": 200,
+        "title": "Events in Tywyn | Visit Tywyn",
+        "metaDescription": "Upcoming festivals, fairs, and events in Tywyn and the surrounding villages.",
+        "canonical": "https://visit-tywyn.co.uk/events/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Events in Tywyn"
+        ],
+        "h2Texts": [
+          "Weekly events in Tywyn",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Events in Tywyn | Visit Tywyn",
+        "ogDescription": "Upcoming festivals, fairs, and events in Tywyn and the surrounding villages.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/explore.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "WebSite"
+        ],
+        "bodyWordCount": 94,
+        "imageCount": 2,
+        "imagesWithAlt": 2,
+        "internalLinkCount": 24,
+        "externalLinkCount": 2
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: Upcoming festivals, fairs, and events in Tywyn and the surrounding villages.",
+        "og:description differs\n    WP:    Great events and activities happen all year round in Tywyn, Aberdyfi and the surrounding villages. From the Abergynolwyn Carnival in July, to the famous Talyllyn Railway Race the Train event every August. Weekly events in Tywyn  \n    Astro: Upcoming festivals, fairs, and events in Tywyn and the surrounding villages.",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,WebSite]"
+      ]
+    },
+    {
+      "path": "/explore-tywyn/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/explore-tywyn/",
+        "status": 200,
+        "title": "Explore Tywyn | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/explore-tywyn/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Explore Tywyn"
+        ],
+        "h2Texts": [
+          "Everything you need to know about Tywyn"
+        ],
+        "ogTitle": "Explore Tywyn | Visit Tywyn",
+        "ogDescription": "Why visit Tywyn? Discover the incredible scenery and the breathtaking sunsets, the long beaches, the ancient history and the local delicacies! Frequently Asked Questions What day is Tywyn Market? Market Day is on a Monday, and runs from May to October. What Supermarkets are there in Tywyn? We have a Coop and a Spar in […]",
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 210,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 24,
+        "externalLinkCount": 5
+      },
+      "astro": {
+        "url": "http://localhost:4322/explore-tywyn/",
+        "status": 200,
+        "title": "Explore Tywyn | Visit Tywyn",
+        "metaDescription": "Everything you need to know about Tywyn",
+        "canonical": "https://visit-tywyn.co.uk/explore-tywyn/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Explore Tywyn"
+        ],
+        "h2Texts": [
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Explore Tywyn | Visit Tywyn",
+        "ogDescription": "Everything you need to know about Tywyn",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/explore.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "FAQPage",
+          "Organization",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 203,
+        "imageCount": 2,
+        "imagesWithAlt": 2,
+        "internalLinkCount": 25,
+        "externalLinkCount": 5
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: Everything you need to know about Tywyn",
+        "og:description differs\n    WP:    Why visit Tywyn? Discover the incredible scenery and the breathtaking sunsets, the long beaches, the ancient history and the local delicacies! Frequently Asked Questions What day is Tywyn Market? Market Day is on a Monday, and runs from May to October. What Supermarkets are there in Tywyn? We have a Coop and a Spar in […]\n    Astro: Everything you need to know about Tywyn",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,FAQPage,Organization,WebPage,WebSite]"
+      ]
+    },
+    {
+      "path": "/getting-around/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/getting-around/",
+        "status": 200,
+        "title": "Getting around Tywyn | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/getting-around/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Getting around Tywyn"
+        ],
+        "h2Texts": [
+          "Find out how to get to Tywyn, and the best way to get around once you’re here!"
+        ],
+        "ogTitle": "Getting around Tywyn | Visit Tywyn",
+        "ogDescription": "Train Getting to Tywyn by train is simple, stress free and amazingly picturesque. With trains coming in from Birmingham, the Midlands and Shrewsbury every couple of hours – and travelling up the Cambrian Coastline, your holiday starts before you even arrive.  Once you’re here, enjoy the beautiful views of the Cambrian Coastline by train by […]",
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 324,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 22,
+        "externalLinkCount": 6
+      },
+      "astro": {
+        "url": "http://localhost:4322/getting-around/",
+        "status": 200,
+        "title": "Getting around Tywyn | Visit Tywyn",
+        "metaDescription": "Find out how to get to Tywyn, and the best way to get around once you’re here!",
+        "canonical": "https://visit-tywyn.co.uk/getting-around/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Getting around Tywyn"
+        ],
+        "h2Texts": [
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Getting around Tywyn | Visit Tywyn",
+        "ogDescription": "Find out how to get to Tywyn, and the best way to get around once you’re here!",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/around-tywyn.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 317,
+        "imageCount": 2,
+        "imagesWithAlt": 2,
+        "internalLinkCount": 23,
+        "externalLinkCount": 6
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: Find out how to get to Tywyn, and the best way to get around once you’re here!",
+        "og:description differs\n    WP:    Train Getting to Tywyn by train is simple, stress free and amazingly picturesque. With trains coming in from Birmingham, the Midlands and Shrewsbury every couple of hours – and travelling up the Cambrian Coastline, your holiday starts before you even arrive.  Once you’re here, enjoy the beautiful views of the Cambrian Coastline by train by […]\n    Astro: Find out how to get to Tywyn, and the best way to get around once you’re here!",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,WebPage,WebSite]"
+      ]
+    },
+    {
+      "path": "/privacy-policy/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/privacy-policy/",
+        "status": 200,
+        "title": "Privacy Policy | Visit Tywyn",
+        "metaDescription": "Read Visit Tywyn’s Privacy Policy to learn how we collect, store, and protect your personal data in compliance with UK GDPR. Understand your rights and how we handle cookies, security, and data sharing. Last updated: 1st February 2025",
+        "canonical": "https://visit-tywyn.co.uk/privacy-policy/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Privacy Policy"
+        ],
+        "h2Texts": [
+          "How we keep your data safe.",
+          "Privacy Policy for Visit Tywyn"
+        ],
+        "ogTitle": "Privacy Policy | Visit Tywyn",
+        "ogDescription": "Read Visit Tywyn’s Privacy Policy to learn how we collect, store, and protect your personal data in compliance with UK GDPR. Understand your rights and how we handle cookies, security, and data sharing. Last updated: 1st February 2025",
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 448,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 25,
+        "externalLinkCount": 2
+      },
+      "astro": {
+        "url": "http://localhost:4322/privacy-policy/",
+        "status": 200,
+        "title": "Privacy Policy | Visit Tywyn",
+        "metaDescription": "Read Visit Tywyn’s Privacy Policy to learn how we collect, store, and protect your personal data in compliance with UK GDPR. Understand your rights and how we handle cookies, security, and data sharing. Last updated: 1st February 2025",
+        "canonical": "https://visit-tywyn.co.uk/privacy-policy/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Privacy Policy"
+        ],
+        "h2Texts": [
+          "Privacy Policy for Visit Tywyn",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Privacy Policy | Visit Tywyn",
+        "ogDescription": "Read Visit Tywyn’s Privacy Policy to learn how we collect, store, and protect your personal data in compliance with UK GDPR. Understand your rights and how we handle cookies, security, and data sharing. Last updated: 1st February 2025",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/06/privacy-policy.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 441,
+        "imageCount": 2,
+        "imagesWithAlt": 2,
+        "internalLinkCount": 26,
+        "externalLinkCount": 2
+      },
+      "deltas": [
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,WebPage,WebSite]"
+      ]
+    },
+    {
+      "path": "/things-to-do/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/things-to-do/",
+        "status": 200,
+        "title": "The best things to do in Tywyn (with photos!)",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Things to do in Tywyn"
+        ],
+        "h2Texts": [
+          "Top things to see and do in Tywyn this year"
+        ],
+        "ogTitle": "The best things to do in Tywyn (with photos!)",
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "CollectionPage",
+          "ImageObject",
+          "WebSite"
+        ],
+        "bodyWordCount": 619,
+        "imageCount": 11,
+        "imagesWithAlt": 11,
+        "internalLinkCount": 44,
+        "externalLinkCount": 2
+      },
+      "astro": {
+        "url": "http://localhost:4322/things-to-do/",
+        "status": 200,
+        "title": "The best things to do in Tywyn (with photos!) | Visit Tywyn",
+        "metaDescription": "Attractions, walks, beaches, and family days out in and around Tywyn.",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Things to do in Tywyn"
+        ],
+        "h2Texts": [
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "The best things to do in Tywyn (with photos!) | Visit Tywyn",
+        "ogDescription": "Attractions, walks, beaches, and family days out in and around Tywyn.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/explore.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "ItemList",
+          "Organization",
+          "WebSite"
+        ],
+        "bodyWordCount": 617,
+        "imageCount": 12,
+        "imagesWithAlt": 12,
+        "internalLinkCount": 45,
+        "externalLinkCount": 2
+      },
+      "deltas": [
+        "title differs\n    WP:    The best things to do in Tywyn (with photos!)\n    Astro: The best things to do in Tywyn (with photos!) | Visit Tywyn",
+        "meta description differs\n    WP:    null\n    Astro: Attractions, walks, beaches, and family days out in and around Tywyn.",
+        "og:title differs\n    WP:    The best things to do in Tywyn (with photos!)\n    Astro: The best things to do in Tywyn (with photos!) | Visit Tywyn",
+        "og:description differs\n    WP:    null\n    Astro: Attractions, walks, beaches, and family days out in and around Tywyn.",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,CollectionPage,ImageObject,WebSite]\n    Astro: [BreadcrumbList,ItemList,Organization,WebSite]"
+      ]
+    },
+    {
+      "path": "/things-to-do/cadair-idris/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/things-to-do/cadair-idris/",
+        "status": 200,
+        "title": "Cadair Idris | Visit Tywyn",
+        "metaDescription": "Cadair Idris is one of Wales’s most iconic mountains, standing around 893m in height, and situated in Southern Snowdonia, overlooking Dolgellau",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/cadair-idris/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Cadair Idris"
+        ],
+        "h2Texts": [
+          "Enjoy spectacular views from one of Wales' most iconic mountains"
+        ],
+        "ogTitle": "Cadair Idris | Visit Tywyn",
+        "ogDescription": "Cadair Idris is one of Wales’s most iconic mountains, standing around 893m in height, and situated in Southern Snowdonia, overlooking Dolgellau",
+        "ogImage": "https://visit-tywyn.co.uk/wp-content/uploads/2022/07/Cadair_Idris-scaled.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "ImageObject",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 198,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 23,
+        "externalLinkCount": 2
+      },
+      "astro": {
+        "url": "http://localhost:4322/things-to-do/cadair-idris/",
+        "status": 200,
+        "title": "Cadair Idris | Visit Tywyn",
+        "metaDescription": "Cadair Idris is one of Wales’s most iconic mountains, standing around 893m in height, and situated in Southern Snowdonia, overlooking Dolgellau",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/cadair-idris/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Cadair Idris"
+        ],
+        "h2Texts": [
+          "More things to do in Tywyn",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Cadair Idris | Visit Tywyn",
+        "ogDescription": "Cadair Idris is one of Wales’s most iconic mountains, standing around 893m in height, and situated in Southern Snowdonia, overlooking Dolgellau",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/07/cadair_idris-scaled.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "TouristAttraction",
+          "WebSite"
+        ],
+        "bodyWordCount": 393,
+        "imageCount": 7,
+        "imagesWithAlt": 7,
+        "internalLinkCount": 28,
+        "externalLinkCount": 2
+      },
+      "deltas": [
+        "body word count differs >20%\n    WP:    198\n    Astro: 393",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,ImageObject,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,TouristAttraction,WebSite]"
+      ]
+    },
+    {
+      "path": "/things-to-do/castell-y-bere/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/things-to-do/castell-y-bere/",
+        "status": 200,
+        "title": "Castell y Bere | Visit Tywyn",
+        "metaDescription": "It may be remote, but Castell y Bere a magnet for all castle lovers. Sitting at the foot of the mighty Cader Idris, stunning views and great for dogs.",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/castell-y-bere/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Castell y Bere"
+        ],
+        "h2Texts": [
+          "An ancient castle, with stunning views.",
+          "Castell y Bere Virtual Tour",
+          "How to get to Castell y Bere",
+          "Are dogs allowed at Castell y Bere",
+          "Castell y Bere Gallery"
+        ],
+        "ogTitle": "Castell y Bere | Visit Tywyn",
+        "ogDescription": "It may be remote, but Castell y Bere a magnet for all castle lovers. Sitting at the foot of the mighty Cader Idris, stunning views and great for dogs.",
+        "ogImage": "https://visit-tywyn.co.uk/wp-content/uploads/2022/06/0864886_1_2.jpeg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "ImageObject",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 451,
+        "imageCount": 10,
+        "imagesWithAlt": 10,
+        "internalLinkCount": 24,
+        "externalLinkCount": 2
+      },
+      "astro": {
+        "url": "http://localhost:4322/things-to-do/castell-y-bere/",
+        "status": 200,
+        "title": "Castell y Bere | Visit Tywyn",
+        "metaDescription": "It may be remote, but Castell y Bere a magnet for all castle lovers. Sitting at the foot of the mighty Cader Idris, stunning views and great for dogs.",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/castell-y-bere/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Castell y Bere"
+        ],
+        "h2Texts": [
+          "Castell y Bere Virtual Tour",
+          "How to get to Castell y Bere",
+          "Are dogs allowed at Castell y Bere",
+          "Castell y Bere Gallery",
+          "More things to do in Tywyn",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Castell y Bere | Visit Tywyn",
+        "ogDescription": "It may be remote, but Castell y Bere a magnet for all castle lovers. Sitting at the foot of the mighty Cader Idris, stunning views and great for dogs.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/06/castell-y-bere-banner.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "TouristAttraction",
+          "WebSite"
+        ],
+        "bodyWordCount": 610,
+        "imageCount": 23,
+        "imagesWithAlt": 23,
+        "internalLinkCount": 29,
+        "externalLinkCount": 2
+      },
+      "deltas": [
+        "body word count differs >20%\n    WP:    451\n    Astro: 610",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,ImageObject,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,TouristAttraction,WebSite]"
+      ]
+    },
+    {
+      "path": "/things-to-do/dolgoch-falls/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/things-to-do/dolgoch-falls/",
+        "status": 200,
+        "title": "Dolgoch Falls Waterfall Walk | Visit Tywyn",
+        "metaDescription": "Dolgoch Falls are a series of three waterfalls forming part of the Nant Dol-Góch stream, and can be reached via a short walk or by the Talyllyn Railway.",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/dolgoch-falls/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Dolgoch Falls Waterfall Walk"
+        ],
+        "h2Texts": [
+          "A Short, Beautiful Walk Passing Three Waterfalls",
+          "Where are Dolgoch Falls?",
+          "Can you take dogs to Dolgoch Falls?",
+          "When is Dolgoch Falls open?",
+          "Dolgoch Falls Waterfall Walk Gallery"
+        ],
+        "ogTitle": "Dolgoch Falls Waterfall Walk - A short, beautiful walk passing three waterfalls",
+        "ogDescription": "Dolgoch Falls are a series of three waterfalls forming part of the Nant Dol-Góch stream, and can be reached via a short walk or by the Talyllyn Railway.",
+        "ogImage": "https://visit-tywyn.co.uk/wp-content/uploads/2022/06/Dolgoch-Falls.jpeg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "ImageObject",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 546,
+        "imageCount": 4,
+        "imagesWithAlt": 4,
+        "internalLinkCount": 26,
+        "externalLinkCount": 2
+      },
+      "astro": {
+        "url": "http://localhost:4322/things-to-do/dolgoch-falls/",
+        "status": 200,
+        "title": "Dolgoch Falls Waterfall Walk | Visit Tywyn",
+        "metaDescription": "Dolgoch Falls are a series of three waterfalls forming part of the Nant Dol-Góch stream, and can be reached via a short walk or by the Talyllyn Railway.",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/dolgoch-falls/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Dolgoch Falls Waterfall Walk"
+        ],
+        "h2Texts": [
+          "Where are Dolgoch Falls?",
+          "Can you take dogs to Dolgoch Falls?",
+          "When is Dolgoch Falls open?",
+          "Dolgoch Falls Waterfall Walk Gallery",
+          "More things to do in Tywyn",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Dolgoch Falls Waterfall Walk | Visit Tywyn",
+        "ogDescription": "Dolgoch Falls are a series of three waterfalls forming part of the Nant Dol-Góch stream, and can be reached via a short walk or by the Talyllyn Railway.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/06/dolgoch-falls.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "TouristAttraction",
+          "WebSite"
+        ],
+        "bodyWordCount": 721,
+        "imageCount": 12,
+        "imagesWithAlt": 12,
+        "internalLinkCount": 31,
+        "externalLinkCount": 2
+      },
+      "deltas": [
+        "og:title differs\n    WP:    Dolgoch Falls Waterfall Walk - A short, beautiful walk passing three waterfalls\n    Astro: Dolgoch Falls Waterfall Walk | Visit Tywyn",
+        "body word count differs >20%\n    WP:    546\n    Astro: 721",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,ImageObject,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,TouristAttraction,WebSite]"
+      ]
+    },
+    {
+      "path": "/things-to-do/honey-ice-cream/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/things-to-do/honey-ice-cream/",
+        "status": 200,
+        "title": "Honey Ice Cream at Holgates | Visit Tywyn",
+        "metaDescription": "Holgates Honey Ice Cream Shop is the only place where you can buy their famous Honey Ice Cream. Freshly made each day, this delicious ice cream is made to a secret recipe using real honey.",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/honey-ice-cream/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Honey Ice Cream at Holgates"
+        ],
+        "h2Texts": [
+          "Fabulous honey ice cream"
+        ],
+        "ogTitle": "Honey Ice Cream at Holgates | Visit Tywyn",
+        "ogDescription": "Holgates Honey Ice Cream Shop is the only place where you can buy their famous Honey Ice Cream. Freshly made each day, this delicious ice cream is made to a secret recipe using real honey.",
+        "ogImage": "https://visit-tywyn.co.uk/wp-content/uploads/2022/07/honeyicecream.jpeg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "ImageObject",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 227,
+        "imageCount": 0,
+        "imagesWithAlt": 0,
+        "internalLinkCount": 24,
+        "externalLinkCount": 2
+      },
+      "astro": {
+        "url": "http://localhost:4322/things-to-do/honey-ice-cream/",
+        "status": 200,
+        "title": "Honey Ice Cream at Holgates | Visit Tywyn",
+        "metaDescription": "Holgates Honey Ice Cream Shop is the only place where you can buy their famous Honey Ice Cream. Freshly made each day, this delicious ice cream is made to a secret recipe using real honey.",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/honey-ice-cream/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Honey Ice Cream at Holgates"
+        ],
+        "h2Texts": [
+          "More things to do in Tywyn",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Honey Ice Cream at Holgates | Visit Tywyn",
+        "ogDescription": "Holgates Honey Ice Cream Shop is the only place where you can buy their famous Honey Ice Cream. Freshly made each day, this delicious ice cream is made to a secret recipe using real honey.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/07/honeyicecream.jpeg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "TouristAttraction",
+          "WebSite"
+        ],
+        "bodyWordCount": 363,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 29,
+        "externalLinkCount": 2
+      },
+      "deltas": [
+        "body word count differs >20%\n    WP:    227\n    Astro: 363",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,ImageObject,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,TouristAttraction,WebSite]"
+      ]
+    },
+    {
+      "path": "/things-to-do/king-arthurs-labyrinth/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/things-to-do/king-arthurs-labyrinth/",
+        "status": 200,
+        "title": "King Arthur's Labyrinth | Visit Tywyn",
+        "metaDescription": "Head to King Arthur's Labyrinth in Corris and discover Wales underground. Less than 30 minutes drive from Tywyn.",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/king-arthurs-labyrinth/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "King Arthur’s Labyrinth"
+        ],
+        "h2Texts": [
+          "King Arthur’s Labyrinth Gallery"
+        ],
+        "ogTitle": "King Arthur's Labyrinth | Visit Tywyn",
+        "ogDescription": "Head to King Arthur's Labyrinth in Corris and discover Wales underground. Less than 30 minutes drive from Tywyn.",
+        "ogImage": "https://visit-tywyn.co.uk/wp-content/uploads/2024/06/KingArthursLabyrinth.jpeg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "ImageObject",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 196,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 23,
+        "externalLinkCount": 4
+      },
+      "astro": {
+        "url": "http://localhost:4322/things-to-do/king-arthurs-labyrinth/",
+        "status": 200,
+        "title": "King Arthur's Labyrinth | Visit Tywyn",
+        "metaDescription": "Head to King Arthur's Labyrinth in Corris and discover Wales underground. Less than 30 minutes drive from Tywyn.",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/king-arthurs-labyrinth/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "King Arthur's Labyrinth"
+        ],
+        "h2Texts": [
+          "King Arthur's Labyrinth Gallery",
+          "More things to do in Tywyn",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "King Arthur's Labyrinth | Visit Tywyn",
+        "ogDescription": "Head to King Arthur's Labyrinth in Corris and discover Wales underground. Less than 30 minutes drive from Tywyn.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2024/06/king-arthurs-labyrinth-banner.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "TouristAttraction",
+          "WebSite"
+        ],
+        "bodyWordCount": 430,
+        "imageCount": 16,
+        "imagesWithAlt": 16,
+        "internalLinkCount": 28,
+        "externalLinkCount": 4
+      },
+      "deltas": [
+        "body word count differs >20%\n    WP:    196\n    Astro: 430",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,ImageObject,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,TouristAttraction,WebSite]"
+      ]
+    },
+    {
+      "path": "/things-to-do/magic-lantern-cinema/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/things-to-do/magic-lantern-cinema/",
+        "status": 200,
+        "title": "What's on in Tywyn Cinema?",
+        "metaDescription": "Tywyn's Magic Lantern Cinema is the UK’s best Independent Cinema. Find out what's showing. Watch the films with 7.1 surround sound and a fully-stocked bar.",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/magic-lantern-cinema/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Tywyn Magic Lantern Cinema"
+        ],
+        "h2Texts": [
+          "Find out what's on in Tywyn Cinema",
+          "Tywyn Cinema’s History"
+        ],
+        "ogTitle": "What's on in Tywyn Cinema?",
+        "ogDescription": "Tywyn's Magic Lantern Cinema is the UK’s best Independent Cinema. Find out what's showing. Watch the films with 7.1 surround sound and a fully-stocked bar.",
+        "ogImage": "https://visit-tywyn.co.uk/wp-content/uploads/2022/10/1150050_1_5.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "ImageObject",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 221,
+        "imageCount": 2,
+        "imagesWithAlt": 2,
+        "internalLinkCount": 23,
+        "externalLinkCount": 4
+      },
+      "astro": {
+        "url": "http://localhost:4322/things-to-do/magic-lantern-cinema/",
+        "status": 200,
+        "title": "What's on in Tywyn Cinema? | Visit Tywyn",
+        "metaDescription": "Tywyn's Magic Lantern Cinema is the UK’s best Independent Cinema. Find out what's showing. Watch the films with 7.1 surround sound and a fully-stocked bar.",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/magic-lantern-cinema/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Tywyn Magic Lantern Cinema"
+        ],
+        "h2Texts": [
+          "Tywyn Cinema’s History",
+          "More things to do in Tywyn",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "What's on in Tywyn Cinema? | Visit Tywyn",
+        "ogDescription": "Tywyn's Magic Lantern Cinema is the UK’s best Independent Cinema. Find out what's showing. Watch the films with 7.1 surround sound and a fully-stocked bar.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/tywyn-cinema-banner.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "TouristAttraction",
+          "WebSite"
+        ],
+        "bodyWordCount": 390,
+        "imageCount": 7,
+        "imagesWithAlt": 7,
+        "internalLinkCount": 28,
+        "externalLinkCount": 4
+      },
+      "deltas": [
+        "title differs\n    WP:    What's on in Tywyn Cinema?\n    Astro: What's on in Tywyn Cinema? | Visit Tywyn",
+        "og:title differs\n    WP:    What's on in Tywyn Cinema?\n    Astro: What's on in Tywyn Cinema? | Visit Tywyn",
+        "body word count differs >20%\n    WP:    221\n    Astro: 390",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,ImageObject,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,TouristAttraction,WebSite]"
+      ]
+    },
+    {
+      "path": "/things-to-do/nant-gwernol/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/things-to-do/nant-gwernol/",
+        "status": 200,
+        "title": "Nant Gwernol Forest and Waterfall Walk | Visit Tywyn",
+        "metaDescription": "The stunning ancient woodland of Nant Gwernol offers amazing views and diverse habitats, with rare wildlife, streams and waterfalls.",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/nant-gwernol/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Nant Gwernol Forest and Waterfall Walk"
+        ],
+        "h2Texts": [
+          "Take a walk through ancient woodland and along cascading waterfalls.",
+          "How to get to Nant Gwernol Forest?",
+          "Nant Gwernol map",
+          "Nant Gwernol Forest and Waterfall Walk Gallery"
+        ],
+        "ogTitle": "Nant Gwernol Forest and Waterfall Walk | Visit Tywyn",
+        "ogDescription": "The stunning ancient woodland of Nant Gwernol offers amazing views and diverse habitats, with rare wildlife, streams and waterfalls.",
+        "ogImage": "https://visit-tywyn.co.uk/wp-content/uploads/2022/06/648fba518473a5f2eba8e429dc14d73cca9a0ba2.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "ImageObject",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 242,
+        "imageCount": 9,
+        "imagesWithAlt": 9,
+        "internalLinkCount": 25,
+        "externalLinkCount": 4
+      },
+      "astro": {
+        "url": "http://localhost:4322/things-to-do/nant-gwernol/",
+        "status": 200,
+        "title": "Nant Gwernol Forest and Waterfall Walk | Visit Tywyn",
+        "metaDescription": "The stunning ancient woodland of Nant Gwernol offers amazing views and diverse habitats, with rare wildlife, streams and waterfalls.",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/nant-gwernol/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Nant Gwernol Forest and Waterfall Walk"
+        ],
+        "h2Texts": [
+          "How to get to Nant Gwernol Forest?",
+          "Nant Gwernol map",
+          "Nant Gwernol Forest and Waterfall Walk Gallery",
+          "More things to do in Tywyn",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Nant Gwernol Forest and Waterfall Walk | Visit Tywyn",
+        "ogDescription": "The stunning ancient woodland of Nant Gwernol offers amazing views and diverse habitats, with rare wildlife, streams and waterfalls.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/06/648fba518473a5f2eba8e429dc14d73cca9a0ba21.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "TouristAttraction",
+          "WebSite"
+        ],
+        "bodyWordCount": 407,
+        "imageCount": 20,
+        "imagesWithAlt": 20,
+        "internalLinkCount": 30,
+        "externalLinkCount": 4
+      },
+      "deltas": [
+        "body word count differs >20%\n    WP:    242\n    Astro: 407",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,ImageObject,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,TouristAttraction,WebSite]"
+      ]
+    },
+    {
+      "path": "/things-to-do/the-secret-garden/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/things-to-do/the-secret-garden/",
+        "status": 200,
+        "title": "The Secret Garden | Visit Tywyn",
+        "metaDescription": "Come on a very special treasure hunt, and find The Secret Garden in Tywyn! Right next to the Magic Lantern Cinema, enjoy cocktails, mocktails and snacks.",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/the-secret-garden/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "The Secret Garden"
+        ],
+        "h2Texts": [
+          "Do I need to book the Secret Garden? ​",
+          "Can I bring children?​",
+          "Can I bring dogs to the Secret Garden?",
+          "How does it work?",
+          "The Secret Garden Gallery"
+        ],
+        "ogTitle": "The Secret Garden | Visit Tywyn",
+        "ogDescription": "Come on a very special treasure hunt, and find The Secret Garden in Tywyn! Right next to the Magic Lantern Cinema, enjoy cocktails, mocktails and snacks.",
+        "ogImage": "https://visit-tywyn.co.uk/wp-content/uploads/2022/10/MagicLantern2.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "ImageObject",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 305,
+        "imageCount": 3,
+        "imagesWithAlt": 3,
+        "internalLinkCount": 25,
+        "externalLinkCount": 2
+      },
+      "astro": {
+        "url": "http://localhost:4322/things-to-do/the-secret-garden/",
+        "status": 200,
+        "title": "The Secret Garden | Visit Tywyn",
+        "metaDescription": "Come on a very special treasure hunt, and find The Secret Garden in Tywyn! Right next to the Magic Lantern Cinema, enjoy cocktails, mocktails and snacks.",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/the-secret-garden/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "The Secret Garden"
+        ],
+        "h2Texts": [
+          "Do I need to book the Secret Garden? ​",
+          "Can I bring children?​",
+          "Can I bring dogs to the Secret Garden?",
+          "How does it work?",
+          "The Secret Garden Gallery",
+          "More things to do in Tywyn",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "The Secret Garden | Visit Tywyn",
+        "ogDescription": "Come on a very special treasure hunt, and find The Secret Garden in Tywyn! Right next to the Magic Lantern Cinema, enjoy cocktails, mocktails and snacks.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/10/magiclantern2.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "TouristAttraction",
+          "WebSite"
+        ],
+        "bodyWordCount": 498,
+        "imageCount": 11,
+        "imagesWithAlt": 11,
+        "internalLinkCount": 30,
+        "externalLinkCount": 2
+      },
+      "deltas": [
+        "body word count differs >20%\n    WP:    305\n    Astro: 498",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,ImageObject,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,TouristAttraction,WebSite]"
+      ]
+    },
+    {
+      "path": "/things-to-do/the-talyllyn-railway/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/things-to-do/the-talyllyn-railway/",
+        "status": 200,
+        "title": "The Talyllyn Railway | Visit Tywyn",
+        "metaDescription": "Steaming through the beautiful valley to Dolgoch, the Talyllyn Railways is a trip back through nostalgia - and a fun day out for all the family.",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/the-talyllyn-railway/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "The Talyllyn Railway"
+        ],
+        "h2Texts": [
+          "The World's First Preserved Railway",
+          "Map of the Talyllyn Route",
+          "How to get to the Talyllyn Railway",
+          "How to buy tickets",
+          "The Talyllyn Railway Gallery"
+        ],
+        "ogTitle": "The Talyllyn Railway - The world's first preserved railway",
+        "ogDescription": "Steaming through the beautiful valley to Dolgoch, the Talyllyn Railways is a trip back through nostalgia - and a fun day out for all the family.",
+        "ogImage": "https://visit-tywyn.co.uk/wp-content/uploads/2022/06/5s8henfsP9D.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "ImageObject",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 582,
+        "imageCount": 11,
+        "imagesWithAlt": 11,
+        "internalLinkCount": 26,
+        "externalLinkCount": 4
+      },
+      "astro": {
+        "url": "http://localhost:4322/things-to-do/the-talyllyn-railway/",
+        "status": 200,
+        "title": "The Talyllyn Railway | Visit Tywyn",
+        "metaDescription": "Steaming through the beautiful valley to Dolgoch, the Talyllyn Railways is a trip back through nostalgia - and a fun day out for all the family.",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/the-talyllyn-railway/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "The Talyllyn Railway"
+        ],
+        "h2Texts": [
+          "Map of the Talyllyn Route",
+          "How to get to the Talyllyn Railway",
+          "How to buy tickets",
+          "The Talyllyn Railway Gallery",
+          "More things to do in Tywyn",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "The Talyllyn Railway | Visit Tywyn",
+        "ogDescription": "Steaming through the beautiful valley to Dolgoch, the Talyllyn Railways is a trip back through nostalgia - and a fun day out for all the family.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/06/talyllyn-banner.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "TouristAttraction",
+          "WebSite"
+        ],
+        "bodyWordCount": 746,
+        "imageCount": 24,
+        "imagesWithAlt": 24,
+        "internalLinkCount": 30,
+        "externalLinkCount": 5
+      },
+      "deltas": [
+        "og:title differs\n    WP:    The Talyllyn Railway - The world's first preserved railway\n    Astro: The Talyllyn Railway | Visit Tywyn",
+        "body word count differs >20%\n    WP:    582\n    Astro: 746",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,ImageObject,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,TouristAttraction,WebSite]"
+      ]
+    },
+    {
+      "path": "/things-to-do/tywyn-beach/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/things-to-do/tywyn-beach/",
+        "status": 200,
+        "title": "Tywyn beach | Visit Tywyn",
+        "metaDescription": "Spanning over 5 miles of pristine coastline from Tywyn in the north, to the harbour at Aberdyfi in the south, Tywyn has long golden sandy beaches which is perfect for picnics, long strolls and playing in the sea!",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/tywyn-beach/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Tywyn beach"
+        ],
+        "h2Texts": [
+          "Tywyn's Sandy beach is perfect for dog walks and sunsets",
+          "Tywyn Beach Surfing",
+          "Is Tywyn Beach Dog friendly?",
+          "Tywyn beach Gallery"
+        ],
+        "ogTitle": "Tywyn beach | Visit Tywyn",
+        "ogDescription": "Spanning over 5 miles of pristine coastline from Tywyn in the north, to the harbour at Aberdyfi in the south, Tywyn has long golden sandy beaches which is perfect for picnics, long strolls and playing in the sea!",
+        "ogImage": "https://visit-tywyn.co.uk/wp-content/uploads/2022/10/221665627_3979542012156273_6037128963129386681_n.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "ImageObject",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 336,
+        "imageCount": 7,
+        "imagesWithAlt": 7,
+        "internalLinkCount": 25,
+        "externalLinkCount": 2
+      },
+      "astro": {
+        "url": "http://localhost:4322/things-to-do/tywyn-beach/",
+        "status": 200,
+        "title": "Tywyn beach | Visit Tywyn",
+        "metaDescription": "Spanning over 5 miles of pristine coastline from Tywyn in the north, to the harbour at Aberdyfi in the south, Tywyn has long golden sandy beaches which is perfect for picnics, long strolls and playing in the sea!",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/tywyn-beach/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Tywyn beach"
+        ],
+        "h2Texts": [
+          "Tywyn Beach Surfing",
+          "Is Tywyn Beach Dog friendly?",
+          "Tywyn beach Gallery",
+          "More things to do in Tywyn",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Tywyn beach | Visit Tywyn",
+        "ogDescription": "Spanning over 5 miles of pristine coastline from Tywyn in the north, to the harbour at Aberdyfi in the south, Tywyn has long golden sandy beaches which is perfect for picnics, long strolls and playing in the sea!",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/tywyn-webcam.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "TouristAttraction",
+          "WebSite"
+        ],
+        "bodyWordCount": 502,
+        "imageCount": 18,
+        "imagesWithAlt": 18,
+        "internalLinkCount": 30,
+        "externalLinkCount": 2
+      },
+      "deltas": [
+        "body word count differs >20%\n    WP:    336\n    Astro: 502",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,ImageObject,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,TouristAttraction,WebSite]"
+      ]
+    },
+    {
+      "path": "/things-to-do/tywyn-wharf/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/things-to-do/tywyn-wharf/",
+        "status": 200,
+        "title": "Tywyn Wharf - The Talyllyn Railway | Visit Tywyn",
+        "metaDescription": "Tywyn Wharf is a must-visit destination for anyone interested in history, trains, or stunning scenery. This historic wharf is the starting point of the Talyllyn Railway.",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/tywyn-wharf/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Tywyn Wharf – The Talyllyn Railway"
+        ],
+        "h2Texts": [
+          "A Historic and Scenic Destination",
+          "Getting to Tywyn Wharf",
+          "Exploring Tywyn Wharf"
+        ],
+        "ogTitle": "Tywyn Wharf - The Talyllyn Railway | Visit Tywyn",
+        "ogDescription": "Tywyn Wharf is a must-visit destination for anyone interested in history, trains, or stunning scenery. This historic wharf is the starting point of the Talyllyn Railway.",
+        "ogImage": "https://visit-tywyn.co.uk/wp-content/uploads/2023/03/Tywyn_Wharf_railway_station_23285030891-scaled.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "ImageObject",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 432,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 26,
+        "externalLinkCount": 3
+      },
+      "astro": {
+        "url": "http://localhost:4322/things-to-do/tywyn-wharf/",
+        "status": 200,
+        "title": "Tywyn Wharf - The Talyllyn Railway | Visit Tywyn",
+        "metaDescription": "Tywyn Wharf is a must-visit destination for anyone interested in history, trains, or stunning scenery. This historic wharf is the starting point of the Talyllyn Railway.",
+        "canonical": "https://visit-tywyn.co.uk/things-to-do/tywyn-wharf/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Tywyn Wharf - The Talyllyn Railway"
+        ],
+        "h2Texts": [
+          "Getting to Tywyn Wharf",
+          "Exploring Tywyn Wharf",
+          "More things to do in Tywyn",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Tywyn Wharf - The Talyllyn Railway | Visit Tywyn",
+        "ogDescription": "Tywyn Wharf is a must-visit destination for anyone interested in history, trains, or stunning scenery. This historic wharf is the starting point of the Talyllyn Railway.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2023/03/new-page-banner.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "TouristAttraction",
+          "WebSite"
+        ],
+        "bodyWordCount": 623,
+        "imageCount": 6,
+        "imagesWithAlt": 6,
+        "internalLinkCount": 31,
+        "externalLinkCount": 3
+      },
+      "deltas": [
+        "body word count differs >20%\n    WP:    432\n    Astro: 623",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,ImageObject,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,TouristAttraction,WebSite]"
+      ]
+    },
+    {
+      "path": "/wales-coastal-path/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/wales-coastal-path/",
+        "status": 200,
+        "title": "Discovering the Wales Coastal Path: Aberdyfi to Tywyn | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/wales-coastal-path/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Discovering the Wales Coastal Path: Aberdyfi to Tywyn"
+        ],
+        "h2Texts": [
+          "Walk right through the heart of Tywyn",
+          "About the Wales Coast Path",
+          "Aberdyfi to Tywyn Walk",
+          "Wildlife and Natural Beauty",
+          "Planning Your Visit",
+          "Enjoying walking the coastal path from Aberdyfi to Tywyn"
+        ],
+        "ogTitle": "Discovering the Wales Coastal Path: Aberdyfi to Tywyn | Visit Tywyn",
+        "ogDescription": "Wales is the first country in the World to have a coastal path going the whole way around it, and you’ll find some of the most spectacular scenery along the Cardigan Bay Coastline, and through Tywyn. The entire Wales Coast Path is 870 miles long and takes you on a wonderful journey along the Welsh […]",
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 736,
+        "imageCount": 0,
+        "imagesWithAlt": 0,
+        "internalLinkCount": 24,
+        "externalLinkCount": 4
+      },
+      "astro": {
+        "url": "http://localhost:4322/wales-coastal-path/",
+        "status": 200,
+        "title": "Discovering the Wales Coastal Path: Aberdyfi to Tywyn | Visit Tywyn",
+        "metaDescription": "Walk right through the heart of Tywyn",
+        "canonical": "https://visit-tywyn.co.uk/wales-coastal-path/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Discovering the Wales Coastal Path: Aberdyfi to Tywyn"
+        ],
+        "h2Texts": [
+          "About the Wales Coast Path",
+          "Aberdyfi to Tywyn Walk",
+          "Wildlife and Natural Beauty",
+          "Planning Your Visit",
+          "Enjoying walking the coastal path from Aberdyfi to Tywyn",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Discovering the Wales Coastal Path: Aberdyfi to Tywyn | Visit Tywyn",
+        "ogDescription": "Walk right through the heart of Tywyn",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/explore.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 729,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 25,
+        "externalLinkCount": 4
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: Walk right through the heart of Tywyn",
+        "og:description differs\n    WP:    Wales is the first country in the World to have a coastal path going the whole way around it, and you’ll find some of the most spectacular scenery along the Cardigan Bay Coastline, and through Tywyn. The entire Wales Coast Path is 870 miles long and takes you on a wonderful journey along the Welsh […]\n    Astro: Walk right through the heart of Tywyn",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,WebPage,WebSite]"
+      ]
+    },
+    {
+      "path": "/webcam/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/webcam/",
+        "status": 200,
+        "title": "Tywyn beach webcam | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/webcam/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Tywyn beach webcam"
+        ],
+        "h2Texts": [
+          "Experience the incredible – from the comfort of your own home."
+        ],
+        "ogTitle": "Tywyn beach webcam | Visit Tywyn",
+        "ogDescription": "Okay, so it’s probably not as incredible as being sat on the Tywyn beach seafront with your friends, toes digging into the warm sand at the end of a long summer’s day watching the sunset… but if you can’t visit Tywyn Beach tonight then watching it right here is a close second best! This is […]",
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 171,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 23,
+        "externalLinkCount": 3
+      },
+      "astro": {
+        "url": "http://localhost:4322/webcam/",
+        "status": 200,
+        "title": "Tywyn beach webcam | Visit Tywyn",
+        "metaDescription": "Experience the incredible – from the comfort of your own home.",
+        "canonical": "https://visit-tywyn.co.uk/webcam/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Tywyn beach webcam"
+        ],
+        "h2Texts": [
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Tywyn beach webcam | Visit Tywyn",
+        "ogDescription": "Experience the incredible – from the comfort of your own home.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/explore.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "Organization",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 145,
+        "imageCount": 2,
+        "imagesWithAlt": 2,
+        "internalLinkCount": 24,
+        "externalLinkCount": 3
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: Experience the incredible – from the comfort of your own home.",
+        "og:description differs\n    WP:    Okay, so it’s probably not as incredible as being sat on the Tywyn beach seafront with your friends, toes digging into the warm sand at the end of a long summer’s day watching the sunset… but if you can’t visit Tywyn Beach tonight then watching it right here is a close second best! This is […]\n    Astro: Experience the incredible – from the comfort of your own home.",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,Organization,WebPage,WebSite]"
+      ]
+    },
+    {
+      "path": "/where-to-stay/",
+      "wp": {
+        "url": "https://visit-tywyn.co.uk/where-to-stay/",
+        "status": 200,
+        "title": "Where to stay in Tywyn | Visit Tywyn",
+        "metaDescription": null,
+        "canonical": "https://visit-tywyn.co.uk/where-to-stay/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Where to stay in Tywyn"
+        ],
+        "h2Texts": [
+          "Looking for holiday accommodation in Tywyn?"
+        ],
+        "ogTitle": "Where to stay in Tywyn | Visit Tywyn",
+        "ogDescription": "If you’re looking for an AirBnB in Tywyn, self-catering cottages and B&B’s, to Chalet and Caravan Parks and Camping there’s a massive variety of places to stay in Tywyn. We have accommodation to fit every budget and taste.",
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 104,
+        "imageCount": 1,
+        "imagesWithAlt": 1,
+        "internalLinkCount": 26,
+        "externalLinkCount": 2
+      },
+      "astro": {
+        "url": "http://localhost:4322/where-to-stay/",
+        "status": 200,
+        "title": "Where to stay in Tywyn | Visit Tywyn",
+        "metaDescription": "Find holiday accommodation in Tywyn — camping, caravans, self-catering cottages, and B&Bs.",
+        "canonical": "https://visit-tywyn.co.uk/where-to-stay/",
+        "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+        "h1Texts": [
+          "Where to stay in Tywyn"
+        ],
+        "h2Texts": [
+          "Browse by type",
+          "Tell me more about...",
+          "Useful info...",
+          "Contact us..."
+        ],
+        "ogTitle": "Where to stay in Tywyn | Visit Tywyn",
+        "ogDescription": "Find holiday accommodation in Tywyn — camping, caravans, self-catering cottages, and B&Bs.",
+        "ogImage": "https://visit-tywyn.co.uk/img/2022/05/explore.jpg",
+        "twitterCard": "summary_large_image",
+        "jsonLdTypes": [
+          "BreadcrumbList",
+          "ItemList",
+          "Organization",
+          "WebPage",
+          "WebSite"
+        ],
+        "bodyWordCount": 282,
+        "imageCount": 2,
+        "imagesWithAlt": 2,
+        "internalLinkCount": 31,
+        "externalLinkCount": 2
+      },
+      "deltas": [
+        "meta description differs\n    WP:    null\n    Astro: Find holiday accommodation in Tywyn — camping, caravans, self-catering cottages, and B&Bs.",
+        "og:description differs\n    WP:    If you’re looking for an AirBnB in Tywyn, self-catering cottages and B&B’s, to Chalet and Caravan Parks and Camping there’s a massive variety of places to stay in Tywyn. We have accommodation to fit every budget and taste.\n    Astro: Find holiday accommodation in Tywyn — camping, caravans, self-catering cottages, and B&Bs.",
+        "body word count differs >20%\n    WP:    104\n    Astro: 282",
+        "JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,ItemList,Organization,WebPage,WebSite]"
+      ]
+    }
+  ]
+}
