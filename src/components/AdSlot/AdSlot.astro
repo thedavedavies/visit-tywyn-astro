@@ -3,6 +3,13 @@
  * Google AdSense slot. Renders the ad container and pushes one
  * impression on load.
  *
+ * `placement` toggles between two reservation heights so the slot
+ * reserves the right amount of vertical space before AdSense decides
+ * what creative to fill — banner-shaped rectangles for the sidebar
+ * column, medium-rectangle-shaped boxes for in-feed placements
+ * between listing cards. Without a height reservation the slot
+ * reflows when AdSense renders, contributing to CLS.
+ *
  * Important: `is:inline` on the push call so Astro doesn't try to
  * bundle the global `adsbygoogle` reference.
  */
@@ -13,12 +20,14 @@ interface Props {
 	slot: string;
 	format?: string;
 	fullWidth?: boolean;
+	/** Layout context — controls reserved height. */
+	placement?: 'sidebar' | 'in-feed';
 }
 
-const { slot, format = 'auto', fullWidth = true } = Astro.props;
+const { slot, format = 'auto', fullWidth = true, placement = 'sidebar' } = Astro.props;
 ---
 
-<div class={styles.slot}>
+<div class:list={[styles.slot, styles[placement]]}>
 	<ins
 		class="adsbygoogle"
 		style="display:block"

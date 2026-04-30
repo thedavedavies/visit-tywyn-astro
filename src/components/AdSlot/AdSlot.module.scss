@@ -4,8 +4,22 @@
 	margin: $space-5 0;
 
 	ins {
-		min-height: 90px;
+		display: block;
 		background: $color-bg-alt;
 		border-radius: $radius-md;
+	}
+
+	// Sidebar column is narrow (~390px) and reads like a banner —
+	// 90px reserved height matches what AdSense fills there.
+	&.sidebar ins {
+		min-height: 90px;
+	}
+
+	// Listing-page in-feed slots sit between full-width 760px-ish
+	// content rows. AdSense fills these as medium rectangles
+	// (300x250) or larger responsive units, so 250px is the floor
+	// that prevents reflow.
+	&.in-feed ins {
+		min-height: 250px;
 	}
 }

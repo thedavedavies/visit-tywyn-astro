@@ -48,8 +48,8 @@ const jsonLd = itemList(
 
 	<div class="venue-list">
 		{
-			venues.map((venue, idx) => (
-				<>
+			venues.flatMap((venue, idx) => {
+				const card = (
 					<VenueCard
 						href={`/eating/${venue.id}/`}
 						title={venue.data.title}
@@ -57,9 +57,12 @@ const jsonLd = itemList(
 						address={venue.data.address}
 						photo={venue.data.photo}
 					/>
-					{(idx + 1) % 3 === 0 && idx < venues.length - 1 && <AdSlot slot="7221027714" />}
-				</>
-			))
+				);
+				const showAd = (idx + 1) % 3 === 0 && idx < venues.length - 1;
+				return showAd
+					? [card, <AdSlot slot="7221027714" placement="in-feed" />]
+					: [card];
+			})
 		}
 	</div>
 </PageLayout>
