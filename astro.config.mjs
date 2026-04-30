@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
@@ -51,6 +51,41 @@ export default defineConfig({
 		// Allow remote images from the legacy S3 bucket and uploads dir during migration.
 		domains: ['visit-tywyn.s3.amazonaws.com', 'visit-tywyn.co.uk'],
 	},
+	// Self-host Lato via Fontsource. Eliminates the render-blocking
+	// Google Fonts CSS request and the second-hop fonts.gstatic.com
+	// font fetch — both are now inlined `@font-face` against locally
+	// hashed woff2 files that ship from the same origin as HTML.
+	//
+	// `subsets` includes `latin-ext` so Welsh diacritics (ŵ, ŷ —
+	// Latin Extended-A) render correctly. Costs one extra small woff2
+	// per weight; correctness on Welsh content is worth it.
+	//
+	// `optimizedFallbacks: true` derives ascent/descent metrics for
+	// `sans-serif` so the fallback face renders at the same height
+	// as Lato — neutralizes font-swap CLS.
+	//
+	// Only weight 400 is preloaded (body text). Weight 700 lazy-loads
+	// when first heading/badge using it paints — an extra ~25 KB on
+	// initial load is not worth the LCP cost.
+	fonts: [
+		{
+			name: 'Lato',
+			cssVariable: '--font-body',
+			provider: fontProviders.fontsource(),
+			weights: [400, 700],
+			styles: ['normal'],
+			subsets: ['latin', 'latin-ext'],
+			fallbacks: [
+				'system-ui',
+				'-apple-system',
+				'Segoe UI',
+				'Roboto',
+				'Helvetica Neue',
+				'sans-serif',
+			],
+			optimizedFallbacks: true,
+		},
+	],
 	vite: {
 		css: {
 			preprocessorOptions: {

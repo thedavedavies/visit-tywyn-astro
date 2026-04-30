@@ -15,6 +15,7 @@
  * labels, event names — can't break out of the script block.
  */
 import '../styles/global.scss';
+import { Font } from 'astro:assets';
 import Header from '../components/Header/Header.astro';
 import Footer from '../components/Footer/Footer.astro';
 import { SITE } from '../lib/site';
@@ -95,18 +96,13 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema].filter(
 		<meta name="theme-color" content={SITE.themeColor} />
 		<meta name="format-detection" content="telephone=no" />
 
-		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link rel="preconnect" href="https://www.googletagmanager.com" />
 		<link rel="preconnect" href="https://pagead2.googlesyndication.com" />
 		<link rel="dns-prefetch" href="https://analytics.ahrefs.com" />
 		<link rel="dns-prefetch" href="https://www.google-analytics.com" />
 		<link rel="dns-prefetch" href="https://stats.g.doubleclick.net" />
 
-		<link
-			rel="stylesheet"
-			href="https://fonts.googleapis.com/css?family=Lato:wght@400;700&display=swap"
-		/>
+		<Font cssVariable="--font-body" preload={[{ weight: 400, style: 'normal', subset: 'latin' }]} />
 
 		<meta property="og:type" content={ogType} />
 		<meta property="og:title" content={fullTitle} />

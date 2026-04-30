@@ -34,8 +34,17 @@ $color-text-dim: #5c6d72;
 $color-heading: #444;
 
 // ── Typography ─────────────────────────────────────────────────
+//
+// `--font-body` is registered by Astro's Fonts API in
+// `astro.config.mjs` and rendered into `<style>` by the `<Font />`
+// component in `BaseLayout.astro`. The value is a font stack that
+// starts with the locally hashed Lato faces, then the metric-matched
+// optimized fallbacks (auto-derived for the trailing `sans-serif`),
+// then the static system fallback chain below. The static stack is
+// repeated here so SSR-rendered HTML (before the Astro stylesheet
+// arrives) still picks up Lato or a sane fallback.
 $font-body:
-	'Lato',
+	var(--font-body),
 	system-ui,
 	-apple-system,
 	'Segoe UI',
