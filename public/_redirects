@@ -75,6 +75,7 @@
 /category/camping/  https://visit-tywyn.co.uk/holiday-accommodation/camping/  301
 /category/caravan/  https://visit-tywyn.co.uk/holiday-accommodation/caravan/  301
 /category/self-catering/  https://visit-tywyn.co.uk/holiday-accommodation/self-catering/  301
+/category/uncategorized/  /404.html  410
 /cinema/  https://visit-tywyn.co.uk/things-to-do/magic-lantern-cinema/  301
 /cinema/index.html  https://visit-tywyn.co.uk/things-to-do/magic-lantern-cinema/  301
 /easter-street-market/  https://visit-tywyn.co.uk  301
@@ -84,7 +85,8 @@
 /eating/railway-inn/  https://visit-tywyn.co.uk/eating  301
 /eating/railway-inn/index.html  https://visit-tywyn.co.uk/eating/railway-inn/  301
 /eating/salt-marsh-kitchen/index.html  https://visit-tywyn.co.uk/eating/salt-marsh-kitchen/  301
-/event/race-the-train/index.html  https://visit-tywyn.co.uk/event/race-the-train  301
+/event/race-the-train/  /events/  301
+/event/race-the-train/index.html  /events/  301
 /events/getting-around/index.html  https://visit-tywyn.co.uk/getting-around/  301
 /explore/index.html  https://visit-tywyn.co.uk/getting-around/  301
 /getting-around/index.html  https://visit-tywyn.co.uk/getting-around/  301
@@ -117,4 +119,5 @@
 /webcam/index.html  https://visit-tywyn.co.uk/webcam/  301
 /webcams/  https://visit-tywyn.co.uk/webcam/  301
 /wp-content/uploads/2015/04/Overhead.jpg  https://visit-tywyn.co.uk/  301
+/category/*  /404.html  410
 /wp-content/uploads/*  /img/:splat  301
