@@ -1,4 +1,11 @@
 ---
+/**
+ * Site header. The visually-hidden site-name link below the logo is
+ * always rendered as `<p>`: the real page H1 lives in the page
+ * template (`<EntryHeader>`), and upgrading the masthead branding
+ * to an H1 on the home page produced two H1s on the same page —
+ * which dilutes the topic signal Google uses for ranking.
+ */
 import Nav from '../Nav/Nav.astro';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.astro';
 import BannerImage from '../BannerImage/BannerImage.astro';
@@ -8,11 +15,9 @@ import styles from './Header.module.scss';
 interface Props {
 	heroImage?: { src: string; alt?: string } | null;
 	breadcrumbs?: { label: string; href?: string }[];
-	isFrontPage?: boolean;
 }
 
-const { heroImage = null, breadcrumbs = [], isFrontPage = false } = Astro.props;
-const TitleTag = isFrontPage ? 'h1' : 'p';
+const { heroImage = null, breadcrumbs = [] } = Astro.props;
 ---
 
 <header id="masthead" class={styles.siteHeader}>
@@ -27,9 +32,9 @@ const TitleTag = isFrontPage ? 'h1' : 'p';
 					height="39"
 				/>
 			</a>
-			<TitleTag class={styles.titleHidden} aria-hidden="true">
+			<p class={styles.titleHidden} aria-hidden="true">
 				<a href="/" rel="home" tabindex="-1">{SITE.name}</a>
-			</TitleTag>
+			</p>
 		</div>
 
 		<Nav />
