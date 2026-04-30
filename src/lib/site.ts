@@ -10,7 +10,12 @@ export const SITE = {
 	locale: 'en-GB',
 	twitter: '@visit_tywyn',
 	facebook: 'https://www.facebook.com/visittywyn',
-	googleAnalyticsId: 'UA-28386547-1',
+	// GA4 measurement ID. The previous UA-28386547-1 tag was sunset
+	// in July 2023 and has been collecting nothing since. Leave this
+	// empty until a real `G-XXXXXXX` ID is provisioned — BaseLayout
+	// skips the gtag snippet entirely when the ID is falsy, so the
+	// build does not ship a half-configured tracker.
+	gaMeasurementId: '',
 	adsenseClient: 'ca-pub-4920514279045356',
 	// Default Open Graph image — used on pages that don't supply
 	// their own. The current asset is 1908x397, outside the 1.91:1

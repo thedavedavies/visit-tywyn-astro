@@ -99,8 +99,6 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema].filter(
 		<link rel="preconnect" href="https://www.googletagmanager.com" />
 		<link rel="preconnect" href="https://pagead2.googlesyndication.com" />
 		<link rel="dns-prefetch" href="https://analytics.ahrefs.com" />
-		<link rel="dns-prefetch" href="https://www.google-analytics.com" />
-		<link rel="dns-prefetch" href="https://stats.g.doubleclick.net" />
 
 		<Font cssVariable="--font-body" preload={[{ weight: 400, style: 'normal', subset: 'latin' }]} />
 
@@ -129,17 +127,21 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema].filter(
 		<link rel="profile" href="https://gmpg.org/xfn/11" />
 		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
 
-		<script
-			defer
-			src={`https://www.googletagmanager.com/gtag/js?id=${SITE.googleAnalyticsId}`}></script>
-		<script is:inline define:vars={{ gaId: SITE.googleAnalyticsId }}>
-			window.dataLayer = window.dataLayer || [];
-			function gtag() {
-				dataLayer.push(arguments);
-			}
-			gtag('js', new Date());
-			gtag('config', gaId);
-		</script>
+		{
+			SITE.gaMeasurementId && (
+				<>
+					<script async src={`https://www.googletagmanager.com/gtag/js?id=${SITE.gaMeasurementId}`} />
+					<script is:inline define:vars={{ gaId: SITE.gaMeasurementId }}>
+						window.dataLayer = window.dataLayer || [];
+						function gtag() {
+							dataLayer.push(arguments);
+						}
+						gtag('js', new Date());
+						gtag('config', gaId);
+					</script>
+				</>
+			)
+		}
 		<script
 			defer
 			src="https://analytics.ahrefs.com/analytics.js"
