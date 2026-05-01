@@ -26,7 +26,7 @@ Dolgoch Falls are a series of three impressive waterfalls forming part of the Na
 
 <strong>A hidden gem near to both Tywyn and Aberdovey, the only cost at Dolgoch Falls is parking at the Pay and Display car park - £2 for 4 hours or £4 all day.</strong>
 
-The walk up the waterfalls begins at the <a href="/accommodation/the-dolgoch/">The Dolgoch B&amp;B</a>, along a beautiful stream and past some deep caves - giving excellent views for miles at the top. The Dolgoch Falls Hotel, located near the waterfalls, offers a cafe and a car park for visitors.
+The walk up the waterfalls begins at the <a href="/holiday-accommodation/bed-and-breakfast/">The Dolgoch B&amp;B</a>, along a beautiful stream and past some deep caves - giving excellent views for miles at the top. The Dolgoch Falls Hotel, located near the waterfalls, offers a cafe and a car park for visitors.
 
 Dolgoch Station is about 200m from the start of the trail, providing easy access for those arriving via the <a href="/things-to-do/the-talyllyn-railway/">Talyllyn steam railway</a>. There are clear signs from the station directing you towards the waterfalls.
 <h2>Where are Dolgoch Falls?</h2>

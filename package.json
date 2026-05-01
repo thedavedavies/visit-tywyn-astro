@@ -13,7 +13,8 @@
     "check": "astro check",
     "export": "tsx tools/export-from-sql.ts",
     "migrate:uploads": "tsx tools/migrate-uploads.ts",
-    "refresh:conditions": "tsx tools/refresh-conditions.ts"
+    "refresh:conditions": "tsx tools/refresh-conditions.ts",
+    "check:links": "tsx tools/check-links.ts"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",

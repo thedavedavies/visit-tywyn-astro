@@ -20,7 +20,7 @@ export const PRIMARY_NAV: NavItem[] = [
 		label: 'Explore Tywyn',
 		href: '/explore-tywyn/',
 		children: [
-			{ label: 'Tywyn Cinema', href: '/cinema/' },
+			{ label: 'Tywyn Cinema', href: '/things-to-do/magic-lantern-cinema/' },
 			{ label: 'Getting around Tywyn', href: '/getting-around/' },
 			{
 				label: 'Discovering the Wales Coastal Path: Aberdyfi to Tywyn',
