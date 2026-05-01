@@ -149,8 +149,28 @@ async function probeDev(target: string): Promise<number | string> {
 }
 
 const devBroken = new Map<string, Set<string>>();
+async function devReachable(): Promise<boolean> {
+	try {
+		const res = await fetch(DEV_BASE + '/', { redirect: 'manual' });
+		return res.status < 500;
+	} catch {
+		return false;
+	}
+}
+
 if (PROBE_DEV) {
-	console.error(`Probing ${allTargets.size} unique internal targets against ${DEV_BASE}…`);
+	if (!(await devReachable())) {
+		console.error(`Skipping dev-server probe — ${DEV_BASE} is not reachable.`);
+		console.error('  (start `npm run dev` in another terminal to enable this check)');
+	} else {
+		console.error(`Probing ${allTargets.size} unique internal targets against ${DEV_BASE}…`);
+		await runDevProbe();
+	}
+} else {
+	console.error('Dev-server probe disabled (--no-dev).');
+}
+
+async function runDevProbe() {
 	const targetsArr = [...allTargets.keys()].sort();
 	const concurrency = 8;
 	let cursor = 0;

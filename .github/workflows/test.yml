@@ -1,0 +1,33 @@
+name: Test
+
+# Build the site, then run the link checker against the build output.
+# Catches:
+# - Astro build failures (Zod schema mismatches, missing image imports,
+#   broken Markdown frontmatter)
+# - WP-era slugs that survived the migration and would 404 in dev /
+#   trigger a redirect hop in prod
+#
+# `astro check` (strict TS check) is intentionally not part of `npm test`
+# yet — there's a backlog of ImageMetadata type errors from the Stage 2
+# image-pipeline migration that don't break builds but fail the check.
+# Fold it in once that's cleaned up.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - run: npm test

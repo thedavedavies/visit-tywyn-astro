@@ -11,6 +11,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
+    "test": "npm run build && npm run check:links -- --no-dev",
     "export": "tsx tools/export-from-sql.ts",
     "migrate:uploads": "tsx tools/migrate-uploads.ts",
     "refresh:conditions": "tsx tools/refresh-conditions.ts",
@@ -21,8 +22,10 @@
     "astro": "^6.1.9"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.9",
     "@types/node": "^25.6.0",
     "sass": "^1.99.0",
-    "tsx": "^4.21.0"
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }
