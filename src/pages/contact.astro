@@ -1,0 +1,62 @@
+---
+/**
+ * Contact page. Bespoke route (rather than `[...slug].astro`) so the
+ * markdown body can be followed by the `<ContactForm>` component:
+ * the static `<Content />` slot can't host an interactive form
+ * directly.
+ *
+ * Excluded from `[...slug].astro`'s catch-all so we don't double-emit
+ * the URL.
+ */
+import { getEntry, render } from 'astro:content';
+import PageLayout from '../layouts/PageLayout.astro';
+import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
+import ContactForm from '../components/ContactForm/ContactForm.astro';
+import { webPage } from '../lib/jsonld';
+
+const page = await getEntry('pages', 'contact');
+if (!page) {
+	throw new Error('contact page entry missing: expected src/content/pages/contact.md');
+}
+
+const { Content } = await render(page);
+
+const breadcrumbs = [
+	{ label: 'Home', href: '/' },
+	{ label: page.data.title },
+];
+
+const updatedIso = page.data.updated ? page.data.updated.toISOString() : undefined;
+const seoTitle = page.data.seo?.title || page.data.title;
+const seoDescription = page.data.seo?.description || page.data.subtitle;
+const seoOgImage = page.data.seo?.og_image || page.data.hero_image?.src;
+
+const jsonLd = [
+	webPage({
+		title: seoTitle,
+		description: seoDescription,
+		url: Astro.url,
+		image: seoOgImage,
+		dateModified: updatedIso,
+		speakableSelector: ['[data-speakable="title"]'],
+	}),
+];
+---
+
+<PageLayout
+	title={seoTitle}
+	description={seoDescription}
+	canonical={page.data.seo?.canonical}
+	ogImage={seoOgImage}
+	noindex={page.data.seo?.noindex}
+	heroImage={page.data.hero_image}
+	breadcrumbs={breadcrumbs}
+	jsonLd={jsonLd}
+	modifiedTime={updatedIso}
+>
+	<EntryHeader title={page.data.title} subtitle={page.data.subtitle} />
+	<div class="entry-content">
+		<Content />
+		<ContactForm />
+	</div>
+</PageLayout>

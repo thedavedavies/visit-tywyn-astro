@@ -1,0 +1,222 @@
+---
+/**
+ * Contact form. Replaces the legacy Gravity Forms field group.
+ *
+ * Posts to Web3Forms (https://web3forms.com): a static-host-friendly
+ * forwarder that turns form submissions into emails. We chose it over
+ * host-coupled solutions (Netlify Forms, Cloudflare Workers) because
+ * the host hasn't been picked yet and Web3Forms works on any of
+ * Netlify, Cloudflare Pages, Vercel, or plain S3 + CloudFront.
+ *
+ * Progressive enhancement:
+ *   - The `<form>` posts directly to api.web3forms.com if JS is off.
+ *     Web3Forms accepts URL-encoded form data and emails it. The
+ *     hidden `redirect` input bounces the visitor back to
+ *     `/contact/?sent=1` instead of stranding them on a raw JSON
+ *     response from api.web3forms.com.
+ *   - With JS, a small inline script intercepts submit, POSTs JSON,
+ *     and renders an inline success/error message without reloading
+ *     the page. The fetch is bounded by a 15s AbortController so a
+ *     stalled Web3Forms response doesn't hang the UI forever.
+ *
+ * Spam protection:
+ *   - Hidden `botcheck` honeypot field. Bots fill text fields they
+ *     find; we short-circuit submission client-side when `botcheck`
+ *     is non-empty (Web3Forms also rejects server-side as a fallback).
+ *   - Web3Forms additionally screens for known spam signatures.
+ *   - When traffic warrants it, swap the honeypot for Cloudflare
+ *     Turnstile (Web3Forms accepts `cf-turnstile-response` server-side).
+ *
+ * No-config fallback:
+ *   - When `SITE.contactFormAccessKey` is empty (default until a real
+ *     key is provisioned), the form is replaced by a friendly notice
+ *     pointing visitors at email and social channels. This keeps the
+ *     build from shipping a form that POSTs a placeholder access key.
+ *
+ * Pre-launch checklist (operational, not code):
+ *   - Provision the Web3Forms key against the destination inbox.
+ *   - In the Web3Forms dashboard, set Allowed Domains to the canonical
+ *     site host so a scraped key can't be re-hosted on a phishing site
+ *     to drain the free-tier quota.
+ *   - Drop the key into `SITE.contactFormAccessKey` in `src/lib/site.ts`.
+ */
+import { SITE } from '../../lib/site';
+import styles from './ContactForm.module.scss';
+
+const accessKey = SITE.contactFormAccessKey;
+const hasKey = Boolean(accessKey);
+const successRedirect = `${SITE.url}/contact/?sent=1`;
+---
+
+{
+	hasKey ? (
+		<form
+			class={styles.form}
+			method="POST"
+			action="https://api.web3forms.com/submit"
+			data-vt-contact-form
+		>
+			<input type="hidden" name="access_key" value={accessKey} />
+			<input type="hidden" name="subject" value={`Contact form submission for ${SITE.name}`} />
+			<input type="hidden" name="from_name" value={SITE.name} />
+			{/* No-JS fallback target. Without this, a JS-disabled
+			    submission renders the raw Web3Forms JSON response in
+			    the visitor's browser. */}
+			<input type="hidden" name="redirect" value={successRedirect} />
+			{/* Honeypot: bots fill text fields they discover. Hidden from
+			    humans via CSS + aria-hidden. */}
+			<input
+				type="text"
+				name="botcheck"
+				class={styles.honeypot}
+				tabindex="-1"
+				autocomplete="off"
+				aria-hidden="true"
+			/>
+
+			<div class={styles.field}>
+				<label for="contact-name" class={styles.label}>
+					Name
+				</label>
+				<input
+					id="contact-name"
+					type="text"
+					name="name"
+					class={styles.input}
+					autocomplete="name"
+					maxlength="100"
+				/>
+			</div>
+
+			<div class={styles.field}>
+				<label for="contact-email" class={styles.label}>
+					Email address <span class={styles.required}>(required)</span>
+				</label>
+				<input
+					id="contact-email"
+					type="email"
+					name="email"
+					class={styles.input}
+					autocomplete="email"
+					required
+					aria-required="true"
+					maxlength="200"
+				/>
+			</div>
+
+			<div class={styles.field}>
+				<label for="contact-message" class={styles.label}>
+					Message <span class={styles.required}>(required)</span>
+				</label>
+				<textarea
+					id="contact-message"
+					name="message"
+					class={styles.textarea}
+					rows="6"
+					required
+					aria-required="true"
+					maxlength="5000"
+				/>
+			</div>
+
+			<button type="submit" class={styles.submit} data-vt-submit>
+				Submit
+			</button>
+
+			<div class={styles.status} role="status" aria-live="polite" data-vt-status hidden />
+		</form>
+	) : (
+		<p class={styles.placeholder}>
+			<em>
+				The contact form is being rebuilt. For now, please reach us via the social links above
+				or by email.
+			</em>
+		</p>
+	)
+}
+
+{
+	hasKey && (
+		<script is:inline>
+			(() => {
+				const form = document.querySelector('[data-vt-contact-form]');
+				if (!form) return;
+				const submitBtn = form.querySelector('[data-vt-submit]');
+				const status = form.querySelector('[data-vt-status]');
+				if (!submitBtn || !status) return;
+
+				let inflight = false;
+
+				const setStatus = (kind, text) => {
+					status.hidden = false;
+					status.dataset.kind = kind;
+					status.textContent = text;
+				};
+				const clearStatus = () => {
+					status.hidden = true;
+					delete status.dataset.kind;
+					status.textContent = '';
+				};
+
+				form.addEventListener('submit', async (event) => {
+					event.preventDefault();
+					if (inflight) return;
+
+					const data = Object.fromEntries(new FormData(form).entries());
+
+					// Honeypot: bots fill `botcheck`; pretend success so they
+					// don't learn the field is the trap, but never hit the network.
+					if (data.botcheck) {
+						clearStatus();
+						setStatus('success', "Thanks. Your message is on its way and we'll get back to you soon.");
+						form.reset();
+						return;
+					}
+
+					inflight = true;
+					submitBtn.disabled = true;
+					clearStatus();
+					setStatus('pending', 'Sending…');
+
+					// Bound the fetch with a 15s timeout. Without this, a
+					// stalled connection keeps "Sending…" displayed until
+					// the browser eventually drops it (~300s in Chrome).
+					const ctrl = new AbortController();
+					const timeoutId = setTimeout(() => ctrl.abort(), 15000);
+
+					try {
+						const res = await fetch('https://api.web3forms.com/submit', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+								Accept: 'application/json',
+							},
+							body: JSON.stringify(data),
+							signal: ctrl.signal,
+						});
+						const body = await res.json().catch(() => ({}));
+						if (res.ok && body.success) {
+							setStatus('success', "Thanks. Your message is on its way and we'll get back to you soon.");
+							form.reset();
+						} else {
+							setStatus(
+								'error',
+								body.message || 'Something went wrong sending your message. Please try again, or email us directly.'
+							);
+						}
+					} catch (err) {
+						console.error('contact form submit failed', err);
+						setStatus(
+							'error',
+							"We couldn't reach the form service. Please try again in a moment, or email us directly."
+						);
+					} finally {
+						clearTimeout(timeoutId);
+						submitBtn.disabled = false;
+						inflight = false;
+					}
+				});
+			})();
+		</script>
+	)
+}

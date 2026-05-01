@@ -1,0 +1,138 @@
+@use '../../styles/abstracts/variables' as *;
+
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: $space-5;
+	margin-block-start: $space-5;
+	max-width: 640px;
+}
+
+.field {
+	display: flex;
+	flex-direction: column;
+	gap: $space-2;
+}
+
+.label {
+	font-weight: 700;
+	color: $color-text;
+	line-height: 1.4;
+}
+
+.required {
+	color: #b8001f;
+	font-weight: 400;
+	font-size: 0.9em;
+}
+
+// Shared input + textarea styling. Inlined into both selectors
+// rather than abstracted into a `%placeholder` or `@mixin`: only two
+// consumers in one file, and the codebase doesn't yet use Sass
+// `@extend` placeholders elsewhere, so the duplication beats
+// introducing a novel pattern. If a second form ever ships, lift
+// these rules into `_mixins.scss` per the project convention.
+.input,
+.textarea {
+	font-family: inherit;
+	font-size: 1rem;
+	color: $color-text;
+	background: $color-bg;
+	padding: $space-3 $space-4;
+	border: 1px solid $color-border;
+	border-radius: $radius-md;
+	line-height: 1.5;
+	transition:
+		border-color 120ms ease,
+		box-shadow 120ms ease;
+
+	&:focus {
+		outline: none;
+		border-color: $color-primary;
+		box-shadow: 0 0 0 3px rgba($color-primary, 0.18);
+	}
+
+	// Browser-native validation feedback. We let the browser surface
+	// the validity state rather than running our own validation
+	// loop. Fewer moving parts, screen readers already pick this up.
+	&:user-invalid {
+		border-color: #b8001f;
+	}
+}
+
+.textarea {
+	resize: vertical;
+	min-height: 140px;
+}
+
+// Hidden honeypot. `display: none` works for most bots but a few are
+// smart enough to ignore `display: none` fields, so the off-screen
+// positioning + zero opacity is the belt-and-braces version that
+// catches more.
+.honeypot {
+	position: absolute;
+	left: -9999px;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.submit {
+	align-self: flex-start;
+	font-family: inherit;
+	font-size: 1rem;
+	font-weight: 700;
+	color: #fff;
+	background: $color-primary;
+	padding: $space-3 $space-6;
+	border: 0;
+	border-radius: $radius-md;
+	cursor: pointer;
+	transition: background-color 120ms ease;
+
+	&:hover:not(:disabled) {
+		background: $color-primary-dark;
+	}
+
+	&:focus-visible {
+		outline: 3px solid rgba($color-primary, 0.4);
+		outline-offset: 2px;
+	}
+
+	&:disabled {
+		background: $color-text-muted;
+		cursor: progress;
+	}
+}
+
+.status {
+	padding: $space-3 $space-4;
+	border-radius: $radius-md;
+	font-weight: 600;
+	line-height: 1.4;
+
+	&[data-kind='pending'] {
+		background: $color-bg-alt;
+		color: $color-text;
+	}
+
+	&[data-kind='success'] {
+		background: rgba(#5caa59, 0.12);
+		color: #1f6f1d;
+	}
+
+	&[data-kind='error'] {
+		background: rgba(#b8001f, 0.08);
+		color: #b8001f;
+	}
+}
+
+.placeholder {
+	margin-block-start: $space-5;
+	padding: $space-4 $space-5;
+	background: $color-bg-alt;
+	border-left: 4px solid $color-primary;
+	border-radius: $radius-sm;
+	color: $color-text-muted;
+}

@@ -13,4 +13,3 @@ seo:
 
 Looking for some more specific information about Tywyn and the surrounding areas? You can find us on <a title="Visit Tywyn on Facebook" href="https://web.archive.org/web/20210117195515/https://www.facebook.com/VisitTywyn" target="_blank" rel="noopener">Facebook</a> and <a title="Visit Tywyn on Twitter" href="https://web.archive.org/web/20210117195515/https://twitter.com/visittywyn" target="_blank" rel="noopener">Twitter</a> – or email us using the form below, and we’ll get back to you!
 
-<p class="form-placeholder"><em>The contact form is being rebuilt — for now, please reach us via the social links above or by email.</em></p>
