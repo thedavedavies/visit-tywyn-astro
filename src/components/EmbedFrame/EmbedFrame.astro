@@ -9,9 +9,15 @@ interface Props {
 	src: string;
 	title: string;
 	allowFullscreen?: boolean;
+	/**
+	 * Suppress the iframe's internal scrollbars. Useful when the embedded
+	 * page is taller than the 16:9 frame and we only want to show its
+	 * top region (e.g. a webcam stream wrapped by site chrome).
+	 */
+	scrolling?: 'auto' | 'no';
 }
 
-const { src, title, allowFullscreen = true } = Astro.props;
+const { src, title, allowFullscreen = true, scrolling = 'auto' } = Astro.props;
 ---
 
 <div class={styles.frame}>
@@ -20,5 +26,6 @@ const { src, title, allowFullscreen = true } = Astro.props;
 		title={title}
 		loading="lazy"
 		allowfullscreen={allowFullscreen}
+		scrolling={scrolling}
 		referrerpolicy="no-referrer-when-downgrade"></iframe>
 </div>
