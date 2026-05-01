@@ -10,7 +10,7 @@ geo:
   lng: -4.098009
   address: Victorian Slipway tywyn
 photo:
-  src: /img/2022/05/photo0jpg.jpg
+  src: '../../assets/img/eating/victorian-slipway/cover.jpg'
   alt: Victorian Slipway
 trip_advisor_link: 'https://www.tripadvisor.co.uk/Restaurant_Review-g552038-d11729169-Reviews-Victorian_Slipway-Tywyn_Gwynedd_North_Wales_Wales.html'
 facebook_link: 'https://www.facebook.com/Thevictorianslip/?hc_ref=PAGES_TIMELINE'

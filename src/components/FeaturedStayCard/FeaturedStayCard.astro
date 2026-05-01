@@ -2,21 +2,21 @@
 /**
  * Card for sponsored / affiliate stay entries on category landings.
  * Renders only when an entry exists in the markdown's `featured`
- * array — empty by default.
+ * array (empty by default).
  */
-import { probeImage } from '../../lib/image-dimensions';
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import styles from './FeaturedStayCard.module.scss';
 
 interface Props {
 	href: string;
 	name: string;
 	summary: string;
-	image?: { src: string; alt?: string };
+	image?: { src: ImageMetadata; alt?: string };
 	sponsored?: boolean;
 }
 
 const { href, name, summary, image, sponsored = false } = Astro.props;
-const imageDims = image ? probeImage(image.src) : null;
 ---
 
 <article class={styles.card}>
@@ -24,12 +24,13 @@ const imageDims = image ? probeImage(image.src) : null;
 		{
 			image && (
 				<div class={styles.media}>
-					<img
+					<Picture
 						src={image.src}
 						alt={image.alt ?? name}
 						loading="lazy"
-						width={imageDims?.width}
-						height={imageDims?.height}
+						formats={['avif', 'webp']}
+						widths={[320, 480, 640]}
+						sizes="(min-width: 768px) 320px, 100vw"
 					/>
 				</div>
 			)

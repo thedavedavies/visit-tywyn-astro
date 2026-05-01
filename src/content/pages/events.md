@@ -4,7 +4,7 @@ slug: events
 menu_order: 0
 subtitle: 'What’s happening around Tywyn?'
 hero_image:
-  src: /img/2022/05/tywyn-cinema-banner.jpg
+  src: '../../assets/img/pages/events.jpg'
   alt: Events in Tywyn
 updated: 2023-08-09
 ---

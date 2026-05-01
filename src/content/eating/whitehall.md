@@ -10,7 +10,7 @@ geo:
   lng: -4.0848607
   address: Whitehall tywyn
 photo:
-  src: /img/2022/05/screen-shot-2015-07-04-at-20.56.05.jpg
+  src: '../../assets/img/eating/whitehall/cover.jpg'
   alt: Whitehall
 trip_advisor_link: 'https://www.tripadvisor.co.uk/Restaurant_Review-g552038-d2222420-Reviews-Whitehall-Tywyn_Gwynedd_North_Wales_Wales.html'
 ---

@@ -1,7 +1,7 @@
 ---
 /**
  * Gallery grid. Replaces the legacy flexslider + lity stack with
- * a native `<dialog>`-based lightbox — zero JS framework needed.
+ * a native `<dialog>`-based lightbox: zero JS framework needed.
  *
  * Behaviour:
  *   - Thumbnails laid out in a responsive grid.
@@ -11,21 +11,21 @@
  * The dialog wiring lives in a small inline `<script>` at the
  * bottom of this component so it travels with the markup.
  */
-import { probeImage } from '../../lib/image-dimensions';
+import { Picture, Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import styles from './Gallery.module.scss';
 
-interface Image {
-	src: string;
+interface GalleryImage {
+	src: ImageMetadata;
 	alt?: string;
 }
 
 interface Props {
-	images: Image[];
+	images: GalleryImage[];
 	label?: string;
 }
 
 const { images, label = 'Gallery' } = Astro.props;
-const dims = images.map((img) => probeImage(img.src));
 ---
 
 {
@@ -35,12 +35,13 @@ const dims = images.map((img) => probeImage(img.src));
 				{images.map((img, idx) => (
 					<li>
 						<button class={styles.thumb} type="button" data-gallery-open={idx}>
-							<img
+							<Picture
 								src={img.src}
 								alt={img.alt ?? ''}
 								loading="lazy"
-								width={dims[idx]?.width}
-								height={dims[idx]?.height}
+								formats={['avif', 'webp']}
+								widths={[200, 320, 480]}
+								sizes="(min-width: 768px) 200px, 50vw"
 							/>
 						</button>
 					</li>
@@ -52,11 +53,12 @@ const dims = images.map((img) => probeImage(img.src));
 					<form method="dialog" class={styles.lightboxForm}>
 						<button class={styles.lightboxClose} type="submit" aria-label="Close gallery">×</button>
 					</form>
-					<img
+					<Image
 						src={img.src}
 						alt={img.alt ?? ''}
-						width={dims[idx]?.width}
-						height={dims[idx]?.height}
+						loading="lazy"
+						widths={[640, 960, 1280, 1920]}
+						sizes="(min-width: 1024px) 80vw, 100vw"
 					/>
 				</dialog>
 			))}

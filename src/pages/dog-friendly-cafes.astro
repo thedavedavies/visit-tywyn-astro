@@ -8,10 +8,10 @@
  *     items pulled from the `eating` CPT where dog_friendly=yes
  */
 import { getCollection, getEntry, render } from 'astro:content';
+import { Picture } from 'astro:assets';
 import PageLayout from '../layouts/PageLayout.astro';
 import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
 import { itemList } from '../lib/jsonld';
-import { probeImage } from '../lib/image-dimensions';
 
 const page = await getEntry('pages', 'dog-friendly-cafes');
 const Content = page ? (await render(page)).Content : null;
@@ -30,17 +30,9 @@ const jsonLd = itemList(
 	dogFriendly.map((venue) => ({
 		url: `/eating/${venue.id}/`,
 		name: venue.data.title,
-		image: venue.data.photo?.src,
+		image: venue.data.photo?.src.src,
 		description: venue.data.summary,
 	}))
-);
-
-// Precompute intrinsic image dimensions so the rendered <img> tags
-// can reserve space (CLS = 0). See `lib/image-dimensions.ts`.
-const venueDims = new Map(
-	dogFriendly
-		.filter((v) => v.data.photo)
-		.map((v) => [v.id, probeImage(v.data.photo!.src)] as const)
 );
 ---
 
@@ -66,12 +58,13 @@ const venueDims = new Map(
 						<li>
 							<a href={`/eating/${venue.id}/`} class="cafe-list__media">
 								{venue.data.photo && (
-									<img
+									<Picture
 										src={venue.data.photo.src}
 										alt={venue.data.photo.alt ?? venue.data.title}
 										loading="lazy"
-										width={venueDims.get(venue.id)?.width}
-										height={venueDims.get(venue.id)?.height}
+										formats={['avif', 'webp']}
+										widths={[320, 480, 640]}
+										sizes="(min-width: 768px) 250px, 100vw"
 									/>
 								)}
 							</a>

@@ -1,24 +1,38 @@
 ---
-import { probeImage } from '../../lib/image-dimensions';
+/**
+ * Page hero / banner image. Wraps Astro's `<Image>` so the LCP
+ * candidate on most pages renders as a content-hashed AVIF/WebP/JPG
+ * with a responsive `srcset` and `priority` (eager + decoding=sync
+ * + fetchpriority=high) when used above the fold.
+ *
+ * Use the `priority` prop on the page hero of every editorial page;
+ * it tells the browser to fetch this image first and decode it
+ * synchronously, which is the single biggest LCP lever after
+ * format conversion. Defaults to `true` because every consumer
+ * today is using BannerImage as the hero.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import styles from './BannerImage.module.scss';
 
 interface Props {
-	src: string;
+	src: ImageMetadata;
 	alt?: string;
-	loading?: 'eager' | 'lazy';
+	priority?: boolean;
 }
 
-const { src, alt = '', loading = 'eager' } = Astro.props;
-const dims = probeImage(src);
+const { src, alt = '', priority = true } = Astro.props;
 ---
 
 <div class={styles.wrap}>
-	<img
+	<Image
 		class={styles.image}
 		src={src}
 		alt={alt}
-		loading={loading}
-		width={dims?.width}
-		height={dims?.height}
+		layout="full-width"
+		priority={priority}
+		formats={['avif', 'webp']}
+		widths={[640, 960, 1280, 1920]}
+		sizes="100vw"
 	/>
 </div>

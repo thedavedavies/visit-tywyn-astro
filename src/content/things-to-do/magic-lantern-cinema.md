@@ -11,7 +11,7 @@ geo:
   lng: -4.0846715
   address: tywyn magic lantern cinema
 hero_image:
-  src: /img/2022/05/tywyn-cinema-banner.jpg
+  src: '../../assets/img/things-to-do/magic-lantern-cinema/cover.jpg'
   alt: Tywyn Magic Lantern Cinema
 social:
   facebook: 'https://en-gb.facebook.com/TywynCinema/'
@@ -24,6 +24,6 @@ Come to the Magic Lantern Cinema in Tywyn – the UK’s best Independent Cinema
 
 Find out <a href="https://www.tywyncinema.co.uk" target="_blank" rel="noopener">what’s on in Tywyn cinema this month</a>.
 
-<img class="alignnone wp-image-1259 size-full" src="/img/2022/10/tywyn-cinema.png" alt="Tywyn cinema" width="2098" height="1050" />
+![Tywyn cinema](../../assets/img/things-to-do/magic-lantern-cinema/inline/tywyn-cinema.png)
 <h2>Tywyn Cinema’s History</h2>
 Tywyn’s Magic Lantern Cinema has been in Tywyn since 1893. First built as the town assembly rooms it’s been used for holding badminton practice and variety performances, and has been showing films for over 120 years! Today you can watch the latest films, Live Streaming from The RSC and National Theatre, as well as live comedy and live music.

@@ -4,7 +4,7 @@ slug: dog-friendly-cafes
 menu_order: 0
 subtitle: The best places around Tywyn to enjoy a coffee and cake with your dog
 hero_image:
-  src: /img/2022/10/dog-banner.jpg
+  src: '../../assets/img/pages/dog-friendly-cafes.jpg'
   alt: Dog friendly cafes in Tywyn
 updated: 2023-03-24
 seo:

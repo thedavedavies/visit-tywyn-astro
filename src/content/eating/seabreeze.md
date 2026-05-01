@@ -11,7 +11,7 @@ geo:
   lng: -4.0477804
   address: Seabreeze aberdyfi
 photo:
-  src: /img/2022/05/drilling-while-eating.jpg
+  src: '../../assets/img/eating/seabreeze/cover.jpg'
   alt: Seabreeze
 trip_advisor_link: 'https://www.tripadvisor.co.uk/Restaurant_Review-g191275-d1862278-Reviews-Seabreeze-Aberdyfi_Aberdovey_Snowdonia_National_Park_North_Wales_Wales.html#photos;aggregationId=101&albumid=101&filter=7&ff=422013048'
 facebook_link: 'https://facebook.com/SeabreezeAberdovey/'

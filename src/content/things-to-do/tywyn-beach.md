@@ -8,20 +8,20 @@ geo:
   lng: -4.0984184
   address: Tywyn Beach
 hero_image:
-  src: /img/2022/05/tywyn-webcam.jpg
+  src: '../../assets/img/things-to-do/tywyn-beach/cover.jpg'
   alt: Tywyn beach
 gallery:
-  - src: /img/2022/10/279247290_4879204788856653_7059604390624087527_n.jpg
+  - src: '../../assets/img/things-to-do/tywyn-beach/gallery/01.jpg'
     alt: Tywyn beach
-  - src: /img/2022/10/93900281_2729565530487267_2959332638466244608_n.jpg
+  - src: '../../assets/img/things-to-do/tywyn-beach/gallery/02.jpg'
     alt: Tywyn beach
-  - src: /img/2022/10/221665627_3979542012156273_6037128963129386681_n.jpg
+  - src: '../../assets/img/things-to-do/tywyn-beach/gallery/03.jpg'
     alt: Tywyn beach
-  - src: /img/2022/10/278091559_4810634035713729_7275387316142682028_n.jpg
+  - src: '../../assets/img/things-to-do/tywyn-beach/gallery/04.jpg'
     alt: Tywyn beach
-  - src: /img/2022/10/278580286_4840084379435361_1743700253587088154_n.jpg
+  - src: '../../assets/img/things-to-do/tywyn-beach/gallery/05.jpg'
     alt: Tywyn beach
-  - src: /img/2022/10/283978555_4939086249535173_2313274028225268791_n.jpg
+  - src: '../../assets/img/things-to-do/tywyn-beach/gallery/06.jpg'
     alt: Tywyn beach
 social:
   facebook: 'https://www.facebook.com/VisitTywyn'

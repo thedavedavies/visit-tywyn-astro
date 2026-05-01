@@ -48,6 +48,30 @@ export default defineConfig({
 		}),
 	],
 	image: {
+		// Global image rendering defaults. `constrained` layout gives
+		// every `<Image>` / `<Picture>` (and markdown `![]()`) a
+		// responsive `srcset` + `sizes` plus the auto-injected
+		// `:where([data-astro-image])` helper styles. Per-call props
+		// (e.g. `layout="full-width"` on hero banners) override.
+		layout: 'constrained',
+		responsiveStyles: true,
+		// Override the default 8-tier breakpoint array with four
+		// widths that match common viewport classes. Fewer variants
+		// = less Sharp work at build time and a smaller `dist/_astro/`.
+		breakpoints: [640, 960, 1280, 1920],
+		service: {
+			entrypoint: 'astro/assets/services/sharp',
+			config: {
+				// AVIF: aggressive compression at acceptable quality.
+				// `effort: 4` is the speed/size sweet-spot recommended
+				// by libavif maintainers; effort 9 is ~2x slower for
+				// ~2-3% extra compression.
+				avif: { quality: 60, effort: 4 },
+				webp: { quality: 80 },
+				jpeg: { quality: 82, mozjpeg: true },
+				png: { quality: 90, compressionLevel: 9 },
+			},
+		},
 		// Allow remote images from the legacy S3 bucket and uploads dir during migration.
 		domains: ['visit-tywyn.s3.amazonaws.com', 'visit-tywyn.co.uk'],
 	},

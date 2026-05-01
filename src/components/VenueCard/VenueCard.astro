@@ -12,8 +12,9 @@
  * solid border and 250px image cap; I've consolidated the two
  * into one component because the differences are cosmetic.
  */
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import Icon from '../Icon/Icon.astro';
-import { probeImage } from '../../lib/image-dimensions';
 import styles from './VenueCard.module.scss';
 
 interface Props {
@@ -21,25 +22,25 @@ interface Props {
 	title: string;
 	summary?: string;
 	address?: string;
-	photo?: { src: string; alt?: string };
+	photo?: { src: ImageMetadata; alt?: string };
 	headingLevel?: 2 | 3;
 }
 
 const { href, title, summary, address, photo, headingLevel = 3 } = Astro.props;
 const HTag = `h${headingLevel}` as 'h2' | 'h3';
-const photoDims = photo ? probeImage(photo.src) : null;
 ---
 
 <article class={styles.row}>
 	<a href={href} class={styles.media}>
 		{
 			photo && (
-				<img
+				<Picture
 					src={photo.src}
 					alt={photo.alt ?? title}
 					loading="lazy"
-					width={photoDims?.width}
-					height={photoDims?.height}
+					formats={['avif', 'webp']}
+					widths={[320, 480, 640]}
+					sizes="(min-width: 768px) 320px, 100vw"
 				/>
 			)
 		}

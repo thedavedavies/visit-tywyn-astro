@@ -11,7 +11,7 @@ geo:
   lng: -4.088888168334961
   address: Wharf Station, Neptune Rd, Tywyn LL36 9EY, UK
 hero_image:
-  src: /img/2023/03/new-page-banner.jpg
+  src: '../../assets/img/things-to-do/tywyn-wharf/cover.jpg'
   alt: Tywyn Wharf - The Talyllyn Railway
 seo:
   description: Tywyn Wharf is a must-visit destination for anyone interested in history, trains, or stunning scenery. This historic wharf is the starting point of the Talyllyn Railway.

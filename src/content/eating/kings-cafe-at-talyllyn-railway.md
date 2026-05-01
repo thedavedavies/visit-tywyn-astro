@@ -11,7 +11,7 @@ geo:
   lng: -4.088888000000001
   address: 'King''s Cafe at Talyllyn Railway'
 photo:
-  src: /img/2022/05/enjoy-afternoon-tea-at.jpg
+  src: '../../assets/img/eating/kings-cafe-at-talyllyn-railway/cover.jpg'
   alt: 'King''s Cafe at Talyllyn Railway'
 trip_advisor_link: 'https://www.tripadvisor.co.uk/Restaurant_Review-g552038-d8482959-Reviews-King_s_Cafe_at_Talyllyn_Railway-Tywyn_Gwynedd_North_Wales_Wales.html'
 facebook_link: 'https://www.facebook.com/Talyllyn/'

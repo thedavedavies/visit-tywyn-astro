@@ -4,7 +4,7 @@ slug: contact
 menu_order: 0
 subtitle: 'Contact us through email, Facebook & Twitter!'
 hero_image:
-  src: /img/2022/06/contact-banner-lake.jpg
+  src: '../../assets/img/pages/contact.jpg'
   alt: Contact
 updated: 2024-05-20
 seo:

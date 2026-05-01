@@ -1,20 +1,21 @@
 ---
 /**
  * "More to explore" block at the bottom of detail pages. Used for
- * internal linking — each card boosts the linked page's authority
- * a little, helps users find adjacent content, and gives crawlers
- * extra paths into the site.
+ * internal linking: each card boosts the linked page's authority,
+ * helps users find adjacent content, and gives crawlers extra paths
+ * into the site.
  *
- * Generic over content type — pass items with `href`, `title`, an
+ * Generic over content type. Pass items with `href`, `title`, an
  * optional thumbnail, and an optional one-line summary.
  */
-import { probeImage } from '../../lib/image-dimensions';
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import styles from './RelatedItems.module.scss';
 
 interface Item {
 	href: string;
 	title: string;
-	image?: { src: string; alt?: string };
+	image?: { src: ImageMetadata; alt?: string };
 	summary?: string;
 }
 
@@ -25,7 +26,6 @@ interface Props {
 }
 
 const { heading, items, headingId = 'related-items' } = Astro.props;
-const itemDims = items.map((item) => (item.image ? probeImage(item.image.src) : null));
 ---
 
 {
@@ -33,17 +33,18 @@ const itemDims = items.map((item) => (item.image ? probeImage(item.image.src) : 
 		<section class={styles.section} aria-labelledby={headingId}>
 			<h2 id={headingId} class={styles.heading}>{heading}</h2>
 			<ul class={styles.grid} role="list">
-				{items.map((item, idx) => (
+				{items.map((item) => (
 					<li class={styles.item}>
 						<a href={item.href} class={styles.link}>
 							{item.image && (
 								<div class={styles.media}>
-									<img
+									<Picture
 										src={item.image.src}
 										alt={item.image.alt ?? item.title}
 										loading="lazy"
-										width={itemDims[idx]?.width}
-										height={itemDims[idx]?.height}
+										formats={['avif', 'webp']}
+										widths={[240, 360, 480]}
+										sizes="(min-width: 768px) 240px, 50vw"
 									/>
 								</div>
 							)}

@@ -9,6 +9,7 @@
  *   - <h2>Where is <Title></h2> + map + Get directions link
  */
 import { getCollection, render } from 'astro:content';
+import { Picture } from 'astro:assets';
 import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import VenueMap from '../../components/VenueMap/VenueMap.astro';
@@ -16,7 +17,6 @@ import Icon from '../../components/Icon/Icon.astro';
 import RelatedItems from '../../components/RelatedItems/RelatedItems.astro';
 import { restaurant } from '../../lib/jsonld';
 import { seededShuffle } from '../../lib/random';
-import { probeImage } from '../../lib/image-dimensions';
 
 export async function getStaticPaths() {
 	const venues = await getCollection('eating');
@@ -49,6 +49,11 @@ const directionsHref = venue.data.geo
 	? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${venue.data.geo.lat},${venue.data.geo.lng}`)}`
 	: null;
 
+// Schema-driven `photo.src` is now `ImageMetadata`, but JSON-LD
+// + OG meta need string URLs. Reach into `.src.src` to get the
+// processed image's hashed URL.
+const photoUrl = venue.data.photo?.src.src;
+
 const jsonLd = restaurant({
 	id: venue.id,
 	title: venue.data.title,
@@ -57,19 +62,17 @@ const jsonLd = restaurant({
 	phone: venue.data.phone,
 	website: venue.data.website,
 	dogFriendly: venue.data.dog_friendly,
-	photo: venue.data.photo?.src,
+	photo: photoUrl,
 	geo: venue.data.geo,
 	sameAs: [venue.data.facebook_link, venue.data.trip_advisor_link],
 });
-
-const photoDims = venue.data.photo ? probeImage(venue.data.photo.src) : null;
 ---
 
 <PageLayout
 	title={venue.data.seo?.title ?? venue.data.title}
 	description={venue.data.seo?.description ?? venue.data.summary}
 	canonical={venue.data.seo?.canonical}
-	ogImage={venue.data.seo?.og_image ?? venue.data.photo?.src}
+	ogImage={venue.data.seo?.og_image ?? photoUrl}
 	noindex={venue.data.seo?.noindex}
 	breadcrumbs={breadcrumbs}
 	jsonLd={jsonLd}
@@ -100,11 +103,13 @@ const photoDims = venue.data.photo ? probeImage(venue.data.photo.src) : null;
 		{
 			venue.data.photo && (
 				<div class="entry-photo">
-					<img
+					<Picture
 						src={venue.data.photo.src}
 						alt={venue.data.photo.alt ?? venue.data.title}
-						width={photoDims?.width}
-						height={photoDims?.height}
+						loading="lazy"
+						formats={['avif', 'webp']}
+						widths={[640, 960, 1280]}
+						sizes="(min-width: 1024px) 760px, 100vw"
 					/>
 				</div>
 			)

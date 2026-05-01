@@ -4,7 +4,7 @@ slug: where-to-stay
 menu_order: 0
 subtitle: Looking for holiday accommodation in Tywyn?
 hero_image:
-  src: /img/2022/05/where-to-stay.jpg
+  src: '../../assets/img/pages/where-to-stay.jpg'
   alt: Where to stay in Tywyn
 updated: 2022-05-31
 ---

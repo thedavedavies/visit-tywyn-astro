@@ -10,18 +10,18 @@ geo:
   lng: -3.8502512
   address: King arthurs labrynth
 hero_image:
-  src: /img/2024/06/king-arthurs-labyrinth-banner.jpg
+  src: '../../assets/img/things-to-do/king-arthurs-labyrinth/cover.jpg'
   alt: 'King Arthur''s Labyrinth'
 gallery:
-  - src: /img/2024/06/boatman-in-tunnels-close-up-scaled.jpg
+  - src: '../../assets/img/things-to-do/king-arthurs-labyrinth/gallery/01.jpg'
     alt: 'King Arthur''s Labyrinth'
-  - src: '/img/2024/06/d0135700-©-paul-kay-scaled.jpg'
+  - src: '../../assets/img/things-to-do/king-arthurs-labyrinth/gallery/02.jpg'
     alt: 'King Arthur''s Labyrinth'
-  - src: '/img/2024/06/d0135711-©-paul-kay-scaled.jpg'
+  - src: '../../assets/img/things-to-do/king-arthurs-labyrinth/gallery/03.jpg'
     alt: 'King Arthur''s Labyrinth'
-  - src: /img/2024/06/landscape-shot-of-dragon-scaled.jpg
+  - src: '../../assets/img/things-to-do/king-arthurs-labyrinth/gallery/04.jpg'
     alt: 'King Arthur''s Labyrinth'
-  - src: /img/2024/06/received_953000302184369-scaled.jpeg
+  - src: '../../assets/img/things-to-do/king-arthurs-labyrinth/gallery/05.jpeg'
     alt: 'King Arthur''s Labyrinth'
 social:
   facebook: 'https://www.facebook.com/pages/King-Arthurs-Labyrinth/118429064854987'

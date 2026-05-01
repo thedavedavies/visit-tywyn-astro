@@ -11,6 +11,7 @@ import EventsSection from '../components/EventsSection/EventsSection.astro';
 import { SITE } from '../lib/site';
 import { touristDestination, eventSchema } from '../lib/jsonld';
 import { upcomingEvents } from '../lib/events';
+import surfcamSrc from '../assets/img/heroes/home-surfcam.jpg';
 
 // `Organization` and `WebSite` are emitted globally by BaseLayout,
 // so the home page only needs to add the schemas unique to it:
@@ -36,7 +37,7 @@ const jsonLd = [
 	title="Tywyn Holiday Accommodation, Things to Do and Visit in Tywyn"
 	description="Come and discover Tywyn. From the rolling hills and mountains to the golden beachfront - great food, stunning sunsets, long-lasting memories."
 	isFrontPage={true}
-	heroImage={{ src: '/img/2022/05/surfcam-1.jpg', alt: '' }}
+	heroImage={{ src: surfcamSrc, alt: '' }}
 	jsonLd={jsonLd}
 >
 	<EntryHeader title="Welcome to Visit Tywyn" subtitle="Come and discover Tywyn" />

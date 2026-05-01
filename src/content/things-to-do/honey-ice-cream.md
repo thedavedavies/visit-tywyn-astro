@@ -9,7 +9,7 @@ geo:
   lng: -4.0801358
   address: holgates honey ice cream
 hero_image:
-  src: /img/2022/07/honeyicecream.jpeg
+  src: '../../assets/img/things-to-do/honey-ice-cream/cover.jpeg'
   alt: Honey Ice Cream at Holgates
 seo:
   description: Holgates Honey Ice Cream Shop is the only place where you can buy their famous Honey Ice Cream. Freshly made each day, this delicious ice cream is made to a secret recipe using real honey.

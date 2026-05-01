@@ -821,8 +821,13 @@ const redirectsFile = finalRedirects
 const trailingWildcards = [
 	// Any other `/category/*` archive (Yoast noindexed these on WP) → 410.
 	'/category/*  /404.html  410',
-	// Legacy WP image URLs continue to resolve to the migrated `/img/`.
-	'/wp-content/uploads/*  /img/:splat  301',
+	// Stage 2 of the perf pass moved every image into the Astro
+	// pipeline (content-hashed `/_astro/...` URLs). Legacy `/img/...`
+	// and `/wp-content/uploads/...` paths no longer resolve to
+	// anything; signal Gone so search engines de-index them rather
+	// than chasing redirects to URLs that no longer exist.
+	'/img/*  /404.html  410',
+	'/wp-content/uploads/*  /404.html  410',
 ].join('\n');
 
 writeFile(

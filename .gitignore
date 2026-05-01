@@ -23,6 +23,11 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
+# Per-run artifacts from the compound-engineering ce:review skill.
+# These are debug output, not source. Re-running ce:review creates
+# a new timestamped directory each time.
+.context/
+
 # Migrated images — populated by `npm run migrate:uploads`. We don't
 # commit the year-bucketed legacy binaries; keep them outside git and
 # either copy them onto the host at deploy time, or migrate to S3/R2/etc.

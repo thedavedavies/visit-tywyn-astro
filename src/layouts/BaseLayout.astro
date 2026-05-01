@@ -18,9 +18,11 @@ import '../styles/global.scss';
 import { Font } from 'astro:assets';
 import Header from '../components/Header/Header.astro';
 import Footer from '../components/Footer/Footer.astro';
+import type { ImageMetadata } from 'astro';
 import { SITE } from '../lib/site';
 import { breadcrumbList, organization, website } from '../lib/jsonld';
 import { absoluteUrl, safeJsonLd } from '../lib/url';
+import defaultOgImageSrc from '../assets/img/site/og-default.jpg';
 
 interface BreadcrumbItem {
 	label: string;
@@ -33,7 +35,7 @@ interface Props {
 	canonical?: string | URL;
 	ogImage?: string;
 	noindex?: boolean;
-	heroImage?: { src: string; alt?: string } | null;
+	heroImage?: { src: ImageMetadata; alt?: string } | null;
 	breadcrumbs?: BreadcrumbItem[];
 	isFrontPage?: boolean;
 	bodyClass?: string;
@@ -64,7 +66,11 @@ const {
 // we get a consistent, SEO-preserving format everywhere.
 const fullTitle = `${title} | ${SITE.name}`;
 const canonicalHref = canonical instanceof URL ? canonical.toString() : canonical;
-const resolvedOgImage = absoluteUrl(ogImage ?? SITE.defaultOgImage);
+// OG images need an absolute URL on the social-card platform's
+// crawl. If the page didn't pass one in, fall back to the default
+// social card asset (Astro processes it and gives us a content-
+// hashed `/_astro/...` URL we then absolutise).
+const resolvedOgImage = absoluteUrl(ogImage ?? defaultOgImageSrc.src);
 const ogType = isFrontPage ? 'website' : 'article';
 
 // Site identity schemas emit on every page. Yoast did the same on

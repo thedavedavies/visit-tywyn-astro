@@ -10,7 +10,7 @@ geo:
   lng: -4.056455
   address: Peniarth Arms at Bryncrug
 photo:
-  src: /img/2022/05/1800477_327363460793829_7600468649014334255_n.jpg
+  src: '../../assets/img/eating/peniarth-arms-at-bryncrug/cover.jpg'
   alt: Peniarth Arms at Bryncrug
 trip_advisor_link: 'https://www.tripadvisor.co.uk/Restaurant_Review-g552038-d5247678-Reviews-Peniarth_Arms_at_Bryncrug-Tywyn_Gwynedd_North_Wales_Wales.html'
 facebook_link: 'https://www.facebook.com/Peniartharms'

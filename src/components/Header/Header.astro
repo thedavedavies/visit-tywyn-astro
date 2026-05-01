@@ -3,17 +3,20 @@
  * Site header. The visually-hidden site-name link below the logo is
  * always rendered as `<p>`: the real page H1 lives in the page
  * template (`<EntryHeader>`), and upgrading the masthead branding
- * to an H1 on the home page produced two H1s on the same page —
+ * to an H1 on the home page produced two H1s on the same page,
  * which dilutes the topic signal Google uses for ranking.
  */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import Nav from '../Nav/Nav.astro';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.astro';
 import BannerImage from '../BannerImage/BannerImage.astro';
 import { SITE } from '../../lib/site';
+import logoSrc from '../../assets/img/site/logo.png';
 import styles from './Header.module.scss';
 
 interface Props {
-	heroImage?: { src: string; alt?: string } | null;
+	heroImage?: { src: ImageMetadata; alt?: string } | null;
 	breadcrumbs?: { label: string; href?: string }[];
 }
 
@@ -24,12 +27,12 @@ const { heroImage = null, breadcrumbs = [] } = Astro.props;
 	<div class={styles.container}>
 		<div class={styles.branding}>
 			<a href="/" rel="home" class={styles.logoLink} aria-label={`${SITE.name} home`}>
-				<img
+				<Image
 					class={styles.logo}
-					src="/img/2022/05/tywyn-logo.png"
+					src={logoSrc}
 					alt={SITE.name}
-					width="261"
-					height="39"
+					layout="fixed"
+					loading="eager"
 				/>
 			</a>
 			<p class={styles.titleHidden} aria-hidden="true">

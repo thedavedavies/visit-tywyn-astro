@@ -120,4 +120,5 @@
 /webcams/  https://visit-tywyn.co.uk/webcam/  301
 /wp-content/uploads/2015/04/Overhead.jpg  https://visit-tywyn.co.uk/  301
 /category/*  /404.html  410
-/wp-content/uploads/*  /img/:splat  301
+/img/*  /404.html  410
+/wp-content/uploads/*  /404.html  410

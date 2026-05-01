@@ -5,8 +5,9 @@
  * right). Visually identical to VenueCard but kept separate so
  * activity-specific fields can grow without affecting eating.
  */
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import Icon from '../Icon/Icon.astro';
-import { probeImage } from '../../lib/image-dimensions';
 import styles from './ActivityCard.module.scss';
 
 interface Props {
@@ -14,25 +15,25 @@ interface Props {
 	title: string;
 	summary?: string;
 	address?: string;
-	heroImage?: { src: string; alt?: string };
+	heroImage?: { src: ImageMetadata; alt?: string };
 	headingLevel?: 2 | 3;
 }
 
 const { href, title, summary, address, heroImage, headingLevel = 3 } = Astro.props;
 const HTag = `h${headingLevel}` as 'h2' | 'h3';
-const heroDims = heroImage ? probeImage(heroImage.src) : null;
 ---
 
 <article class={styles.row}>
 	<a href={href} class={styles.media}>
 		{
 			heroImage && (
-				<img
+				<Picture
 					src={heroImage.src}
 					alt={heroImage.alt ?? title}
 					loading="lazy"
-					width={heroDims?.width}
-					height={heroDims?.height}
+					formats={['avif', 'webp']}
+					widths={[320, 480, 640]}
+					sizes="(min-width: 768px) 320px, 100vw"
 				/>
 			)
 		}

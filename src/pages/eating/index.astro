@@ -5,6 +5,7 @@ import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import VenueCard from '../../components/VenueCard/VenueCard.astro';
 import AdSlot from '../../components/AdSlot/AdSlot.astro';
 import { itemList } from '../../lib/jsonld';
+import eatingBannerSrc from '../../assets/img/heroes/eating.jpg';
 
 const venues = (await getCollection('eating')).sort((a, b) =>
 	a.data.title.localeCompare(b.data.title)
@@ -29,7 +30,7 @@ const jsonLd = itemList(
 <PageLayout
 	title="Top restaurants and places to eat in Tywyn"
 	description="View all the local Restaurants, Cafe's and Takeaways in Tywyn. Find somewhere great to eat with your family and friends tonight."
-	heroImage={{ src: '/img/2022/05/eating-banner.jpg', alt: 'Eating in Tywyn' }}
+	heroImage={{ src: eatingBannerSrc, alt: 'Eating in Tywyn' }}
 	breadcrumbs={breadcrumbs}
 	jsonLd={jsonLd}
 >

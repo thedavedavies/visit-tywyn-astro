@@ -44,6 +44,11 @@ const breadcrumbs = [
 	{ label: activity.data.title },
 ];
 
+// Schema-driven `hero_image.src` is now an `ImageMetadata`; reach
+// into `.src.src` to get the processed image's hashed URL string
+// for JSON-LD and OG meta consumers that need a flat URL.
+const heroUrl = activity.data.hero_image?.src.src;
+
 const jsonLd = touristAttraction({
 	id: activity.id,
 	title: activity.data.title,
@@ -51,7 +56,7 @@ const jsonLd = touristAttraction({
 	address: activity.data.address,
 	phone: activity.data.phone,
 	website: activity.data.website,
-	heroImage: activity.data.hero_image?.src,
+	heroImage: heroUrl,
 	geo: activity.data.geo,
 	sameAs: activity.data.social ? Object.values(activity.data.social) : [],
 });
@@ -61,7 +66,7 @@ const jsonLd = touristAttraction({
 	title={activity.data.seo?.title ?? activity.data.title}
 	description={activity.data.seo?.description ?? activity.data.summary}
 	canonical={activity.data.seo?.canonical}
-	ogImage={activity.data.seo?.og_image ?? activity.data.hero_image?.src}
+	ogImage={activity.data.seo?.og_image ?? heroUrl}
 	noindex={activity.data.seo?.noindex}
 	heroImage={activity.data.hero_image}
 	breadcrumbs={breadcrumbs}

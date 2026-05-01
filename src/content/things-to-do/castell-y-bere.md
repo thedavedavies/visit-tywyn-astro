@@ -9,24 +9,24 @@ geo:
   lng: -3.9708193
   address: Castell y Bere, Llanfihangel-y-Pennant, Tywyn, LL36 9TP
 hero_image:
-  src: /img/2022/06/castell-y-bere-banner.jpg
+  src: '../../assets/img/things-to-do/castell-y-bere/cover.jpg'
   alt: Castell y Bere
 gallery:
-  - src: /img/2022/06/photo1jpg.jpeg
+  - src: '../../assets/img/things-to-do/castell-y-bere/gallery/01.jpeg'
     alt: Castell y Bere
-  - src: /img/2022/06/photo3jpg.jpeg
+  - src: '../../assets/img/things-to-do/castell-y-bere/gallery/02.jpeg'
     alt: Castell y Bere
-  - src: /img/2022/06/photo4jpg.jpeg
+  - src: '../../assets/img/things-to-do/castell-y-bere/gallery/03.jpeg'
     alt: Castell y Bere
-  - src: /img/2022/06/castell-y-bere-70.jpeg
+  - src: '../../assets/img/things-to-do/castell-y-bere/gallery/04.jpeg'
     alt: Castell y Bere
-  - src: /img/2022/06/castell-y-bere-69.jpeg
+  - src: '../../assets/img/things-to-do/castell-y-bere/gallery/05.jpeg'
     alt: Castell y Bere
-  - src: /img/2022/06/0864886_1_1.jpeg
+  - src: '../../assets/img/things-to-do/castell-y-bere/gallery/06.jpeg'
     alt: Castell y Bere
-  - src: /img/2022/06/0864886_1_2.jpeg
+  - src: '../../assets/img/things-to-do/castell-y-bere/gallery/07.jpeg'
     alt: Castell y Bere
-  - src: /img/2022/06/castel_y_bere_site-scaled.jpeg
+  - src: '../../assets/img/things-to-do/castell-y-bere/gallery/08.jpeg'
     alt: Castell y Bere
 seo:
   description: It may be remote, but Castell y Bere a magnet for all castle lovers. Sitting at the foot of the mighty Cader Idris, stunning views and great for dogs.
@@ -34,7 +34,7 @@ seo:
 
 It may be remote, but Castell y Bere in North Wales is a magnet for all castle lovers. Strung along a jagged rocky outcrop in the Dysynni Valley at the foot of the mighty Cader Idris, Castell y Bere is especially good at evoking the spirit and atmosphere of Wales’s native castles.
 
-<img class="alignnone size-large wp-image-944" src="/img/2022/06/castell-y-bere-70-1024x768.jpeg" alt="" width="640" height="480" />
+![](../../assets/img/things-to-do/castell-y-bere/inline/castell-y-bere-70.jpeg)
 
 Built by Welsh ruler <em>Llywelyn ap Iorwerth</em> (Llywelyn the Great) to protect Gwynedd’s southern frontier, construction began in 1221 with the castle remaining in use until 1294. Castell y Bere was a remote outpost on Llywelyn’s southern frontier, but it was vital to his security. Llywelyn ab Iorwerth was Prince, but in those days cattle were king! Castell y Bere guarded his cattle range, protected the homeland of Gwynedd and dominated the neighbouring lordship of Meirionydd.
 

@@ -10,7 +10,7 @@ geo:
   lng: -4.0859279
   address: Salt Marsh Kitchen tywyn
 photo:
-  src: /img/2022/05/119025880_3296588483762855_3538520526213428122_n.jpg
+  src: '../../assets/img/eating/salt-marsh-kitchen/cover.jpg'
   alt: Salt Marsh Kitchen
 trip_advisor_link: 'https://www.tripadvisor.co.uk/Restaurant_Review-g552038-d4782308-Reviews-Salt_Marsh_Kitchen-Tywyn_Gwynedd_North_Wales_Wales.html'
 facebook_link: 'https://www.facebook.com/TheSaltMarshKitchen'

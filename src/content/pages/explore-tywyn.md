@@ -4,7 +4,7 @@ slug: explore-tywyn
 menu_order: 0
 subtitle: Everything you need to know about Tywyn
 hero_image:
-  src: /img/2022/05/explore.jpg
+  src: '../../assets/img/pages/explore-tywyn.jpg'
   alt: Explore Tywyn
 updated: 2022-05-18
 ---
