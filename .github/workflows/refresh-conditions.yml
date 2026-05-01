@@ -1,0 +1,52 @@
+name: Refresh weather + tides snapshots
+
+# Refreshes src/data/{weather,tides}.json from Open-Meteo and Admiralty
+# EasyTide, then commits the result so the next deploy carries the
+# updated snapshot. The static site is rebuilt by whatever pipeline
+# watches this repo (Cloudflare Pages, Netlify, etc.) — pushing the
+# commit is what triggers the rebuild.
+#
+# Cadence: every 3 hours. Weather changes hourly upstream; the widget's
+# stale TTL is 6 hours, so 3h keeps us comfortably fresh without
+# overspending build minutes. Tides are astronomical predictions and
+# barely change, but refreshing them in the same job keeps the
+# upcoming-events list from emptying out.
+
+on:
+  schedule:
+    - cron: '0 */3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-conditions
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - run: npm run refresh:conditions
+
+      - name: Commit + push if data changed
+        run: |
+          if git diff --quiet src/data/weather.json src/data/tides.json; then
+            echo "No changes — upstream APIs returned identical data."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/data/weather.json src/data/tides.json
+          git commit -m "chore(data): refresh weather + tides snapshots"
+          git push

@@ -62,12 +62,22 @@ The refresher never overwrites with garbage: if the upstream API errors
 or returns an unrecognised shape, the existing snapshot is left in
 place.
 
-For production freshness:
+Production freshness is handled by [`.github/workflows/refresh-conditions.yml`](.github/workflows/refresh-conditions.yml),
+which runs every 3 hours on GitHub Actions:
 
-- run `npm run refresh:conditions && npm run build` in CI on a cron
-  (e.g. every 6h on Cloudflare Pages, GitHub Actions, etc.), **or**
-- stand up a small scheduled function that hits both APIs and commits
-  the JSON back to this repo, triggering a redeploy.
+1. checks out the repo,
+2. runs `npm run refresh:conditions`,
+3. commits and pushes the updated JSON if it changed.
+
+The push triggers whatever deploy pipeline watches this repo (Cloudflare
+Pages, Netlify, etc.), so the rebuilt site picks up the new snapshot.
+The cadence is comfortably under both the weather TTL (6h) and the tides
+TTL (12h), so the widgets never need to fall back to the "stale" indicator
+under normal conditions.
+
+To trigger a refresh manually outside the schedule, use the
+**Run workflow** button on the Actions tab, or invoke `gh workflow run
+refresh-conditions.yml`.
 
 ## Project layout
 
