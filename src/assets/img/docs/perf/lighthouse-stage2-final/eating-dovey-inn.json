@@ -803,7 +803,7 @@
             "entity": "Google Maps"
           },
           {
-            "url": "https://maps.googleapis.com/maps/api/js?key=AIzaSyCmL18misQw9KdwqGaw3zHkitj8vG6QF2Y&paint_origin=&libraries=geometry,search&v=weekly&loading=async&language=en_GB&callback=onApiLoad",
+            "url": "https://maps.googleapis.com/maps/api/js?key=REDACTED_GOOGLE_MAPS_KEY&paint_origin=&libraries=geometry,search&v=weekly&loading=async&language=en_GB&callback=onApiLoad",
             "sessionTargetType": "iframe",
             "protocol": "h2",
             "rendererStartTime": 737.9399999976158,
@@ -979,7 +979,7 @@
             "entity": "Amazon Web Services"
           },
           {
-            "url": "https://maps.googleapis.com/maps/api/js/StaticMapService.GetMapImage?1m2&1i4099876&2i2750058&2e1&3u15&4m2&1u378&2u212&5m6&1e0&5sen-GB&6sus&10b1&12b1&14i47083502&8e1&key=AIzaSyCmL18misQw9KdwqGaw3zHkitj8vG6QF2Y&token=50646",
+            "url": "https://maps.googleapis.com/maps/api/js/StaticMapService.GetMapImage?1m2&1i4099876&2i2750058&2e1&3u15&4m2&1u378&2u212&5m6&1e0&5sen-GB&6sus&10b1&12b1&14i47083502&8e1&key=REDACTED_GOOGLE_MAPS_KEY&token=50646",
             "sessionTargetType": "iframe",
             "protocol": "h2",
             "rendererStartTime": 967.4290000200272,
@@ -1826,13 +1826,13 @@
         ],
         "items": [
           {
-            "url": "https://maps.googleapis.com/maps/api/js/StaticMapService.GetMapImage?1m2&1i4099876&2i2750058&2e1&3u15&4m2&1u378&2u212&5m6&1e0&5sen-GB&6sus&10b1&12b1&14i47083502&8e1&key=AIzaSyCmL18misQw9KdwqGaw3zHkitj8vG6QF2Y&token=50646",
+            "url": "https://maps.googleapis.com/maps/api/js/StaticMapService.GetMapImage?1m2&1i4099876&2i2750058&2e1&3u15&4m2&1u378&2u212&5m6&1e0&5sen-GB&6sus&10b1&12b1&14i47083502&8e1&key=REDACTED_GOOGLE_MAPS_KEY&token=50646",
             "cacheLifetimeMs": 86400000,
             "totalBytes": 15243,
             "wastedBytes": 6097.200000000001
           },
           {
-            "url": "https://maps.googleapis.com/maps/api/js?key=AIzaSyCmL18misQw9KdwqGaw3zHkitj8vG6QF2Y&paint_origin=&libraries=geometry,search&v=weekly&loading=async&language=en_GB&callback=onApiLoad",
+            "url": "https://maps.googleapis.com/maps/api/js?key=REDACTED_GOOGLE_MAPS_KEY&paint_origin=&libraries=geometry,search&v=weekly&loading=async&language=en_GB&callback=onApiLoad",
             "cacheLifetimeMs": 1800000,
             "totalBytes": 2971,
             "wastedBytes": 2562.4875
