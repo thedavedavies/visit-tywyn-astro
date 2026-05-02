@@ -75,7 +75,6 @@
 /category/camping/  https://visit-tywyn.co.uk/holiday-accommodation/camping/  301
 /category/caravan/  https://visit-tywyn.co.uk/holiday-accommodation/caravan/  301
 /category/self-catering/  https://visit-tywyn.co.uk/holiday-accommodation/self-catering/  301
-/category/uncategorized/  /404.html  410
 /cinema/  https://visit-tywyn.co.uk/things-to-do/magic-lantern-cinema/  301
 /cinema/index.html  https://visit-tywyn.co.uk/things-to-do/magic-lantern-cinema/  301
 /easter-street-market/  https://visit-tywyn.co.uk  301
@@ -119,6 +118,3 @@
 /webcam/index.html  https://visit-tywyn.co.uk/webcam/  301
 /webcams/  https://visit-tywyn.co.uk/webcam/  301
 /wp-content/uploads/2015/04/Overhead.jpg  https://visit-tywyn.co.uk/  301
-/category/*  /404.html  410
-/img/*  /404.html  410
-/wp-content/uploads/*  /404.html  410

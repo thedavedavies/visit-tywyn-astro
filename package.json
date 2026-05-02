@@ -12,8 +12,6 @@
     "astro": "astro",
     "check": "astro check",
     "test": "npm run build && npm run check:links -- --no-dev",
-    "export": "tsx tools/export-from-sql.ts",
-    "migrate:uploads": "tsx tools/migrate-uploads.ts",
     "refresh:conditions": "tsx tools/refresh-conditions.ts",
     "check:links": "tsx tools/check-links.ts"
   },
