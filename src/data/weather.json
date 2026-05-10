@@ -1,11 +1,11 @@
 {
-  "fetchedAt": "2026-05-10T09:33:42.690Z",
+  "fetchedAt": "2026-05-10T12:21:52.187Z",
   "location": "Tywyn beach",
   "summary": "Partly cloudy",
-  "tempC": 11.2,
-  "feelsLikeC": 8.3,
-  "windMph": 6.7,
-  "windDir": "NE",
+  "tempC": 13.5,
+  "feelsLikeC": 10.5,
+  "windMph": 6.9,
+  "windDir": "ENE",
   "rainChance": null,
-  "observedLabel": "11:30 am"
+  "observedLabel": "2:15 pm"
 }
