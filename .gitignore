@@ -27,3 +27,10 @@ pnpm-debug.log*
 # These are debug output, not source. Re-running ce:review creates
 # a new timestamped directory each time.
 .context/
+
+# Lighthouse / perf JSON traces are large, regeneratable, and have
+# historically leaked third-party API keys (see commit 9c48317).
+# The accompanying .md reports under docs/perf/ are intentionally
+# kept; the raw traces are not.
+docs/perf/lighthouse/
+docs/perf/lighthouse-stage2/

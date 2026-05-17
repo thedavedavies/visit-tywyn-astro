@@ -1,0 +1,46 @@
+# HTTP response headers for Cloudflare Pages / Netlify.
+#
+# Sensible defaults for a static marketing site:
+#   - Long-lived caching for fingerprinted Astro assets and the
+#     Sharp-processed images under /_astro/, since their filenames
+#     include a content hash and never change.
+#   - Short revalidation on HTML so editorial updates appear within
+#     minutes of a deploy without burning bandwidth on every visit.
+#   - Conservative security headers (no JS framework, no third-party
+#     iframe sandbox escapes possible).
+#
+# These rules are first-match-wins on Cloudflare Pages and Netlify.
+# Put the most specific paths first.
+
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/img/*
+  Cache-Control: public, max-age=2592000
+
+/favicon.ico
+  Cache-Control: public, max-age=86400
+
+/favicon.svg
+  Cache-Control: public, max-age=86400
+
+/sitemap_index.xml
+  Cache-Control: public, max-age=3600
+  Content-Type: application/xml; charset=utf-8
+
+/sitemap-0.xml
+  Cache-Control: public, max-age=3600
+  Content-Type: application/xml; charset=utf-8
+
+/robots.txt
+  Cache-Control: public, max-age=86400
+
+# Default headers applied to every response. The HTML cache is short
+# so editorial updates appear within minutes of a deploy.
+/*
+  Cache-Control: public, max-age=300, s-maxage=600
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: interest-cohort=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
