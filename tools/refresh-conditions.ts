@@ -15,22 +15,26 @@
  * Behaviour on failure:
  *   - We never overwrite an existing JSON with garbage. If the API
  *     returns an error or shape we don't recognise, we keep the old
- *     snapshot in place. This way a deploy run by CI doesn't end up
- *     publishing an empty widget.
+ *     snapshot in place.
+ *   - When at least one of the two refreshes fails the process exits
+ *     non-zero so GitHub Actions surfaces the failure (default
+ *     "no diff = success" would otherwise mask a multi-day outage).
  */
 
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import { SITE } from '../src/lib/site.ts';
 
 const PROJECT_ROOT = path.resolve(import.meta.dirname, '..');
 const WEATHER_OUT = path.join(PROJECT_ROOT, 'src/data/weather.json');
 const TIDES_OUT = path.join(PROJECT_ROOT, 'src/data/tides.json');
 
-const LAT = 52.58643;
-const LNG = -4.08916;
-const TIDE_STATION = '0486'; // Aberdovey — closest reliable EasyTide station to Tywyn
+const LAT = SITE.location.lat;
+const LNG = SITE.location.lng;
+const TIDE_STATION = SITE.location.tideStationId;
 
 const TZ = 'Europe/London';
+const FETCH_TIMEOUT_MS = 15_000;
 const TIME_FMT = new Intl.DateTimeFormat('en-GB', {
 	hour: 'numeric',
 	minute: '2-digit',
@@ -45,7 +49,7 @@ const DAYTIME_FMT = new Intl.DateTimeFormat('en-GB', {
 	timeZone: TZ,
 });
 
-// Open-Meteo / WMO weather code → friendly label.
+// Open-Meteo / WMO weather code => friendly label.
 const WEATHER_LABELS: Record<number, [string, string]> = {
 	0: ['Clear sky', 'Clear night'],
 	1: ['Mainly clear', 'Mainly clear'],
@@ -101,21 +105,28 @@ interface OpenMeteoResponse {
 }
 
 async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
-	const res = await fetch(url, {
-		...init,
-		headers: {
-			...(init?.headers ?? {}),
-			'user-agent': 'visit-tywyn-astro/1.0 (+https://visit-tywyn.co.uk)',
-			accept: 'application/json',
-		},
-	});
-	if (!res.ok) {
-		throw new Error(`${url}: ${res.status} ${res.statusText}`);
+	const controller = new AbortController();
+	const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+	try {
+		const res = await fetch(url, {
+			...init,
+			signal: controller.signal,
+			headers: {
+				...(init?.headers ?? {}),
+				'user-agent': 'visit-tywyn-astro/1.0 (+https://visit-tywyn.co.uk)',
+				accept: 'application/json',
+			},
+		});
+		if (!res.ok) {
+			throw new Error(`${url}: ${res.status} ${res.statusText}`);
+		}
+		return (await res.json()) as T;
+	} finally {
+		clearTimeout(timer);
 	}
-	return (await res.json()) as T;
 }
 
-async function refreshWeather(): Promise<void> {
+async function refreshWeather(): Promise<boolean> {
 	const params = new URLSearchParams({
 		latitude: String(LAT),
 		longitude: String(LNG),
@@ -132,15 +143,15 @@ async function refreshWeather(): Promise<void> {
 	try {
 		response = await fetchJson<OpenMeteoResponse>(url);
 	} catch (err) {
-		console.error('  weather: fetch failed —', err instanceof Error ? err.message : err);
+		console.error('  weather: fetch failed:', err instanceof Error ? err.message : err);
 		console.error('  weather: keeping previous snapshot');
-		return;
+		return false;
 	}
 
 	const cur = response.current;
 	if (!cur || cur.time === undefined) {
 		console.error('  weather: response missing `current` block, keeping previous snapshot');
-		return;
+		return false;
 	}
 
 	const code = typeof cur.weather_code === 'number' ? cur.weather_code : null;
@@ -173,7 +184,8 @@ async function refreshWeather(): Promise<void> {
 	};
 
 	fs.writeFileSync(WEATHER_OUT, JSON.stringify(snapshot, null, 2) + '\n', 'utf8');
-	console.log(`  weather: ${snapshot.tempC?.toFixed(0)}°C ${snapshot.summary} (rain ${snapshot.rainChance ?? '–'}%)`);
+	console.log(`  weather: ${snapshot.tempC?.toFixed(0)}C ${snapshot.summary} (rain ${snapshot.rainChance ?? '-'}%)`);
+	return true;
 }
 
 interface EasyTideEvent {
@@ -186,21 +198,21 @@ interface EasyTideResponse {
 	tidalEventList?: EasyTideEvent[];
 }
 
-async function refreshTides(): Promise<void> {
+async function refreshTides(): Promise<boolean> {
 	const url = `https://easytide.admiralty.co.uk/Home/GetPredictionData?stationId=${encodeURIComponent(TIDE_STATION)}`;
 
 	let response: EasyTideResponse;
 	try {
 		response = await fetchJson<EasyTideResponse>(url);
 	} catch (err) {
-		console.error('  tides: fetch failed —', err instanceof Error ? err.message : err);
+		console.error('  tides: fetch failed:', err instanceof Error ? err.message : err);
 		console.error('  tides: keeping previous snapshot');
-		return;
+		return false;
 	}
 
 	if (!Array.isArray(response.tidalEventList)) {
 		console.error('  tides: response missing `tidalEventList`, keeping previous snapshot');
-		return;
+		return false;
 	}
 
 	const now = Date.now();
@@ -224,7 +236,7 @@ async function refreshTides(): Promise<void> {
 
 	if (upcoming.length === 0) {
 		console.error('  tides: no upcoming events, keeping previous snapshot');
-		return;
+		return false;
 	}
 
 	const snapshot = {
@@ -234,10 +246,21 @@ async function refreshTides(): Promise<void> {
 	};
 
 	fs.writeFileSync(TIDES_OUT, JSON.stringify(snapshot, null, 2) + '\n', 'utf8');
-	console.log(`  tides: ${upcoming.length} upcoming events — next ${upcoming[0]!.type} at ${upcoming[0]!.timeLabel}`);
+	console.log(`  tides: ${upcoming.length} upcoming events, next ${upcoming[0]!.type} at ${upcoming[0]!.timeLabel}`);
+	return true;
 }
 
-console.log('Refreshing sidebar conditions…');
-await refreshWeather();
-await refreshTides();
+console.log('Refreshing sidebar conditions...');
+const weatherOk = await refreshWeather();
+const tidesOk = await refreshTides();
+
+if (!weatherOk && !tidesOk) {
+	console.error('Both refreshes failed. Exiting non-zero so CI surfaces the failure.');
+	process.exit(1);
+}
+if (!weatherOk || !tidesOk) {
+	console.error('Partial refresh: one upstream failed. Exiting non-zero so CI surfaces the failure.');
+	process.exit(1);
+}
+
 console.log('Done.');

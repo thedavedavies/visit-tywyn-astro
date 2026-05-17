@@ -11,12 +11,40 @@
  *     deploy carries fresh data.
  *
  * If a snapshot is older than the TTL we still return it but flag
- * `stale: true` so the widget can show a subtle indicator. This
- * matches the WP behaviour where the cache survived API outages.
+ * `stale: true` so the widget can show a subtle indicator. If the
+ * snapshot is malformed (manual edit, corrupt write, schema drift on
+ * the upstream API) we return null so the widget renders its
+ * graceful "loading" fallback instead of `undefined` slots.
  */
 
+import { z } from 'astro:content';
 import weatherJson from '../data/weather.json' with { type: 'json' };
 import tidesJson from '../data/tides.json' with { type: 'json' };
+
+const WeatherSchema = z.object({
+	fetchedAt: z.string(),
+	location: z.string(),
+	summary: z.string(),
+	tempC: z.number().nullable(),
+	feelsLikeC: z.number().nullable(),
+	windMph: z.number().nullable(),
+	windDir: z.string().nullable(),
+	rainChance: z.number().nullable(),
+	observedLabel: z.string(),
+});
+
+const TideEventSchema = z.object({
+	type: z.enum(['high', 'low']),
+	timeIso: z.string(),
+	timeLabel: z.string(),
+	heightM: z.number(),
+});
+
+const TidesSchema = z.object({
+	fetchedAt: z.string(),
+	station: z.string(),
+	upcoming: z.array(TideEventSchema),
+});
 
 export interface WeatherSnapshot {
 	fetchedAt: string;
@@ -47,29 +75,38 @@ export interface TidesSnapshot {
 
 const HOUR = 60 * 60 * 1000;
 
-function isStale(fetchedAt: string | undefined, ttlMs: number): boolean {
-	if (!fetchedAt) return true;
+function isStale(fetchedAt: string, ttlMs: number): boolean {
 	const ts = Date.parse(fetchedAt);
 	if (Number.isNaN(ts)) return true;
 	return Date.now() - ts > ttlMs;
 }
 
 export function getWeatherSnapshot(): WeatherSnapshot | null {
-	const snap = weatherJson as Partial<WeatherSnapshot>;
-	if (!snap.fetchedAt || snap.tempC === undefined) return null;
+	const parsed = WeatherSchema.safeParse(weatherJson);
+	if (!parsed.success) return null;
 	return {
-		...(snap as WeatherSnapshot),
-		stale: isStale(snap.fetchedAt, 6 * HOUR),
+		...parsed.data,
+		stale: isStale(parsed.data.fetchedAt, 6 * HOUR),
 	};
 }
 
-export function getTidesSnapshot(): TidesSnapshot | null {
-	const snap = tidesJson as Partial<TidesSnapshot>;
-	if (!snap.fetchedAt || !Array.isArray(snap.upcoming) || snap.upcoming.length === 0) {
-		return null;
-	}
+export function getTidesSnapshot(now: Date = new Date()): TidesSnapshot | null {
+	const parsed = TidesSchema.safeParse(tidesJson);
+	if (!parsed.success) return null;
+	// Drop events that are already in the past at render time. The
+	// snapshot was filtered at write time, but a stale cache (failed
+	// cron, no fresh build) can leave every entry behind us. Rendering
+	// "next high tide: yesterday 11:00" with a subtle "stale" badge is
+	// worse than rendering the graceful loading state.
+	const nowMs = now.getTime();
+	const upcoming: TideEvent[] = parsed.data.upcoming.filter((ev) => {
+		const t = Date.parse(ev.timeIso);
+		return Number.isFinite(t) && t >= nowMs;
+	});
+	if (upcoming.length === 0) return null;
 	return {
-		...(snap as TidesSnapshot),
-		stale: isStale(snap.fetchedAt, 12 * HOUR),
+		...parsed.data,
+		upcoming,
+		stale: isStale(parsed.data.fetchedAt, 12 * HOUR),
 	};
 }
