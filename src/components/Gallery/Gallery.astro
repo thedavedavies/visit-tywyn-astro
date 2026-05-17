@@ -65,11 +65,17 @@ const { images, label = 'Gallery' } = Astro.props;
 
 			<script is:inline>
 				(() => {
+					// Track which thumbnail opened each dialog so we can
+					// restore focus to it on close. Without this the
+					// browser drops focus to <body>, leaving keyboard
+					// users with no anchor in the gallery grid.
+					let lastTrigger = null;
 					document.querySelectorAll('[data-gallery-open]').forEach((btn) => {
 						btn.addEventListener('click', () => {
 							const id = btn.getAttribute('data-gallery-open');
 							const dialog = document.querySelector(`[data-gallery-dialog="${id}"]`);
 							if (dialog && typeof dialog.showModal === 'function') {
+								lastTrigger = btn;
 								dialog.showModal();
 							}
 						});
@@ -77,6 +83,12 @@ const { images, label = 'Gallery' } = Astro.props;
 					document.querySelectorAll('[data-gallery-dialog]').forEach((dialog) => {
 						dialog.addEventListener('click', (event) => {
 							if (event.target === dialog) dialog.close();
+						});
+						dialog.addEventListener('close', () => {
+							if (lastTrigger && typeof lastTrigger.focus === 'function') {
+								lastTrigger.focus();
+								lastTrigger = null;
+							}
 						});
 					});
 				})();

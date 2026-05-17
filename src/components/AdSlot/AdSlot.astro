@@ -20,22 +20,28 @@ interface Props {
 	slot: string;
 	format?: string;
 	fullWidth?: boolean;
-	/** Layout context — controls reserved height. */
+	/** Layout context, controls reserved height. */
 	placement?: 'sidebar' | 'in-feed';
 }
 
 const { slot, format = 'auto', fullWidth = true, placement = 'sidebar' } = Astro.props;
+const hasAdsenseClient = Boolean(SITE.adsenseClient);
 ---
 
-<div class:list={[styles.slot, styles[placement]]}>
-	<ins
-		class="adsbygoogle"
-		style="display:block"
-		data-ad-client={SITE.adsenseClient}
-		data-ad-slot={slot}
-		data-ad-format={format}
-		data-full-width-responsive={fullWidth ? 'true' : 'false'}></ins>
-	<script is:inline>
-		(adsbygoogle = window.adsbygoogle || []).push({});
-	</script>
-</div>
+{
+	hasAdsenseClient && (
+		<div class:list={[styles.slot, styles[placement]]}>
+			<ins
+				class="adsbygoogle"
+				style="display:block"
+				data-ad-client={SITE.adsenseClient}
+				data-ad-slot={slot}
+				data-ad-format={format}
+				data-full-width-responsive={fullWidth ? 'true' : 'false'}
+			/>
+			<script is:inline>
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			</script>
+		</div>
+	)
+}

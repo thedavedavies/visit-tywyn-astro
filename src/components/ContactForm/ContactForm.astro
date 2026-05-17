@@ -123,7 +123,14 @@ const successRedirect = `${SITE.url}/contact/?sent=1`;
 				Submit
 			</button>
 
-			<div class={styles.status} role="status" aria-live="polite" data-vt-status hidden />
+			<div
+				class={styles.status}
+				role="status"
+				aria-live="polite"
+				tabindex="-1"
+				data-vt-status
+				hidden
+			/>
 		</form>
 	) : (
 		<p class={styles.placeholder}>
@@ -151,6 +158,11 @@ const successRedirect = `${SITE.url}/contact/?sent=1`;
 					status.hidden = false;
 					status.dataset.kind = kind;
 					status.textContent = text;
+					// Move focus into the status region on error so screen
+					// readers announce the message in context and keyboard
+					// users land at the explanation rather than the
+					// disabled-then-re-enabled submit button.
+					if (kind === 'error') status.focus();
 				};
 				const clearStatus = () => {
 					status.hidden = true;

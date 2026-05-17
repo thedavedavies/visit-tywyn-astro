@@ -66,10 +66,21 @@ function isActive(href: string): boolean {
 		const toggle = document.querySelector('[data-vt-nav-toggle]');
 		const menu = document.getElementById('primary-menu');
 		if (!toggle || !menu) return;
+		const setExpanded = (open) => {
+			toggle.setAttribute('aria-expanded', String(open));
+			menu.classList.toggle('is-open', open);
+		};
 		toggle.addEventListener('click', () => {
 			const expanded = toggle.getAttribute('aria-expanded') === 'true';
-			toggle.setAttribute('aria-expanded', String(!expanded));
-			menu.classList.toggle('is-open', !expanded);
+			setExpanded(!expanded);
+		});
+		// Close on Escape and return focus to the toggle so keyboard
+		// users aren't stranded inside the dismissed menu's DOM.
+		document.addEventListener('keydown', (event) => {
+			if (event.key !== 'Escape') return;
+			if (toggle.getAttribute('aria-expanded') !== 'true') return;
+			setExpanded(false);
+			toggle.focus();
 		});
 	})();
 </script>

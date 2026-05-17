@@ -14,10 +14,9 @@ interface Props {
 
 const { title, subtitle, level = 1 } = Astro.props;
 const Heading = level === 1 ? 'h1' : 'h2';
-const Sub = level === 1 ? 'p' : 'p';
 ---
 
 <header class={styles.header}>
 	<Heading class={styles.title} data-speakable="title">{title}</Heading>
-	{subtitle && <Sub class={styles.subtitle}>{subtitle}</Sub>}
+	{subtitle && <p class={styles.subtitle}>{subtitle}</p>}
 </header>
