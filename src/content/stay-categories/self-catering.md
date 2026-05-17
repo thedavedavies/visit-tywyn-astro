@@ -12,7 +12,7 @@ booking_search_links:
   - label: 'Airbnb — Tywyn'
     url: 'https://www.airbnb.co.uk/s/Tywyn--Wales/homes'
 seo:
-  title: 'Self catering in Tywyn | Visit Tywyn'
+  title: 'Self catering in Tywyn'
   description: 'Self-catering cottages and apartments give you the run of the place — a kitchen for fish and chips on the porch, sandy boots by the door, and the freedom to come and go on your own schedule. Browse the booking sites below for places in and around Tywyn.'
 ---
 

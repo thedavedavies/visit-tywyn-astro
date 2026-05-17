@@ -21,7 +21,7 @@ const year = new Date().getFullYear();
 								</li>
 							))}
 						</ul>
-						{col.title.startsWith('Contact') && (
+						{col.showSocial && (
 							<ul class={styles.social} aria-label={`${SITE.name} social media`}>
 								{SOCIAL_LINKS.map((s) => (
 									<li>

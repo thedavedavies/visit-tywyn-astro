@@ -29,7 +29,7 @@ const breadcrumbs = [
 const updatedIso = page.data.updated ? page.data.updated.toISOString() : undefined;
 const seoTitle = page.data.seo?.title || page.data.title;
 const seoDescription = page.data.seo?.description || page.data.subtitle;
-const seoOgImage = page.data.seo?.og_image || page.data.hero_image?.src;
+const seoOgImage = page.data.seo?.og_image || page.data.hero_image?.src.src;
 
 const jsonLd = [
 	webPage({

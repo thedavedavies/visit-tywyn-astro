@@ -5,6 +5,8 @@
  * We will populate this from the SQL export but the structure is
  * stable enough to commit a sensible default now.
  */
+import { SITE } from './site';
+
 export interface NavItem {
 	label: string;
 	href: string;
@@ -43,6 +45,7 @@ export const FOOTER_COLUMNS = [
 			{ label: 'Films in Tywyn Cinema', href: '/things-to-do/magic-lantern-cinema/' },
 			{ label: 'Wales Coastal Path', href: '/wales-coastal-path/' },
 		],
+		showSocial: false,
 	},
 	{
 		title: 'Useful info...',
@@ -54,22 +57,26 @@ export const FOOTER_COLUMNS = [
 				href: '/accessibility-statement-for-visit-tywyn/',
 			},
 		],
+		showSocial: false,
 	},
 	{
 		title: 'Contact us...',
 		links: [{ label: 'Contact Us', href: '/contact/' }],
+		showSocial: true,
 	},
 ] as const;
 
+// Derive social hrefs from SITE so a single edit propagates to JSON-LD
+// `sameAs`, the `twitter:site` meta tag, and the visible footer icons.
 export const SOCIAL_LINKS = [
 	{
 		name: 'Facebook',
-		href: 'https://www.facebook.com/VisitTywyn/',
+		href: SITE.facebook,
 		icon: 'facebook',
 	},
 	{
 		name: 'Twitter',
-		href: 'https://twitter.com/visittywyn',
+		href: SITE.twitterUrl,
 		icon: 'twitter',
 	},
 ] as const;

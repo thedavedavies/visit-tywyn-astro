@@ -25,7 +25,7 @@ gallery:
     alt: Tywyn beach
 social:
   facebook: 'https://www.facebook.com/VisitTywyn'
-  twitter: 'https://visit-tywyn.co.uk/visit-tywyn.co.uk/'
+  twitter: 'https://x.com/visittywyn'
   instagram: 'https://www.instagram.com/visittywyn/'
 seo:
   description: 'Spanning over 5 miles of pristine coastline from Tywyn in the north, to the harbour at Aberdyfi in the south, Tywyn has long golden sandy beaches which is perfect for picnics, long strolls and playing in the sea!'

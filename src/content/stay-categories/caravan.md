@@ -12,7 +12,7 @@ booking_search_links:
   - label: 'UK Caravans — Gwynedd'
     url: 'https://www.ukcaravans4hire.com/results.aspx?searchterm=Tywyn'
 seo:
-  title: 'Caravan in Tywyn | Visit Tywyn'
+  title: 'Caravan in Tywyn'
   description: Static caravan parks line the Cardigan Bay coast either side of Tywyn. Most welcome touring caravans and motorhomes too, and several are within walking distance of the beach and the railway station.
 ---
 

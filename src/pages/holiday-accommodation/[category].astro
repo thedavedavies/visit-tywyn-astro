@@ -23,22 +23,22 @@ const breadcrumbs = [
 	{ label: category.data.title },
 ];
 
-const jsonLd: Record<string, unknown>[] = [
+const jsonLd: (Record<string, unknown> | null)[] = [
 	webPage({
 		title: category.data.seo?.title ?? category.data.title,
 		description: category.data.seo?.description ?? category.data.intro,
 		url: Astro.url,
-		image: category.data.hero_image?.src,
+		image: category.data.hero_image?.src.src,
 	}),
 ];
 if (category.data.featured.length > 0) {
 	jsonLd.push(
 		itemList(
-			`${category.data.title} — featured stays`,
+			`${category.data.title} featured stays`,
 			category.data.featured.map((entry) => ({
 				url: entry.url,
 				name: entry.name,
-				image: entry.image?.src,
+				image: entry.image?.src.src,
 				description: entry.summary,
 			}))
 		)
@@ -50,7 +50,7 @@ if (category.data.featured.length > 0) {
 	title={category.data.seo?.title ?? category.data.title}
 	description={category.data.seo?.description ?? category.data.intro}
 	canonical={category.data.seo?.canonical}
-	ogImage={category.data.seo?.og_image ?? category.data.hero_image?.src}
+	ogImage={category.data.seo?.og_image ?? category.data.hero_image?.src.src}
 	heroImage={category.data.hero_image}
 	breadcrumbs={breadcrumbs}
 	jsonLd={jsonLd}

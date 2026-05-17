@@ -17,6 +17,7 @@ import Gallery from '../../components/Gallery/Gallery.astro';
 import Icon from '../../components/Icon/Icon.astro';
 import RelatedItems from '../../components/RelatedItems/RelatedItems.astro';
 import { touristAttraction } from '../../lib/jsonld';
+import { thingsToDoUrl } from '../../lib/url';
 import { seededShuffle } from '../../lib/random';
 
 export async function getStaticPaths() {
@@ -109,7 +110,7 @@ const jsonLd = touristAttraction({
 		heading="More things to do in Tywyn"
 		headingId="related-things-to-do"
 		items={related.map((a) => ({
-			href: `/things-to-do/${a.id}/`,
+			href: thingsToDoUrl(a.id),
 			title: a.data.title,
 			image: a.data.hero_image,
 			summary: a.data.summary,

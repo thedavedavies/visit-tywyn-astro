@@ -132,7 +132,7 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema]
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonicalHref} />
 		<meta property="og:site_name" content={SITE.name} />
-		<meta property="og:locale" content={SITE.locale} />
+		<meta property="og:locale" content={SITE.ogLocale} />
 		{resolvedOgImage && <meta property="og:image" content={resolvedOgImage} />}
 		{resolvedOgImage && <meta property="og:image:alt" content={`${title} – ${SITE.name}`} />}
 		{/*
@@ -148,9 +148,10 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema]
 		<meta name="twitter:card" content={resolvedOgImage ? 'summary_large_image' : 'summary'} />
 		{SITE.twitter && <meta name="twitter:site" content={SITE.twitter} />}
 
-		<link rel="icon" href="https://visit-tywyn.s3.amazonaws.com/favicon.ico" />
+		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="profile" href="https://gmpg.org/xfn/11" />
-		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<link rel="sitemap" type="application/xml" href="/sitemap_index.xml" />
 
 		{
 			SITE.gaMeasurementId && (
@@ -172,10 +173,15 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema]
 			src="https://analytics.ahrefs.com/analytics.js"
 			data-key="RHUgFDUqpEFNoIEFLipsjA"></script>
 
-		<script
-			defer
-			src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${SITE.adsenseClient}`}
-			crossorigin="anonymous"></script>
+		{
+			SITE.adsenseClient && (
+				<script
+					defer
+					src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${SITE.adsenseClient}`}
+					crossorigin="anonymous"
+				/>
+			)
+		}
 
 		{
 			jsonLdBlocks.map((block) => (

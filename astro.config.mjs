@@ -1,6 +1,27 @@
 // @ts-check
+import { rename } from 'node:fs/promises';
 import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+
+/**
+ * Rename the sitemap index from `sitemap-index.xml` to
+ * `sitemap_index.xml` so the URL matches what the live WordPress
+ * site (Yoast SEO) served. Google Search Console already has the
+ * underscore variant registered, so emitting at the same URL avoids
+ * a 301 hop and keeps GSC's submitted-sitemap reference valid
+ * through cutover.
+ */
+/** @type {import('astro').AstroIntegration} */
+const sitemapUnderscoreAlias = {
+	name: 'sitemap-underscore-alias',
+	hooks: {
+		'astro:build:done': async ({ dir }) => {
+			const src = new URL('sitemap-index.xml', dir);
+			const dest = new URL('sitemap_index.xml', dir);
+			await rename(src, dest);
+		},
+	},
+};
 
 // https://astro.build/config
 export default defineConfig({
@@ -31,21 +52,30 @@ export default defineConfig({
 			// better to omit lastmod entirely than ship a fake one.
 			serialize: (item) => {
 				const url = item.url;
+				// `changefreq` accepts the `EnumChangefreq` enum from the
+				// `sitemap` package. The string literals match the enum
+				// values at runtime, so cast through the imported enum
+				// to keep TypeScript happy without renaming everything.
+				/** @typedef {import('sitemap').EnumChangefreq} ChangeFreq */
+				const daily = /** @type {ChangeFreq} */ (/** @type {unknown} */ ('daily'));
+				const weekly = /** @type {ChangeFreq} */ (/** @type {unknown} */ ('weekly'));
+				const monthly = /** @type {ChangeFreq} */ (/** @type {unknown} */ ('monthly'));
 				if (url === 'https://visit-tywyn.co.uk/') {
-					return { ...item, priority: 1.0, changefreq: 'daily' };
+					return { ...item, priority: 1.0, changefreq: daily };
 				}
 				if (
 					/\/(eating|things-to-do|where-to-stay|events|holiday-accommodation)\/?$/.test(url) ||
 					/\/holiday-accommodation\/[^/]+\/$/.test(url)
 				) {
-					return { ...item, priority: 0.9, changefreq: 'weekly' };
+					return { ...item, priority: 0.9, changefreq: weekly };
 				}
 				if (/\/(eating|things-to-do)\/[^/]+\/$/.test(url)) {
-					return { ...item, priority: 0.8, changefreq: 'monthly' };
+					return { ...item, priority: 0.8, changefreq: monthly };
 				}
-				return { ...item, priority: 0.6, changefreq: 'monthly' };
+				return { ...item, priority: 0.6, changefreq: monthly };
 			},
 		}),
+		sitemapUnderscoreAlias,
 	],
 	image: {
 		// Global image rendering defaults. `constrained` layout gives
@@ -110,13 +140,4 @@ export default defineConfig({
 			optimizedFallbacks: true,
 		},
 	],
-	vite: {
-		css: {
-			preprocessorOptions: {
-				scss: {
-					api: 'modern-compiler',
-				},
-			},
-		},
-	},
 });

@@ -66,7 +66,7 @@ const updatedIso = page.data.updated ? page.data.updated.toISOString() : undefin
 // frontmatter should fall through to the next option, not stick.
 const seoTitle = page.data.seo?.title || page.data.title;
 const seoDescription = page.data.seo?.description || page.data.subtitle;
-const seoOgImage = page.data.seo?.og_image || page.data.hero_image?.src;
+const seoOgImage = page.data.seo?.og_image || page.data.hero_image?.src.src;
 
 const jsonLd: (Record<string, unknown> | null)[] = [
 	webPage({

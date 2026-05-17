@@ -13,7 +13,7 @@
  */
 
 import { SITE } from './site';
-import { absoluteUrl } from './url';
+import { absoluteUrl, eatingUrl, thingsToDoUrl } from './url';
 
 export type JsonLd = Record<string, unknown>;
 
@@ -28,7 +28,7 @@ export function organization(): JsonLd {
 		'@id': `${SITE.url}/#organization`,
 		name: SITE.name,
 		url: SITE.url,
-		sameAs: [SITE.facebook, `https://twitter.com/${SITE.twitter.replace(/^@/, '')}`],
+		sameAs: [SITE.facebook, SITE.twitterUrl],
 	};
 }
 
@@ -146,7 +146,7 @@ interface RestaurantInput {
 }
 
 export function restaurant(input: RestaurantInput): JsonLd {
-	const url = `${SITE.url}/eating/${input.id}/`;
+	const url = eatingUrl(input.id);
 	const node: JsonLd = {
 		'@context': 'https://schema.org',
 		'@type': input.dogFriendly ? 'Restaurant' : 'FoodEstablishment',
@@ -186,7 +186,7 @@ interface AttractionInput {
 }
 
 export function touristAttraction(input: AttractionInput): JsonLd {
-	const url = `${SITE.url}/things-to-do/${input.id}/`;
+	const url = thingsToDoUrl(input.id);
 	const node: JsonLd = {
 		'@context': 'https://schema.org',
 		'@type': 'TouristAttraction',

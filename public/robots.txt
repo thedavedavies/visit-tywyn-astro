@@ -8,4 +8,4 @@ Disallow: /wp-admin/
 Disallow: /wp-login.php
 Disallow: /xmlrpc.php
 
-Sitemap: https://visit-tywyn.co.uk/sitemap-index.xml
+Sitemap: https://visit-tywyn.co.uk/sitemap_index.xml

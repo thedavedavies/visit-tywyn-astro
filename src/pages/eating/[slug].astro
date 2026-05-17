@@ -16,6 +16,7 @@ import VenueMap from '../../components/VenueMap/VenueMap.astro';
 import Icon from '../../components/Icon/Icon.astro';
 import RelatedItems from '../../components/RelatedItems/RelatedItems.astro';
 import { restaurant } from '../../lib/jsonld';
+import { eatingUrl } from '../../lib/url';
 import { seededShuffle } from '../../lib/random';
 
 export async function getStaticPaths() {
@@ -106,7 +107,9 @@ const jsonLd = restaurant({
 					<Picture
 						src={venue.data.photo.src}
 						alt={venue.data.photo.alt ?? venue.data.title}
-						loading="lazy"
+						loading="eager"
+						decoding="sync"
+						fetchpriority="high"
 						formats={['avif', 'webp']}
 						widths={[640, 960, 1280]}
 						sizes="(min-width: 1024px) 760px, 100vw"
@@ -152,7 +155,7 @@ const jsonLd = restaurant({
 		heading={venue.data.dog_friendly ? 'More dog-friendly places to eat' : 'More places to eat in Tywyn'}
 		headingId="related-eating"
 		items={related.map((v) => ({
-			href: `/eating/${v.id}/`,
+			href: eatingUrl(v.id),
 			title: v.data.title,
 			image: v.data.photo,
 			summary: v.data.summary,

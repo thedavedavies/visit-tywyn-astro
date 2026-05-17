@@ -7,9 +7,15 @@ export const SITE = {
 	tagline: 'Your guide to Tywyn, Mid Wales',
 	description:
 		'Tywyn is a coastal town in Gwynedd, Mid Wales. Find out where to stay, what to do, and where to eat.',
+	// BCP-47 form, used for <html lang> and Schema.org `inLanguage`.
 	locale: 'en-GB',
-	twitter: '@visit_tywyn',
-	facebook: 'https://www.facebook.com/visittywyn',
+	// Open Graph protocol uses an underscore between ISO 639 and
+	// ISO 3166. Mixing the two formats: BCP-47 hyphen for HTML / JSON-LD,
+	// OG-protocol underscore for the og:locale meta tag.
+	ogLocale: 'en_GB',
+	twitter: '@visittywyn',
+	twitterUrl: 'https://x.com/visittywyn',
+	facebook: 'https://www.facebook.com/VisitTywyn',
 	// GA4 measurement ID. The previous UA-28386547-1 tag was sunset
 	// in July 2023 and has been collecting nothing since. Leave this
 	// empty until a real `G-XXXXXXX` ID is provisioned — BaseLayout

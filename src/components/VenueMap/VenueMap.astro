@@ -6,6 +6,7 @@
  * Uses the iframe Embed API (no API key needed) instead of the
  * full Maps JavaScript API to keep the page lightweight.
  */
+import { slugify } from '../../lib/url';
 import styles from './VenueMap.module.scss';
 
 interface Props {
@@ -17,10 +18,11 @@ interface Props {
 
 const { lat, lng, title, zoom = 15 } = Astro.props;
 const src = `https://www.google.com/maps?q=${lat},${lng}&z=${zoom}&output=embed`;
+const headingId = `map-${slugify(title)}`;
 ---
 
-<section class={styles.section} aria-labelledby={`map-${title}`}>
-	<h2 id={`map-${title}`} class={styles.heading}>Find {title}</h2>
+<section class={styles.section} aria-labelledby={headingId}>
+	<h2 id={headingId} class={styles.heading}>Find {title}</h2>
 	<div class={styles.frame}>
 		<iframe
 			title={`Map showing ${title}`}

@@ -4,6 +4,7 @@ import PageLayout from '../layouts/PageLayout.astro';
 import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
 import ListingCard from '../components/ListingCard/ListingCard.astro';
 import { itemList } from '../lib/jsonld';
+import { eatingUrl } from '../lib/url';
 
 const page = await getEntry('pages', 'dog-friendly-cafes');
 const Content = page ? (await render(page)).Content : null;
@@ -20,7 +21,7 @@ const breadcrumbs = [
 const jsonLd = itemList(
 	'Dog friendly cafes and restaurants in Tywyn',
 	dogFriendly.map((venue) => ({
-		url: `/eating/${venue.id}/`,
+		url: eatingUrl(venue.id),
 		name: venue.data.title,
 		image: venue.data.photo?.src.src,
 		description: venue.data.summary,
@@ -52,7 +53,7 @@ const jsonLd = itemList(
 		{
 			dogFriendly.map((venue) => (
 				<ListingCard
-					href={`/eating/${venue.id}/`}
+					href={eatingUrl(venue.id)}
 					title={venue.data.title}
 					summary={venue.data.summary}
 					address={venue.data.address}

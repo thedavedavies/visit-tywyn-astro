@@ -5,6 +5,7 @@ import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import ListingCard from '../../components/ListingCard/ListingCard.astro';
 import AdSlot from '../../components/AdSlot/AdSlot.astro';
 import { itemList } from '../../lib/jsonld';
+import { thingsToDoUrl } from '../../lib/url';
 
 const activities = (await getCollection('things-to-do')).sort((a, b) =>
 	a.data.title.localeCompare(b.data.title)
@@ -18,9 +19,9 @@ const breadcrumbs = [
 const jsonLd = itemList(
 	'Things to do in Tywyn',
 	activities.map((activity) => ({
-		url: `/things-to-do/${activity.id}/`,
+		url: thingsToDoUrl(activity.id),
 		name: activity.data.title,
-		image: activity.data.hero_image?.src,
+		image: activity.data.hero_image?.src.src,
 		description: activity.data.summary,
 	}))
 );
@@ -49,7 +50,7 @@ const jsonLd = itemList(
 			activities.flatMap((activity, idx) => {
 				const card = (
 					<ListingCard
-						href={`/things-to-do/${activity.id}/`}
+						href={thingsToDoUrl(activity.id)}
 						title={activity.data.title}
 						summary={activity.data.summary}
 						address={activity.data.address}

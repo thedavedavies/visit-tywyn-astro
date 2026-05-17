@@ -10,7 +10,7 @@ booking_search_links:
   - label: 'Trip Advisor — Tywyn B&Bs'
     url: 'https://www.tripadvisor.co.uk/Hotels-g503829-zfc7-Tywyn_Gwynedd_North_Wales_Wales-Hotels.html'
 seo:
-  title: 'Bed & Breakfast in Tywyn | Visit Tywyn'
+  title: 'Bed & Breakfast in Tywyn'
   description: 'A friendly Welsh welcome and a proper cooked breakfast — the B&Bs in Tywyn are mostly small, family-run, and well placed for the seafront, the railway, and the town centre.'
 ---
 

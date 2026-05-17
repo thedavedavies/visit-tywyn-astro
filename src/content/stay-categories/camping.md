@@ -12,7 +12,7 @@ booking_search_links:
   - label: 'UK Campsite — Gwynedd'
     url: 'https://www.ukcampsite.co.uk/sites/county.asp?county=Gwynedd'
 seo:
-  title: 'Camping in Tywyn | Visit Tywyn'
+  title: 'Camping in Tywyn'
   description: Tywyn sits between the sea and the southern edge of Eryri (Snowdonia), and the campsites here run the full range from quiet farm fields to fully serviced parks with shops and pubs on site.
 ---
 
