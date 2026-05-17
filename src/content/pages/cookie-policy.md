@@ -1,7 +1,5 @@
 ---
 title: Cookie Policy
-slug: cookie-policy
-menu_order: 0
 subtitle: 'What’s a cookie, and what do we do with it?'
 hero_image:
   src: '../../assets/img/pages/cookie-policy.jpg'

@@ -1,7 +1,5 @@
 ---
 title: Tywyn beach webcam
-slug: webcam
-menu_order: 0
 subtitle: 'Experience the incredible – from the comfort of your own home.'
 hero_image:
   src: '../../assets/img/pages/webcam.jpg'

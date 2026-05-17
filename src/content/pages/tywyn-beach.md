@@ -1,7 +1,5 @@
 ---
 title: Tywyn beach
-slug: tywyn-beach
-menu_order: 0
 subtitle: 'Tywyn''s Sandy beach is perfect for dog walks and sunsets'
 updated: 2022-06-02
 ---

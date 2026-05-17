@@ -1,7 +1,5 @@
 ---
 title: Getting around Tywyn
-slug: getting-around
-menu_order: 0
 subtitle: 'Find out how to get to Tywyn, and the best way to get around once you’re here!'
 hero_image:
   src: '../../assets/img/pages/getting-around.jpg'

@@ -1,7 +1,5 @@
 ---
 title: Tywyn Magic Lantern Cinema
-slug: cinema
-menu_order: 0
 subtitle: 'Find out what''s on in Tywyn Cinema'
 hero_image:
   src: '../../assets/img/pages/cinema.jpg'

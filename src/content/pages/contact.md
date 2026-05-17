@@ -1,7 +1,5 @@
 ---
 title: Contact
-slug: contact
-menu_order: 0
 subtitle: 'Contact us through email, Facebook & Twitter!'
 hero_image:
   src: '../../assets/img/pages/contact.jpg'

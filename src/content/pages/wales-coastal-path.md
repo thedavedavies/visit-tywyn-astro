@@ -1,7 +1,5 @@
 ---
 title: 'Discovering the Wales Coastal Path: Aberdyfi to Tywyn'
-slug: wales-coastal-path
-menu_order: 0
 subtitle: Walk right through the heart of Tywyn
 updated: 2024-08-08
 ---

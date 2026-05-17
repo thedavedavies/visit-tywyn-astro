@@ -1,7 +1,5 @@
 ---
 title: Events in Tywyn
-slug: events
-menu_order: 0
 subtitle: 'What’s happening around Tywyn?'
 hero_image:
   src: '../../assets/img/pages/events.jpg'

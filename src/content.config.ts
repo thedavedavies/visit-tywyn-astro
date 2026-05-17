@@ -54,9 +54,7 @@ const pages = defineCollection({
 		z.object({
 			title: z.string(),
 			subtitle: z.string().optional(),
-			slug: z.string().optional(),
 			hero_image: imageBlock(image).optional(),
-			menu_order: z.number().int().default(0),
 			updated: z.coerce.date().optional(),
 			seo: seoSchema,
 		}),
@@ -70,7 +68,12 @@ const eating = defineCollection({
 	schema: ({ image }) =>
 		z.object({
 			title: z.string(),
-			summary: z.string().optional(),
+			// `summary` is required because it becomes the meta
+			// description and the JSON-LD description on every venue
+			// page. Without it Astro falls back to the generic
+			// SITE.description, which Google Search Console flags as
+			// duplicate-content across venues.
+			summary: z.string().min(1),
 			photo: imageBlock(image).optional(),
 			gallery: z.array(imageBlock(image)).default([]),
 			website: z.string().url().optional(),
@@ -94,7 +97,8 @@ const thingsToDo = defineCollection({
 		z.object({
 			title: z.string(),
 			subtitle: z.string().optional(),
-			summary: z.string().optional(),
+			// Required for the same reason as eating.summary, see above.
+			summary: z.string().min(1),
 			hero_image: imageBlock(image).optional(),
 			gallery: z.array(imageBlock(image)).default([]),
 			website: z.string().url().optional(),

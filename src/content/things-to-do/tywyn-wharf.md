@@ -1,6 +1,7 @@
 ---
 title: Tywyn Wharf - The Talyllyn Railway
 subtitle: A Historic and Scenic Destination
+summary: Starting point of the historic Talyllyn Railway, with a museum, craft shop, and restaurant set right in the centre of Tywyn.
 address: Talyllyn Railway - Tywyn Wharf Railway Station, Wharf Station, Neptune Rd, Tywyn, LL36 9EY
 phone: 01654 710472
 website: 'https://www.talyllyn.co.uk/'

@@ -1,7 +1,5 @@
 ---
 title: Privacy Policy
-slug: privacy-policy
-menu_order: 0
 subtitle: How we keep your data safe.
 hero_image:
   src: '../../assets/img/pages/privacy-policy.jpg'

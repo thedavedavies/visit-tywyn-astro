@@ -1,7 +1,5 @@
 ---
 title: Explore Tywyn
-slug: explore-tywyn
-menu_order: 0
 subtitle: Everything you need to know about Tywyn
 hero_image:
   src: '../../assets/img/pages/explore-tywyn.jpg'
