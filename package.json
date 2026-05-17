@@ -13,7 +13,9 @@
     "check": "astro check",
     "test": "npm run build && npm run check:links -- --no-dev",
     "refresh:conditions": "tsx tools/refresh-conditions.ts",
-    "check:links": "tsx tools/check-links.ts"
+    "check:links": "tsx tools/check-links.ts",
+    "perf:pages": "tsx tools/perf/measure-pages.ts",
+    "perf:seo": "tsx tools/perf/seo-compare.ts"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",

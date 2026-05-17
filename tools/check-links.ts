@@ -76,6 +76,38 @@ function normalize(href: string): string | null {
 	return p;
 }
 
+/**
+ * Pulls the fragment (`#anchor`) off an internal href, if any. We
+ * normalise the path separately so a fragment-bearing link is checked
+ * for both: does the page exist, and does the anchor exist on the
+ * landing page?
+ */
+function fragmentOf(href: string): string | null {
+	if (!href) return null;
+	let url: URL;
+	try {
+		url = new URL(href, `https://${SITE_HOST}/`);
+	} catch {
+		return null;
+	}
+	if (url.host !== SITE_HOST) return null;
+	return url.hash ? url.hash.slice(1) : null;
+}
+
+/**
+ * Walks a built HTML file and returns the set of element `id`
+ * attributes it declares. Cheap regex pass, no DOM parser.
+ */
+function collectIds(content: string): Set<string> {
+	const ids = new Set<string>();
+	const ID_RE = /\bid=(?:"([^"]+)"|'([^']+)')/g;
+	for (const m of content.matchAll(ID_RE)) {
+		const value = m[1] ?? m[2];
+		if (value) ids.add(value);
+	}
+	return ids;
+}
+
 function isReachable(
 	target: string,
 	pages: Set<string>,
@@ -97,17 +129,25 @@ function isReachable(
 const allFiles = walk(DIST);
 const pages = new Set<string>();
 const filePaths = new Set<string>();
+// Map each built page route to the set of HTML `id` attributes it
+// declares, so fragment links (`/page/#section`) can be validated
+// against the target page's actual anchors.
+const pageIds = new Map<string, Set<string>>();
 for (const f of allFiles) {
 	const route = pageRoute(f);
 	if (route.endsWith('/')) pages.add(route);
 	else filePaths.add(route);
-	if (f.endsWith('/index.html')) pages.add(pageRoute(f));
+	if (f.endsWith('/index.html')) {
+		pages.add(pageRoute(f));
+		pageIds.set(pageRoute(f), collectIds(fs.readFileSync(f, 'utf8')));
+	}
 }
 
 const redirects = loadRedirects();
 const htmlFiles = allFiles.filter((f) => f.endsWith('.html'));
 
 const broken = new Map<string, Set<string>>();
+const brokenFragments = new Map<string, Set<string>>();
 const HREF_RE = /href=(?:"([^"]*)"|'([^']*)')/g;
 
 for (const file of htmlFiles) {
@@ -120,7 +160,19 @@ for (const file of htmlFiles) {
 		if (!isReachable(target, pages, filePaths, redirects)) {
 			if (!broken.has(target)) broken.set(target, new Set());
 			broken.get(target)!.add(sourcePage);
+			continue;
 		}
+		const fragment = fragmentOf(href);
+		if (!fragment) continue;
+		// Only validate fragments on pages we can read ids from. If the
+		// target page lives behind a redirect or is an asset file we
+		// skip the check (the page-existence test above is enough).
+		const targetIds = pageIds.get(target);
+		if (!targetIds) continue;
+		if (targetIds.has(fragment)) continue;
+		const key = `${target}#${fragment}`;
+		if (!brokenFragments.has(key)) brokenFragments.set(key, new Set());
+		brokenFragments.get(key)!.add(sourcePage);
 	}
 }
 
@@ -192,8 +244,9 @@ async function runDevProbe() {
 
 const buildBrokenCount = broken.size;
 const devBrokenCount = devBroken.size;
+const brokenFragmentCount = brokenFragments.size;
 
-if (buildBrokenCount === 0 && devBrokenCount === 0) {
+if (buildBrokenCount === 0 && devBrokenCount === 0 && brokenFragmentCount === 0) {
 	console.log('No broken internal links found.');
 	process.exit(0);
 }
@@ -206,6 +259,17 @@ if (buildBrokenCount > 0) {
 		const srcList = [...sources].sort();
 		for (const src of srcList.slice(0, 5)) console.log(`    from ${src}`);
 		if (srcList.length > 5) console.log(`    …and ${srcList.length - 5} more`);
+	}
+}
+
+if (brokenFragmentCount > 0) {
+	console.log(`\n=== Anchor fragments referenced but missing on target page: ${brokenFragmentCount} ===\n`);
+	const sorted = [...brokenFragments.entries()].sort(([a], [b]) => a.localeCompare(b));
+	for (const [target, sources] of sorted) {
+		console.log(`# ${target}`);
+		const srcList = [...sources].sort();
+		for (const src of srcList.slice(0, 5)) console.log(`    from ${src}`);
+		if (srcList.length > 5) console.log(`    and ${srcList.length - 5} more`);
 	}
 }
 
