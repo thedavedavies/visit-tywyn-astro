@@ -25,13 +25,6 @@ export const SITE = {
 	// rather than emitting `id=`.
 	gaMeasurementId: 'G-QG6TSQ40PV',
 	adsenseClient: 'ca-pub-4920514279045356',
-	// Web3Forms access key for a future `/contact/` form. The form
-	// widget itself was unwired from `/contact/` during the WP cutover
-	// so the rebuilt site directs visitors to Facebook / X for now;
-	// the `ContactForm` component remains on disk for when (if) a key
-	// is provisioned and the form is restored to the contact page.
-	// Leaving this field declared so the component still type-checks.
-	contactFormAccessKey: '',
 	themeColor: '#046d8b',
 	location: {
 		lat: 52.58643,
