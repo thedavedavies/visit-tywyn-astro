@@ -12,7 +12,11 @@ booking_search_links:
   - label: 'UK Caravans — Gwynedd'
     url: 'https://www.ukcaravans4hire.com/results.aspx?searchterm=Tywyn'
 seo:
-  title: 'Caravan in Tywyn'
+  # WP-indexed title from Yoast; preserved verbatim to hold the
+  # ranking equity Google has built up against this URL. The visible
+  # H1 stays "Caravan in Tywyn" (the `title` field above) so the
+  # page heading reads naturally; only the SERP title differs.
+  title: 'Caravans to rent in Tywyn'
   description: Static caravan parks line the Cardigan Bay coast either side of Tywyn. Most welcome touring caravans and motorhomes too, and several are within walking distance of the beach and the railway station.
 ---
 

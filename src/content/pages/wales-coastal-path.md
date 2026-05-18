@@ -2,6 +2,8 @@
 title: 'Discovering the Wales Coastal Path: Aberdyfi to Tywyn'
 subtitle: Walk right through the heart of Tywyn
 updated: 2024-08-08
+seo:
+  description: 'A 4-mile section of the Wales Coast Path runs from Aberdyfi to Tywyn along the Cardigan Bay shoreline: easy access, stunning views, no map required.'
 ---
 
 Wales is the first country in the World to have a coastal path going the whole way around it, and you’ll find some of the most spectacular scenery along the Cardigan Bay Coastline, and through Tywyn.

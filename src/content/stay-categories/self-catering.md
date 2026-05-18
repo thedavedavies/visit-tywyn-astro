@@ -12,8 +12,12 @@ booking_search_links:
   - label: 'Airbnb — Tywyn'
     url: 'https://www.airbnb.co.uk/s/Tywyn--Wales/homes'
 seo:
-  title: 'Self catering in Tywyn'
-  description: 'Self-catering cottages and apartments give you the run of the place — a kitchen for fish and chips on the porch, sandy boots by the door, and the freedom to come and go on your own schedule. Browse the booking sites below for places in and around Tywyn.'
+  # WP-indexed title from Yoast; preserved verbatim to hold the
+  # ranking equity Google has built up against this URL. The visible
+  # H1 stays "Self catering in Tywyn" (the `title` field above) so
+  # the page heading reads naturally; only the SERP title differs.
+  title: 'Top Self Catering Cottages in Tywyn'
+  description: 'Self-catering cottages and apartments give you the run of the place: a kitchen for fish and chips on the porch, sandy boots by the door, and the freedom to come and go on your own schedule. Browse the booking sites below for places in and around Tywyn.'
 ---
 
 <!--

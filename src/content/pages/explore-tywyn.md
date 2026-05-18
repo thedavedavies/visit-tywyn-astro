@@ -5,6 +5,8 @@ hero_image:
   src: '../../assets/img/pages/explore-tywyn.jpg'
   alt: Explore Tywyn
 updated: 2022-05-18
+seo:
+  description: 'Practical answers about visiting Tywyn: market days, parking, dog-friendly beaches, sunsets, getting around, and the best of Mid Wales nearby.'
 ---
 
 <article>

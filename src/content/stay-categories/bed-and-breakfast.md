@@ -10,8 +10,12 @@ booking_search_links:
   - label: 'Trip Advisor — Tywyn B&Bs'
     url: 'https://www.tripadvisor.co.uk/Hotels-g503829-zfc7-Tywyn_Gwynedd_North_Wales_Wales-Hotels.html'
 seo:
-  title: 'Bed & Breakfast in Tywyn'
-  description: 'A friendly Welsh welcome and a proper cooked breakfast — the B&Bs in Tywyn are mostly small, family-run, and well placed for the seafront, the railway, and the town centre.'
+  # WP-indexed title from Yoast; preserved verbatim to hold the
+  # ranking equity Google has built up against this URL. The visible
+  # H1 stays "Bed & Breakfast in Tywyn" (the `title` field above) so
+  # the page heading reads naturally; only the SERP title differs.
+  title: 'Top Bed & Breakfasts in Tywyn'
+  description: 'A friendly Welsh welcome and a proper cooked breakfast: the B&Bs in Tywyn are mostly small, family-run, and well placed for the seafront, the railway, and the town centre.'
 ---
 
 <!--
