@@ -164,18 +164,41 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema]
 		<link rel="sitemap" type="application/xml" href="/sitemap_index.xml" />
 
 		{
-			SITE.gaMeasurementId && (
-				<>
-					<script async src={`https://www.googletagmanager.com/gtag/js?id=${SITE.gaMeasurementId}`} />
-					<script is:inline define:vars={{ gaId: SITE.gaMeasurementId }}>
+			/*
+			 * GA4 gating: only fire on the canonical production host.
+			 *
+			 *   - `import.meta.env.PROD` strips the block entirely from
+			 *     `astro dev` builds, so the development server never
+			 *     ships a tag or queues a beacon.
+			 *   - At runtime the inline script checks `location.host`
+			 *     against the canonical site host, so `astro preview`
+			 *     on localhost and Cloudflare branch/preview deploys
+			 *     (e.g. `*.pages.dev`) load the page without injecting
+			 *     the gtag library or hitting Google's collect endpoint.
+			 *
+			 * Only when both checks pass does the script element get
+			 * appended and the page_view fire. Saves the ~80 KB library
+			 * fetch on every non-prod render and keeps preview traffic
+			 * out of the GA4 property.
+			 */
+			SITE.gaMeasurementId && import.meta.env.PROD && (
+				<script
+					is:inline
+					define:vars={{ gaId: SITE.gaMeasurementId, productionHost: new URL(SITE.url).host }}
+				>
+					if (location.host === productionHost) {
+						const s = document.createElement('script');
+						s.async = true;
+						s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+						document.head.appendChild(s);
 						window.dataLayer = window.dataLayer || [];
 						function gtag() {
 							dataLayer.push(arguments);
 						}
 						gtag('js', new Date());
 						gtag('config', gaId);
-					</script>
-				</>
+					}
+				</script>
 			)
 		}
 		<script
