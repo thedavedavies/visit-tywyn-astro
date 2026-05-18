@@ -2,6 +2,7 @@
 title: Tywyn Magic Lantern Cinema
 subtitle: 'Find out what''s on in Tywyn Cinema'
 summary: 'Come to the Magic Lantern Cinema in Tywyn – the UK’s best Independent Cinema! Watch the latest films on Tywyn Cinema’s amazing 3D projector, their top-of-the-range 7.1 surround sound and with a cracking fully-stocked bar – you’re certain to have a great time! Doors open 30 mins before each screening.'
+kind: MovieTheater
 address: Tywyn Magic Lantern Cinema, Corbet Square, Tywyn, LL36 9DF
 phone: 01654 710260
 website: 'https://www.tywyncinema.co.uk/'

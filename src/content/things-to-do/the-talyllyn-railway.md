@@ -2,6 +2,7 @@
 title: The Talyllyn Railway
 subtitle: 'The World''s First Preserved Railway'
 summary: 'The Talyllyn Railway is the worlds first preserved railway, and a must-have place to visit on your trip to Tywyn. Originally built in 1866 for carrying slate from Abergynolwyn to Tywyn, it runs for 7.25 miles through beautiful and unspoilt countryside - passing through the delightful Dolgoch Falls along the way. And with the excellent forest walks at Nant Gwernol, it''s a great family day out.'
+kind: TrainStation
 address: Talyllyn Railway, Wharf Station, Tywyn, LL36 9EY
 phone: 01654 710472
 website: 'https://www.talyllyn.co.uk '

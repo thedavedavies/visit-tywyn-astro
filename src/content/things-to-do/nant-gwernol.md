@@ -4,6 +4,7 @@ subtitle: Take a walk through ancient woodland and along cascading waterfalls.
 summary: 'The stunning ancient woodland of Nant Gwernol offers amazing views and diverse habitats, with rare wildlife.
 
 Follow the established riverside footpath through Coed Nant Gwernol for a beautiful scenic walk which passes flowing streams, tumbling waterfalls and deep pools.'
+kind: Park
 grid_reference: SH680065
 published: 2022-06-13
 hero_image:

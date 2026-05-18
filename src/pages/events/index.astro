@@ -4,7 +4,8 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import EventsSection from '../../components/EventsSection/EventsSection.astro';
 import { upcomingEvents } from '../../lib/events';
-import { eventSchema } from '../../lib/jsonld';
+import { collectionPage, eventSchema, itemList } from '../../lib/jsonld';
+import { absoluteUrl } from '../../lib/url';
 
 const page = await getEntry('pages', 'events');
 const Content = page ? (await render(page)).Content : null;
@@ -14,17 +15,43 @@ const breadcrumbs = [
 	{ label: 'Events' },
 ];
 
-const jsonLd = upcomingEvents().map((ev) =>
-	eventSchema({
-		name: ev.title,
-		startIso: ev.startIso,
-		endIso: ev.endIso,
-		location: ev.location || undefined,
-		url: ev.primaryUrl,
-		image: ev.image,
-		description: ev.summary || undefined,
-	})
-);
+const events = upcomingEvents();
+
+// CollectionPage wraps the listing intent so crawlers recognise the
+// URL as a curated set rather than a single article. The ItemList
+// orders the events by their canonical URLs, and each Event node
+// stays at the top level so rich-result eligibility is per-event.
+const jsonLd: (Record<string, unknown> | null)[] = [
+	collectionPage({
+		title: page?.data.seo?.title ?? page?.data.title ?? 'Events in Tywyn',
+		description:
+			page?.data.seo?.description ??
+			'Upcoming festivals, fairs, and events in Tywyn and the surrounding villages.',
+		url: Astro.url,
+	}),
+	itemList(
+		'Upcoming events in Tywyn',
+		events
+			.filter((ev) => !!ev.primaryUrl)
+			.map((ev) => ({
+				url: absoluteUrl(ev.primaryUrl!)!,
+				name: ev.title,
+				image: ev.image ?? undefined,
+				description: ev.summary || undefined,
+			}))
+	),
+	...events.map((ev) =>
+		eventSchema({
+			name: ev.title,
+			startIso: ev.startIso,
+			endIso: ev.endIso,
+			location: ev.location || undefined,
+			url: ev.primaryUrl,
+			image: ev.image,
+			description: ev.summary || undefined,
+		})
+	),
+];
 ---
 
 <PageLayout

@@ -2,6 +2,7 @@
 title: Tywyn beach
 subtitle: 'Tywyn''s Sandy beach is perfect for dog walks and sunsets'
 summary: 'Spanning over 5 miles of pristine coastline from Tywyn in the north, to the harbour at Aberdyfi in the south, Tywyn has long golden sandy beaches which is perfect for picnics, long strolls and playing in the sea!'
+kind: Beach
 published: 2022-10-12
 geo:
   lat: 52.5806692

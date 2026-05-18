@@ -2,6 +2,7 @@
 title: Dolgoch Falls Waterfall Walk
 subtitle: A Short, Beautiful Walk Passing Three Waterfalls
 summary: 'Dolgoch Falls are a series of three impressive waterfalls forming part of the Nant Dol-Góch stream, a source for the River Fathew, and can be reached via a short walk. There are a number of caves and tunnels which you can explore on the route up.'
+kind: Park
 grid_reference: SH650046
 published: 2022-06-09
 geo:

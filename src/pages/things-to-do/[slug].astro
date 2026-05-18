@@ -59,6 +59,7 @@ const jsonLd = touristAttraction({
 	website: activity.data.website,
 	heroImage: heroUrl,
 	geo: activity.data.geo,
+	kind: activity.data.kind,
 	sameAs: activity.data.social ? Object.values(activity.data.social) : [],
 });
 ---

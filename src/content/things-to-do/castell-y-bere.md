@@ -2,6 +2,7 @@
 title: Castell y Bere
 subtitle: An ancient castle, with stunning views.
 summary: 'It may be remote, but Castell y Bere a magnet for all castle lovers. Strung along a jagged rocky outcrop in the Dysynni Valley at the foot of the mighty Cader Idris, Castell y Bere is especially good at evoking the spirit and atmosphere of Wales’s native castles.'
+kind: LandmarksOrHistoricalBuildings
 address: Castell y Bere, Llanfihangel-y-Pennant, Tywyn, LL36 9TP
 published: 2022-06-20
 geo:

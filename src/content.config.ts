@@ -90,6 +90,11 @@ const eating = defineCollection({
 
 /**
  * Things to do — attractions, activities, experiences. ~11 entries.
+ *
+ * `kind` narrows the Schema.org TouristAttraction node with a more
+ * specific type (MovieTheater, TrainStation, etc.) so Google can pull
+ * subtype-specific attributes into the Knowledge Graph. Optional:
+ * generic attractions ship as plain `TouristAttraction`.
  */
 const thingsToDo = defineCollection({
 	loader: glob({ pattern: '**/*.md', base: './src/content/things-to-do' }),
@@ -105,6 +110,17 @@ const thingsToDo = defineCollection({
 			phone: z.string().optional(),
 			address: z.string().optional(),
 			grid_reference: z.string().optional(),
+			kind: z
+				.enum([
+					'MovieTheater',
+					'TrainStation',
+					'Museum',
+					'Park',
+					'Beach',
+					'Mountain',
+					'LandmarksOrHistoricalBuildings',
+				])
+				.optional(),
 			geo: geoSchema,
 			social: z
 				.object({

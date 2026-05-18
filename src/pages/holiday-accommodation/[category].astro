@@ -4,7 +4,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import BookingSearchList from '../../components/BookingSearchList/BookingSearchList.astro';
 import FeaturedStayCard from '../../components/FeaturedStayCard/FeaturedStayCard.astro';
-import { webPage, itemList } from '../../lib/jsonld';
+import { collectionPage, itemList } from '../../lib/jsonld';
 
 export async function getStaticPaths() {
 	const categories = await getCollection('stay-categories');
@@ -24,7 +24,10 @@ const breadcrumbs = [
 ];
 
 const jsonLd: (Record<string, unknown> | null)[] = [
-	webPage({
+	// CollectionPage rather than WebPage: these landings curate
+	// booking-search links + featured cards (when present) rather
+	// than carrying article-style body content.
+	collectionPage({
 		title: category.data.seo?.title ?? category.data.title,
 		description: category.data.seo?.description ?? category.data.intro,
 		url: Astro.url,

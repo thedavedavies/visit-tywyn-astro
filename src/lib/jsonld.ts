@@ -18,6 +18,26 @@ import { absoluteUrl, eatingUrl, thingsToDoUrl } from './url';
 export type JsonLd = Record<string, unknown>;
 
 /**
+ * Wrap a freeform address string in a minimal Schema.org PostalAddress
+ * node so it's typed rather than emitted as a bare string. Google's
+ * Place rich-result eligibility prefers a typed address; the bare
+ * string form is accepted but doesn't surface as richly. The Tywyn
+ * content model carries a single combined address line, so we set
+ * streetAddress and a fixed addressCountry rather than guessing
+ * locality/postcode/etc. boundaries.
+ */
+function postalAddress(address: string | undefined): JsonLd | undefined {
+	if (!address) return undefined;
+	return {
+		'@type': 'PostalAddress',
+		streetAddress: address,
+		addressLocality: 'Tywyn',
+		addressRegion: 'Gwynedd',
+		addressCountry: 'GB',
+	};
+}
+
+/**
  * Standalone Organization node — used as a publisher reference in
  * other schema objects via `@id`.
  */
@@ -143,6 +163,10 @@ interface RestaurantInput {
 	geo?: { lat: number; lng: number };
 	sameAs?: (string | undefined)[];
 	description?: string;
+	/** Yelp-style symbolic price band: '£', '££', '£££', '££££'. */
+	priceRange?: string;
+	/** Free-form cuisine label, e.g. "British", "Italian", "Indian". */
+	servesCuisine?: string;
 }
 
 export function restaurant(input: RestaurantInput): JsonLd {
@@ -153,9 +177,14 @@ export function restaurant(input: RestaurantInput): JsonLd {
 		'@id': `${url}#${input.dogFriendly ? 'restaurant' : 'establishment'}`,
 		name: input.title,
 		url,
+		publisher: { '@id': `${SITE.url}/#organization` },
 		...(input.description ? { description: input.description } : {}),
 		...(input.phone ? { telephone: input.phone } : {}),
-		...(input.address ? { address: input.address } : {}),
+		// Wrap address in PostalAddress so Place rich-result eligibility
+		// improves; bare strings work but don't surface as richly.
+		...(input.address ? { address: postalAddress(input.address) } : {}),
+		...(input.priceRange ? { priceRange: input.priceRange } : {}),
+		...(input.servesCuisine ? { servesCuisine: input.servesCuisine } : {}),
 		...(input.photo ? { image: absoluteUrl(input.photo) } : {}),
 		...(input.geo
 			? {
@@ -183,19 +212,29 @@ interface AttractionInput {
 	heroImage?: string;
 	geo?: { lat: number; lng: number };
 	sameAs?: (string | undefined)[];
+	/**
+	 * Optional finer-grained Schema.org type. `TouristAttraction` is
+	 * always emitted as the primary type; the kind is added as an
+	 * extra entry in the `@type` array so search engines can pull
+	 * subtype-specific attributes (e.g. `MovieTheater` shows screen
+	 * times, `TrainStation` plugs into transit knowledge panels).
+	 */
+	kind?: 'MovieTheater' | 'TrainStation' | 'Museum' | 'Park' | 'Beach' | 'Mountain' | 'LandmarksOrHistoricalBuildings';
 }
 
 export function touristAttraction(input: AttractionInput): JsonLd {
 	const url = thingsToDoUrl(input.id);
 	const node: JsonLd = {
 		'@context': 'https://schema.org',
-		'@type': 'TouristAttraction',
+		'@type': input.kind ? ['TouristAttraction', input.kind] : 'TouristAttraction',
 		'@id': `${url}#attraction`,
 		name: input.title,
 		url,
+		publisher: { '@id': `${SITE.url}/#organization` },
 		...(input.description ? { description: input.description } : {}),
 		...(input.phone ? { telephone: input.phone } : {}),
-		...(input.address ? { address: input.address } : {}),
+		// Wrap address in PostalAddress for typed Place markup.
+		...(input.address ? { address: postalAddress(input.address) } : {}),
 		...(input.heroImage ? { image: absoluteUrl(input.heroImage) } : {}),
 		...(input.geo
 			? {
@@ -212,14 +251,31 @@ export function touristAttraction(input: AttractionInput): JsonLd {
 	return node;
 }
 
+interface EventOffer {
+	price?: number | string;
+	priceCurrency?: string;
+	url?: string;
+	availability?: 'InStock' | 'SoldOut' | 'PreOrder';
+}
+
 interface EventInput {
 	name: string;
 	startIso: string;
 	endIso: string;
 	location?: string;
+	/** Free-form town/region so the Place can resolve to a real area. */
+	locationAddress?: string;
 	url?: string | null;
 	image?: string | null;
 	description?: string;
+	/**
+	 * Set `false` (or pass `offers`) for paid events so Google's
+	 * Event rich result accepts the markup. Defaults to `true`
+	 * because the bulk of Tywyn community events (Race the Train
+	 * spectator-side, town festivals, etc.) are free to attend.
+	 */
+	isAccessibleForFree?: boolean;
+	offers?: EventOffer;
 }
 
 /**
@@ -227,13 +283,38 @@ interface EventInput {
  * shadowing the global `Event` constructor and the `event`
  * variable name commonly used in handlers.
  *
- * `location` is a string-only Place name — we no longer synthesise
- * a Tywyn PostalAddress for it, since some events sit outside
- * Tywyn (Aberdyfi, Dolgellau, etc.) and a hardcoded address would
- * misrepresent them. If structured addresses become important,
- * widen the input shape later.
+ * Google's Event rich result requires EITHER `offers` OR
+ * `isAccessibleForFree: true`; without one the markup is silently
+ * rejected. We default `isAccessibleForFree: true` and let callers
+ * override by passing `offers` (which takes precedence and implies
+ * a paid event) or by setting `isAccessibleForFree: false`.
+ *
+ * `location` resolves to a `Place` node. Pass `locationAddress` to
+ * include a typed `PostalAddress` (improves rich-result quality);
+ * without it we still emit the Place name so the event is at least
+ * categorisable. Hardcoding Tywyn isn't safe because some events
+ * sit outside the town (Aberdyfi, Dolgellau, etc.).
  */
 export function eventSchema(input: EventInput): JsonLd {
+	const isFree = input.isAccessibleForFree ?? !input.offers;
+	const place: JsonLd | undefined = input.location
+		? {
+				'@type': 'Place',
+				name: input.location,
+				...(input.locationAddress
+					? { address: postalAddress(input.locationAddress) }
+					: {}),
+		  }
+		: undefined;
+	const offers: JsonLd | undefined = input.offers
+		? {
+				'@type': 'Offer',
+				...(input.offers.price !== undefined ? { price: String(input.offers.price) } : {}),
+				priceCurrency: input.offers.priceCurrency ?? 'GBP',
+				availability: `https://schema.org/${input.offers.availability ?? 'InStock'}`,
+				...(input.offers.url ? { url: absoluteUrl(input.offers.url) } : {}),
+		  }
+		: undefined;
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'Event',
@@ -242,9 +323,9 @@ export function eventSchema(input: EventInput): JsonLd {
 		endDate: input.endIso,
 		eventStatus: 'https://schema.org/EventScheduled',
 		eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-		...(input.location
-			? { location: { '@type': 'Place', name: input.location } }
-			: {}),
+		isAccessibleForFree: isFree,
+		...(place ? { location: place } : {}),
+		...(offers ? { offers } : {}),
 		...(input.url ? { url: absoluteUrl(input.url) } : {}),
 		...(input.image ? { image: absoluteUrl(input.image) } : {}),
 		...(input.description ? { description: input.description } : {}),
@@ -290,6 +371,8 @@ export function webPage(input: ArticleInput): JsonLd {
 		'@type': 'WebPage',
 		url: absoluteUrl(input.url),
 		name: input.title,
+		isPartOf: { '@id': `${SITE.url}/#website` },
+		publisher: { '@id': `${SITE.url}/#organization` },
 		...(input.description ? { description: input.description } : {}),
 		...(input.image
 			? { primaryImageOfPage: { '@type': 'ImageObject', url: absoluteUrl(input.image) } }
@@ -305,6 +388,21 @@ export function webPage(input: ArticleInput): JsonLd {
 			  }
 			: {}),
 		inLanguage: SITE.locale,
+	};
+}
+
+/**
+ * CollectionPage variant for index/landing pages whose primary
+ * purpose is curating other pages (holiday-accommodation category
+ * landings, eating/things-to-do listings, etc.). Schema.org-strong
+ * crawlers treat CollectionPage as a stronger hint than WebPage
+ * for "this URL collects items" without requiring the full Article
+ * shape. Pair with `itemList()` for the actual collection items.
+ */
+export function collectionPage(input: ArticleInput): JsonLd {
+	return {
+		...webPage(input),
+		'@type': 'CollectionPage',
 	};
 }
 
