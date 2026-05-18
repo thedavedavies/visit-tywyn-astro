@@ -40,7 +40,7 @@ const snap = getWeatherSnapshot();
 				</dl>
 				<p class={styles.stamp}>
 					Updated {snap.observedLabel}
-					{snap.stale && <span class={styles.stale} role="status"> · last good reading</span>}
+					{snap.stale && <span class={styles.stale}> · last good reading</span>}
 				</p>
 			</>
 		)

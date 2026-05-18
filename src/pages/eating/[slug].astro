@@ -88,17 +88,21 @@ const jsonLd = restaurant({
 		},
 	}}
 >
-	<header class="entry-header">
-		<EntryHeader title={venue.data.title} />
-		{
-			venue.data.address && (
-				<p class="single-address">
-					<Icon name="marker" />
-					<span>{venue.data.address}</span>
-				</p>
-			)
-		}
-	</header>
+	{/*
+	 * `EntryHeader` already renders its own `<header>`. The previous
+	 * outer `<header class="entry-header">` produced a nested header.
+	 * The address paragraph is a sibling, not part of the heading
+	 * group, so no semantic wrapper is needed here.
+	 */}
+	<EntryHeader title={venue.data.title} />
+	{
+		venue.data.address && (
+			<p class="single-address">
+				<Icon name="marker" />
+				<span>{venue.data.address}</span>
+			</p>
+		)
+	}
 
 	<div class="entry-content">
 		{

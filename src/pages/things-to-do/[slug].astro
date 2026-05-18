@@ -82,17 +82,21 @@ const jsonLd = touristAttraction({
 		},
 	}}
 >
-	<header class="entry-header">
-		<EntryHeader title={activity.data.title} subtitle={activity.data.subtitle} />
-		{
-			activity.data.address && (
-				<p class="single-address">
-					<Icon name="marker" />
-					<span>{activity.data.address}</span>
-				</p>
-			)
-		}
-	</header>
+	{/*
+	 * `EntryHeader` already renders its own `<header>`. The previous
+	 * outer `<header class="entry-header">` produced a nested header.
+	 * The address paragraph is a sibling, not part of the heading
+	 * group, so no semantic wrapper is needed here.
+	 */}
+	<EntryHeader title={activity.data.title} subtitle={activity.data.subtitle} />
+	{
+		activity.data.address && (
+			<p class="single-address">
+				<Icon name="marker" />
+				<span>{activity.data.address}</span>
+			</p>
+		)
+	}
 
 	<div class="entry-content">
 		<Content />

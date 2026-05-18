@@ -7,11 +7,16 @@
  * class to the nav (matching the legacy Underscores convention).
  * On desktop the menu is always visible and the toggle is hidden.
  *
- * Submenu accessibility: items with children get `aria-haspopup` +
- * `aria-expanded` on the parent link. CSS reveals the submenu on
- * `:hover` and `:focus-within`; the JS at the bottom manages
- * `aria-expanded` state and closes the submenu on focusout, so
- * assistive tech is in sync with what's visible.
+ * Submenu accessibility: this is a disclosure pattern, not a menu.
+ * Items with children get `aria-expanded` on the parent link (no
+ * `aria-haspopup`, because that would promise a `role="menu"`
+ * popup with arrow-key navigation which we deliberately do not
+ * implement: the popup is a plain navigation list of anchors).
+ * CSS reveals the submenu on `:hover` and `:focus-within`; the
+ * JS at the bottom manages `aria-expanded` state and closes the
+ * submenu on focusout so assistive tech stays in sync with what's
+ * visible. WAI-ARIA APG calls this the "disclosure" pattern:
+ * https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/
  */
 import { PRIMARY_NAV } from '../../lib/nav';
 import styles from './Nav.module.scss';
@@ -49,7 +54,6 @@ function isActive(href: string): boolean {
 						<a
 							href={item.href}
 							aria-current={isActive(item.href) ? 'page' : undefined}
-							aria-haspopup={hasChildren ? 'true' : undefined}
 							aria-expanded={hasChildren ? 'false' : undefined}
 							data-vt-submenu-trigger={hasChildren ? '' : undefined}
 						>
@@ -88,12 +92,13 @@ function isActive(href: string): boolean {
 			setExpanded(!expanded);
 		});
 
-		// Submenu state. Each parent link with `aria-haspopup` owns the
-		// `aria-expanded` flag for its sibling `<ul>`. Hover is handled
-		// in CSS; focus we sync here so screen readers announce the
-		// disclosed state. `focusout` with relatedTarget outside the
-		// parent <li> closes the menu so tabbing past the last child
-		// doesn't leave a phantom-open state.
+		// Disclosure state. Each parent link marked with the
+		// `data-vt-submenu-trigger` attribute owns the `aria-expanded`
+		// flag for its sibling `<ul>`. Hover is handled in CSS; focus
+		// we sync here so screen readers announce the disclosed state.
+		// `focusout` with relatedTarget outside the parent <li> closes
+		// the menu so tabbing past the last child doesn't leave a
+		// phantom-open state.
 		const triggers = document.querySelectorAll('[data-vt-submenu-trigger]');
 		triggers.forEach((trigger) => {
 			const li = trigger.closest('li');

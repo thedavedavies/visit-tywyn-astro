@@ -32,36 +32,46 @@ const { images, label = 'Gallery' } = Astro.props;
 	images.length > 0 && (
 		<section class={styles.gallery} aria-label={label}>
 			<ul class={styles.grid} role="list">
-				{images.map((img, idx) => (
-					<li>
-						<button class={styles.thumb} type="button" data-gallery-open={idx}>
-							<Picture
-								src={img.src}
-								alt={img.alt ?? ''}
-								loading="lazy"
-								formats={['avif', 'webp']}
-								widths={[200, 320, 480]}
-								sizes="(min-width: 768px) 200px, 50vw"
-							/>
-						</button>
-					</li>
-				))}
+				{images.map((img, idx) => {
+					// Frontmatter may omit `alt`; fall back to a positional
+					// label so the wrapping <button>'s accessible name is
+					// the image alt (no extra aria-label needed). `||` not
+					// `??` so an empty-string alt also falls through.
+					const altText = img.alt || `${label} image ${idx + 1} of ${images.length}`;
+					return (
+						<li>
+							<button class={styles.thumb} type="button" data-gallery-open={idx}>
+								<Picture
+									src={img.src}
+									alt={altText}
+									loading="lazy"
+									formats={['avif', 'webp']}
+									widths={[200, 320, 480]}
+									sizes="(min-width: 768px) 200px, 50vw"
+								/>
+							</button>
+						</li>
+					);
+				})}
 			</ul>
 
-			{images.map((img, idx) => (
-				<dialog class={styles.lightbox} data-gallery-dialog={idx}>
-					<form method="dialog" class={styles.lightboxForm}>
-						<button class={styles.lightboxClose} type="submit" aria-label="Close gallery">×</button>
-					</form>
-					<Image
-						src={img.src}
-						alt={img.alt ?? ''}
-						loading="lazy"
-						widths={[640, 960, 1280, 1920]}
-						sizes="(min-width: 1024px) 80vw, 100vw"
-					/>
-				</dialog>
-			))}
+			{images.map((img, idx) => {
+				const altText = img.alt || `${label} image ${idx + 1} of ${images.length}`;
+				return (
+					<dialog class={styles.lightbox} data-gallery-dialog={idx}>
+						<form method="dialog" class={styles.lightboxForm}>
+							<button class={styles.lightboxClose} type="submit" aria-label="Close gallery">×</button>
+						</form>
+						<Image
+							src={img.src}
+							alt={altText}
+							loading="lazy"
+							widths={[640, 960, 1280, 1920]}
+							sizes="(min-width: 1024px) 80vw, 100vw"
+						/>
+					</dialog>
+				);
+			})}
 
 			<script is:inline>
 				(() => {

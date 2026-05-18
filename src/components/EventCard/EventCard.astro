@@ -43,6 +43,11 @@ const showFinishedBadge = event.isPast;
 			</p>
 		)}
 		{event.summary && <p class={styles.summary}>{event.summary}</p>}
-		{showFinishedBadge && <p class={styles.badge} role="status">Event finished</p>}
+		{/*
+		 * Static badge, not a live region. The "Event finished" label is
+		 * server-rendered at build time; using `role="status"` here made
+		 * the visible text re-announce on every page load.
+		 */}
+		{showFinishedBadge && <p class={styles.badge}>Event finished</p>}
 	</div>
 </article>

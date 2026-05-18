@@ -51,29 +51,35 @@ const {
 	{
 		thingsToDo && (thingsToDo.website || thingsToDo.phone || thingsToDo.grid_reference) && (
 			<SidebarBox title={`${thingsToDo.title} Information`} iconName="marker">
-				<dl class={styles.contactList}>
+				{/*
+				 * Was a `<dl>` of `<div>`s, which is invalid HTML: a `<dl>`
+				 * child `<div>` must wrap a `<dt>`+`<dd>` pair. The rows
+				 * aren't real term/definition pairs (they're a contact
+				 * list), so a `<ul>` is the honest semantic.
+				 */}
+				<ul class={styles.contactList}>
 					{thingsToDo.website && (
-						<div class={styles.contactRow}>
+						<li class={styles.contactRow}>
 							<Icon name="link" />
 							<a target="_blank" rel="noopener noreferrer" href={thingsToDo.website}>
 								{thingsToDo.website}
 								<span class="sr-only"> (opens in new tab)</span>
 							</a>
-						</div>
+						</li>
 					)}
 					{thingsToDo.phone && (
-						<div class={styles.contactRow}>
+						<li class={styles.contactRow}>
 							<Icon name="phone" />
-							<span>{thingsToDo.phone}</span>
-						</div>
+							<a href={`tel:${thingsToDo.phone.replace(/\s+/g, '')}`}>{thingsToDo.phone}</a>
+						</li>
 					)}
 					{thingsToDo.grid_reference && (
-						<div class={styles.contactRow}>
+						<li class={styles.contactRow}>
 							<Icon name="marker" />
 							<span>Grid reference: {thingsToDo.grid_reference}</span>
-						</div>
+						</li>
 					)}
-				</dl>
+				</ul>
 			</SidebarBox>
 		)
 	}
@@ -113,7 +119,11 @@ const {
 								</a>
 							</p>
 						)}
-						{eating.phone && <p>Phone: {eating.phone}</p>}
+						{eating.phone && (
+							<p>
+								Phone: <a href={`tel:${eating.phone.replace(/\s+/g, '')}`}>{eating.phone}</a>
+							</p>
+						)}
 					</div>
 				</div>
 			</div>

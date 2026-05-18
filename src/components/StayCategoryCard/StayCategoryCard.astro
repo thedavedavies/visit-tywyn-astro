@@ -36,7 +36,7 @@ const { href, title, intro, heroImage } = Astro.props;
 		<div class={styles.body}>
 			<h3 class={styles.title}>{title}</h3>
 			<p class={styles.intro}>{intro}</p>
-			<span class={styles.cta}>Browse {title.toLowerCase()} →</span>
+			<span class={styles.cta}>Browse {title.toLowerCase()} <span aria-hidden="true">→</span></span>
 		</div>
 	</a>
 </article>

@@ -21,7 +21,7 @@ const events = snap?.upcoming.slice(0, 4) ?? [];
 						</li>
 					))}
 				</ul>
-				{snap.stale && <p class={styles.stale} role="status">Last good reading.</p>}
+				{snap.stale && <p class={styles.stale}>Last good reading.</p>}
 			</>
 		)
 	}
