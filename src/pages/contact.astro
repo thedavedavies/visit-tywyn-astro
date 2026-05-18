@@ -1,9 +1,12 @@
 ---
 /**
- * Contact page. Bespoke route (rather than `[...slug].astro`) so the
- * markdown body can be followed by the `<ContactForm>` component:
- * the static `<Content />` slot can't host an interactive form
- * directly.
+ * Contact page. Bespoke route (rather than `[...slug].astro`) so any
+ * future interactive widgets (form, embed, etc.) can be slotted in
+ * after the markdown body without going through the catch-all.
+ *
+ * The form widget was removed during the WP-to-Astro cutover: until
+ * a host-appropriate forwarder is wired up, visitors are pointed at
+ * the social channels (which are the de-facto contact path today).
  *
  * Excluded from `[...slug].astro`'s catch-all so we don't double-emit
  * the URL.
@@ -11,7 +14,6 @@
 import { getEntry, render } from 'astro:content';
 import PageLayout from '../layouts/PageLayout.astro';
 import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
-import ContactForm from '../components/ContactForm/ContactForm.astro';
 import { webPage } from '../lib/jsonld';
 
 const page = await getEntry('pages', 'contact');
@@ -57,6 +59,5 @@ const jsonLd = [
 	<EntryHeader title={page.data.title} subtitle={page.data.subtitle} />
 	<div class="entry-content">
 		<Content />
-		<ContactForm />
 	</div>
 </PageLayout>
