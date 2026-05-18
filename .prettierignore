@@ -1,0 +1,17 @@
+# Build output and tooling caches
+dist/
+.astro/
+node_modules/
+
+# Lock files (managed by npm)
+package-lock.json
+
+# Generated data snapshots refreshed by tools/refresh-conditions.ts
+src/data/weather.json
+src/data/tides.json
+
+# Public passthrough assets where formatting matters semantically
+public/_redirects
+public/_headers
+public/robots.txt
+public/favicon.svg

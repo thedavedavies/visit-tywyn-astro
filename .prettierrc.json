@@ -1,0 +1,28 @@
+{
+	"$schema": "https://json.schemastore.org/prettierrc",
+	"useTabs": true,
+	"tabWidth": 2,
+	"printWidth": 100,
+	"singleQuote": true,
+	"jsxSingleQuote": false,
+	"trailingComma": "all",
+	"semi": true,
+	"bracketSameLine": false,
+	"proseWrap": "preserve",
+	"plugins": ["prettier-plugin-astro"],
+	"overrides": [
+		{
+			"files": "*.astro",
+			"options": {
+				"parser": "astro"
+			}
+		},
+		{
+			"files": ["*.md", "*.yml", "*.yaml"],
+			"options": {
+				"useTabs": false,
+				"tabWidth": 2
+			}
+		}
+	]
+}
