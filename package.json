@@ -1,31 +1,35 @@
 {
-  "name": "visit-tywyn-astro",
-  "type": "module",
-  "version": "0.0.1",
-  "engines": {
-    "node": ">=22.12.0"
-  },
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro",
-    "check": "astro check",
-    "test": "npm run build && npm run check:links -- --no-dev",
-    "refresh:conditions": "tsx tools/refresh-conditions.ts",
-    "check:links": "tsx tools/check-links.ts",
-    "perf:pages": "tsx tools/perf/measure-pages.ts",
-    "perf:seo": "tsx tools/perf/seo-compare.ts"
-  },
-  "dependencies": {
-    "@astrojs/sitemap": "^3.7.2",
-    "astro": "^6.1.9"
-  },
-  "devDependencies": {
-    "@astrojs/check": "^0.9.9",
-    "@types/node": "^25.6.0",
-    "sass": "^1.99.0",
-    "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
-  }
+	"name": "visit-tywyn-astro",
+	"type": "module",
+	"version": "0.0.1",
+	"engines": {
+		"node": ">=22.12.0"
+	},
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"astro": "astro",
+		"check": "astro check",
+		"test": "npm run build && npm run check:links -- --no-dev",
+		"refresh:conditions": "tsx tools/refresh-conditions.ts",
+		"check:links": "tsx tools/check-links.ts",
+		"format": "prettier --write .",
+		"format:check": "prettier --check .",
+		"perf:pages": "tsx tools/perf/measure-pages.ts",
+		"perf:seo": "tsx tools/perf/seo-compare.ts"
+	},
+	"dependencies": {
+		"@astrojs/sitemap": "^3.7.2",
+		"astro": "^6.1.9"
+	},
+	"devDependencies": {
+		"@astrojs/check": "^0.9.9",
+		"@types/node": "^25.6.0",
+		"prettier": "3.8.3",
+		"prettier-plugin-astro": "0.14.1",
+		"sass": "^1.99.0",
+		"tsx": "^4.21.0",
+		"typescript": "^5.9.3"
+	}
 }

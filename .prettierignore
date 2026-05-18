@@ -15,3 +15,13 @@ public/_redirects
 public/_headers
 public/robots.txt
 public/favicon.svg
+
+# prettier-plugin-astro 0.14.1 can't parse complex inline scripts
+# inside Astro components. BaseLayout.astro has the GA4 dynamic
+# script-element creator inside an `is:inline define:vars` block,
+# and Gallery.astro has the dialog wiring with closure-captured
+# state. Both are well-formed JS but the plugin's parser doesn't
+# handle the nested structure. Skip until the plugin gains support;
+# the files are otherwise hand-maintained at the same house style.
+src/layouts/BaseLayout.astro
+src/components/Gallery/Gallery.astro
