@@ -51,11 +51,21 @@ export function slugify(input: string): string {
  * URL builders for the two slugged collections. Centralising these
  * keeps page templates and JSON-LD builders agreeing on trailing
  * slashes and on what an `id` becomes at the URL level.
+ *
+ * These return **root-relative** paths (e.g. `/eating/dovey-inn/`),
+ * not absolute URLs. HTML `<a href>` attributes inside the site
+ * should ship as relative so the markup is portable across hosts
+ * (preview vs production), and so visitors don't trigger a full
+ * cross-origin reload when clicking an internal link.
+ *
+ * For JSON-LD `@id` / `url` properties, where Schema.org wants an
+ * absolute IRI for canonical entity identity, wrap the result with
+ * `absoluteUrl()` at the call site.
  */
 export function eatingUrl(id: string): string {
-	return `${SITE.url}/eating/${id}/`;
+	return `/eating/${id}/`;
 }
 
 export function thingsToDoUrl(id: string): string {
-	return `${SITE.url}/things-to-do/${id}/`;
+	return `/things-to-do/${id}/`;
 }

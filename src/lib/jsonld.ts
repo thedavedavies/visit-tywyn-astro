@@ -170,7 +170,9 @@ interface RestaurantInput {
 }
 
 export function restaurant(input: RestaurantInput): JsonLd {
-	const url = eatingUrl(input.id);
+	// `eatingUrl` returns a root-relative path; Schema.org @id and url
+	// require an absolute IRI for canonical entity identity.
+	const url = absoluteUrl(eatingUrl(input.id))!;
 	const node: JsonLd = {
 		'@context': 'https://schema.org',
 		'@type': input.dogFriendly ? 'Restaurant' : 'FoodEstablishment',
@@ -223,7 +225,9 @@ interface AttractionInput {
 }
 
 export function touristAttraction(input: AttractionInput): JsonLd {
-	const url = thingsToDoUrl(input.id);
+	// `thingsToDoUrl` returns a root-relative path; Schema.org @id and
+	// url require an absolute IRI for canonical entity identity.
+	const url = absoluteUrl(thingsToDoUrl(input.id))!;
 	const node: JsonLd = {
 		'@context': 'https://schema.org',
 		'@type': input.kind ? ['TouristAttraction', input.kind] : 'TouristAttraction',
