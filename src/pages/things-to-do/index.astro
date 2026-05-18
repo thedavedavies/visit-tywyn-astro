@@ -6,6 +6,7 @@ import ListingCard from '../../components/ListingCard/ListingCard.astro';
 import AdSlot from '../../components/AdSlot/AdSlot.astro';
 import { itemList } from '../../lib/jsonld';
 import { thingsToDoUrl } from '../../lib/url';
+import thingsToDoBannerSrc from '../../assets/img/heroes/things-to-do.jpg';
 
 const activities = (await getCollection('things-to-do')).sort((a, b) =>
 	a.data.title.localeCompare(b.data.title)
@@ -30,6 +31,7 @@ const jsonLd = itemList(
 <PageLayout
 	title="The best things to do in Tywyn (with photos!)"
 	description="Attractions, walks, beaches, and family days out in and around Tywyn."
+	heroImage={{ src: thingsToDoBannerSrc, alt: 'Things to do in Tywyn' }}
 	breadcrumbs={breadcrumbs}
 	jsonLd={jsonLd}
 >
