@@ -37,9 +37,7 @@ export function safeJsonLd(value: unknown): string {
  * is always a valid HTML id (which must not be empty).
  */
 export function slugify(input: string): string {
-	const stripped = input
-		.normalize('NFKD')
-		.replace(/[̀-ͯ]/g, '');
+	const stripped = input.normalize('NFKD').replace(/[̀-ͯ]/g, '');
 	const slug = stripped
 		.toLowerCase()
 		.replace(/[^a-z0-9]+/g, '-')

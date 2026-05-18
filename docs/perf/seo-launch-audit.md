@@ -1,5 +1,5 @@
 ---
-title: "SEO launch-readiness audit: WP → Astro"
+title: 'SEO launch-readiness audit: WP → Astro'
 type: seo-audit
 status: draft
 date: 2026-04-30
@@ -13,39 +13,39 @@ everything that could move rankings on launch day, classified by
 severity. Raw data: [`seo-compare.json`](seo-compare.json),
 report: [`seo-compare-report.md`](seo-compare-report.md).
 
-The premise — *URL + content + metadata stay the same → rankings
-stay the same* — is correct in principle. The audit below quantifies
+The premise — _URL + content + metadata stay the same → rankings
+stay the same_ — is correct in principle. The audit below quantifies
 exactly which assumptions that holds for and which it breaks.
 
 ## TL;DR
 
-| Risk | Severity | Mitigation status |
-|------|----------|-------------------|
-| 60 individual accommodation pages removed | **High** (deliberate trade-off) | Covered by 301 redirects to 4 category landings — equity transfers but at reduced strength |
-| Homepage title + description completely changed | **High** | Not addressed — needs frontmatter update |
-| 16 of 18 eating venues have no `seo:` block, 7 share an identical generic meta description | **High** | Not addressed — fix in frontmatter |
-| Global `WebSite` JSON-LD missing on every page (Yoast emitted on WP) | **Medium** | Not addressed — easy add to BaseLayout |
-| Homepage emits 2 `<h1>` (visible + hidden) | **Medium** | Not addressed — collapse to 1 |
-| `/event/race-the-train/` has no working redirect | **Medium** | Listed in `_redirects` but rule loops to itself |
-| `/category/uncategorized/` has no redirect | **Low** (low-equity URL anyway) | Not addressed |
-| Title format drift on a handful of pages | **Low–Medium** | Per-page review, see table below |
-| JSON-LD schema types changed shape (Restaurant vs WebPage etc.) | **Low** (Astro shapes are arguably better) | Keep Astro shapes, add WebSite globally |
+| Risk                                                                                       | Severity                                   | Mitigation status                                                                          |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| 60 individual accommodation pages removed                                                  | **High** (deliberate trade-off)            | Covered by 301 redirects to 4 category landings — equity transfers but at reduced strength |
+| Homepage title + description completely changed                                            | **High**                                   | Not addressed — needs frontmatter update                                                   |
+| 16 of 18 eating venues have no `seo:` block, 7 share an identical generic meta description | **High**                                   | Not addressed — fix in frontmatter                                                         |
+| Global `WebSite` JSON-LD missing on every page (Yoast emitted on WP)                       | **Medium**                                 | Not addressed — easy add to BaseLayout                                                     |
+| Homepage emits 2 `<h1>` (visible + hidden)                                                 | **Medium**                                 | Not addressed — collapse to 1                                                              |
+| `/event/race-the-train/` has no working redirect                                           | **Medium**                                 | Listed in `_redirects` but rule loops to itself                                            |
+| `/category/uncategorized/` has no redirect                                                 | **Low** (low-equity URL anyway)            | Not addressed                                                                              |
+| Title format drift on a handful of pages                                                   | **Low–Medium**                             | Per-page review, see table below                                                           |
+| JSON-LD schema types changed shape (Restaurant vs WebPage etc.)                            | **Low** (Astro shapes are arguably better) | Keep Astro shapes, add WebSite globally                                                    |
 
 ## URL inventory diff
 
-| Bucket | WordPress | Astro | Notes |
-|--------|----------:|------:|-------|
-| URLs in sitemap | 106 | 47 | |
-| Common (overlap) | 43 | 43 | The audit comparison set |
-| WP-only | 63 | 0 | |
-| Astro-only | 0 | 4 | New `/holiday-accommodation/{cat}/` landings |
+| Bucket           | WordPress | Astro | Notes                                        |
+| ---------------- | --------: | ----: | -------------------------------------------- |
+| URLs in sitemap  |       106 |    47 |                                              |
+| Common (overlap) |        43 |    43 | The audit comparison set                     |
+| WP-only          |        63 |     0 |                                              |
+| Astro-only       |         0 |     4 | New `/holiday-accommodation/{cat}/` landings |
 
 WP-only breakdown:
 
 - **60 `/accommodation/<slug>/` pages** — every one of them is in
   `public/_redirects` going to the relevant `/holiday-accommodation/`
   category landing. Equity transfers via 301. Page-level relevance
-  for narrow searches (e.g. *"tyn-y-cornel hotel tywyn"*) loses the
+  for narrow searches (e.g. _"tyn-y-cornel hotel tywyn"_) loses the
   exact-match URL anchor and competes from the broader B&B landing
   instead. Expect a 10–30% relevance drop on those queries; mitigated
   by Google passing PageRank through 301s.
@@ -53,7 +53,7 @@ WP-only breakdown:
 - **`/tywyn-beach/`** — redirected to `/things-to-do/tywyn-beach/`. ✓
 - **`/event/race-the-train/`** — single event page, no working redirect.
   `_redirects` line 87 is `/event/race-the-train/index.html →
-  /event/race-the-train` which loops to a non-existent URL. Either
+/event/race-the-train` which loops to a non-existent URL. Either
   add `/event/race-the-train/ → /events/ 301` or `→ /404 410`.
 - **`/category/uncategorized/`** — WordPress default category page.
   Low SEO equity (Yoast probably noindexed it anyway, see
@@ -71,9 +71,13 @@ issues. Numbers below are aggregate counts of pages affected.
 WP (Yoast) emits a `WebSite` schema on every page:
 
 ```json
-{ "@type": "WebSite", "@id": "https://visit-tywyn.co.uk/#website",
-  "url": "https://visit-tywyn.co.uk/", "name": "Visit Tywyn",
-  "potentialAction": { "@type": "SearchAction", "target": "..." } }
+{
+  "@type": "WebSite",
+  "@id": "https://visit-tywyn.co.uk/#website",
+  "url": "https://visit-tywyn.co.uk/",
+  "name": "Visit Tywyn",
+  "potentialAction": { "@type": "SearchAction", "target": "..." }
+}
 ```
 
 Astro doesn't emit this anywhere. The schema feeds Google's site-name
@@ -111,13 +115,13 @@ the venue's website / TripAdvisor blurb if no in-house copy exists.
 Pages where the Astro title is meaningfully different from WP and the
 WP version is more SEO-targeted:
 
-| Path | WP title (preserve) | Astro title (current) | Action |
-|------|---------------------|----------------------|--------|
-| `/` | *Tywyn Holiday Accommodation, Things to Do and Visit in Tywyn* | *Visit Tywyn — Your guide to Tywyn, Mid Wales* | Update home title |
-| `/eating/` | *Top restaurants and places to eat in Tywyn* | *Where to eat in Tywyn?* | Update title |
-| `/dog-friendly-cafes/` | *Dog Friendly Bars, Pubs, Restaurants, and Cafes in Tywyn* | (same + suffix) | Drop *Visit Tywyn* suffix to match |
-| `/things-to-do/king-arthurs-labyrinth/` | (per-page) | (per-page) | Spot-check + align |
-| `/things-to-do/magic-lantern-cinema/` | (per-page) | (per-page) | Spot-check + align |
+| Path                                    | WP title (preserve)                                            | Astro title (current)                          | Action                             |
+| --------------------------------------- | -------------------------------------------------------------- | ---------------------------------------------- | ---------------------------------- |
+| `/`                                     | _Tywyn Holiday Accommodation, Things to Do and Visit in Tywyn_ | _Visit Tywyn — Your guide to Tywyn, Mid Wales_ | Update home title                  |
+| `/eating/`                              | _Top restaurants and places to eat in Tywyn_                   | _Where to eat in Tywyn?_                       | Update title                       |
+| `/dog-friendly-cafes/`                  | _Dog Friendly Bars, Pubs, Restaurants, and Cafes in Tywyn_     | (same + suffix)                                | Drop _Visit Tywyn_ suffix to match |
+| `/things-to-do/king-arthurs-labyrinth/` | (per-page)                                                     | (per-page)                                     | Spot-check + align                 |
+| `/things-to-do/magic-lantern-cinema/`   | (per-page)                                                     | (per-page)                                     | Spot-check + align                 |
 
 Two ways to handle:
 
@@ -143,7 +147,7 @@ Astro home renders both:
 
 Multiple H1s aren't broken HTML but they confuse some crawlers and
 produce conflicting topic signals. Collapse to one — either keep the
-visible *Welcome to Visit Tywyn* H1 and downgrade the branding link
+visible _Welcome to Visit Tywyn_ H1 and downgrade the branding link
 to `<p>` on the home page, or vice versa.
 
 **Action:** in `src/components/Header/Header.astro`, when
@@ -169,12 +173,12 @@ No action.
 
 ### Category 6 — JSON-LD type shape changes
 
-| Page type | WP types | Astro types | Verdict |
-|-----------|----------|-------------|---------|
-| `/` (home) | BreadcrumbList, WebPage, WebSite | Organization, TouristDestination, WebSite | Astro wins (richer) |
-| Eating venue | BreadcrumbList, WebPage, WebSite | BreadcrumbList, Restaurant *or* FoodEstablishment | Astro wins |
-| Listing pages | BreadcrumbList, CollectionPage, WebSite | BreadcrumbList, ItemList | Either is valid |
-| Standard page | BreadcrumbList, WebPage, WebSite | BreadcrumbList, WebPage | Astro missing WebSite |
+| Page type     | WP types                                | Astro types                                       | Verdict               |
+| ------------- | --------------------------------------- | ------------------------------------------------- | --------------------- |
+| `/` (home)    | BreadcrumbList, WebPage, WebSite        | Organization, TouristDestination, WebSite         | Astro wins (richer)   |
+| Eating venue  | BreadcrumbList, WebPage, WebSite        | BreadcrumbList, Restaurant _or_ FoodEstablishment | Astro wins            |
+| Listing pages | BreadcrumbList, CollectionPage, WebSite | BreadcrumbList, ItemList                          | Either is valid       |
+| Standard page | BreadcrumbList, WebPage, WebSite        | BreadcrumbList, WebPage                           | Astro missing WebSite |
 
 Astro's per-type schemas are more specific and arguably closer to
 current Schema.org best practice (especially `Restaurant` /
@@ -198,7 +202,7 @@ Ordered by ranking impact, cheapest first:
    `src/pages/index.astro` (or the `home` page frontmatter wherever
    that lives). Use the WP-indexed title verbatim.
 4. **Update `/eating/` title** in `src/pages/eating/index.astro` to
-   match WP's *Top restaurants and places to eat in Tywyn*.
+   match WP's _Top restaurants and places to eat in Tywyn_.
 5. **Collapse homepage to one H1** in `Header.astro`.
 6. **Fix the `/event/race-the-train/` redirect** — the current rule
    loops. Send to `/events/` instead.

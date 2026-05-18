@@ -22,12 +22,14 @@ seo:
 Come on a very special treasure hunt, and find The Secret Garden in Tywyn! Right next to the <a href="/things-to-do/magic-lantern-cinema/">Magic Lantern Cinema</a>, come and enjoy a cocktail, mocktails and cinema snacks.
 
 More <a href="/dog-friendly-cafes/">dog friendly cafe's in Tywyn</a>.
+
 <h2>Do I need to book the Secret Garden? ​</h2>
 No, The Secret Garden doesn't take bookings. It’s first come first served unless you are bringing a party of 10 or more.
 <h2>Can I bring children?​</h2>
 Absolutely – children are very welcome.
 
 ![](../../assets/img/things-to-do/the-secret-garden/inline/magiclantern2.jpg)
+
 <h2>Can I bring dogs to the Secret Garden?</h2>
 Of course, but please keep them on a lead.​
 <h2>How does it work?</h2>

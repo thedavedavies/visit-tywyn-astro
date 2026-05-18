@@ -1,5 +1,5 @@
 ---
-title: "perf: Stage 2 image pipeline migration — post-pass"
+title: 'perf: Stage 2 image pipeline migration — post-pass'
 type: perf-measurement
 status: captured
 date: 2026-05-01
@@ -22,13 +22,13 @@ deleted `public/img/` entirely.
 Same five sample pages as Stage 1 baseline. Headless Chrome on
 localhost, mobile preset, Slow 4G + 4× CPU throttling.
 
-| Page | Stage 1 score | Stage 2 score | LCP (S1 → S2) | Bytes (S1 → S2) |
-|------|--------------:|--------------:|--------------:|-----------------:|
-| `/` | 98 | **99** | 2.4 s → **1.8 s** | 204 → 146 KiB |
-| `/eating/` | 91 | **98** | 3.5 s → **2.4 s** ✓ | 716 → 376 KiB |
-| `/eating/dovey-inn/` | 97 | **99** | 2.5 s → **2.1 s** | 896 → 670 KiB |
-| `/things-to-do/cadair-idris/` | 82 | **95** | 4.8 s → **2.9 s** | 966 → 403 KiB |
-| `/things-to-do/magic-lantern-cinema/` | 76 | **99** | **7.8 s → 1.8 s** | 1519 → 287 KiB |
+| Page                                  | Stage 1 score | Stage 2 score |       LCP (S1 → S2) | Bytes (S1 → S2) |
+| ------------------------------------- | ------------: | ------------: | ------------------: | --------------: |
+| `/`                                   |            98 |        **99** |   2.4 s → **1.8 s** |   204 → 146 KiB |
+| `/eating/`                            |            91 |        **98** | 3.5 s → **2.4 s** ✓ |   716 → 376 KiB |
+| `/eating/dovey-inn/`                  |            97 |        **99** |   2.5 s → **2.1 s** |   896 → 670 KiB |
+| `/things-to-do/cadair-idris/`         |            82 |        **95** |   4.8 s → **2.9 s** |   966 → 403 KiB |
+| `/things-to-do/magic-lantern-cinema/` |            76 |        **99** |   **7.8 s → 1.8 s** |  1519 → 287 KiB |
 
 CLS = 0, TBT = 0 ms, Speed Index = 1.2 s on every page.
 
@@ -62,6 +62,7 @@ in the green CWV band for LCP, four out of five score ≥ 98.
   No more `2022/05/` hangover. Filenames in src/ now describe
   what they are (`logo.png`, `home-surfcam.jpg`, `cover.jpg`)
   instead of when WordPress was uploaded.
+
 - **Unit 3:** `src/content.config.ts` switched to `defineCollection({ schema: ({ image }) => z.object({...}) })`,
   with the image fields validated by `image()`. Frontmatter `src`
   fields became `ImageMetadata` objects instead of strings.

@@ -16,5 +16,3 @@ photo:
 trip_advisor_link: 'https://www.tripadvisor.co.uk/Restaurant_Review-g552038-d1853443-Reviews-Dine_India-Tywyn_Gwynedd_North_Wales_Wales.html'
 facebook_link: 'https://www.facebook.com/DineIndiaTywyn'
 ---
-
-

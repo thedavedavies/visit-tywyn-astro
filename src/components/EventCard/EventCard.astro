@@ -36,18 +36,22 @@ const showFinishedBadge = event.isPast;
 		<h3 class={styles.title}>
 			{event.primaryUrl ? <a href={event.primaryUrl}>{event.title}</a> : event.title}
 		</h3>
-		{event.location && (
-			<p class={styles.location}>
-				<Icon name="marker" />
-				{event.location}
-			</p>
-		)}
+		{
+			event.location && (
+				<p class={styles.location}>
+					<Icon name="marker" />
+					{event.location}
+				</p>
+			)
+		}
 		{event.summary && <p class={styles.summary}>{event.summary}</p>}
-		{/*
-		 * Static badge, not a live region. The "Event finished" label is
-		 * server-rendered at build time; using `role="status"` here made
-		 * the visible text re-announce on every page load.
-		 */}
+		{
+			/*
+			 * Static badge, not a live region. The "Event finished" label is
+			 * server-rendered at build time; using `role="status"` here made
+			 * the visible text re-announce on every page load.
+			 */
+		}
 		{showFinishedBadge && <p class={styles.badge}>Event finished</p>}
 	</div>
 </article>

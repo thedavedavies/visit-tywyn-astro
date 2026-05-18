@@ -63,7 +63,9 @@ function isActive(href: string): boolean {
 						{hasChildren && (
 							<ul class={styles.subMenu}>
 								{item.children!.map((child) => (
-									<li class:list={[styles.subItem, { [styles.subItemActive]: isActive(child.href) }]}>
+									<li
+										class:list={[styles.subItem, { [styles.subItemActive]: isActive(child.href) }]}
+									>
 										<a href={child.href} aria-current={isActive(child.href) ? 'page' : undefined}>
 											{child.label}
 										</a>

@@ -20,6 +20,7 @@ Buses travel through Tywyn and the surrounding towns and villages 7 days a week 
 Travelling in North Wales? You can use the 1bws ticket which is valid on almost every bus in North Wales. Buy your 1bws ticket from the bus driver on your first journey of the day, the ticket will then be valid for travel on every other bus you use that day across North Wales. (Please note that 1bws tickets cannot be bought via mobile apps or websites). <a href="https://traws.cymru/en/use-1bws-ticket-north-wales" target="_blank" rel="noopener">Find out more about the 1bws day ticket.</a>
 
 <strong>1bws day ticket prices</strong>
+
 <table>
 <tbody>
 <tr>

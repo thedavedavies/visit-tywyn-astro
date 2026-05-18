@@ -1,5 +1,5 @@
 ---
-title: "Lighthouse baseline (Stage 1, post-merge)"
+title: 'Lighthouse baseline (Stage 1, post-merge)'
 type: perf-measurement
 status: captured
 date: 2026-05-01
@@ -14,13 +14,13 @@ assertions from the rebuild plan. These are the numbers.
 
 ## Scores at a glance
 
-| Page | Score | LCP | CLS | TBT | SI | Bytes |
-|------|------:|----:|----:|----:|---:|------:|
-| `/` | **98** | 2.4s | 0 | 0ms | 1.7s | 204 KB |
-| `/eating/` | **91** | 3.5s | 0 | 0ms | 1.4s | 716 KB |
-| `/eating/dovey-inn/` | **97** | 2.5s | 0 | 0ms | 1.2s | 896 KB |
-| `/things-to-do/cadair-idris/` | **82** | 4.8s | 0 | 0ms | 1.2s | 966 KB |
-| `/things-to-do/magic-lantern-cinema/` | **76** | 7.8s | 0 | 0ms | 1.2s | 1519 KB |
+| Page                                  |  Score |  LCP | CLS | TBT |   SI |   Bytes |
+| ------------------------------------- | -----: | ---: | --: | --: | ---: | ------: |
+| `/`                                   | **98** | 2.4s |   0 | 0ms | 1.7s |  204 KB |
+| `/eating/`                            | **91** | 3.5s |   0 | 0ms | 1.4s |  716 KB |
+| `/eating/dovey-inn/`                  | **97** | 2.5s |   0 | 0ms | 1.2s |  896 KB |
+| `/things-to-do/cadair-idris/`         | **82** | 4.8s |   0 | 0ms | 1.2s |  966 KB |
+| `/things-to-do/magic-lantern-cinema/` | **76** | 7.8s |   0 | 0ms | 1.2s | 1519 KB |
 
 Scoring bands: Lighthouse green ≥ 90, orange 50-89, red < 50.
 LCP green ≤ 2.5s, orange 2.5-4.0s, red > 4.0s.

@@ -111,7 +111,8 @@ function extractFontRefsFromCss(cssText: string, cssFile: string): Resource[] {
 	for (const url of urls) {
 		if (url.startsWith('data:')) continue;
 		if (!/\.(woff2?|ttf|otf|eot)(\?|$)/i.test(url)) continue;
-		const external = url.startsWith('http://') || url.startsWith('https://') || url.startsWith('//');
+		const external =
+			url.startsWith('http://') || url.startsWith('https://') || url.startsWith('//');
 		const filePath = external ? null : resolveRelativeUrl(url, cssFile);
 		const bytes = filePath && existsSync(filePath) ? readBytes(filePath) : 0;
 		out.push({ url, kind: 'font', bytes, external });
@@ -144,7 +145,8 @@ function analyzePage(path: string): PageReport {
 			if (src) missingDims.push(src);
 		}
 		if (!src) continue;
-		const external = src.startsWith('http://') || src.startsWith('https://') || src.startsWith('//');
+		const external =
+			src.startsWith('http://') || src.startsWith('https://') || src.startsWith('//');
 		const filePath = external ? null : resolveRelativeUrl(src, htmlPath);
 		const bytes = filePath && existsSync(filePath) ? readBytes(filePath) : 0;
 		if (external) externalRequests++;
@@ -167,7 +169,8 @@ function analyzePage(path: string): PageReport {
 		if (!href) continue;
 		if (rel && rel.toLowerCase().includes('stylesheet')) {
 			stylesheets++;
-			const external = href.startsWith('http://') || href.startsWith('https://') || href.startsWith('//');
+			const external =
+				href.startsWith('http://') || href.startsWith('https://') || href.startsWith('//');
 			if (external) {
 				externalRequests++;
 				resources.push({ url: href, kind: 'css', bytes: 0, external: true });
@@ -186,7 +189,8 @@ function analyzePage(path: string): PageReport {
 			}
 		} else if (rel && rel.toLowerCase() === 'preload' && extractAttr(tag, 'as') === 'font') {
 			// font preload — count it
-			const external = href.startsWith('http://') || href.startsWith('https://') || href.startsWith('//');
+			const external =
+				href.startsWith('http://') || href.startsWith('https://') || href.startsWith('//');
 			const filePath = external ? null : resolveRelativeUrl(href, htmlPath);
 			const bytes = filePath && existsSync(filePath) ? readBytes(filePath) : 0;
 			if (external) externalRequests++;
@@ -200,7 +204,8 @@ function analyzePage(path: string): PageReport {
 		const src = extractAttr(tag, 'src');
 		if (!src) continue;
 		scripts++;
-		const external = src.startsWith('http://') || src.startsWith('https://') || src.startsWith('//');
+		const external =
+			src.startsWith('http://') || src.startsWith('https://') || src.startsWith('//');
 		const filePath = external ? null : resolveRelativeUrl(src, htmlPath);
 		const bytes = filePath && existsSync(filePath) ? readBytes(filePath) : 0;
 		if (external) externalRequests++;
@@ -211,7 +216,9 @@ function analyzePage(path: string): PageReport {
 		resources.filter((r) => r.kind === kind && !r.external).reduce((s, r) => s + r.bytes, 0);
 
 	const externalBytes = resources.filter((r) => r.external).reduce((s, r) => s + r.bytes, 0);
-	const imagesByBytes = resources.filter((r) => r.kind === 'image').sort((a, b) => b.bytes - a.bytes);
+	const imagesByBytes = resources
+		.filter((r) => r.kind === 'image')
+		.sort((a, b) => b.bytes - a.bytes);
 
 	return {
 		path,
@@ -234,7 +241,9 @@ function analyzePage(path: string): PageReport {
 			iframesWithoutLazy,
 			externalRequests,
 		},
-		largestImage: imagesByBytes[0] ? { url: imagesByBytes[0].url, bytes: imagesByBytes[0].bytes } : null,
+		largestImage: imagesByBytes[0]
+			? { url: imagesByBytes[0].url, bytes: imagesByBytes[0].bytes }
+			: null,
 		missingDimensionImages: missingDims,
 		resources,
 	};

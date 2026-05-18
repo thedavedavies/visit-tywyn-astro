@@ -1,6 +1,6 @@
 ---
 title: Cadair Idris
-subtitle: 'Enjoy spectacular views from one of Wales'' most iconic mountains'
+subtitle: "Enjoy spectacular views from one of Wales' most iconic mountains"
 summary: 'Cadair Idris is one of Wales’s most iconic mountains, standing around 893m in height, and situated in Southern Snowdonia, overlooking Dolgellau'
 kind: Mountain
 published: 2022-07-12

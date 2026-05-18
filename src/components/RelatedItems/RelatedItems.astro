@@ -31,7 +31,9 @@ const { heading, items, headingId = 'related-items' } = Astro.props;
 {
 	items.length > 0 && (
 		<section class={styles.section} aria-labelledby={headingId}>
-			<h2 id={headingId} class={styles.heading}>{heading}</h2>
+			<h2 id={headingId} class={styles.heading}>
+				{heading}
+			</h2>
 			<ul class={styles.grid} role="list">
 				{items.map((item) => (
 					<li class={styles.item}>

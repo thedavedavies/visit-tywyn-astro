@@ -35,7 +35,9 @@
 		color: $color-primary;
 		font-weight: 700;
 		text-decoration: none;
-		transition: border-color 0.2s ease, transform 0.2s ease;
+		transition:
+			border-color 0.2s ease,
+			transform 0.2s ease;
 
 		&:hover,
 		&:focus-visible {

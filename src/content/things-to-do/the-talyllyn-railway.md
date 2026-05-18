@@ -1,7 +1,7 @@
 ---
 title: The Talyllyn Railway
-subtitle: 'The World''s First Preserved Railway'
-summary: 'The Talyllyn Railway is the worlds first preserved railway, and a must-have place to visit on your trip to Tywyn. Originally built in 1866 for carrying slate from Abergynolwyn to Tywyn, it runs for 7.25 miles through beautiful and unspoilt countryside - passing through the delightful Dolgoch Falls along the way. And with the excellent forest walks at Nant Gwernol, it''s a great family day out.'
+subtitle: "The World's First Preserved Railway"
+summary: "The Talyllyn Railway is the worlds first preserved railway, and a must-have place to visit on your trip to Tywyn. Originally built in 1866 for carrying slate from Abergynolwyn to Tywyn, it runs for 7.25 miles through beautiful and unspoilt countryside - passing through the delightful Dolgoch Falls along the way. And with the excellent forest walks at Nant Gwernol, it's a great family day out."
 kind: TrainStation
 address: Talyllyn Railway, Wharf Station, Tywyn, LL36 9EY
 phone: 01654 710472
@@ -44,16 +44,19 @@ seo:
 The Talyllyn Railway, known for its historical use of steam locomotives, is the worlds first preserved railway, and a must-have place to visit on your trip to Tywyn. Visitors can enjoy a unique steam train experience, including the opportunity to drive a historic steam train.
 
 Originally built in 1866 for carrying slate from Abergynolwyn to Tywyn, it runs for 7.25 miles through beautiful and unspoilt countryside - passing through the delightful <a href="/things-to-do/dolgoch-falls/">Dolgoch Falls</a> along the way. And with the excellent forest walks at <a href="/things-to-do/nant-gwernol/">Nant Gwernol</a>, it's a great family day out. The steam train experience enhances the visit by offering a unique opportunity to learn to drive a historic steam locomotive or hire a steam-hauled train for special occasions such as weddings.
+
 <h3>History of the Talyllyn Railway</h3>
 Since preservation in 1951, the Talyllyn Railway has thrived as a tourist attraction. The formal passenger service began during the early history of the railway, significantly growing in the Haydn Jones era with the operation of passenger trains on certain days. Steam locomotives have played a crucial role in the history and operations of the railway, contributing to the unique experience of the journey. The Talyllyn Railway Preservation Society, which took over in 1951, has been instrumental in preserving the railway, acquiring new locomotives, and establishing a museum. In 1976, an extension was opened along the former mineral line from Abergynolwyn to the new station at Nant Gwernol. In 2001, the preservation society celebrated its 50th anniversary, and in 2005 a major rebuilding and extension of Tywyn Wharf station took place, including a much-expanded facility for the Narrow Gauge Railway Museum.
 
 ![A steam train from the Talyllyn Railway travelling through the lush Welsh Afon Fathew valley. With purple foxglove flowers in the foreground, and green forest in the background.](../../assets/img/things-to-do/the-talyllyn-railway/inline/s8henfsp9d.jpg)
+
 <h3>Narrow Guage Railway Museum</h3>
 Tywyn Wharf station is also home to the <a href="https://narrowgaugerailwaymuseum.org.uk" rel="nofollow noopener" target="_blank">Narrow Gauge Railway Museum</a>, which tells the fascinating story of over 90 little railways across Britain and their 200 year history. Enjoy the museum experience through video, sound and with over 800 items on display - from complete locomotives to smaller pieces such as signalling equipment and tickets.
 
 The museum also features exhibits on the Talyllyn Railway steam, showcasing its historical significance and the scenic journeys through the picturesque Fathew valley in Snowdonia National Park.
 
 See how narrow gauge railways transformed the Welsh slate industry and how the trains were used during World War 1. Learn how a steam locomotive works, and take the controls on the footplate of <em>William Finlay</em>.
+
 <h2>Map of the Talyllyn Route</h2>
 ![A map of the route of the Talyllyn Railway. Starting at Tywyn Wharf, and travelling to Nant Gwernol. The railway route passes through Pendre station, Rhydyronen, Brynglas, Dolgoch, and Abergynolwyn too.](../../assets/img/things-to-do/the-talyllyn-railway/inline/talyllyn-map.jpeg)
 <h2>How to get to the Talyllyn Railway</h2>

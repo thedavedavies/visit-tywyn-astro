@@ -27,13 +27,7 @@ const { heroImage = null, breadcrumbs = [] } = Astro.props;
 	<div class={styles.container}>
 		<div class={styles.branding}>
 			<a href="/" rel="home" class={styles.logoLink} aria-label={`${SITE.name} home`}>
-				<Image
-					class={styles.logo}
-					src={logoSrc}
-					alt={SITE.name}
-					layout="fixed"
-					loading="eager"
-				/>
+				<Image class={styles.logo} src={logoSrc} alt={SITE.name} layout="fixed" loading="eager" />
 			</a>
 			<p class={styles.titleHidden} aria-hidden="true">
 				<a href="/" rel="home" tabindex="-1">{SITE.name}</a>

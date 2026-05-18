@@ -14,5 +14,3 @@ photo:
   alt: Whitehall
 trip_advisor_link: 'https://www.tripadvisor.co.uk/Restaurant_Review-g552038-d2222420-Reviews-Whitehall-Tywyn_Gwynedd_North_Wales_Wales.html'
 ---
-
-

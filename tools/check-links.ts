@@ -112,7 +112,7 @@ function isReachable(
 	target: string,
 	pages: Set<string>,
 	files: Set<string>,
-	redirects: { exact: Set<string>; prefixes: string[] }
+	redirects: { exact: Set<string>; prefixes: string[] },
 ): boolean {
 	if (pages.has(target)) return true;
 	if (files.has(target)) return true;
@@ -263,7 +263,9 @@ if (buildBrokenCount > 0) {
 }
 
 if (brokenFragmentCount > 0) {
-	console.log(`\n=== Anchor fragments referenced but missing on target page: ${brokenFragmentCount} ===\n`);
+	console.log(
+		`\n=== Anchor fragments referenced but missing on target page: ${brokenFragmentCount} ===\n`,
+	);
 	const sorted = [...brokenFragments.entries()].sort(([a], [b]) => a.localeCompare(b));
 	for (const [target, sources] of sorted) {
 		console.log(`# ${target}`);
@@ -275,7 +277,7 @@ if (brokenFragmentCount > 0) {
 
 if (devBrokenCount > 0) {
 	console.log(
-		`\n=== 404 on dev server (${DEV_BASE}) but reachable in prod via _redirects: ${devBrokenCount} ===\n`
+		`\n=== 404 on dev server (${DEV_BASE}) but reachable in prod via _redirects: ${devBrokenCount} ===\n`,
 	);
 	const sorted = [...devBroken.entries()].sort(([a], [b]) => a.localeCompare(b));
 	for (const [target, sources] of sorted) {

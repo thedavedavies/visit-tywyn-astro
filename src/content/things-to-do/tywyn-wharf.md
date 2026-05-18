@@ -20,6 +20,7 @@ seo:
 ---
 
 Located right in the centre of the town, Tywyn Wharf is a must-visit destination for anyone interested in history, trains, or stunning scenery. This historic wharf is the starting point of the <a href="/things-to-do/the-talyllyn-railway/">Talyllyn Railway</a>, a narrow-gauge railway that has been operating since 1865 and is one of the oldest in the world. Here's everything you need to know about visiting Tywyn Wharf.
+
 <h2>Getting to Tywyn Wharf</h2>
 Tywyn Wharf is located in the center of Tywyn, a small town on the west coast of Wales. The town is easily accessible by car, train, or bus. If you're driving, there is a large car park adjacent to the wharf. If you're taking the train, the Talyllyn Railway operates regular services from Tywyn to <a href="/things-to-do/nant-gwernol/">Nant Gwernol</a>, passing through some stunning scenery along the way.
 <h2>Exploring Tywyn Wharf</h2>

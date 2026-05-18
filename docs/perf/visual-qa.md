@@ -1,5 +1,5 @@
 ---
-title: "Visual QA: WP → Astro"
+title: 'Visual QA: WP → Astro'
 type: visual-qa
 status: captured
 date: 2026-04-30
@@ -14,13 +14,13 @@ fixes branch (`refactor/perf-pass`, post-merge of
 
 ## Pages compared
 
-| Page | Desktop | Mobile |
-|------|---------|--------|
-| `/` (home) | ✓ | ✓ |
-| `/eating/` (listing) | ✓ | ✓ |
-| `/eating/dovey-inn/` (venue detail) | ✓ | n/a |
-| `/things-to-do/cadair-idris/` (activity detail with hero) | ✓ | n/a |
-| `/contact/` (form page) | ✓ | n/a |
+| Page                                                      | Desktop | Mobile |
+| --------------------------------------------------------- | ------- | ------ |
+| `/` (home)                                                | ✓       | ✓      |
+| `/eating/` (listing)                                      | ✓       | ✓      |
+| `/eating/dovey-inn/` (venue detail)                       | ✓       | n/a    |
+| `/things-to-do/cadair-idris/` (activity detail with hero) | ✓       | n/a    |
+| `/contact/` (form page)                                   | ✓       | n/a    |
 
 ## Findings
 
@@ -67,7 +67,7 @@ fixes branch (`refactor/perf-pass`, post-merge of
 ### Material gap (already known, next task)
 
 - **`/contact/` form is a placeholder.** The Gravity Forms field
-  group on WP (Name, Email *required*, Message *required*, Submit)
+  group on WP (Name, Email _required_, Message _required_, Submit)
   is replaced on Astro with a single italic line: "The contact form
   is being rebuilt. For now, please reach us via the social links
   above or by email." This is the open follow-up the README has
@@ -94,6 +94,7 @@ content, sidebar, cards) and actively better where it diverges
 No visual regressions found in the desktop or mobile passes.
 
 **Ready for launch from a visual-fidelity standpoint**, gated on:
+
 1. The `/contact/` form being wired up (next task).
 2. A 5-minute eyeball pass on the iframe-heavy markdown pages and
    any Welsh-diacritics pages, post-deploy.

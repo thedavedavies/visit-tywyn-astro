@@ -12,6 +12,7 @@ updated: 2025-01-31
 <strong>Last updated: 01/02/2025</strong>
 
 Like most websites, <strong>visit-tywyn.co.uk</strong> uses cookies to improve your browsing experience. This policy explains what cookies we use, why we use them, and how you can manage your preferences.
+
 <h3>1. What Are Cookies?</h3>
 Cookies are small text files placed on your device when you visit a website. They help websites remember your preferences, analyse visitor behaviour, and improve functionality. Some cookies are essential for the site to work, while others help us improve user experience.
 <h3>2. What Cookies Do We Use?</h3>
@@ -39,6 +40,7 @@ For more details, please see Google's <a href="https://policies.google.com/techn
 We may update this policy to reflect changes in law or technology. Please check this page regularly for updates.
 
 <em>This cookie policy was last updated on 1st February 2025.</em>
+
 <h3>While You’re Here…</h3>
 We’re also using a great wave icon made by <strong>Carol Ourivio</strong> from The Noun Project.
 

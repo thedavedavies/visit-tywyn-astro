@@ -10,10 +10,7 @@ import { absoluteUrl } from '../../lib/url';
 const page = await getEntry('pages', 'events');
 const Content = page ? (await render(page)).Content : null;
 
-const breadcrumbs = [
-	{ label: 'Home', href: '/' },
-	{ label: 'Events' },
-];
+const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Events' }];
 
 const events = upcomingEvents();
 
@@ -38,7 +35,7 @@ const jsonLd: (Record<string, unknown> | null)[] = [
 				name: ev.title,
 				image: ev.image ?? undefined,
 				description: ev.summary || undefined,
-			}))
+			})),
 	),
 	...events.map((ev) =>
 		eventSchema({
@@ -49,17 +46,15 @@ const jsonLd: (Record<string, unknown> | null)[] = [
 			url: ev.primaryUrl,
 			image: ev.image,
 			description: ev.summary || undefined,
-		})
+		}),
 	),
 ];
 ---
 
 <PageLayout
 	title={page?.data.seo?.title ?? page?.data.title ?? 'Events in Tywyn'}
-	description={
-		page?.data.seo?.description ??
-		'Upcoming festivals, fairs, and events in Tywyn and the surrounding villages.'
-	}
+	description={page?.data.seo?.description ??
+		'Upcoming festivals, fairs, and events in Tywyn and the surrounding villages.'}
 	heroImage={page?.data.hero_image}
 	breadcrumbs={breadcrumbs}
 	jsonLd={jsonLd}

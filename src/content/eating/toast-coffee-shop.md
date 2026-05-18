@@ -1,8 +1,9 @@
 ---
 title: Toast Coffee Shop
-summary: 'Toast Coffee House is the perfect place to enjoy a great cup of coffee and bite to eat.
+summary: >-
+  Toast Coffee House is the perfect place to enjoy a great cup of coffee and bite to eat.
 
-They use only the best local produce to make their coffee and food, and they''re passionate about making sure that everything is just perfect. Toast''s Toasties are made with freshly-baked bread from Tywyn Bakery, and the coffees are made with locally-roasted beans from Poblado Coffi.'
+  They use only the best local produce to make their coffee and food, and they're passionate about making sure that everything is just perfect. Toast's Toasties are made with freshly-baked bread from Tywyn Bakery, and the coffees are made with locally-roasted beans from Poblado Coffi.
 address: Bryn Gwalia, High Street, Tywyn
 dog_friendly: true
 published: 2022-10-14

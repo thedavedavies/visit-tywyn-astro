@@ -23,4 +23,3 @@ This category landing page replaces the legacy individual bed-and-breakfast list
 Featured / sponsored entries can be added to the `featured` array in the
 frontmatter — they'll render as cards above the booking search links.
 -->
-

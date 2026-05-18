@@ -35,9 +35,7 @@ const { Content } = await render(venue);
 // Use seededShuffle so the same slug always produces the same set
 // — avoids non-deterministic builds and the bias of `sort(Math.random)`.
 const others = allVenues.filter((v) => v.id !== venue.id);
-const relatedPool = venue.data.dog_friendly
-	? others.filter((v) => v.data.dog_friendly)
-	: others;
+const relatedPool = venue.data.dog_friendly ? others.filter((v) => v.data.dog_friendly) : others;
 const related = seededShuffle(relatedPool.length >= 4 ? relatedPool : others, venue.id).slice(0, 4);
 
 const breadcrumbs = [
@@ -88,12 +86,14 @@ const jsonLd = restaurant({
 		},
 	}}
 >
-	{/*
-	 * `EntryHeader` already renders its own `<header>`. The previous
-	 * outer `<header class="entry-header">` produced a nested header.
-	 * The address paragraph is a sibling, not part of the heading
-	 * group, so no semantic wrapper is needed here.
-	 */}
+	{
+		/*
+		 * `EntryHeader` already renders its own `<header>`. The previous
+		 * outer `<header class="entry-header">` produced a nested header.
+		 * The address paragraph is a sibling, not part of the heading
+		 * group, so no semantic wrapper is needed here.
+		 */
+	}
 	<EntryHeader title={venue.data.title} />
 	{
 		venue.data.address && (
@@ -129,7 +129,8 @@ const jsonLd = restaurant({
 			venue.data.dog_friendly && (
 				<p class="dog-friendly-note">
 					{venue.data.title} is dog friendly, and is a brilliant place to bring your well-behaved
-					pup! <a href="/dog-friendly-cafes/">Discover more dog friendly bars, restaurants and cafes</a>.
+					pup!{' '}
+					<a href="/dog-friendly-cafes/">Discover more dog friendly bars, restaurants and cafes</a>.
 				</p>
 			)
 		}
@@ -163,7 +164,9 @@ const jsonLd = restaurant({
 	</div>
 
 	<RelatedItems
-		heading={venue.data.dog_friendly ? 'More dog-friendly places to eat' : 'More places to eat in Tywyn'}
+		heading={venue.data.dog_friendly
+			? 'More dog-friendly places to eat'
+			: 'More places to eat in Tywyn'}
 		headingId="related-eating"
 		items={related.map((v) => ({
 			href: eatingUrl(v.id),

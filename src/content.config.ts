@@ -158,7 +158,7 @@ const stayCategories = defineCollection({
 						label: z.string(),
 						url: z.string().url(),
 						note: z.string().optional(),
-					})
+					}),
 				)
 				.default([]),
 			featured: z
@@ -170,7 +170,7 @@ const stayCategories = defineCollection({
 						image: imageBlock(image).optional(),
 						sponsored: z.boolean().default(false),
 						affiliate_id: z.string().optional(),
-					})
+					}),
 				)
 				.default([]),
 			seo: seoSchema,

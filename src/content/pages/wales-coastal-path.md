@@ -9,6 +9,7 @@ seo:
 Wales is the first country in the World to have a coastal path going the whole way around it, and you’ll find some of the most spectacular scenery along the Cardigan Bay Coastline, and through Tywyn.
 
 The entire Wales Coast Path is 870 miles long and takes you on a wonderful journey along the Welsh coast, offering stunning views of Cardigan Bay. The walk between Aberdyfi to Tywyn may only be 4 miles long, but is special for its natural beauty, history and ease of access.
+
 <h2>About the Wales Coast Path</h2>
 The Wales Coast Path has all sorts of landscapes - rugged cliffs and hidden coves, seaside towns and big beaches. This coastal path traverses through various landscapes, including national parks, showing off the natural beauty of Wales and is a way to experience its rich cultural and historical heritage.
 <h2>Aberdyfi to Tywyn Walk</h2>

@@ -1,13 +1,13 @@
 ---
 title: Tywyn Magic Lantern Cinema
-subtitle: 'Find out what''s on in Tywyn Cinema'
+subtitle: "Find out what's on in Tywyn Cinema"
 hero_image:
   src: '../../assets/img/pages/cinema.jpg'
   alt: Tywyn Magic Lantern Cinema
 updated: 2022-10-07
 seo:
-  title: 'What''s on in Tywyn Magic Lantern Cinema?'
-  description: 'Find out what''s showing in Tywyn Magic Lantern Cinema.'
+  title: "What's on in Tywyn Magic Lantern Cinema?"
+  description: "Find out what's showing in Tywyn Magic Lantern Cinema."
   canonical: 'https://visit-tywyn.co.uk/cinema/'
 ---
 
@@ -16,5 +16,6 @@ Come to the Magic Lantern Cinema in Tywyn – the UK’s best Independent Cinema
 Find out <a href="https://www.tywyncinema.co.uk/films" target="_blank" rel="noopener">what's on in Tywyn cinema this month</a>.
 
 ![Tywyn cinema](../../assets/img/pages/cinema-inline/tywyn-cinema.png)
+
 <h2>Tywyn Cinema's History</h2>
 Tywyn's Magic Lantern Cinema has been in Tywyn since 1893. First built as the town assembly rooms it's been used for holding badminton practice and variety performances, and has been showing films for over 120 years! Today you can watch Live Streaming from The RSC and National Theatre, live comedy, and live music.

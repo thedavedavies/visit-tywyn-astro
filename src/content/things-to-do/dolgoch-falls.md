@@ -30,6 +30,7 @@ Dolgoch Falls are a series of three impressive waterfalls forming part of the Na
 The walk up the waterfalls begins at the <a href="/holiday-accommodation/bed-and-breakfast/">The Dolgoch B&amp;B</a>, along a beautiful stream and past some deep caves - giving excellent views for miles at the top. The Dolgoch Falls Hotel, located near the waterfalls, offers a cafe and a car park for visitors.
 
 Dolgoch Station is about 200m from the start of the trail, providing easy access for those arriving via the <a href="/things-to-do/the-talyllyn-railway/">Talyllyn steam railway</a>. There are clear signs from the station directing you towards the waterfalls.
+
 <h2>Where are Dolgoch Falls?</h2>
 Dolgoch falls are a short 4 mile drive northeast of the <a href="/things-to-do/tywyn-beach/">seaside town of Tywyn</a> on the B4405 easily reached from Tywyn or Machynlleth. Dolgoch Falls are located in Snowdonia National Park. Or alternatively, you can get there by steam train! The Talyllyn Railway stops at Dolgoch Falls, and there are clear signs from the station directing you towards the water falls.
 <h2>Can you take dogs to Dolgoch Falls?</h2>

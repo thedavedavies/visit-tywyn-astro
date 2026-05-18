@@ -46,6 +46,7 @@ Today Castell y Bere under the protection of Cadw rather than the Welsh Princes,
 The proximity to Snowdonia National Park enhances the allure of visiting Castell y Bere, with numerous walking opportunities and scenic beauty.
 
 Strung along a jagged rocky outcrop in the Dysynni Valley at the foot of the mighty <a href="/things-to-do/cadair-idris/">Cadair Idris</a>, Castell y Bere is especially good at evoking the spirit and atmosphere of Wales’s native castles.
+
 <h2>Castell y Bere Virtual Tour</h2>
 <div class="embed-container"><iframe style="border: 0;" src="https://www.4piproductions.com/castellybere/" title="Castell y Bere virtual tour" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allow=""></iframe></div>
 <small>Virtual tour provided by Cadw</small>
@@ -53,5 +54,6 @@ Strung along a jagged rocky outcrop in the Dysynni Valley at the foot of the mig
 To get to Castell y Bere, take the A483 north-east from Tywyn, turn right onto the B4405 (signed to Talyllyn) to Abergynolwyn and left in the village at the signpost to Castell y Bere.
 
 You'll see a visitor information board at the car park providing some wonderful information about the castle ruins, which are then just a short walk from this car park. There’s enough parking for up to a dozen vehicles, and parking at Castell y Bere is free.
+
 <h2>Are dogs allowed at Castell y Bere</h2>
 Yes - dogs are allowed up to Castell y Bere.

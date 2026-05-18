@@ -15,5 +15,3 @@ photo:
   alt: Pendre Garden Centre and Cafe
 trip_advisor_link: 'https://www.tripadvisor.co.uk/Restaurant_Review-g552038-d4072256-Reviews-Pendre_Garden_Centre_and_Cafe-Tywyn_Gwynedd_North_Wales_Wales.html'
 ---
-
-

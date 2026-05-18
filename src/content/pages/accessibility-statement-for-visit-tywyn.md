@@ -23,7 +23,6 @@ At <strong>Visit Tywyn</strong>, we are committed to ensuring our website is acc
     </ul>
   </section>
 
-
 <section>
     <h2>Ongoing Improvements</h2>
     <p>We recognise that web accessibility is an ongoing effort. To maintain and enhance usability, we partner with <a href="https://davedavies.dev">digital accessibility consultants</a> to conduct regular audits and implement best practices.</p>

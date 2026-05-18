@@ -36,7 +36,7 @@ const { Content } = await render(activity);
 // of `sort(Math.random)` and the per-build cache-thrash it causes.
 const related = seededShuffle(
 	allActivities.filter((a) => a.id !== activity.id),
-	activity.id
+	activity.id,
 ).slice(0, 4);
 
 const breadcrumbs = [
@@ -82,12 +82,14 @@ const jsonLd = touristAttraction({
 		},
 	}}
 >
-	{/*
-	 * `EntryHeader` already renders its own `<header>`. The previous
-	 * outer `<header class="entry-header">` produced a nested header.
-	 * The address paragraph is a sibling, not part of the heading
-	 * group, so no semantic wrapper is needed here.
-	 */}
+	{
+		/*
+		 * `EntryHeader` already renders its own `<header>`. The previous
+		 * outer `<header class="entry-header">` produced a nested header.
+		 * The address paragraph is a sibling, not part of the heading
+		 * group, so no semantic wrapper is needed here.
+		 */
+	}
 	<EntryHeader title={activity.data.title} subtitle={activity.data.subtitle} />
 	{
 		activity.data.address && (

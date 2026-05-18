@@ -14,13 +14,10 @@ const page = await getEntry('pages', 'where-to-stay');
 const Content = page ? (await render(page)).Content : null;
 
 const categories = (await getCollection('stay-categories')).sort(
-	(a, b) => a.data.menu_order - b.data.menu_order
+	(a, b) => a.data.menu_order - b.data.menu_order,
 );
 
-const breadcrumbs = [
-	{ label: 'Home', href: '/' },
-	{ label: 'Where to stay' },
-];
+const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Where to stay' }];
 
 const jsonLd = [
 	webPage({
@@ -38,16 +35,15 @@ const jsonLd = [
 			name: category.data.title,
 			image: category.data.hero_image?.src.src,
 			description: category.data.intro,
-		}))
+		})),
 	),
 ];
 ---
 
 <PageLayout
 	title={page?.data.seo?.title ?? page?.data.title ?? 'Where to stay in Tywyn'}
-	description={
-		page?.data.seo?.description ?? 'Find holiday accommodation in Tywyn — camping, caravans, self-catering cottages, and B&Bs.'
-	}
+	description={page?.data.seo?.description ??
+		'Find holiday accommodation in Tywyn — camping, caravans, self-catering cottages, and B&Bs.'}
 	heroImage={page?.data.hero_image}
 	breadcrumbs={breadcrumbs}
 	jsonLd={jsonLd}

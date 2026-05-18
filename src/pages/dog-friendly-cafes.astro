@@ -10,13 +10,10 @@ const page = await getEntry('pages', 'dog-friendly-cafes');
 const Content = page ? (await render(page)).Content : null;
 
 const dogFriendly = (await getCollection('eating', (e) => e.data.dog_friendly === true)).sort(
-	(a, b) => a.data.title.localeCompare(b.data.title)
+	(a, b) => a.data.title.localeCompare(b.data.title),
 );
 
-const breadcrumbs = [
-	{ label: 'Home', href: '/' },
-	{ label: 'Dog friendly cafes' },
-];
+const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Dog friendly cafes' }];
 
 const jsonLd = itemList(
 	'Dog friendly cafes and restaurants in Tywyn',
@@ -25,7 +22,7 @@ const jsonLd = itemList(
 		name: venue.data.title,
 		image: venue.data.photo?.src.src,
 		description: venue.data.summary,
-	}))
+	})),
 );
 ---
 

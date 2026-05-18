@@ -38,13 +38,7 @@ interface Props {
 	showAds?: boolean;
 }
 
-const {
-	thingsToDo,
-	eating,
-	showWeather = true,
-	showTides = true,
-	showAds = true,
-} = Astro.props;
+const { thingsToDo, eating, showWeather = true, showTides = true, showAds = true } = Astro.props;
 ---
 
 <aside class={styles.sidebar} aria-label="Plan your visit">

@@ -44,9 +44,7 @@ const RawEventSchema = z.object({
 	external_label: z.string().optional(),
 });
 
-const EventsJsonSchema = z
-	.object({ events: z.array(RawEventSchema).optional() })
-	.passthrough();
+const EventsJsonSchema = z.object({ events: z.array(RawEventSchema).optional() }).passthrough();
 
 export interface NormalisedEvent {
 	title: string;
@@ -152,7 +150,7 @@ export function getEvents(now: Date = new Date()): NormalisedEvent[] {
 		const endDate = ev.end_date ?? ev.start_date;
 		const endTime =
 			ev.end_time ??
-			(ev.end_date && ev.end_date !== ev.start_date ? '23:59' : ev.start_time ?? '23:59');
+			(ev.end_date && ev.end_date !== ev.start_date ? '23:59' : (ev.start_time ?? '23:59'));
 		const endIso = combine(endDate, endTime, true);
 		const start = new Date(startIso);
 		const end = new Date(endIso);

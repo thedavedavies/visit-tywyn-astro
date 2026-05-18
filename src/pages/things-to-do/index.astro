@@ -9,13 +9,10 @@ import { thingsToDoUrl } from '../../lib/url';
 import thingsToDoBannerSrc from '../../assets/img/heroes/things-to-do.jpg';
 
 const activities = (await getCollection('things-to-do')).sort((a, b) =>
-	a.data.title.localeCompare(b.data.title)
+	a.data.title.localeCompare(b.data.title),
 );
 
-const breadcrumbs = [
-	{ label: 'Home', href: '/' },
-	{ label: 'Things to do' },
-];
+const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Things to do' }];
 
 const jsonLd = itemList(
 	'Things to do in Tywyn',
@@ -24,7 +21,7 @@ const jsonLd = itemList(
 		name: activity.data.title,
 		image: activity.data.hero_image?.src.src,
 		description: activity.data.summary,
-	}))
+	})),
 );
 ---
 
@@ -60,9 +57,7 @@ const jsonLd = itemList(
 					/>
 				);
 				const showAd = (idx + 1) % 3 === 0 && idx < activities.length - 1;
-				return showAd
-					? [card, <AdSlot slot="7221027714" placement="in-feed" />]
-					: [card];
+				return showAd ? [card, <AdSlot slot="7221027714" placement="in-feed" />] : [card];
 			})
 		}
 	</div>

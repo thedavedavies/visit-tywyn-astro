@@ -9,10 +9,7 @@ import { webPage } from '../lib/jsonld';
 const page = await getEntry('pages', 'webcam');
 const Content = page ? (await render(page)).Content : null;
 
-const breadcrumbs = [
-	{ label: 'Home', href: '/' },
-	{ label: 'Webcam' },
-];
+const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Webcam' }];
 
 const jsonLd = webPage({
 	title: page?.data.seo?.title ?? page?.data.title ?? 'Tywyn beach webcam',
@@ -29,10 +26,7 @@ const jsonLd = webPage({
 	breadcrumbs={breadcrumbs}
 	jsonLd={jsonLd}
 >
-	<EntryHeader
-		title={page?.data.title ?? 'Tywyn beach webcam'}
-		subtitle={page?.data.subtitle}
-	/>
+	<EntryHeader title={page?.data.title ?? 'Tywyn beach webcam'} subtitle={page?.data.subtitle} />
 
 	<div class="entry-content">
 		{Content && <Content />}
@@ -47,8 +41,12 @@ const jsonLd = webPage({
 				scrolling="no"
 			/>
 			<p>
-				The Tywyn webcam is provided by <a href="https://tywynctc.co.uk/" target="_blank" rel="noopener noreferrer nofollow"
-					>Tywyn CTC<span class="sr-only"> (opens in new tab)</span></a>.
+				The Tywyn webcam is provided by <a
+					href="https://tywynctc.co.uk/"
+					target="_blank"
+					rel="noopener noreferrer nofollow"
+					>Tywyn CTC<span class="sr-only"> (opens in new tab)</span></a
+				>.
 			</p>
 		</div>
 	</div>

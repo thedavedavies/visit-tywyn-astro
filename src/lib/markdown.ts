@@ -32,7 +32,10 @@ export function extractFaq(body: string): FaqEntry[] {
 	const out: FaqEntry[] = [];
 	let m: RegExpExecArray | null;
 	while ((m = re.exec(scope))) {
-		const question = m[1]!.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+		const question = m[1]!
+			.replace(/<[^>]+>/g, '')
+			.replace(/\s+/g, ' ')
+			.trim();
 		const answer = m[2]!
 			.replace(/<[^>]+>/g, ' ')
 			.replace(/\s+/g, ' ')

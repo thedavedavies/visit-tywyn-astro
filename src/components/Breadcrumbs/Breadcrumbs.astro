@@ -32,7 +32,11 @@ const { items } = Astro.props;
 							) : (
 								<span aria-current={isLast ? 'page' : undefined}>{item.label}</span>
 							)}
-							{!isLast && <span class={styles.separator} aria-hidden="true">»</span>}
+							{!isLast && (
+								<span class={styles.separator} aria-hidden="true">
+									»
+								</span>
+							)}
 						</li>
 					);
 				})}

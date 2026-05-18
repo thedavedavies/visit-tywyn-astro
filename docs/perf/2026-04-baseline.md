@@ -1,5 +1,5 @@
 ---
-title: "perf: Pre-pass baseline"
+title: 'perf: Pre-pass baseline'
 type: perf-baseline
 status: captured
 date: 2026-04-30
@@ -26,7 +26,7 @@ re-run.
 - **Tool:** [`tools/perf/measure-pages.ts`](../../tools/perf/measure-pages.ts) — parses each
   rendered HTML file in `dist/`, extracts every `<img src>`,
   `<link rel="stylesheet">`, `<script src>`, and `<link rel="preload"
-  as="font">`, plus `url(...)` references inside any same-origin
+as="font">`, plus `url(...)` references inside any same-origin
   stylesheet, and sums on-disk file sizes.
 - **Sample pages** (per Unit 0 of the plan):
   1. `/` (home — banner image LCP)
@@ -43,10 +43,10 @@ re-run.
 
 ## Build wall-clock
 
-| Build | Wall-clock | Pages built |
-|-------|------------|-------------|
-| Cold (`dist/` removed)  | 4.57 s | 48 |
-| Warm (incremental)      | 3.05 s | 48 |
+| Build                  | Wall-clock | Pages built |
+| ---------------------- | ---------- | ----------- |
+| Cold (`dist/` removed) | 4.57 s     | 48          |
+| Warm (incremental)     | 3.05 s     | 48          |
 
 Total `dist/` size: **23 MB**, of which **18 MB is unprocessed
 `public/img/`** (155 raster files: 73 webp, 68 jpg, 12 jpeg, 3 png).
@@ -54,13 +54,13 @@ Total `dist/` size: **23 MB**, of which **18 MB is unprocessed
 
 ## Per-page weight (encoded bytes from disk)
 
-| Path | Total | Image | CSS | JS | Doc | External reqs |
-|------|------:|------:|----:|---:|----:|--------------:|
-| `/` | **137.6 KB** | 108.3 KB | 11.1 KB | 2.2 KB | 16.1 KB | 4 |
-| `/eating/` | **1.61 MB** | 1.56 MB | 11.1 KB | 2.2 KB | 35.5 KB | 4 |
-| `/eating/dovey-inn/` | **443.5 KB** | 404.4 KB | 11.1 KB | 2.2 KB | 25.8 KB | 4 |
-| `/things-to-do/cadair-idris/` | **900.2 KB** | 868.0 KB | 11.1 KB | 2.2 KB | 18.9 KB | 4 |
-| `/things-to-do/magic-lantern-cinema/` | **1.42 MB** | 1.39 MB | 11.1 KB | 2.2 KB | 22.7 KB | 4 |
+| Path                                  |        Total |    Image |     CSS |     JS |     Doc | External reqs |
+| ------------------------------------- | -----------: | -------: | ------: | -----: | ------: | ------------: |
+| `/`                                   | **137.6 KB** | 108.3 KB | 11.1 KB | 2.2 KB | 16.1 KB |             4 |
+| `/eating/`                            |  **1.61 MB** |  1.56 MB | 11.1 KB | 2.2 KB | 35.5 KB |             4 |
+| `/eating/dovey-inn/`                  | **443.5 KB** | 404.4 KB | 11.1 KB | 2.2 KB | 25.8 KB |             4 |
+| `/things-to-do/cadair-idris/`         | **900.2 KB** | 868.0 KB | 11.1 KB | 2.2 KB | 18.9 KB |             4 |
+| `/things-to-do/magic-lantern-cinema/` |  **1.42 MB** |  1.39 MB | 11.1 KB | 2.2 KB | 22.7 KB |             4 |
 
 Image bytes dominate every page (78–97% of total). The four
 external requests on every page are the same (Lato CSS, GA loader,
@@ -75,13 +75,13 @@ LCP element confirmation needs a runtime PerformanceObserver run on
 deployed staging — these are best-guess based on byte size and DOM
 position.
 
-| Path | Likely LCP element | Bytes |
-|------|--------------------|------:|
-| `/` | `/img/2022/05/surfcam-1.jpg` (BannerImage) | 109.7 KB |
-| `/eating/` | `/img/2022/05/photo0565.jpg` (first VenueCard) | 244.0 KB |
-| `/eating/dovey-inn/` | `/img/2022/05/enjoy-afternoon-tea-at.jpg` (venue hero) | 117.5 KB |
-| `/things-to-do/cadair-idris/` | `/img/2022/07/cadair_idris-scaled.jpg` (hero) | 289.7 KB |
-| `/things-to-do/magic-lantern-cinema/` | `/img/2022/10/tywyn-cinema.png` (markdown body) | 911.1 KB |
+| Path                                  | Likely LCP element                                     |    Bytes |
+| ------------------------------------- | ------------------------------------------------------ | -------: |
+| `/`                                   | `/img/2022/05/surfcam-1.jpg` (BannerImage)             | 109.7 KB |
+| `/eating/`                            | `/img/2022/05/photo0565.jpg` (first VenueCard)         | 244.0 KB |
+| `/eating/dovey-inn/`                  | `/img/2022/05/enjoy-afternoon-tea-at.jpg` (venue hero) | 117.5 KB |
+| `/things-to-do/cadair-idris/`         | `/img/2022/07/cadair_idris-scaled.jpg` (hero)          | 289.7 KB |
+| `/things-to-do/magic-lantern-cinema/` | `/img/2022/10/tywyn-cinema.png` (markdown body)        | 911.1 KB |
 
 The `magic-lantern-cinema` page is the markdown-body-LCP test case
 called out in the plan: a 911 KB inline PNG in the article body
@@ -95,13 +95,13 @@ Every `<img>` in the rendered HTML lacks `width`/`height` attributes
 on all but the header logo. Browsers cannot reserve space, so each
 image triggers a layout shift when it loads.
 
-| Path | `<img>` missing width/height |
-|------|-----------------------------:|
-| `/` | 1 of 2 |
-| `/eating/` | **19 of 20** |
-| `/eating/dovey-inn/` | 5 of 6 |
-| `/things-to-do/cadair-idris/` | 5 of 7 |
-| `/things-to-do/magic-lantern-cinema/` | 5 of 7 |
+| Path                                  | `<img>` missing width/height |
+| ------------------------------------- | ---------------------------: |
+| `/`                                   |                       1 of 2 |
+| `/eating/`                            |                 **19 of 20** |
+| `/eating/dovey-inn/`                  |                       5 of 6 |
+| `/things-to-do/cadair-idris/`         |                       5 of 7 |
+| `/things-to-do/magic-lantern-cinema/` |                       5 of 7 |
 
 Plus 4 `<iframe>` references in markdown bodies without
 `loading="lazy"` (Unit 14 fixes), and the AdSense slot has no
@@ -137,13 +137,13 @@ UA tag and will be dropped in Unit 12.
 - 0 `.avif`. Whole format dimension is unused.
 - Top outliers (already flagged in the plan):
 
-| File | Bytes | Used on |
-|------|------:|---------|
-| `/img/2022/10/tywyn-cinema.png` | 911 KB | `/things-to-do/magic-lantern-cinema/` (markdown body), `/things-to-do/magic-lantern-cinema/` |
-| `/img/2022/06/dolgoch-2-scaled.jpg` | 596 KB | `/things-to-do/dolgoch-falls/` |
-| `/img/2022/06/dolgoch-1-scaled.jpg` | 570 KB | `/things-to-do/dolgoch-falls/` |
-| `/img/2022/06/0812889_1_4.jpg` | 324 KB | Talyllyn gallery |
-| `/img/2022/07/cadair_idris-scaled.jpg` | 290 KB | Cadair Idris hero |
+| File                                   |  Bytes | Used on                                                                                      |
+| -------------------------------------- | -----: | -------------------------------------------------------------------------------------------- |
+| `/img/2022/10/tywyn-cinema.png`        | 911 KB | `/things-to-do/magic-lantern-cinema/` (markdown body), `/things-to-do/magic-lantern-cinema/` |
+| `/img/2022/06/dolgoch-2-scaled.jpg`    | 596 KB | `/things-to-do/dolgoch-falls/`                                                               |
+| `/img/2022/06/dolgoch-1-scaled.jpg`    | 570 KB | `/things-to-do/dolgoch-falls/`                                                               |
+| `/img/2022/06/0812889_1_4.jpg`         | 324 KB | Talyllyn gallery                                                                             |
+| `/img/2022/07/cadair_idris-scaled.jpg` | 290 KB | Cadair Idris hero                                                                            |
 
 ## Reproduction
 

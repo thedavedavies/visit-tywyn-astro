@@ -1,5 +1,5 @@
 ---
-title: "perf: Stage 1 post-pass measurement"
+title: 'perf: Stage 1 post-pass measurement'
 type: perf-measurement
 status: captured
 date: 2026-04-30
@@ -22,13 +22,13 @@ because format migration is Stage 2's job.
 
 ## Per-page deltas
 
-| Path | Total bytes (Δ) | Images bytes (Δ) | External reqs (Δ) | CLS risk (Δ) |
-|------|-----------------:|------------------:|-------------------:|--------------:|
-| `/` | 162.7 KB (+25.1 KB) | 108.3 KB (=) | **2** (-2) | **0/2** (-1) |
-| `/eating/` | 1.64 MB (+27 KB) | 1.56 MB (=) | **2** (-2) | **0/20** (-19) |
-| `/eating/dovey-inn/` | 468.7 KB (+25.2 KB) | 404.4 KB (=) | **2** (-2) | **0/6** (-5) |
-| `/things-to-do/cadair-idris/` | 925.4 KB (+25.2 KB) | 868.0 KB (=) | **2** (-2) | **0/7** (-5) |
-| `/things-to-do/magic-lantern-cinema/` | 1.45 MB (+25.2 KB) | 1.39 MB (=) | **2** (-2) | **0/7** (-5) |
+| Path                                  |     Total bytes (Δ) | Images bytes (Δ) | External reqs (Δ) |   CLS risk (Δ) |
+| ------------------------------------- | ------------------: | ---------------: | ----------------: | -------------: |
+| `/`                                   | 162.7 KB (+25.1 KB) |     108.3 KB (=) |        **2** (-2) |   **0/2** (-1) |
+| `/eating/`                            |    1.64 MB (+27 KB) |      1.56 MB (=) |        **2** (-2) | **0/20** (-19) |
+| `/eating/dovey-inn/`                  | 468.7 KB (+25.2 KB) |     404.4 KB (=) |        **2** (-2) |   **0/6** (-5) |
+| `/things-to-do/cadair-idris/`         | 925.4 KB (+25.2 KB) |     868.0 KB (=) |        **2** (-2) |   **0/7** (-5) |
+| `/things-to-do/magic-lantern-cinema/` |  1.45 MB (+25.2 KB) |      1.39 MB (=) |        **2** (-2) |   **0/7** (-5) |
 
 The +25 KB per page total is the Lato 400-latin woff2 that now ships
 from origin. Pre-pass it travelled from `fonts.gstatic.com` and was

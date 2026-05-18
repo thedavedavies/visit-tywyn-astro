@@ -174,7 +174,10 @@ function extractTagText(html: string, tag: string): string[] {
 	const re = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, 'gi');
 	const out: string[] = [];
 	for (const m of html.matchAll(re)) {
-		const text = m[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+		const text = m[1]
+			.replace(/<[^>]+>/g, '')
+			.replace(/\s+/g, ' ')
+			.trim();
 		if (text) out.push(decodeEntities(text));
 	}
 	return out;
@@ -215,7 +218,10 @@ function extractBodyText(html: string): string {
 		.replace(/<header[\s\S]*?<\/header>/gi, '')
 		.replace(/<footer[\s\S]*?<\/footer>/gi, '')
 		.replace(/<svg[\s\S]*?<\/svg>/gi, '');
-	const text = body.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+	const text = body
+		.replace(/<[^>]+>/g, ' ')
+		.replace(/\s+/g, ' ')
+		.trim();
 	return decodeEntities(text);
 }
 
@@ -334,7 +340,9 @@ function compare(wp: SeoSignals, astro: SeoSignals): string[] {
 	const wpH1 = wp.h1Texts.map(normalize).join('|');
 	const astroH1 = astro.h1Texts.map(normalize).join('|');
 	if (wpH1 !== astroH1) {
-		issues.push(`H1 differs\n    WP:    ${JSON.stringify(wp.h1Texts)}\n    Astro: ${JSON.stringify(astro.h1Texts)}`);
+		issues.push(
+			`H1 differs\n    WP:    ${JSON.stringify(wp.h1Texts)}\n    Astro: ${JSON.stringify(astro.h1Texts)}`,
+		);
 	}
 	if (normalize(wp.ogTitle) !== normalize(astro.ogTitle)) {
 		issues.push(`og:title differs\n    WP:    ${wp.ogTitle}\n    Astro: ${astro.ogTitle}`);

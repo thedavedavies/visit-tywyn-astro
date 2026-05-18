@@ -23,10 +23,7 @@ if (!page) {
 
 const { Content } = await render(page);
 
-const breadcrumbs = [
-	{ label: 'Home', href: '/' },
-	{ label: page.data.title },
-];
+const breadcrumbs = [{ label: 'Home', href: '/' }, { label: page.data.title }];
 
 const updatedIso = page.data.updated ? page.data.updated.toISOString() : undefined;
 const seoTitle = page.data.seo?.title || page.data.title;

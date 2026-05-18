@@ -83,8 +83,25 @@ const WEATHER_LABELS: Record<number, [string, string]> = {
 
 function compass(deg: number | null | undefined): string | null {
 	if (typeof deg !== 'number' || !Number.isFinite(deg)) return null;
-	const dirs = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
-	const idx = Math.round(((deg % 360) / 22.5)) % 16;
+	const dirs = [
+		'N',
+		'NNE',
+		'NE',
+		'ENE',
+		'E',
+		'ESE',
+		'SE',
+		'SSE',
+		'S',
+		'SSW',
+		'SW',
+		'WSW',
+		'W',
+		'WNW',
+		'NW',
+		'NNW',
+	];
+	const idx = Math.round((deg % 360) / 22.5) % 16;
 	return dirs[idx]!;
 }
 
@@ -134,7 +151,8 @@ async function refreshWeather(): Promise<boolean> {
 		forecast_days: '1',
 		temperature_unit: 'celsius',
 		wind_speed_unit: 'mph',
-		current: 'temperature_2m,apparent_temperature,weather_code,wind_speed_10m,wind_direction_10m,is_day',
+		current:
+			'temperature_2m,apparent_temperature,weather_code,wind_speed_10m,wind_direction_10m,is_day',
 		hourly: 'precipitation_probability',
 	});
 	const url = `https://api.open-meteo.com/v1/forecast?${params.toString()}`;
@@ -184,7 +202,9 @@ async function refreshWeather(): Promise<boolean> {
 	};
 
 	fs.writeFileSync(WEATHER_OUT, JSON.stringify(snapshot, null, 2) + '\n', 'utf8');
-	console.log(`  weather: ${snapshot.tempC?.toFixed(0)}C ${snapshot.summary} (rain ${snapshot.rainChance ?? '-'}%)`);
+	console.log(
+		`  weather: ${snapshot.tempC?.toFixed(0)}C ${snapshot.summary} (rain ${snapshot.rainChance ?? '-'}%)`,
+	);
 	return true;
 }
 
@@ -246,7 +266,9 @@ async function refreshTides(): Promise<boolean> {
 	};
 
 	fs.writeFileSync(TIDES_OUT, JSON.stringify(snapshot, null, 2) + '\n', 'utf8');
-	console.log(`  tides: ${upcoming.length} upcoming events, next ${upcoming[0]!.type} at ${upcoming[0]!.timeLabel}`);
+	console.log(
+		`  tides: ${upcoming.length} upcoming events, next ${upcoming[0]!.type} at ${upcoming[0]!.timeLabel}`,
+	);
 	return true;
 }
 
@@ -259,7 +281,9 @@ if (!weatherOk && !tidesOk) {
 	process.exit(1);
 }
 if (!weatherOk || !tidesOk) {
-	console.error('Partial refresh: one upstream failed. Exiting non-zero so CI surfaces the failure.');
+	console.error(
+		'Partial refresh: one upstream failed. Exiting non-zero so CI surfaces the failure.',
+	);
 	process.exit(1);
 }
 

@@ -13,6 +13,7 @@ seo:
 <div class="faqs">
 
 <strong>Why visit Tywyn? Discover the incredible scenery and the <a href="/webcam">breathtaking sunsets</a>, the long beaches, the ancient history and the <a href="/eating/index.html">local delicacies</a>!</strong>
+
 <h3>Frequently Asked Questions</h3>
 <h4>What day is Tywyn Market?</h4>
 Market Day is on a Monday, and runs from May to October.

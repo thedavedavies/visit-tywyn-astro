@@ -195,7 +195,7 @@ export function restaurant(input: RestaurantInput): JsonLd {
 						latitude: input.geo.lat,
 						longitude: input.geo.lng,
 					},
-			  }
+				}
 			: {}),
 	};
 	const sameAs = (input.sameAs ?? []).filter((u): u is string => !!u);
@@ -221,7 +221,14 @@ interface AttractionInput {
 	 * subtype-specific attributes (e.g. `MovieTheater` shows screen
 	 * times, `TrainStation` plugs into transit knowledge panels).
 	 */
-	kind?: 'MovieTheater' | 'TrainStation' | 'Museum' | 'Park' | 'Beach' | 'Mountain' | 'LandmarksOrHistoricalBuildings';
+	kind?:
+		| 'MovieTheater'
+		| 'TrainStation'
+		| 'Museum'
+		| 'Park'
+		| 'Beach'
+		| 'Mountain'
+		| 'LandmarksOrHistoricalBuildings';
 }
 
 export function touristAttraction(input: AttractionInput): JsonLd {
@@ -247,7 +254,7 @@ export function touristAttraction(input: AttractionInput): JsonLd {
 						latitude: input.geo.lat,
 						longitude: input.geo.lng,
 					},
-			  }
+				}
 			: {}),
 	};
 	const sameAs = [input.website, ...(input.sameAs ?? [])].filter((u): u is string => !!u);
@@ -305,10 +312,8 @@ export function eventSchema(input: EventInput): JsonLd {
 		? {
 				'@type': 'Place',
 				name: input.location,
-				...(input.locationAddress
-					? { address: postalAddress(input.locationAddress) }
-					: {}),
-		  }
+				...(input.locationAddress ? { address: postalAddress(input.locationAddress) } : {}),
+			}
 		: undefined;
 	const offers: JsonLd | undefined = input.offers
 		? {
@@ -317,7 +322,7 @@ export function eventSchema(input: EventInput): JsonLd {
 				priceCurrency: input.offers.priceCurrency ?? 'GBP',
 				availability: `https://schema.org/${input.offers.availability ?? 'InStock'}`,
 				...(input.offers.url ? { url: absoluteUrl(input.offers.url) } : {}),
-		  }
+			}
 		: undefined;
 	return {
 		'@context': 'https://schema.org',
@@ -389,7 +394,7 @@ export function webPage(input: ArticleInput): JsonLd {
 						'@type': 'SpeakableSpecification',
 						cssSelector: input.speakableSelector,
 					},
-			  }
+				}
 			: {}),
 		inLanguage: SITE.locale,
 	};
