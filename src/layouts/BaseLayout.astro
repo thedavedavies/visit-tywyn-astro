@@ -89,7 +89,14 @@ const ogType = isFrontPage ? 'website' : 'article';
 // `Organization` is referenced by `WebSite.publisher` via @id, so
 // emit both together to keep the graph self-consistent.
 const autoSchema: Record<string, unknown>[] = [organization(), website()];
-const crumbSchema = breadcrumbList(breadcrumbs, canonicalHref);
+// Match Yoast: every URL ships at least a `[Home]` BreadcrumbList,
+// including the front page itself. The visible <Breadcrumbs>
+// component still receives the page's original `breadcrumbs` prop
+// (empty on the home page) so the visual trail does not appear with
+// a lone "Home" entry; this synthesis is JSON-LD only.
+const crumbItems =
+	breadcrumbs.length > 0 ? breadcrumbs : isFrontPage ? [{ label: 'Home' }] : [];
+const crumbSchema = breadcrumbList(crumbItems, canonicalHref);
 if (crumbSchema) autoSchema.push(crumbSchema);
 
 const pageSchema = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];

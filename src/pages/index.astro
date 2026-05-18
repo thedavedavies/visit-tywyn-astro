@@ -9,15 +9,27 @@ import PageLayout from '../layouts/PageLayout.astro';
 import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
 import EventsSection from '../components/EventsSection/EventsSection.astro';
 import { SITE } from '../lib/site';
-import { touristDestination, eventSchema } from '../lib/jsonld';
+import { touristDestination, eventSchema, webPage } from '../lib/jsonld';
 import { upcomingEvents } from '../lib/events';
 import surfcamSrc from '../assets/img/heroes/home-surfcam.jpg';
 
-// `Organization` and `WebSite` are emitted globally by BaseLayout,
-// so the home page only needs to add the schemas unique to it:
-// `TouristDestination` (region-specific) and individual `Event`
-// nodes for upcoming events (each eligible for rich results).
+const homeTitle = 'Tywyn Holiday Accommodation, Things to Do and Visit in Tywyn';
+const homeDescription =
+	'Come and discover Tywyn. From the rolling hills and mountains to the golden beachfront - great food, stunning sunsets, long-lasting memories.';
+
+// `Organization`, `WebSite`, and `BreadcrumbList` are emitted by
+// BaseLayout. The home page adds:
+//   - `WebPage` to match Yoast (every Yoast page shipped a WebPage;
+//     the rebuilt site keeps that node so the JSON-LD graph after
+//     cutover is a superset of what was indexed before).
+//   - `TouristDestination` (region-specific, richer than WebPage).
+//   - one `Event` per upcoming event (each rich-result eligible).
 const jsonLd = [
+	webPage({
+		title: homeTitle,
+		description: homeDescription,
+		url: Astro.url,
+	}),
 	touristDestination(),
 	...upcomingEvents().map((ev) =>
 		eventSchema({
@@ -34,8 +46,8 @@ const jsonLd = [
 ---
 
 <PageLayout
-	title="Tywyn Holiday Accommodation, Things to Do and Visit in Tywyn"
-	description="Come and discover Tywyn. From the rolling hills and mountains to the golden beachfront - great food, stunning sunsets, long-lasting memories."
+	title={homeTitle}
+	description={homeDescription}
 	isFrontPage={true}
 	heroImage={{ src: surfcamSrc, alt: '' }}
 	jsonLd={jsonLd}
