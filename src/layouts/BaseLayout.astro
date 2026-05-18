@@ -166,7 +166,14 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema]
 		{SITE.twitter && <meta name="twitter:site" content={SITE.twitter} />}
 
 		<link rel="icon" href="/favicon.ico" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		{/*
+		 * SVG favicon variant intentionally not declared: the WP site
+		 * ships only the multi-resolution `.ico` (16x16 + 32x32) and
+		 * the default Astro starter SVG was the wrong brand mark.
+		 * Drop a real brand-matching SVG into `public/favicon.svg`
+		 * and re-add the `<link rel="icon" type="image/svg+xml">`
+		 * here when one exists.
+		 */}
 		<link rel="profile" href="https://gmpg.org/xfn/11" />
 		<link rel="sitemap" type="application/xml" href="/sitemap_index.xml" />
 
