@@ -5,8 +5,8 @@ slug: self-catering
 menu_order: 0
 intro: 'Self-catering cottages and apartments give you the run of the place — a kitchen for fish and chips on the porch, sandy boots by the door, and the freedom to come and go on your own schedule. Browse the booking sites below for places in and around Tywyn.'
 booking_search_links:
-  - label: 'Sykes Cottages — Tywyn'
-    url: 'https://www.sykescottages.co.uk/search/Wales/Tywyn-244.html'
+  - label: 'Lounge Holidays — Tywyn'
+    url: 'https://www.lounge-holidays.co.uk/'
   - label: 'Booking.com — Tywyn'
     url: 'https://www.booking.com/searchresults.html?ss=Tywyn%2C+Wales%2C+United+Kingdom'
   - label: 'Airbnb — Tywyn'
