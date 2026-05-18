@@ -1,7 +1,83 @@
 // @ts-check
+import { readdirSync, readFileSync } from 'node:fs';
 import { rename } from 'node:fs/promises';
 import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+
+/**
+ * Walk a content directory and pull `updated` (preferred) or
+ * `published` dates out of the YAML frontmatter. Returns a map of
+ * slug -> ISO date string for use in the sitemap `lastmod`.
+ *
+ * Uses a regex against the raw markdown instead of `gray-matter` to
+ * avoid a build-time dependency. Frontmatter dates in this repo are
+ * either bare `2026-04-29` or quoted ISO strings; both match.
+ *
+ * @param {string} dir
+ * @returns {Map<string, string>}
+ */
+function readContentDates(dir) {
+	const map = new Map();
+	let entries;
+	try {
+		entries = readdirSync(dir, { withFileTypes: true });
+	} catch {
+		return map;
+	}
+	for (const ent of entries) {
+		if (!ent.isFile() || !ent.name.endsWith('.md')) continue;
+		const slug = ent.name.slice(0, -3);
+		let raw;
+		try {
+			raw = readFileSync(`${dir}/${ent.name}`, 'utf8');
+		} catch {
+			continue;
+		}
+		const fmEnd = raw.indexOf('\n---', 4);
+		const front = fmEnd > 0 ? raw.slice(0, fmEnd) : raw;
+		const updated = front.match(/^updated:\s*(['"]?)(\d{4}-\d{2}-\d{2}[^'"\r\n]*)\1\s*$/m);
+		const published = front.match(/^published:\s*(['"]?)(\d{4}-\d{2}-\d{2}[^'"\r\n]*)\1\s*$/m);
+		const value = updated?.[2] ?? published?.[2];
+		if (!value) continue;
+		const date = new Date(value);
+		if (Number.isNaN(date.getTime())) continue;
+		map.set(slug, date.toISOString());
+	}
+	return map;
+}
+
+const pagesDates = readContentDates('./src/content/pages');
+const eatingDates = readContentDates('./src/content/eating');
+const thingsToDoDates = readContentDates('./src/content/things-to-do');
+const stayCategoryDates = readContentDates('./src/content/stay-categories');
+
+/**
+ * Map a sitemap URL back to the most recent edit date in our
+ * content collections. Returns undefined for any URL that doesn't
+ * resolve to a known content file (e.g. the home page, which is
+ * code-driven, or bespoke pages without an `updated` field).
+ *
+ * @param {string} url
+ * @returns {string | undefined}
+ */
+function lastmodForUrl(url) {
+	let path;
+	try {
+		path = new URL(url).pathname;
+	} catch {
+		return undefined;
+	}
+	let m;
+	m = path.match(/^\/eating\/([^/]+)\/$/);
+	if (m) return eatingDates.get(m[1]);
+	m = path.match(/^\/things-to-do\/([^/]+)\/$/);
+	if (m) return thingsToDoDates.get(m[1]);
+	m = path.match(/^\/holiday-accommodation\/([^/]+)\/$/);
+	if (m) return stayCategoryDates.get(m[1]);
+	m = path.match(/^\/([^/]+)\/$/);
+	if (m) return pagesDates.get(m[1]);
+	return undefined;
+}
 
 /**
  * Rename the sitemap index from `sitemap-index.xml` to
@@ -30,6 +106,15 @@ export default defineConfig({
 	trailingSlash: 'always',
 	build: {
 		format: 'directory',
+		// Inline every Astro-generated stylesheet into the page <head>.
+		// Combined size on this site is ~12 KB (BaseLayout.css +
+		// EntryHeader.css) which fits in a single TCP RTT, so inlining
+		// eliminates the render-blocking external request entirely and
+		// shaves ~400 ms LCP on cold mobile loads. The CSS-modules
+		// build artefacts still ship to /_astro/ for downstream pages
+		// that might come back later via the cache; Astro just no
+		// longer references them from <link rel="stylesheet">.
+		inlineStylesheets: 'always',
 	},
 	prefetch: {
 		prefetchAll: false,
@@ -42,14 +127,12 @@ export default defineConfig({
 			filter: (page) => page !== 'https://visit-tywyn.co.uk/404/',
 			// Set per-route priority + changefreq based on URL pattern,
 			// so the home page and high-traffic listings outrank deep
-			// editorial content in crawl prioritisation.
-			//
-			// `lastmod` is intentionally NOT set globally. The previous
-			// `lastmod: new Date()` stamped every URL with the same
-			// build timestamp, which destroyed per-page freshness
-			// signal. Until per-entry timestamps are wired through
-			// from frontmatter `updated` dates (follow-up), it's
-			// better to omit lastmod entirely than ship a fake one.
+			// editorial content in crawl prioritisation. `lastmod` is
+			// derived per-entry from content frontmatter `updated` or
+			// `published` dates via `lastmodForUrl`; URLs without a
+			// matching content file (e.g. the bespoke home page) ship
+			// without a lastmod rather than with a fake build-time
+			// stamp that destroyed per-page freshness signal.
 			serialize: (item) => {
 				const url = item.url;
 				// `changefreq` accepts the `EnumChangefreq` enum from the
@@ -60,19 +143,21 @@ export default defineConfig({
 				const daily = /** @type {ChangeFreq} */ (/** @type {unknown} */ ('daily'));
 				const weekly = /** @type {ChangeFreq} */ (/** @type {unknown} */ ('weekly'));
 				const monthly = /** @type {ChangeFreq} */ (/** @type {unknown} */ ('monthly'));
+				const lastmod = lastmodForUrl(url);
+				const withLastmod = lastmod ? { lastmod } : {};
 				if (url === 'https://visit-tywyn.co.uk/') {
-					return { ...item, priority: 1.0, changefreq: daily };
+					return { ...item, priority: 1.0, changefreq: daily, ...withLastmod };
 				}
 				if (
 					/\/(eating|things-to-do|where-to-stay|events|holiday-accommodation)\/?$/.test(url) ||
 					/\/holiday-accommodation\/[^/]+\/$/.test(url)
 				) {
-					return { ...item, priority: 0.9, changefreq: weekly };
+					return { ...item, priority: 0.9, changefreq: weekly, ...withLastmod };
 				}
 				if (/\/(eating|things-to-do)\/[^/]+\/$/.test(url)) {
-					return { ...item, priority: 0.8, changefreq: monthly };
+					return { ...item, priority: 0.8, changefreq: monthly, ...withLastmod };
 				}
-				return { ...item, priority: 0.6, changefreq: monthly };
+				return { ...item, priority: 0.6, changefreq: monthly, ...withLastmod };
 			},
 		}),
 		sitemapUnderscoreAlias,

@@ -42,6 +42,15 @@ interface Props {
 	jsonLd?: Record<string, unknown> | (Record<string, unknown> | null | undefined)[];
 	publishedTime?: string;
 	modifiedTime?: string;
+	/**
+	 * Whether the page will render at least one AdSlot. Controls
+	 * inclusion of the AdSense library script. Defaults to true
+	 * because every page that uses PageLayout ships a sidebar
+	 * AdSlot; pages that opt out of the sidebar (e.g. /404/) should
+	 * pass `hasAds={false}` to avoid downloading ~30 KB of script
+	 * that will have nothing to push to.
+	 */
+	hasAds?: boolean;
 }
 
 const {
@@ -57,6 +66,7 @@ const {
 	jsonLd,
 	publishedTime,
 	modifiedTime,
+	hasAds = true,
 } = Astro.props;
 
 // Title formatting: every page is `<page-specific> | Visit Tywyn`,
@@ -174,7 +184,7 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema]
 			data-key="RHUgFDUqpEFNoIEFLipsjA"></script>
 
 		{
-			SITE.adsenseClient && (
+			SITE.adsenseClient && hasAds && (
 				<script
 					defer
 					src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${SITE.adsenseClient}`}
