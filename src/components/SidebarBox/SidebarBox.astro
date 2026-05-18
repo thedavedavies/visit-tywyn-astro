@@ -17,7 +17,13 @@ interface Props {
 	tone?: 'primary' | 'plain';
 }
 
-const { title, iconName = 'marker', headingLevel = 3, tone = 'primary' } = Astro.props;
+// Default to H2 because the sidebar sits next to the main entry,
+// whose own subheadings are H2. The previous H3 default produced an
+// H1 -> H3 jump on pages whose main column had no intervening H2
+// (the home page, /contact/, /where-to-stay/, /dog-friendly-cafes/
+// and similar). Callers nested inside an already-H2 section can
+// pass `headingLevel={3}` explicitly.
+const { title, iconName = 'marker', headingLevel = 2, tone = 'primary' } = Astro.props;
 const HTag: 'h2' | 'h3' = headingLevel === 2 ? 'h2' : 'h3';
 ---
 

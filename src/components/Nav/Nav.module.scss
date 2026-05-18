@@ -90,6 +90,16 @@
 			display: flex;
 		}
 	}
+
+	// When the parent link itself receives keyboard focus (i.e. a
+	// user tabs to it), reveal the submenu so its children become
+	// part of the tab order. Without this rule the submenu stays
+	// `display: none` until focus is already inside it, which is
+	// unreachable by tab from the parent link.
+	& > a:focus + .subMenu,
+	& > a:focus-visible + .subMenu {
+		display: flex;
+	}
 }
 
 .subMenu {

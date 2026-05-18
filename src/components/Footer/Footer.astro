@@ -22,17 +22,26 @@ const year = new Date().getFullYear();
 							))}
 						</ul>
 						{col.showSocial && (
-							<ul class={styles.social} aria-label={`${SITE.name} social media`}>
-								{SOCIAL_LINKS.map((s) => (
-									<li>
-										<a href={s.href} target="_blank" rel="noopener noreferrer">
-											<Icon name={s.icon} />
-											<span class="sr-only">{`${SITE.name} on ${s.name}`}</span>
-											<span class="sr-only"> (opens in new tab)</span>
-										</a>
-									</li>
-								))}
-							</ul>
+							/*
+							 * Wrap in <nav> so the aria-label exposes
+							 * as a landmark region. The bare ul +
+							 * aria-label pattern is unreliable across
+							 * screen readers because lists are not a
+							 * default labelled region.
+							 */
+							<nav aria-label={`${SITE.name} social media`}>
+								<ul class={styles.social} role="list">
+									{SOCIAL_LINKS.map((s) => (
+										<li>
+											<a href={s.href} target="_blank" rel="noopener noreferrer">
+												<Icon name={s.icon} />
+												<span class="sr-only">{`${SITE.name} on ${s.name}`}</span>
+												<span class="sr-only"> (opens in new tab)</span>
+											</a>
+										</li>
+									))}
+								</ul>
+							</nav>
 						)}
 					</div>
 				))

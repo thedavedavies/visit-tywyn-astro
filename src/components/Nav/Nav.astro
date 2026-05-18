@@ -3,9 +3,15 @@
  * Primary navigation. Replaces wp_nav_menu().
  *
  * Toggle behaviour: hidden by default on mobile; revealed by a
- * button click which flips `aria-expanded` and adds the `.toggled`
+ * button click which flips `aria-expanded` and adds the `.is-open`
  * class to the nav (matching the legacy Underscores convention).
  * On desktop the menu is always visible and the toggle is hidden.
+ *
+ * Submenu accessibility: items with children get `aria-haspopup` +
+ * `aria-expanded` on the parent link. CSS reveals the submenu on
+ * `:hover` and `:focus-within`; the JS at the bottom manages
+ * `aria-expanded` state and closes the submenu on focusout, so
+ * assistive tech is in sync with what's visible.
  */
 import { PRIMARY_NAV } from '../../lib/nav';
 import styles from './Nav.module.scss';
@@ -30,33 +36,40 @@ function isActive(href: string): boolean {
 	</button>
 	<ul id="primary-menu" class={styles.menu}>
 		{
-			PRIMARY_NAV.map((item) => (
-				<li
-					class:list={[
-						styles.item,
-						{ [styles.itemActive]: isActive(item.href) },
-						{ [styles.hasChildren]: item.children && item.children.length > 0 },
-					]}
-				>
-					<a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
-						{item.label}
-						{item.children && item.children.length > 0 && (
-							<span aria-hidden="true"> ▼</span>
+			PRIMARY_NAV.map((item) => {
+				const hasChildren = !!item.children && item.children.length > 0;
+				return (
+					<li
+						class:list={[
+							styles.item,
+							{ [styles.itemActive]: isActive(item.href) },
+							{ [styles.hasChildren]: hasChildren },
+						]}
+					>
+						<a
+							href={item.href}
+							aria-current={isActive(item.href) ? 'page' : undefined}
+							aria-haspopup={hasChildren ? 'true' : undefined}
+							aria-expanded={hasChildren ? 'false' : undefined}
+							data-vt-submenu-trigger={hasChildren ? '' : undefined}
+						>
+							{item.label}
+							{hasChildren && <span aria-hidden="true"> ▼</span>}
+						</a>
+						{hasChildren && (
+							<ul class={styles.subMenu}>
+								{item.children!.map((child) => (
+									<li class:list={[styles.subItem, { [styles.subItemActive]: isActive(child.href) }]}>
+										<a href={child.href} aria-current={isActive(child.href) ? 'page' : undefined}>
+											{child.label}
+										</a>
+									</li>
+								))}
+							</ul>
 						)}
-					</a>
-					{item.children && item.children.length > 0 && (
-						<ul class={styles.subMenu}>
-							{item.children.map((child) => (
-								<li class:list={[styles.subItem, { [styles.subItemActive]: isActive(child.href) }]}>
-									<a href={child.href} aria-current={isActive(child.href) ? 'page' : undefined}>
-										{child.label}
-									</a>
-								</li>
-							))}
-						</ul>
-					)}
-				</li>
-			))
+					</li>
+				);
+			})
 		}
 	</ul>
 </nav>
@@ -74,10 +87,40 @@ function isActive(href: string): boolean {
 			const expanded = toggle.getAttribute('aria-expanded') === 'true';
 			setExpanded(!expanded);
 		});
+
+		// Submenu state. Each parent link with `aria-haspopup` owns the
+		// `aria-expanded` flag for its sibling `<ul>`. Hover is handled
+		// in CSS; focus we sync here so screen readers announce the
+		// disclosed state. `focusout` with relatedTarget outside the
+		// parent <li> closes the menu so tabbing past the last child
+		// doesn't leave a phantom-open state.
+		const triggers = document.querySelectorAll('[data-vt-submenu-trigger]');
+		triggers.forEach((trigger) => {
+			const li = trigger.closest('li');
+			if (!li) return;
+			const open = () => trigger.setAttribute('aria-expanded', 'true');
+			const close = () => trigger.setAttribute('aria-expanded', 'false');
+			trigger.addEventListener('focus', open);
+			li.addEventListener('mouseenter', open);
+			li.addEventListener('mouseleave', close);
+			li.addEventListener('focusout', (event) => {
+				const next = event.relatedTarget;
+				if (next instanceof Node && li.contains(next)) return;
+				close();
+			});
+		});
+
 		// Close on Escape and return focus to the toggle so keyboard
 		// users aren't stranded inside the dismissed menu's DOM.
 		document.addEventListener('keydown', (event) => {
 			if (event.key !== 'Escape') return;
+			// Close the open submenu, if any.
+			const openTrigger = document.querySelector('[data-vt-submenu-trigger][aria-expanded="true"]');
+			if (openTrigger instanceof HTMLElement) {
+				openTrigger.setAttribute('aria-expanded', 'false');
+				openTrigger.focus();
+				return;
+			}
 			if (toggle.getAttribute('aria-expanded') !== 'true') return;
 			setExpanded(false);
 			toggle.focus();

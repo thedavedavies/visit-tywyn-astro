@@ -133,7 +133,14 @@ const jsonLd = restaurant({
 		{
 			venue.data.geo && (
 				<>
-					<h2>Where is {venue.data.title}</h2>
+					{/*
+					 * VenueMap renders its own `<h2>Find {title}</h2>`
+					 * via aria-labelledby, so we don't add another H2
+					 * here. The previous "Where is X" heading rendered
+					 * immediately before "Find X" with no content
+					 * between them, which screen readers announced as a
+					 * duplicate.
+					 */}
 					<VenueMap
 						lat={venue.data.geo.lat}
 						lng={venue.data.geo.lng}

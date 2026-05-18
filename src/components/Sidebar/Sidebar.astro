@@ -47,7 +47,7 @@ const {
 } = Astro.props;
 ---
 
-<aside class={styles.sidebar} aria-label="Sidebar">
+<aside class={styles.sidebar} aria-label="Plan your visit">
 	{
 		thingsToDo && (thingsToDo.website || thingsToDo.phone || thingsToDo.grid_reference) && (
 			<SidebarBox title={`${thingsToDo.title} Information`} iconName="marker">
