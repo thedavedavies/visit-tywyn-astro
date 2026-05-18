@@ -67,7 +67,8 @@ export const FOOTER_COLUMNS = [
 ] as const;
 
 // Derive social hrefs from SITE so a single edit propagates to JSON-LD
-// `sameAs`, the `twitter:site` meta tag, and the visible footer icons.
+// `sameAs`, the `twitter:site` meta tag (still the platform-spec name
+// for X Cards), and the visible footer icons.
 export const SOCIAL_LINKS = [
 	{
 		name: 'Facebook',
@@ -75,8 +76,12 @@ export const SOCIAL_LINKS = [
 		icon: 'facebook',
 	},
 	{
-		name: 'Twitter',
+		// X (formerly Twitter). The SITE.twitterUrl key keeps its
+		// internal name because the platform's Card meta spec is
+		// still `twitter:site` / `twitter:card`; only the visible
+		// brand surface changes here.
+		name: 'X',
 		href: SITE.twitterUrl,
-		icon: 'twitter',
+		icon: 'x',
 	},
 ] as const;
