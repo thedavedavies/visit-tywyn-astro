@@ -1,11 +1,6 @@
 .wrap {
 	width: 100%;
 	overflow: hidden;
-	background: #000;
-	/* Reserve vertical space so the image loading doesn't push
-	 * subsequent content down — Core Web Vitals cares about CLS. */
-	aspect-ratio: 16 / 5;
-	max-height: 480px;
 }
 
 .image {
