@@ -10,7 +10,7 @@
 .gallery .grid {
 	margin: 0;
 	padding: 0;
-	list-style: none;
+	list-style-type: '';
 	display: grid;
 	gap: $space-3;
 	grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -28,16 +28,22 @@
 	border-radius: $radius-md;
 	overflow: hidden;
 	background: $color-bg-alt;
-	transition:
-		transform 0.2s ease,
-		box-shadow 0.2s ease;
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease;
+	}
 
 	&:hover,
 	&:focus-visible {
-		transform: scale(1.02);
 		box-shadow: $shadow-md;
 		outline: 2px solid $color-primary;
 		outline-offset: 2px;
+
+		@media (prefers-reduced-motion: no-preference) {
+			transform: scale(1.02);
+		}
 	}
 
 	// `.entry-content img` (typography.scss) adds `margin-block: 1rem`
@@ -77,6 +83,10 @@
 	display: inline-block;
 	max-width: 100%;
 	max-height: 90vh;
+	// Tell the browser we're handling horizontal touch ourselves so it
+	// won't pre-empt the gesture for native swipes (e.g. swipe-to-go-
+	// back on Chrome Android). Vertical pan and pinch-zoom stay native.
+	touch-action: pan-y pinch-zoom;
 }
 
 .lightboxImage {
@@ -104,11 +114,16 @@
 	color: #fff;
 	background: rgba(0, 0, 0, 0.4);
 	border-radius: 50%;
-	transition: background 0.15s ease;
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition: background 0.15s ease;
+	}
 
 	&:hover,
 	&:focus-visible {
 		background: rgba(0, 0, 0, 0.7);
+		outline: 2px solid #fff;
+		outline-offset: 2px;
 	}
 }
 

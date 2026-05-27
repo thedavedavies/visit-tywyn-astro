@@ -86,8 +86,13 @@ const fullImages = await Promise.all(
 				})}
 			</ul>
 
-			<dialog class={styles.lightbox} aria-label={`${label} lightbox`} data-gallery-lightbox>
-				<div class={styles.lightboxFrame}>
+			<dialog
+				class={styles.lightbox}
+				aria-label={`${label} lightbox`}
+				aria-modal="true"
+				data-gallery-lightbox
+			>
+				<div class={styles.lightboxFrame} data-gallery-frame>
 					<img class={styles.lightboxImage} alt="" data-gallery-img />
 					<button
 						class={`${styles.lightboxNav} ${styles.lightboxPrev}`}
@@ -95,7 +100,7 @@ const fullImages = await Promise.all(
 						aria-label="Previous image"
 						data-gallery-prev
 					>
-						‹
+						<span aria-hidden="true">‹</span>
 					</button>
 					<button
 						class={`${styles.lightboxNav} ${styles.lightboxNext}`}
@@ -103,7 +108,7 @@ const fullImages = await Promise.all(
 						aria-label="Next image"
 						data-gallery-next
 					>
-						›
+						<span aria-hidden="true">›</span>
 					</button>
 					<button
 						class={styles.lightboxClose}
@@ -111,8 +116,9 @@ const fullImages = await Promise.all(
 						aria-label="Close gallery"
 						data-gallery-close
 					>
-						×
+						<span aria-hidden="true">×</span>
 					</button>
+					<p class="sr-only" aria-live="polite" data-gallery-status></p>
 				</div>
 			</dialog>
 
@@ -121,6 +127,7 @@ const fullImages = await Promise.all(
 					const dialog = document.querySelector('[data-gallery-lightbox]');
 					if (!dialog || typeof dialog.showModal !== 'function') return;
 					const img = dialog.querySelector('[data-gallery-img]');
+					const status = dialog.querySelector('[data-gallery-status]');
 					const triggers = Array.from(document.querySelectorAll('[data-gallery-open]'));
 					if (triggers.length === 0) return;
 
@@ -141,11 +148,20 @@ const fullImages = await Promise.all(
 						img.alt = btn.dataset.fullAlt || '';
 					};
 
+					const announce = () => {
+						const alt = triggers[currentIdx].dataset.fullAlt || '';
+						const prefix = `Image ${currentIdx + 1} of ${triggers.length}`;
+						status.textContent = alt ? `${prefix}: ${alt}` : prefix;
+					};
+
 					triggers.forEach((btn, idx) => {
 						btn.addEventListener('click', () => {
 							lastTrigger = btn;
 							show(idx);
 							dialog.showModal();
+							// Update the live region after the dialog is
+							// visible so screen readers actually announce it.
+							announce();
 						});
 					});
 
@@ -156,18 +172,19 @@ const fullImages = await Promise.all(
 						// doesn't hold a decoded full-size bitmap in memory.
 						img.removeAttribute('src');
 						img.removeAttribute('srcset');
+						status.textContent = '';
 						if (lastTrigger && typeof lastTrigger.focus === 'function') {
 							lastTrigger.focus();
 							lastTrigger = null;
 						}
 					};
 
-					dialog.querySelector('[data-gallery-prev]').addEventListener('click', () =>
-						show(currentIdx - 1),
-					);
-					dialog.querySelector('[data-gallery-next]').addEventListener('click', () =>
-						show(currentIdx + 1),
-					);
+					const step = (delta) => {
+						show(currentIdx + delta);
+						announce();
+					};
+					dialog.querySelector('[data-gallery-prev]').addEventListener('click', () => step(-1));
+					dialog.querySelector('[data-gallery-next]').addEventListener('click', () => step(1));
 					dialog.querySelector('[data-gallery-close]').addEventListener('click', closeLightbox);
 
 					// Backdrop click closes; clicks on the inner frame don't
@@ -180,11 +197,45 @@ const fullImages = await Promise.all(
 					dialog.addEventListener('keydown', (event) => {
 						if (event.key === 'ArrowLeft') {
 							event.preventDefault();
-							show(currentIdx - 1);
+							step(-1);
 						} else if (event.key === 'ArrowRight') {
 							event.preventDefault();
-							show(currentIdx + 1);
+							step(1);
 						}
+					});
+
+					// Touch / pointer swipe: horizontal-dominant gesture past
+					// the threshold navigates. Listening on the frame (not the
+					// dialog) so swipes on the backdrop don't double-up with
+					// the close-on-backdrop-click handler. A second concurrent
+					// pointer (pinch-zoom) aborts the swipe.
+					const frame = dialog.querySelector('[data-gallery-frame]');
+					const SWIPE_MIN = 50;
+					let swipe = null;
+					frame.addEventListener('pointerdown', (event) => {
+						// Ignore taps on controls so a quick tap on prev/next
+						// is never reinterpreted as a partial swipe.
+						if (event.target.closest('button')) return;
+						if (swipe) {
+							swipe = null;
+							return;
+						}
+						swipe = { id: event.pointerId, x: event.clientX, y: event.clientY };
+					});
+					frame.addEventListener('pointerup', (event) => {
+						if (!swipe || swipe.id !== event.pointerId) {
+							swipe = null;
+							return;
+						}
+						const dx = event.clientX - swipe.x;
+						const dy = event.clientY - swipe.y;
+						swipe = null;
+						if (Math.abs(dx) < SWIPE_MIN) return;
+						if (Math.abs(dy) > Math.abs(dx)) return;
+						step(dx < 0 ? 1 : -1);
+					});
+					frame.addEventListener('pointercancel', () => {
+						swipe = null;
 					});
 
 					// Escape closes the dialog natively via the `cancel`
