@@ -13,9 +13,9 @@ import { itemList, webPage } from '../lib/jsonld';
 const page = await getEntry('pages', 'where-to-stay');
 const Content = page ? (await render(page)).Content : null;
 
-const categories = (await getCollection('stay-categories')).sort(
-	(a, b) => a.data.menu_order - b.data.menu_order,
-);
+const categories = (await getCollection('stay-categories'))
+	.filter((category) => category.id !== 'bed-and-breakfast')
+	.sort((a, b) => a.data.menu_order - b.data.menu_order);
 
 const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Where to stay' }];
 
