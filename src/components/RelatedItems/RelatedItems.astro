@@ -34,7 +34,7 @@ const { heading, items, headingId = 'related-items' } = Astro.props;
 			<h2 id={headingId} class={styles.heading}>
 				{heading}
 			</h2>
-			<ul class={styles.grid} role="list">
+			<ul class={styles.grid}>
 				{items.map((item) => (
 					<li class={styles.item}>
 						<a href={item.href} class={styles.link}>

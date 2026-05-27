@@ -68,7 +68,7 @@ if (category.data.featured.length > 0) {
 		category.data.featured.length > 0 && (
 			<section class="featured-stays" aria-labelledby="featured-stays-title">
 				<h2 id="featured-stays-title">Featured stays</h2>
-				<ul role="list">
+				<ul>
 					{category.data.featured.map((entry) => (
 						<li>
 							<FeaturedStayCard
@@ -106,7 +106,7 @@ if (category.data.featured.length > 0) {
 		ul {
 			margin: 0;
 			padding: 0;
-			list-style: none;
+			list-style-type: '';
 			display: grid;
 			grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 			gap: $space-5;

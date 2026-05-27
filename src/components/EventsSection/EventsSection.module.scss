@@ -39,7 +39,7 @@
 .grid {
 	margin: 0;
 	padding: 0;
-	list-style: none;
+	list-style-type: '';
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 	gap: $space-5;

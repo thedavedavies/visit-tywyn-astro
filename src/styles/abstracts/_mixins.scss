@@ -43,9 +43,11 @@
 	padding-inline: $space-4;
 }
 
-/* Reset native list styling — common pattern in this codebase. */
+/* Reset native list styling. `list-style-type: ''` (empty string)
+ * hides the marker visually but preserves the list role in
+ * Safari/VoiceOver, unlike `list-style: none`. */
 @mixin reset-list {
 	margin: 0;
 	padding: 0;
-	list-style: none;
+	list-style-type: '';
 }

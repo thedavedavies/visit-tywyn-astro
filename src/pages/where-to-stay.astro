@@ -63,7 +63,7 @@ const jsonLd = [
 
 	<section class="stay-categories" aria-labelledby="stay-categories-title">
 		<h2 id="stay-categories-title">Browse by type</h2>
-		<ul role="list">
+		<ul>
 			{
 				categories.map((category) => (
 					<li>
@@ -94,7 +94,7 @@ const jsonLd = [
 		ul {
 			margin: 0;
 			padding: 0;
-			list-style: none;
+			list-style-type: '';
 			display: grid;
 			grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 			gap: $space-5;

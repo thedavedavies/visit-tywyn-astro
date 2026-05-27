@@ -29,7 +29,11 @@ blockquote {
 ul,
 ol {
 	padding: 0;
-	list-style: none;
+	// Empty-string list marker hides the bullet visually but, unlike
+	// `list-style: none`, doesn't trip WebKit's "this isn't a list"
+	// heuristic that strips the list role for Safari/VoiceOver. See
+	// https://www.matuzo.at/blog/2023/removing-list-styles-without-affecting-semantics.
+	list-style-type: '';
 }
 
 img,

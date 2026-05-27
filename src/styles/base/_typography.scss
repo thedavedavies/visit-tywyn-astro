@@ -77,9 +77,20 @@ p + p {
 		padding: 0;
 
 		li {
-			list-style: revert;
 			margin-bottom: $space-2;
 		}
+	}
+
+	// Re-enable visible markers for editorial body lists. The global
+	// reset uses `list-style-type: ''` to keep WebKit's list semantics,
+	// so set the type explicitly here rather than relying on `revert`
+	// (which would otherwise inherit the empty string).
+	ul {
+		list-style-type: disc;
+	}
+
+	ol {
+		list-style-type: decimal;
 	}
 
 	img {

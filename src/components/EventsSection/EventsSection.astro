@@ -31,7 +31,7 @@ const events = upcomingEvents(limit);
 				</h2>
 				{intro && <p class={styles.intro}>{intro}</p>}
 			</header>
-			<ul class={styles.grid} role="list">
+			<ul class={styles.grid}>
 				{events.map((event) => (
 					<li>
 						<EventCard event={event} />

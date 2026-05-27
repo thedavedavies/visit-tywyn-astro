@@ -28,7 +28,7 @@ const { links, heading = 'Search for a place to stay' } = Astro.props;
 			<h2 id="booking-search-title" class={styles.heading}>
 				{heading}
 			</h2>
-			<ul class={styles.list} role="list">
+			<ul class={styles.list}>
 				{links.map((link) => (
 					<li class={styles.item}>
 						<a href={link.url} target="_blank" rel="noopener noreferrer">
