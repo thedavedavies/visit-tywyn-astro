@@ -8,9 +8,9 @@ import { itemList } from '../../lib/jsonld';
 import { thingsToDoUrl } from '../../lib/url';
 import thingsToDoBannerSrc from '../../assets/img/heroes/things-to-do.jpg';
 
-const activities = (await getCollection('things-to-do')).sort((a, b) =>
-	a.data.title.localeCompare(b.data.title),
-);
+const activities = (await getCollection('things-to-do'))
+	.filter((a) => !a.data.closed)
+	.sort((a, b) => a.data.title.localeCompare(b.data.title));
 
 const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Things to do' }];
 

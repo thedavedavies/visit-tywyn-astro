@@ -229,6 +229,7 @@ interface AttractionInput {
 		| 'Beach'
 		| 'Mountain'
 		| 'LandmarksOrHistoricalBuildings';
+	closed?: boolean;
 }
 
 export function touristAttraction(input: AttractionInput): JsonLd {
@@ -256,6 +257,7 @@ export function touristAttraction(input: AttractionInput): JsonLd {
 					},
 				}
 			: {}),
+		...(input.closed ? { isPermanentlyClosed: true } : {}),
 	};
 	const sameAs = [input.website, ...(input.sameAs ?? [])].filter((u): u is string => !!u);
 	if (sameAs.length > 0) node.sameAs = sameAs;

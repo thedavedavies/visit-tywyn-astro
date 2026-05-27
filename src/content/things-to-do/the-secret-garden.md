@@ -1,8 +1,9 @@
 ---
 title: The Secret Garden
-summary: 'Come on a very special treasure hunt, and find The Secret Garden in Tywyn! Right next to the Magic Lantern Cinema, enjoy cocktails, mocktails and cinema snacks in a very special locaion.'
+summary: 'The Secret Garden in Tywyn has permanently closed. It was a cocktail and snack bar next to the Magic Lantern Cinema.'
 address: Tywyn Magic Lantern Cinema, Corbet Square, Tywyn, LL36 9DF
 published: 2022-10-11
+closed: true
 geo:
   lat: 52.5880051
   lng: -4.0846715
@@ -16,7 +17,7 @@ gallery:
   - src: '../../assets/img/things-to-do/the-secret-garden/gallery/02.jpg'
     alt: The Secret Garden
 seo:
-  description: 'Come on a very special treasure hunt, and find The Secret Garden in Tywyn! Right next to the Magic Lantern Cinema, enjoy cocktails, mocktails and snacks.'
+  description: 'The Secret Garden in Tywyn has permanently closed. Browse other things to do in Tywyn.'
 ---
 
 Come on a very special treasure hunt, and find The Secret Garden in Tywyn! Right next to the <a href="/things-to-do/magic-lantern-cinema/">Magic Lantern Cinema</a>, come and enjoy a cocktail, mocktails and cinema snacks.

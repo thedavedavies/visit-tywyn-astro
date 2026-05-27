@@ -30,14 +30,17 @@ export async function getStaticPaths() {
 
 const { activity, allActivities } = Astro.props;
 const { Content } = await render(activity);
+const isClosed = activity.data.closed;
 
 // Deterministic shuffle so each activity page always offers the
 // same 4 "more to explore" entries; avoids the non-uniform bias
 // of `sort(Math.random)` and the per-build cache-thrash it causes.
+// Closed venues are excluded so we never recommend somewhere that
+// no longer exists.
 const related = seededShuffle(
-	allActivities.filter((a) => a.id !== activity.id),
+	allActivities.filter((a) => a.id !== activity.id && !a.data.closed),
 	activity.id,
-).slice(0, 4);
+).slice(0, 6);
 
 const breadcrumbs = [
 	{ label: 'Home', href: '/' },
@@ -61,6 +64,7 @@ const jsonLd = touristAttraction({
 	geo: activity.data.geo,
 	kind: activity.data.kind,
 	sameAs: activity.data.social ? Object.values(activity.data.social) : [],
+	closed: isClosed,
 });
 ---
 
@@ -73,14 +77,18 @@ const jsonLd = touristAttraction({
 	heroImage={activity.data.hero_image}
 	breadcrumbs={breadcrumbs}
 	jsonLd={jsonLd}
-	sidebarProps={{
-		thingsToDo: {
-			title: activity.data.title,
-			website: activity.data.website,
-			phone: activity.data.phone,
-			grid_reference: activity.data.grid_reference,
-		},
-	}}
+	sidebarProps={
+		isClosed
+			? undefined
+			: {
+					thingsToDo: {
+						title: activity.data.title,
+						website: activity.data.website,
+						phone: activity.data.phone,
+						grid_reference: activity.data.grid_reference,
+					},
+				}
+	}
 >
 	{
 		/*
@@ -92,7 +100,7 @@ const jsonLd = touristAttraction({
 	}
 	<EntryHeader title={activity.data.title} subtitle={activity.data.subtitle} />
 	{
-		activity.data.address && (
+		!isClosed && activity.data.address && (
 			<p class="single-address">
 				<Icon name="marker" />
 				<span>{activity.data.address}</span>
@@ -100,18 +108,31 @@ const jsonLd = touristAttraction({
 		)
 	}
 
-	<div class="entry-content">
-		<Content />
+	{
+		isClosed && (
+			<aside class="closed-notice" role="status">
+				<p class="closed-title">Permanently closed</p>
+				<p class="closed-body">
+					{activity.data.title} has permanently closed. Browse other things to do in Tywyn below.
+				</p>
+			</aside>
+		)
+	}
 
-		{
-			activity.data.gallery.length > 0 && (
-				<>
-					<h2>{activity.data.title} Gallery</h2>
-					<Gallery images={activity.data.gallery} label={`${activity.data.title} gallery`} />
-				</>
-			)
-		}
-	</div>
+	{
+		!isClosed && (
+			<div class="entry-content">
+				<Content />
+
+				{activity.data.gallery.length > 0 && (
+					<>
+						<h2>{activity.data.title} Gallery</h2>
+						<Gallery images={activity.data.gallery} label={`${activity.data.title} gallery`} />
+					</>
+				)}
+			</div>
+		)
+	}
 
 	<RelatedItems
 		heading="More things to do in Tywyn"
@@ -141,5 +162,27 @@ const jsonLd = touristAttraction({
 			height: 20px;
 			flex: 0 0 auto;
 		}
+	}
+
+	.closed-notice {
+		margin: 0 0 $space-5;
+		padding: $space-4 $space-5;
+		border-left: 4px solid #b3261e;
+		background: #fdecea;
+		border-radius: $radius-md;
+	}
+
+	.closed-title {
+		margin: 0 0 $space-1;
+		font-weight: 700;
+		color: #b3261e;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		font-size: 0.85rem;
+	}
+
+	.closed-body {
+		margin: 0;
+		color: #5c1f1b;
 	}
 </style>

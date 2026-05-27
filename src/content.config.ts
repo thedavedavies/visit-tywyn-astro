@@ -132,6 +132,7 @@ const thingsToDo = defineCollection({
 				.optional(),
 			facilities: z.array(z.string()).default([]),
 			published: z.coerce.date().optional(),
+			closed: z.boolean().default(false),
 			seo: seoSchema,
 		}),
 });
