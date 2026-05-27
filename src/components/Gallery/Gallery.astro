@@ -5,13 +5,18 @@
  *
  * Behaviour:
  *   - Thumbnails laid out in a responsive grid.
- *   - Clicking a thumbnail opens the corresponding `<dialog>`.
- *   - Escape / clicking the backdrop closes it.
+ *   - Clicking a thumbnail opens a single shared `<dialog>` populated
+ *     from `data-full-*` attributes on the button. One optimized AVIF
+ *     per image is generated via `getImage` at build time, so the
+ *     per-page HTML payload stays flat instead of growing linearly
+ *     with the number of images.
+ *   - Prev/next buttons + ← / → keys cycle through the gallery.
+ *   - Escape / clicking the backdrop closes.
  *
- * The dialog wiring lives in a small inline `<script>` at the
- * bottom of this component so it travels with the markup.
+ * The wiring lives in a small inline `<script>` at the bottom of this
+ * component so it travels with the markup.
  */
-import { Picture, Image } from 'astro:assets';
+import { Picture, getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import styles from './Gallery.module.scss';
 
@@ -26,21 +31,47 @@ interface Props {
 }
 
 const { images, label = 'Gallery' } = Astro.props;
+
+// One full-size variant per image, generated once at build time.
+// Two widths so a 2× display still has a sharp variant for the
+// large originals; Astro skips widths that would upscale, so
+// smaller source images stay at a single srcset entry.
+const fullImages = await Promise.all(
+	images.map((img) =>
+		getImage({
+			src: img.src,
+			widths: [1024, 1600],
+			sizes: '(min-width: 1024px) 80vw, 100vw',
+			format: 'avif',
+		}),
+	),
+);
 ---
 
 {
 	images.length > 0 && (
 		<section class={styles.gallery} aria-label={label}>
-			<ul class={styles.grid} role="list">
+			<ul class={styles.grid}>
 				{images.map((img, idx) => {
 					// Frontmatter may omit `alt`; fall back to a positional
 					// label so the wrapping <button>'s accessible name is
 					// the image alt (no extra aria-label needed). `||` not
 					// `??` so an empty-string alt also falls through.
 					const altText = img.alt || `${label} image ${idx + 1} of ${images.length}`;
+					const full = fullImages[idx];
 					return (
 						<li>
-							<button class={styles.thumb} type="button" data-gallery-open={idx}>
+							<button
+								class={styles.thumb}
+								type="button"
+								data-gallery-open={idx}
+								data-full-src={full.src}
+								data-full-srcset={full.srcSet.attribute}
+								data-full-sizes={full.attributes.sizes}
+								data-full-width={full.attributes.width}
+								data-full-height={full.attributes.height}
+								data-full-alt={altText}
+							>
 								<Picture
 									src={img.src}
 									alt={altText}
@@ -55,51 +86,113 @@ const { images, label = 'Gallery' } = Astro.props;
 				})}
 			</ul>
 
-			{images.map((img, idx) => {
-				const altText = img.alt || `${label} image ${idx + 1} of ${images.length}`;
-				return (
-					<dialog class={styles.lightbox} data-gallery-dialog={idx}>
-						<form method="dialog" class={styles.lightboxForm}>
-							<button class={styles.lightboxClose} type="submit" aria-label="Close gallery">×</button>
-						</form>
-						<Image
-							src={img.src}
-							alt={altText}
-							loading="lazy"
-							widths={[640, 960, 1280, 1920]}
-							sizes="(min-width: 1024px) 80vw, 100vw"
-						/>
-					</dialog>
-				);
-			})}
+			<dialog class={styles.lightbox} aria-label={`${label} lightbox`} data-gallery-lightbox>
+				<div class={styles.lightboxFrame}>
+					<img class={styles.lightboxImage} alt="" data-gallery-img />
+					<button
+						class={`${styles.lightboxNav} ${styles.lightboxPrev}`}
+						type="button"
+						aria-label="Previous image"
+						data-gallery-prev
+					>
+						‹
+					</button>
+					<button
+						class={`${styles.lightboxNav} ${styles.lightboxNext}`}
+						type="button"
+						aria-label="Next image"
+						data-gallery-next
+					>
+						›
+					</button>
+					<button
+						class={styles.lightboxClose}
+						type="button"
+						aria-label="Close gallery"
+						data-gallery-close
+					>
+						×
+					</button>
+				</div>
+			</dialog>
 
 			<script is:inline>
 				(() => {
-					// Track which thumbnail opened each dialog so we can
-					// restore focus to it on close. Without this the
-					// browser drops focus to <body>, leaving keyboard
-					// users with no anchor in the gallery grid.
+					const dialog = document.querySelector('[data-gallery-lightbox]');
+					if (!dialog || typeof dialog.showModal !== 'function') return;
+					const img = dialog.querySelector('[data-gallery-img]');
+					const triggers = Array.from(document.querySelectorAll('[data-gallery-open]'));
+					if (triggers.length === 0) return;
+
+					let currentIdx = 0;
 					let lastTrigger = null;
-					document.querySelectorAll('[data-gallery-open]').forEach((btn) => {
+
+					const show = (idx) => {
+						currentIdx = (idx + triggers.length) % triggers.length;
+						const btn = triggers[currentIdx];
+						// Order matters: setting `srcset` before `src` lets
+						// the browser pick the correct candidate on the
+						// first layout pass.
+						img.srcset = btn.dataset.fullSrcset || '';
+						img.sizes = btn.dataset.fullSizes || '';
+						img.src = btn.dataset.fullSrc;
+						if (btn.dataset.fullWidth) img.width = btn.dataset.fullWidth;
+						if (btn.dataset.fullHeight) img.height = btn.dataset.fullHeight;
+						img.alt = btn.dataset.fullAlt || '';
+					};
+
+					triggers.forEach((btn, idx) => {
 						btn.addEventListener('click', () => {
-							const id = btn.getAttribute('data-gallery-open');
-							const dialog = document.querySelector(`[data-gallery-dialog="${id}"]`);
-							if (dialog && typeof dialog.showModal === 'function') {
-								lastTrigger = btn;
-								dialog.showModal();
-							}
+							lastTrigger = btn;
+							show(idx);
+							dialog.showModal();
 						});
 					});
-					document.querySelectorAll('[data-gallery-dialog]').forEach((dialog) => {
-						dialog.addEventListener('click', (event) => {
-							if (event.target === dialog) dialog.close();
-						});
-						dialog.addEventListener('close', () => {
-							if (lastTrigger && typeof lastTrigger.focus === 'function') {
-								lastTrigger.focus();
-								lastTrigger = null;
-							}
-						});
+
+					const closeLightbox = () => {
+						if (!dialog.open) return;
+						dialog.close();
+						// Drop the image from the dialog so a closed dialog
+						// doesn't hold a decoded full-size bitmap in memory.
+						img.removeAttribute('src');
+						img.removeAttribute('srcset');
+						if (lastTrigger && typeof lastTrigger.focus === 'function') {
+							lastTrigger.focus();
+							lastTrigger = null;
+						}
+					};
+
+					dialog.querySelector('[data-gallery-prev]').addEventListener('click', () =>
+						show(currentIdx - 1),
+					);
+					dialog.querySelector('[data-gallery-next]').addEventListener('click', () =>
+						show(currentIdx + 1),
+					);
+					dialog.querySelector('[data-gallery-close]').addEventListener('click', closeLightbox);
+
+					// Backdrop click closes; clicks on the inner frame don't
+					// match `event.target === dialog` because the frame is
+					// the more specific target.
+					dialog.addEventListener('click', (event) => {
+						if (event.target === dialog) closeLightbox();
+					});
+
+					dialog.addEventListener('keydown', (event) => {
+						if (event.key === 'ArrowLeft') {
+							event.preventDefault();
+							show(currentIdx - 1);
+						} else if (event.key === 'ArrowRight') {
+							event.preventDefault();
+							show(currentIdx + 1);
+						}
+					});
+
+					// Escape closes the dialog natively via the `cancel`
+					// event. Hook into that so cleanup runs without relying
+					// on the (less consistently fired) `close` event.
+					dialog.addEventListener('cancel', (event) => {
+						event.preventDefault();
+						closeLightbox();
 					});
 				})();
 			</script>

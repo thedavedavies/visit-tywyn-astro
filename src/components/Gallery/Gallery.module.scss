@@ -4,7 +4,10 @@
 	margin: $space-7 0;
 }
 
-.grid {
+// Nested under `.gallery` so the selector beats `.entry-content ul`
+// (typography.scss), which would otherwise apply a 1rem bottom and
+// 1.5rem left margin to this list.
+.gallery .grid {
 	margin: 0;
 	padding: 0;
 	list-style: none;
@@ -37,8 +40,19 @@
 		outline-offset: 2px;
 	}
 
+	// `.entry-content img` (typography.scss) adds `margin-block: 1rem`
+	// to every image in the editorial body, which would push the
+	// thumbnail down inside its button and leave a 16px gap above and
+	// below the picture; the focus outline then traced that gap, not
+	// the image. Zero it out for both `<picture>` and its `<img>`.
+	picture,
 	img {
 		display: block;
+		margin: 0;
+		border-radius: 0;
+	}
+
+	img {
 		width: 100%;
 		aspect-ratio: 4 / 3;
 		object-fit: cover;
@@ -56,25 +70,28 @@
 	&::backdrop {
 		background: rgba(0, 0, 0, 0.85);
 	}
-
-	img {
-		display: block;
-		max-width: 100%;
-		max-height: 90vh;
-		object-fit: contain;
-		border-radius: $radius-md;
-	}
 }
 
-.lightboxForm {
-	margin: 0;
-	padding: 0;
-	position: absolute;
-	top: -$space-7;
-	right: 0;
+.lightboxFrame {
+	position: relative;
+	display: inline-block;
+	max-width: 100%;
+	max-height: 90vh;
 }
 
-.lightboxClose {
+.lightboxImage {
+	display: block;
+	max-width: 100%;
+	max-height: 90vh;
+	width: auto;
+	height: auto;
+	object-fit: contain;
+	border-radius: $radius-md;
+	margin: 0; // override `.entry-content img` vertical margin.
+}
+
+.lightboxClose,
+.lightboxNav {
 	all: unset;
 	cursor: pointer;
 	width: 44px;
@@ -87,9 +104,45 @@
 	color: #fff;
 	background: rgba(0, 0, 0, 0.4);
 	border-radius: 50%;
+	transition: background 0.15s ease;
 
 	&:hover,
 	&:focus-visible {
 		background: rgba(0, 0, 0, 0.7);
+	}
+}
+
+.lightboxClose {
+	position: absolute;
+	top: -$space-7;
+	right: 0;
+}
+
+.lightboxNav {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	font-size: 2rem;
+	z-index: 1;
+}
+
+.lightboxPrev {
+	left: $space-3;
+}
+
+.lightboxNext {
+	right: $space-3;
+}
+
+@media (min-width: 768px) {
+	// Float the arrows outside the image frame on roomy viewports so
+	// they don't sit on top of the content. Mobile keeps them inside
+	// because there isn't room beside the image.
+	.lightboxPrev {
+		left: -$space-7;
+	}
+
+	.lightboxNext {
+		right: -$space-7;
 	}
 }
