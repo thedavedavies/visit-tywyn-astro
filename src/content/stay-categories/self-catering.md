@@ -12,7 +12,7 @@ booking_search_links:
   - label: 'Booking.com - Tywyn'
     url: 'https://www.booking.com/searchresults.html?ss=Tywyn%2C+Wales%2C+United+Kingdom'
   - label: 'Airbnb - Tywyn'
-    url: 'https://www.airbnb.co.uk/s/Tywyn--Wales/homes'
+    url: 'https://www.airbnb.co.uk/s/Tywyn--Gwynedd/homes'
 seo:
   # WP-indexed title from Yoast; preserved verbatim to hold the
   # ranking equity Google has built up against this URL. The visible
