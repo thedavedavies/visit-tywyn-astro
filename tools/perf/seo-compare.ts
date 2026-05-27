@@ -111,7 +111,7 @@ function decodeEntities(s: string): string {
 			.replace(/&#8220;/g, '“')
 			.replace(/&#8221;/g, '”')
 			.replace(/&#8211;/g, '–')
-			.replace(/&#8212;/g, '—')
+			.replace(/&#8212;/g, '-')
 			.replace(/&hellip;/g, '…')
 			.replace(/&nbsp;/g, ' ')
 			// Generic numeric entity fallback (covers any &#NNN; that
@@ -124,7 +124,7 @@ function decodeEntities(s: string): string {
  * Normalize text for SEO-equivalence comparison: decode entities,
  * fold smart quotes to ASCII, collapse whitespace, lowercase.
  *
- * Google treats these as identical for indexing — `Millie & Sid's`
+ * Google treats these as identical for indexing - `Millie & Sid's`
  * and `Millie &amp; Sid&#8217;s` are the same query. Comparing the
  * normalized form filters cosmetic content drift from real changes.
  */
@@ -133,7 +133,7 @@ function normalize(s: string | null): string | null {
 	return decodeEntities(s)
 		.replace(/[‘’]/g, "'")
 		.replace(/[“”]/g, '"')
-		.replace(/[–—]/g, '-')
+		.replace(/[–-]/g, '-')
 		.replace(/\s+/g, ' ')
 		.trim();
 }
@@ -143,7 +143,7 @@ function extractMeta(html: string, name: string): string | null {
 	const reProp = new RegExp(`<meta[^>]+property=["']${name}["'][^>]*>`, 'i');
 	const tag = html.match(reName)?.[0] || html.match(reProp)?.[0];
 	if (!tag) return null;
-	// Match content="..." or content='...' — the inner pattern must
+	// Match content="..." or content='...' - the inner pattern must
 	// only forbid the matching closer, not both. The previous
 	// `[^"']*` collapsed an apostrophe inside a double-quoted value
 	// (e.g. `content="don't worry"`) which truncated the captured
@@ -238,7 +238,7 @@ function countLinks(html: string, baseUrl: string): { internal: number; external
 			if (u.host === baseHost) internal++;
 			else external++;
 		} catch {
-			// relative or malformed — count as internal
+			// relative or malformed - count as internal
 			internal++;
 		}
 	}

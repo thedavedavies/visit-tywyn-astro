@@ -32,7 +32,7 @@ breaks ad revenue, no surprise interactions hidden behind clicks.
 
 The site was recently ported visually like-for-like from a WordPress
 theme (`3d7ba93 Like-for-like visual port from the legacy WP theme`).
-That port deliberately deferred performance work — images were copied
+That port deliberately deferred performance work - images were copied
 into `public/img/YYYY/MM/...` mirroring the WP `wp-content/uploads/`
 layout and rendered as plain `<img>` to keep behavioural parity. The
 prior plan
@@ -43,7 +43,7 @@ follow-up. That follow-up is this plan.
 The site is content-heavy (46 markdown entries across `eating`,
 `things-to-do`, `pages`, `stay-categories`), image-rich (heroes,
 cards, galleries on most entries), low-interactivity (zero `client:*`
-directives, three tiny `is:inline` scripts), and statically built —
+directives, three tiny `is:inline` scripts), and statically built -
 exactly the shape Astro's image pipeline is designed for. The cost of
 not adopting it shows up directly in Core Web Vitals: LCP suffers from
 unoptimized hero images and render-blocking Google Fonts; CLS suffers
@@ -78,31 +78,31 @@ from `<img>` tags with no width/height; transferred bytes are
 
 ## Scope Boundaries
 
-- **Maps embed strategy** — `VenueMap` keeps the live Google Maps
+- **Maps embed strategy** - `VenueMap` keeps the live Google Maps
   iframe with `loading="lazy"` (per user direction). Facade pattern
   not adopted.
-- **AdSense removal** — out of scope. AdSense stays; only its CLS
+- **AdSense removal** - out of scope. AdSense stays; only its CLS
   posture and load timing change.
-- **CDN / hosting selection** — README still lists "decide on host"
+- **CDN / hosting selection** - README still lists "decide on host"
   as open. Cache-Control and CDN tuning are constrained to what
   `_redirects` and host-side headers can express; final cache header
   validation is a deploy-time task on the chosen host.
-- **View Transitions / `<ClientRouter />` adoption** — out of scope.
+- **View Transitions / `<ClientRouter />` adoption** - out of scope.
   Astro 6 removed `<ViewTransitions />`; `<ClientRouter />` is
   available but not required for this pass.
-- **Tailwind / design system changes** — out of scope.
-- **Author tooling** (image upload UX, CMS) — out of scope.
+- **Tailwind / design system changes** - out of scope.
+- **Author tooling** (image upload UX, CMS) - out of scope.
 
 ### Deferred to Separate Tasks
 
-- **Sitemap `lastmod` per-entry from frontmatter `updated`** — flagged
+- **Sitemap `lastmod` per-entry from frontmatter `updated`** - flagged
   in `astro.config.mjs:18-29` comment; orthogonal to perf.
-- **Migrate `public/img/` (or `src/assets/img/`) to S3/R2 CDN** —
+- **Migrate `public/img/` (or `src/assets/img/`) to S3/R2 CDN** -
   README open follow-up; layered on top of this plan once Astro
   pipeline is in place. The Astro `image.domains` config already
   whitelists `visit-tywyn.s3.amazonaws.com` for that future move.
-- **Replace Gravity Forms** — README open follow-up; orthogonal.
-- **YouTube facade (`lite-youtube-embed`)** — only 2 inline YouTube
+- **Replace Gravity Forms** - README open follow-up; orthogonal.
+- **YouTube facade (`lite-youtube-embed`)** - only 2 inline YouTube
   iframes exist (in `tywyn-beach.md` × 2). The malformed
   `embed//<id>` URLs and missing `loading="lazy"` are fixed inline as
   part of this pass; full facade adoption can come later if traffic
@@ -112,42 +112,42 @@ from `<img>` tags with no width/height; transferred bytes are
 
 ### Relevant Code and Patterns
 
-- `astro.config.mjs` — already has `image.domains`, `prefetch.defaultStrategy: 'hover'`, modern Sass compiler. Image config block is the focal point for new `image.layout`, `image.responsiveStyles`, and per-format `image.service.config` defaults.
-- `src/layouts/BaseLayout.astro:79-161` — owns `<head>` order. Site-wide changes (Fonts API `<Font>` tag, GA4 swap, hero preload conditional, S3 favicon swap) all land here.
-- `src/content.config.ts` — defines `imageSchema` for all four collections as `z.object({ src: z.string(), alt, width?, height? })`. Will switch to using the `image()` helper passed into `defineCollection`'s schema function so frontmatter image paths become validated `ImageMetadata` imports.
-- `src/components/BannerImage/BannerImage.astro:14` — LCP candidate component on most pages; first to migrate.
-- `src/components/{ActivityCard,EventCard,FeaturedStayCard,VenueCard,StayCategoryCard,RelatedItems,Gallery}/...astro` — six card components + Gallery, all currently rendering `<img loading="lazy">` with no dimensions.
-- `src/components/Header/Header.astro:22-28` — logo `<img>` with explicit `width`/`height`; clean migration to `<Image>` with `layout="fixed"`.
-- `src/components/Nav/Nav.astro:64-75`, `src/components/Gallery/Gallery.astro:51-68`, `src/components/AdSlot/AdSlot.astro:29-31` — three `is:inline` scripts. Mobile nav and Gallery dialog are good candidates to switch to hoisted (default) `<script>` per Astro 6 client-side scripts guide; AdSense init must stay `is:inline` because it references a third-party global.
-- `tools/migrate-uploads.ts` — reference-driven scanner that pulls images from a WP backup into `public/img/`. After this pass, this tool's purpose ends and it can be retired (or repurposed). See implementation note in Unit 4.
-- `public/_redirects` — already has `/wp-content/uploads/* → /img/:splat 301` rule; needs an additional layer for legacy `/img/YYYY/MM/...` → new asset routes (or a friendly 404 strategy — see Unit 4).
-- `src/lib/site.ts` — central site config (already holds `adsenseClient`); add `gaMeasurementId` here.
+- `astro.config.mjs` - already has `image.domains`, `prefetch.defaultStrategy: 'hover'`, modern Sass compiler. Image config block is the focal point for new `image.layout`, `image.responsiveStyles`, and per-format `image.service.config` defaults.
+- `src/layouts/BaseLayout.astro:79-161` - owns `<head>` order. Site-wide changes (Fonts API `<Font>` tag, GA4 swap, hero preload conditional, S3 favicon swap) all land here.
+- `src/content.config.ts` - defines `imageSchema` for all four collections as `z.object({ src: z.string(), alt, width?, height? })`. Will switch to using the `image()` helper passed into `defineCollection`'s schema function so frontmatter image paths become validated `ImageMetadata` imports.
+- `src/components/BannerImage/BannerImage.astro:14` - LCP candidate component on most pages; first to migrate.
+- `src/components/{ActivityCard,EventCard,FeaturedStayCard,VenueCard,StayCategoryCard,RelatedItems,Gallery}/...astro` - six card components + Gallery, all currently rendering `<img loading="lazy">` with no dimensions.
+- `src/components/Header/Header.astro:22-28` - logo `<img>` with explicit `width`/`height`; clean migration to `<Image>` with `layout="fixed"`.
+- `src/components/Nav/Nav.astro:64-75`, `src/components/Gallery/Gallery.astro:51-68`, `src/components/AdSlot/AdSlot.astro:29-31` - three `is:inline` scripts. Mobile nav and Gallery dialog are good candidates to switch to hoisted (default) `<script>` per Astro 6 client-side scripts guide; AdSense init must stay `is:inline` because it references a third-party global.
+- `tools/migrate-uploads.ts` - reference-driven scanner that pulls images from a WP backup into `public/img/`. After this pass, this tool's purpose ends and it can be retired (or repurposed). See implementation note in Unit 4.
+- `public/_redirects` - already has `/wp-content/uploads/* → /img/:splat 301` rule; needs an additional layer for legacy `/img/YYYY/MM/...` → new asset routes (or a friendly 404 strategy - see Unit 4).
+- `src/lib/site.ts` - central site config (already holds `adsenseClient`); add `gaMeasurementId` here.
 
 ### Institutional Learnings
 
-- `docs/solutions/` does not yet exist. No prior learnings on this codebase. Recommend capturing learnings from this pass via `compound-engineering:ce-compound` once shipped — image migration patterns will be the first useful entry.
+- `docs/solutions/` does not yet exist. No prior learnings on this codebase. Recommend capturing learnings from this pass via `compound-engineering:ce-compound` once shipped - image migration patterns will be the first useful entry.
 
 ### External References
 
-- [Astro 6 images guide](https://docs.astro.build/en/guides/images/) — `<Image>`, `<Picture>`, markdown `![]()` processing, public vs src tradeoffs.
-- [`astro:assets` API reference](https://docs.astro.build/en/reference/modules/astro-assets/) — `priority`, `layout`, `formats`, `widths`, `densities` props; `<Font>` component (added in Astro 6.0.0).
-- [Astro 6 fonts guide](https://docs.astro.build/en/guides/fonts/) — `fonts: [...]` config, providers (`fontsource`, `google`, `local`, etc.), `<Font cssVariable preload />` usage, optimized fallback metrics.
-- [Astro 6 configuration reference: image options](https://docs.astro.build/en/reference/configuration-reference/#image-options) — `image.layout`, `image.responsiveStyles`, `image.service.config.{webp,avif,jpeg,png}` (added in 6.1.0), `image.breakpoints`.
-- [Astro 6 client-side scripts](https://docs.astro.build/en/guides/client-side-scripts/) — hoisted vs `is:inline` vs `client:*` decision guide.
-- [Web.dev: Fetch Priority API](https://web.dev/articles/fetch-priority) — `fetchpriority="high"` on LCP image; documented ~700ms LCP wins.
-- [DebugBear: Avoid overusing `fetchpriority="high"`](https://www.debugbear.com/blog/avoid-overusing-fetchpriority-high) — exactly one image per page.
-- [GA4 measurement ID setup](https://support.google.com/analytics/answer/9539598) — replacement for the dead UA-28386547-1 tracking ID.
+- [Astro 6 images guide](https://docs.astro.build/en/guides/images/) - `<Image>`, `<Picture>`, markdown `![]()` processing, public vs src tradeoffs.
+- [`astro:assets` API reference](https://docs.astro.build/en/reference/modules/astro-assets/) - `priority`, `layout`, `formats`, `widths`, `densities` props; `<Font>` component (added in Astro 6.0.0).
+- [Astro 6 fonts guide](https://docs.astro.build/en/guides/fonts/) - `fonts: [...]` config, providers (`fontsource`, `google`, `local`, etc.), `<Font cssVariable preload />` usage, optimized fallback metrics.
+- [Astro 6 configuration reference: image options](https://docs.astro.build/en/reference/configuration-reference/#image-options) - `image.layout`, `image.responsiveStyles`, `image.service.config.{webp,avif,jpeg,png}` (added in 6.1.0), `image.breakpoints`.
+- [Astro 6 client-side scripts](https://docs.astro.build/en/guides/client-side-scripts/) - hoisted vs `is:inline` vs `client:*` decision guide.
+- [Web.dev: Fetch Priority API](https://web.dev/articles/fetch-priority) - `fetchpriority="high"` on LCP image; documented ~700ms LCP wins.
+- [DebugBear: Avoid overusing `fetchpriority="high"`](https://www.debugbear.com/blog/avoid-overusing-fetchpriority-high) - exactly one image per page.
+- [GA4 measurement ID setup](https://support.google.com/analytics/answer/9539598) - replacement for the dead UA-28386547-1 tracking ID.
 
 ### Current Image Inventory (baseline)
 
 - 156 files in `public/img/`, ~21 MB total.
 - Format mix: 68 `.jpg`, 12 `.jpeg`, 3 `.png`, 73 `.webp` (legacy ShortPixel companions, never referenced), **0 `.avif`**.
 - Top outliers worth special attention during migration:
-  1. `public/img/2022/10/tywyn-cinema.png` — **911 KB** (used inline on Cinema page).
-  2. `public/img/2022/06/dolgoch-2-scaled.jpg` — 596 KB.
-  3. `public/img/2022/06/dolgoch-1-scaled.jpg` — 570 KB.
-  4. `public/img/2022/06/0812889_1_4.jpg` — 324 KB (Talyllyn gallery).
-  5. `public/img/2022/07/cadair_idris-scaled.jpg` — 290 KB (Cadair Idris hero).
+  1. `public/img/2022/10/tywyn-cinema.png` - **911 KB** (used inline on Cinema page).
+  2. `public/img/2022/06/dolgoch-2-scaled.jpg` - 596 KB.
+  3. `public/img/2022/06/dolgoch-1-scaled.jpg` - 570 KB.
+  4. `public/img/2022/06/0812889_1_4.jpg` - 324 KB (Talyllyn gallery).
+  5. `public/img/2022/07/cadair_idris-scaled.jpg` - 290 KB (Cadair Idris hero).
 - 10 raster files have no `.webp` companion today, including
   `surfcam-1.jpg` (home page LCP candidate). All originals will be
   re-encoded to AVIF + WebP after migration regardless of pre-existing
@@ -162,11 +162,11 @@ from `<img>` tags with no width/height; transferred bytes are
   stable in 6.x) sets `loading="eager"`, `decoding="sync"`, and
   `fetchpriority="high"` together. Use it on exactly one image per
   page (the LCP candidate).
-- `experimental.fonts` is stable in Astro 6.0 — drop the experimental
+- `experimental.fonts` is stable in Astro 6.0 - drop the experimental
   flag, just use top-level `fonts: [...]` and `<Font />` from
   `astro:assets`.
 - HTML `<img>` tags inside markdown bodies are NOT processed for
-  `src/` images — only `![]()` syntax is. That's why R3 exists.
+  `src/` images - only `![]()` syntax is. That's why R3 exists.
 - `image.service.config.{webp,avif,jpeg,png}` (added 6.1.0) lets us
   set per-format Sharp quality defaults globally rather than per-call.
 
@@ -210,7 +210,7 @@ from `<img>` tags with no width/height; transferred bytes are
   Cadair Idris / Dolgoch / beaches) tolerates much less aggressive
   AVIF compression than synthetic UI imagery; `quality: 60` keeps
   most byte savings while avoiding visible banding. AVIF
-  `effort: 4` is the sweet spot for build time vs file size — going
+  `effort: 4` is the sweet spot for build time vs file size - going
   to 5 or 6 roughly doubles encode time for ~3–5% smaller files.
   Estimated transform count is `~140 images × 4 widths × 2 formats =
 ~1,120 transforms` plus single-format gallery thumbs and the logo;
@@ -221,7 +221,7 @@ from `<img>` tags with no width/height; transferred bytes are
 - **Override `image.breakpoints` to a 4-width set.** The Astro
   default `[640, 750, 828, 1080, 1280, 1668, 2048, 2560]` generates
   up to 8 widths per `layout="full-width"` hero. Set
-  `image.breakpoints: [640, 960, 1280, 1920]` — covers mobile,
+  `image.breakpoints: [640, 960, 1280, 1920]` - covers mobile,
   tablet, desktop, and retina-desktop while dropping the rarely-hit
   ultrawide tier. Halves hero encoding time with no perceptible
   delivery difference for the site's audience.
@@ -252,7 +252,7 @@ from `<img>` tags with no width/height; transferred bytes are
   `requestIdleCallback`) so it doesn't compete with the LCP image
   for bandwidth on first paint. The `timeout: 3000` ceiling
   guarantees AdSense loads within 3 seconds even on a busy main
-  thread — without it, image-decode bursts on a venue page can
+  thread - without it, image-decode bursts on a venue page can
   starve `requestIdleCallback` indefinitely and the ad slot never
   fills (zero impression, lost revenue). Render order and ad
   placement unchanged.
@@ -265,12 +265,12 @@ from `<img>` tags with no width/height; transferred bytes are
   gotcha:** when the LCP image is wrapped in `<Picture>` with
   multiple `<source>` elements (AVIF + WebP), the preload scanner
   has to evaluate `type` attributes against browser support before
-  picking which source to fetch — that evaluation can delay the LCP
+  picking which source to fetch - that evaluation can delay the LCP
   request by 100–300ms vs. a plain `<img>`. Mitigation, in
   preference order: (1) verify in WebPageTest waterfall after Unit 5
   that the LCP request starts within ~200ms of the HTML response;
   (2) if delayed, downgrade the LCP hero to a single-format
-  `<Image>` (WebP only — accept the ~15–20% byte cost on the
+  `<Image>` (WebP only - accept the ~15–20% byte cost on the
   single LCP image in exchange for clean preload-scanner behavior);
   (3) only as last resort, emit a manual `<link rel="preload"
 as="image" imagesrcset imagesizes type="image/avif">` for the
@@ -297,7 +297,7 @@ as="image" imagesrcset imagesizes type="image/avif">` for the
   the global `image.layout: 'constrained'` defaults, which is
   correct for inline body imagery. However, on pages where the
   markdown body image is the LCP candidate (the cinema page is
-  exactly this case — its 911 KB cinema PNG appears at the top of
+  exactly this case - its 911 KB cinema PNG appears at the top of
   the body), the `<Image>`-equivalent semantics of markdown
   processing don't apply `priority`. Rule: if a page's LCP element
   is a markdown body image, render that image via the page template
@@ -350,7 +350,7 @@ as="image" imagesrcset imagesizes type="image/avif">` for the
 - **Exact GA4 measurement ID.** User to provide before implementation
   begins; placeholder `G-XXXXXXX` until then.
 - **Whether to keep both Lato 400 and 700 weights.** Audit current
-  CSS usage during Unit 11 — if 700 isn't actually used, drop it
+  CSS usage during Unit 11 - if 700 isn't actually used, drop it
   and save another woff2 download.
 
 ## Output Structure
@@ -477,52 +477,52 @@ from a small subset shippable in days; image-pipeline migration
 wins land in the green band. Stage 2 commits only after stage 1
 data warrants it.
 
-**Stage 1 — Quick wins (this session, ~1 day):**
+**Stage 1 - Quick wins (this session, ~1 day):**
 
-1. **Unit 0** (baseline measurement) — must land before any
+1. **Unit 0** (baseline measurement) - must land before any
    behavioural change so before/after deltas exist.
 2. **NEW Unit Q1: width/height + loading attributes on existing
-   `<img>` tags** — sweep all 9 image-rendering components and the
+   `<img>` tags** - sweep all 9 image-rendering components and the
    2 inline page `<img>` references; add explicit `width`/`height`
    from intrinsic image dimensions and `loading="lazy"` (except
    above-fold). Keeps `public/img/` in place. Targets CLS = 0
    without touching the asset pipeline.
-3. **Unit 11** (Fonts) — self-host Lato. Eliminates the
+3. **Unit 11** (Fonts) - self-host Lato. Eliminates the
    render-blocking Google Fonts CSS request.
-4. **Unit 12** (UA → GA4) — drop dead UA, add GA4 deferred-load.
-5. **Unit 13** (AdSense CLS reservations) — add the per-placement
+4. **Unit 12** (UA → GA4) - drop dead UA, add GA4 deferred-load.
+5. **Unit 13** (AdSense CLS reservations) - add the per-placement
    `min-height` reservations only. Keep the `defer` loader in
    `<head>` for now (skip the idle-load change until we measure
    that the CLS-only fix moved the needle).
 6. **Unit 14** (iframe `loading="lazy"` + YouTube `embed/` fix +
-   VenueMap `allow=""`) — content-side iframe hygiene.
+   VenueMap `allow=""`) - content-side iframe hygiene.
 7. **Re-measure** with Stage-1-completed metrics.
 
 **Re-measurement gate:** if mobile LCP and CLS for the 5 sample
 pages are already in the "good" CWV band (LCP ≤ 2.5s, CLS ≤ 0.05),
 defer or scope down Stage 2. If they're still flagged, proceed.
 
-**Stage 2 — Image pipeline migration (only if Stage 1 leaves room):**
+**Stage 2 - Image pipeline migration (only if Stage 1 leaves room):**
 
-1. **Phase 1** — Units 1, 2, 3 (config, reorganize, schema bridge),
+1. **Phase 1** - Units 1, 2, 3 (config, reorganize, schema bridge),
    4a (legacy redirects), 4b (`_headers` cache control).
-2. **Phase 2** — Units 5, 6, 7, 8 (component migration to
+2. **Phase 2** - Units 5, 6, 7, 8 (component migration to
    `<Image>`/`<Picture>`). Commutative within phase.
-3. **Phase 3** — Units 9, 10 (frontmatter + markdown body
+3. **Phase 3** - Units 9, 10 (frontmatter + markdown body
    rewrites).
-4. **Legacy field cleanup PR** — small follow-up that removes the
+4. **Legacy field cleanup PR** - small follow-up that removes the
    bridge schema's legacy `hero_image`/`photo` fields once Phase 3
    has populated `cover` everywhere. Enforce via the CI check
    added in Unit 3.
-5. **Phase 5 remainder** — Unit 13's idle-load change (if Stage 1
-   measurement shows it's needed), Unit 15 cleanup (likely cut —
+5. **Phase 5 remainder** - Unit 13's idle-load change (if Stage 1
+   measurement shows it's needed), Unit 15 cleanup (likely cut -
    no R# mapping).
-6. **Phase 6** — Unit 4c (delete `public/img/`, retire migrate
+6. **Phase 6** - Unit 4c (delete `public/img/`, retire migrate
    tool) + Unit 16 post-pass measurement.
 
 ---
 
-### Phase 1 — Foundation (configuration + image migration mechanics)
+### Phase 1 - Foundation (configuration + image migration mechanics)
 
 - [ ] **Unit 0: Capture pre-pass performance baseline**
 
@@ -544,7 +544,7 @@ has nothing to measure against.
 - Test pages: `/`, `/eating/`, `/eating/dovey-inn/` (representative
   venue with hero + gallery), `/things-to-do/cadair-idris/`
   (representative activity), `/cinema/` (hero is the 911 KB PNG
-  inline image — separate test because LCP element may be markdown
+  inline image - separate test because LCP element may be markdown
   body, not page hero).
 - Tooling: PageSpeed Insights API (Lab + CrUX) preferred; local
   Lighthouse mobile (Slow 4G preset, Moto G Power emulation, 5 runs
@@ -553,7 +553,7 @@ has nothing to measure against.
   font bytes, the actual LCP element (selector), time to first byte.
 - Capture build wall-clock for `npm run build` (cold and warm).
 
-**Test scenarios:** none — measurement-only unit.
+**Test scenarios:** none - measurement-only unit.
 
 **Verification:**
 
@@ -561,7 +561,7 @@ has nothing to measure against.
   by running Lighthouse on the same pages 7 days later within
   ±20% (variance check).
 - For each page, the actual LCP element identified (text vs image)
-  — informs whether image preload optimization will help that page
+  - informs whether image preload optimization will help that page
   or not (per Markdown body LCP rule in Key Technical Decisions).
 
 ---
@@ -630,7 +630,7 @@ downstream rewrite units consume.
 
 **Files:**
 
-- Modify: `tools/migrate-uploads.ts` — add a `reorganize` mode (or
+- Modify: `tools/migrate-uploads.ts` - add a `reorganize` mode (or
   extract shared helpers into `tools/lib/img-refs.ts` and add a
   new thin script). Output writes `tools/img-mapping.json` (`{
 "/img/2022/05/foo.jpg": "src/assets/img/eating/coast-deli/cover.jpg" }`).
@@ -638,7 +638,7 @@ downstream rewrite units consume.
   it as archival evidence per Documentation/Operational Notes).
 - Create: `src/assets/img/...` directory tree per the Output Structure
   section.
-- Modify: `.gitignore` — remove the existing `public/img/20*/`
+- Modify: `.gitignore` - remove the existing `public/img/20*/`
   ignore line (since `public/img/` is being removed).
 - Pre-step: Run `npm run migrate:uploads` once locally before the
   reorganize step to populate `public/img/` with originals from
@@ -765,7 +765,7 @@ pipeline is live.
 
 **Files:**
 
-- Modify: `public/_redirects` — add legacy-image rules layer.
+- Modify: `public/_redirects` - add legacy-image rules layer.
 
 **Approach:**
 
@@ -788,12 +788,12 @@ pipeline is live.
   link equity. Option 1 is the correct conservative default absent
   data. Option 2 (per-image 301s) becomes a post-launch upgrade
   once Search Console / Cloudflare Analytics shows which paths
-  attract crawlers and inbound links — at that point, add 301s
+  attract crawlers and inbound links - at that point, add 301s
   only for the demonstrated top inbound-bearing paths (typically
   ~10–30, not all 156).
 - Collapse the existing `/wp-content/uploads/* → /img/:splat 301`
   to a direct `/wp-content/uploads/* → /404.html 410` rule for the
-  same reason — chaining a 301 into a 410 confuses search engines.
+  same reason - chaining a 301 into a 410 confuses search engines.
 
 **Test scenarios:**
 
@@ -817,7 +817,7 @@ pipeline is live.
 - [ ] **Unit 4b: Add `_headers` with cache-control for hashed assets**
 
 **Goal:** Long-term immutable caching on content-hashed assets is
-load-bearing for the perf pass — without it, return visitors
+load-bearing for the perf pass - without it, return visitors
 revalidate hashed `/_astro/...` URLs on every navigation, negating
 a large fraction of the AVIF/WebP byte wins. `_headers` is portable
 across Netlify and Cloudflare Pages (the two hosts the README is
@@ -870,7 +870,7 @@ public, max-age=0, must-revalidate` so content updates appear
 
 ---
 
-### Phase 2 — Component image migration
+### Phase 2 - Component image migration
 
 - [ ] **Unit 5: Migrate `BannerImage` to `<Picture>` with `priority`**
 
@@ -887,13 +887,13 @@ max-height: 480px` styling.
 
 - Modify: `src/components/BannerImage/BannerImage.astro`
 - Modify (if needed): `src/components/BannerImage/BannerImage.module.scss`
-- Modify: `src/layouts/BaseLayout.astro` — `Props.heroImage`
+- Modify: `src/layouts/BaseLayout.astro` - `Props.heroImage`
   interface (the type hand-off point through which every page
   passes its hero); change from `{ src: string; alt?: string }` to
   `{ src: ImageMetadata; alt?: string }`.
-- Modify: `src/components/Header/Header.astro` — passes `heroImage`
+- Modify: `src/components/Header/Header.astro` - passes `heroImage`
   through to BannerImage; update prop type accordingly.
-- Modify: `src/pages/[...slug].astro` — renders editorial pages
+- Modify: `src/pages/[...slug].astro` - renders editorial pages
   with hero images from the `pages` collection; reads
   `page.data.hero_image` (renamed to `cover` per Unit 9), passes to
   BannerImage.
@@ -906,7 +906,7 @@ max-height: 480px` styling.
   - `src/pages/dog-friendly-cafes.astro`
   - `src/pages/webcam.astro`
 - Modify: every other consumer that passes a string `src` to
-  BannerImage — search via `grep -rn 'BannerImage\|heroImage' src/`.
+  BannerImage - search via `grep -rn 'BannerImage\|heroImage' src/`.
 
 **Approach:**
 
@@ -962,18 +962,18 @@ layout="constrained">` with appropriate `widths` for card sizes.
 - Modify: `src/components/VenueCard/VenueCard.astro`
 - Modify: `src/components/StayCategoryCard/StayCategoryCard.astro`
 - Modify: `src/components/RelatedItems/RelatedItems.astro`
-- Modify: `src/pages/dog-friendly-cafes.astro:60` — inline `<img>`
+- Modify: `src/pages/dog-friendly-cafes.astro:60` - inline `<img>`
   list, convert to use the same `<Picture>` pattern (or extract to a
   small shared component if duplication justifies it).
 - Modify: page templates that _construct_ card props from collection
-  entries — `src/pages/eating/index.astro`,
+  entries - `src/pages/eating/index.astro`,
   `src/pages/eating/[slug].astro` (RelatedItems prop construction
   at line 144), `src/pages/things-to-do/index.astro`,
   `src/pages/things-to-do/[slug].astro` (RelatedItems prop
   construction at line 109), `src/pages/where-to-stay.astro`,
   `src/pages/holiday-accommodation/[category].astro` (passes
   `featured[].image` to FeaturedStayCard).
-- Decide: `src/data/events.json` and `src/components/EventCard` —
+- Decide: `src/data/events.json` and `src/components/EventCard` -
   see "events.json data-driven image" decision below.
 
 **events.json data-driven image decision:**
@@ -1010,7 +1010,7 @@ widths={[320, 480, 640]} sizes="(min-width: 768px) 33vw, 100vw" />`
 
 - Image rendering decision matrix.
 - Existing `aspect-ratio` rules in module SCSS files (e.g.,
-  `EventCard.module.scss:25`, `Gallery.module.scss:41`) — Astro
+  `EventCard.module.scss:25`, `Gallery.module.scss:41`) - Astro
   inferred dimensions plus these CSS rules give CLS-safe rendering.
 
 **Test scenarios:**
@@ -1040,7 +1040,7 @@ widths={[320, 480, 640]} sizes="(min-width: 768px) 33vw, 100vw" />`
 **Goal:** Galleries (thumbs + lightbox) and the venue/activity hero
 photos (`eating/[slug].astro:100`, `things-to-do/[slug].astro` if
 present) move to Astro pipeline. Hero photos use `<Picture>` with
-`priority`; gallery thumbs use `<Image>` (no AVIF — the byte savings
+`priority`; gallery thumbs use `<Image>` (no AVIF - the byte savings
 on small thumbs don't justify per-format overhead).
 
 **Requirements:** R2, R7
@@ -1052,13 +1052,13 @@ on small thumbs don't justify per-format overhead).
 - Modify: `src/components/Gallery/Gallery.astro`
 - Modify: `src/pages/eating/[slug].astro`
 - Modify: `src/pages/things-to-do/[slug].astro`
-- Modify: `src/pages/holiday-accommodation/[category].astro` —
+- Modify: `src/pages/holiday-accommodation/[category].astro` -
   renders stay-category covers + `featured[].image` cards; in scope.
 
 **Approach:**
 
 - Hero photo on `[slug].astro` pages: `<Picture src={entry.data.cover}
-formats={['avif', 'webp']} priority />` — this is the LCP candidate
+formats={['avif', 'webp']} priority />` - this is the LCP candidate
   on detail pages.
 - Gallery thumbs: `<Image src={item.src} alt={item.alt}
 layout="constrained" widths={[200, 400]} />`.
@@ -1077,7 +1077,7 @@ layout="constrained" widths={[200, 400]} />`.
 - Edge case: A venue with no gallery (only `cover`) renders without
   the gallery section.
 - Integration: Lightbox keyboard close (Escape) and click-outside
-  still work — verify the existing inline script wasn't broken by
+  still work - verify the existing inline script wasn't broken by
   rewiring the image markup.
 
 **Verification:**
@@ -1103,15 +1103,15 @@ any other strays get the right rendering call.
 **Files:**
 
 - Modify: `src/components/Header/Header.astro`
-- Modify: `src/lib/site.ts` — `defaultOgImage` (currently
+- Modify: `src/lib/site.ts` - `defaultOgImage` (currently
   `'/img/2022/05/explore.jpg'`) flows into
   `BaseLayout.astro:61`'s `<meta property="og:image">`. After Unit
   4c deletes `public/img/`, this URL 404s on every social share.
-- Modify: `src/layouts/BaseLayout.astro` — favicon currently
+- Modify: `src/layouts/BaseLayout.astro` - favicon currently
   references `https://visit-tywyn.s3.amazonaws.com/favicon.ico`
   (line 132); swap to local `/favicon.svg` + `/favicon.ico` (both
   already exist in `public/`).
-- Modify: `src/lib/jsonld.ts` — `heroImage?: string` field at
+- Modify: `src/lib/jsonld.ts` - `heroImage?: string` field at
   line 183 emits `image: absoluteUrl(input.heroImage)` for
   Schema.org structured data, fed from page templates' `entry.data.cover.src`.
   After the schema flip, `cover.src` is a hashed `_astro/` URL,
@@ -1133,7 +1133,7 @@ layout="fixed" loading="eager" />`. The logo is in the header on
   `src/assets/img/site/` (Astro generates fresh).
 - **OG image is special:** social platforms (Facebook, Twitter,
   LinkedIn) cache OG image URLs aggressively and their crawlers
-  don't follow `<picture>` source negotiation — they want a stable
+  don't follow `<picture>` source negotiation - they want a stable
   public URL pointing at a JPEG/PNG. Solution: keep an unhashed,
   non-pipeline OG image in `public/og/og-default.jpg` (move from
   the legacy `/img/2022/05/explore.jpg`) and have `site.ts` point
@@ -1162,7 +1162,7 @@ layout="fixed" loading="eager" />`. The logo is in the header on
 
 ---
 
-### Phase 3 — Content migration (frontmatter + markdown bodies)
+### Phase 3 - Content migration (frontmatter + markdown bodies)
 
 - [ ] **Unit 9: Bulk-rewrite frontmatter image references using mapping**
 
@@ -1223,7 +1223,7 @@ the schema.
 
 **Goal:** Astro doesn't process raw `<img>` for `src/` images in
 markdown bodies; standard `![alt](path)` does. Convert each occurrence
-manually (only 9 instances across 7 files — re-verified via grep).
+manually (only 9 instances across 7 files - re-verified via grep).
 
 **Requirements:** R3
 
@@ -1253,10 +1253,10 @@ manually (only 9 instances across 7 files — re-verified via grep).
 - For each `<img src="/img/..." alt="..." width="..." height="..."
 />` tag, look up the new path in `tools/img-mapping.json` and
   replace with `![alt-from-the-tag](relative/path)`.
-- Drop `width`/`height` attributes — Astro infers from intrinsic
+- Drop `width`/`height` attributes - Astro infers from intrinsic
   dimensions; the global `image.layout: 'constrained'` covers
   responsive sizing.
-- Drop any inline `class=""` attributes — markdown processing won't
+- Drop any inline `class=""` attributes - markdown processing won't
   preserve them (and they came from WP export, likely not load-bearing).
 
 **Test scenarios:**
@@ -1280,7 +1280,7 @@ manually (only 9 instances across 7 files — re-verified via grep).
 
 ---
 
-### Phase 4 — Fonts
+### Phase 4 - Fonts
 
 - [ ] **Unit 11: Self-host Lato via Astro 6 Fonts API**
 
@@ -1294,12 +1294,12 @@ Lato woff2 from origin with an automatic metric-matched fallback.
 
 **Files:**
 
-- Modify: `astro.config.mjs` — add `fonts: [...]` block.
-- Modify: `src/layouts/BaseLayout.astro:106-109` — remove the Google
+- Modify: `astro.config.mjs` - add `fonts: [...]` block.
+- Modify: `src/layouts/BaseLayout.astro:106-109` - remove the Google
   Fonts CSS `<link>`; remove the `fonts.googleapis.com` and
   `fonts.gstatic.com` `<link rel="preconnect">` (no longer needed
   with self-hosting). Add `<Font cssVariable="--font-body" preload />`.
-- Modify: `src/styles/abstracts/_variables.scss:37-44` — change
+- Modify: `src/styles/abstracts/_variables.scss:37-44` - change
   `$font-body` to use `var(--font-body)` with the existing system
   fallback stack as backup.
 
@@ -1323,11 +1323,11 @@ fontProviders.fontsource(), weights: [400, 700], styles:
   against `node_modules/astro/dist/...` schema before committing
   the config; if `fonts` is still flagged experimental, wrap it
   accordingly.
-- `<Font cssVariable="--font-body" preload />` — preload the body
+- `<Font cssVariable="--font-body" preload />` - preload the body
   weight. The granular per-weight `preload={[{...}]}` array form may
   not be valid in 6.1.9 (verify against installed types); if the
   boolean preloads too many faces, use two `fonts: [...]` config
-  entries — one with `preload: true` for the body weight, one
+  entries - one with `preload: true` for the body weight, one
   without for 700.
 - Update `_variables.scss` so `$font-body: var(--font-body),
 system-ui, ...`. Heading variable mirrors body (already does:
@@ -1359,13 +1359,13 @@ as="font" type="font/woff2" crossorigin>` for the 400 weight only.
   `fonts.googleapis.com`.
 - CrUX CLS for the origin trends down (post-deploy, requires
   field data).
-- Manual: throttle network to 3G, refresh — text is readable
+- Manual: throttle network to 3G, refresh - text is readable
   immediately in the fallback, then swaps to Lato without obvious
   reflow.
 
 ---
 
-### Phase 5 — Third-party scripts (analytics, ads, embeds)
+### Phase 5 - Third-party scripts (analytics, ads, embeds)
 
 - [ ] **Unit 12: Replace UA tracking with GA4**
 
@@ -1380,9 +1380,9 @@ data.
 
 **Files:**
 
-- Modify: `src/lib/site.ts` — add `gaMeasurementId: 'G-XXXXXXX'`
+- Modify: `src/lib/site.ts` - add `gaMeasurementId: 'G-XXXXXXX'`
   (placeholder; user provides real ID before implementation).
-- Modify: `src/layouts/BaseLayout.astro:136-146` — replace the UA
+- Modify: `src/layouts/BaseLayout.astro:136-146` - replace the UA
   snippet with the GA4 equivalent.
 
 **Approach:**
@@ -1394,7 +1394,7 @@ data.
 - Drop the `dns-prefetch` to `google-analytics.com` and
   `stats.g.doubleclick.net` (GA4 uses `region1.google-analytics.com`
   and similar; preconnect tuning is GA4-specific and not
-  high-priority — leave the existing `googletagmanager.com`
+  high-priority - leave the existing `googletagmanager.com`
   preconnect since GA4 still needs it).
 
 **Test scenarios:**
@@ -1431,30 +1431,30 @@ ads fill (or fail to fill).
 
 **Files:**
 
-- Modify: `src/layouts/BaseLayout.astro:152-155` — remove the
+- Modify: `src/layouts/BaseLayout.astro:152-155` - remove the
   current AdSense `<script defer src="...adsbygoogle.js">` from
   `<head>`.
-- Modify: `src/layouts/BaseLayout.astro` — add a small `is:inline`
+- Modify: `src/layouts/BaseLayout.astro` - add a small `is:inline`
   script (5–8 lines) at the end of `<body>` that schedules the
   AdSense loader via `requestIdleCallback(loader, { timeout: 3000 })`
   with `setTimeout` fallback. No new component needed for a one-call-site
   pattern; matches existing inline-script convention used by
   `AdSlot.astro:29-31`.
-- Modify: `src/components/AdSlot/AdSlot.astro` — verify
+- Modify: `src/components/AdSlot/AdSlot.astro` - verify
   `min-height` reservations for **all three** rendering contexts:
   (1) sidebar narrow column (rendered in `Sidebar.astro:147` on
   every venue/activity detail page; current 90 px is fine for a
   banner unit);
   (2) in-feed on `/eating/` (`src/pages/eating/index.astro:60`,
   inserted every 3 cards; needs reservation matching the card grid
-  cell height — likely 250 px for a medium rectangle);
+  cell height - likely 250 px for a medium rectangle);
   (3) in-feed on `/things-to-do/` (`src/pages/things-to-do/index.astro:58`,
   same shape).
   One AdSlot component, one slot ID (`7221027714`), three layout
   contexts → may need either three CSS rules keyed by parent
   context, or one component prop `placement="sidebar" |
 "in-feed"` that sets the right `min-height`.
-- Modify: `src/components/AdSlot/AdSlot.module.scss` — add the
+- Modify: `src/components/AdSlot/AdSlot.module.scss` - add the
   per-placement reservation rules.
 
 **Approach:**
@@ -1470,7 +1470,7 @@ src="...adsbygoogle.js">` to the body.
   loader executes. Today they survive because `defer` on the
   loader still arrives before DOMContentLoaded; after the change,
   they execute against `window.adsbygoogle` being just an empty
-  array. The pushed entries DO queue in the array — when the
+  array. The pushed entries DO queue in the array - when the
   loader eventually executes, AdSense's `adsbygoogle.push`
   prototype-swap converts queued entries into real impressions.
   This works correctly **as long as the loader actually runs**;
@@ -1485,7 +1485,7 @@ src="...adsbygoogle.js">` to the body.
 - Happy path: First contentful paint occurs without waiting for
   AdSense; AdSense loads after idle and ads fill.
 - Edge case: AdSense fails to load (network blocked / ad blocker)
-  — the reserved 90 px area stays empty, no CLS.
+  - the reserved 90 px area stays empty, no CLS.
 - Edge case: A page with no `AdSlot` (if any exist) doesn't ship
   the loader unnecessarily.
 
@@ -1506,20 +1506,20 @@ src="...adsbygoogle.js">` to the body.
 `embed//<id>` URL (double slash). Two more have iframes with no
 `loading=` attribute. Fix in place; no facade adoption.
 
-**Requirements:** R3 (sort of — content cleanup), R8
+**Requirements:** R3 (sort of - content cleanup), R8
 
 **Dependencies:** None
 
 **Files:**
 
-- Modify: `src/content/pages/tywyn-beach.md` — fix `embed//` to
+- Modify: `src/content/pages/tywyn-beach.md` - fix `embed//` to
   `embed/`; add `loading="lazy"`.
-- Modify: `src/content/things-to-do/tywyn-beach.md` — same.
-- Modify: `src/content/pages/wales-coastal-path.md` — add
+- Modify: `src/content/things-to-do/tywyn-beach.md` - same.
+- Modify: `src/content/pages/wales-coastal-path.md` - add
   `loading="lazy"` to Google My Maps iframe.
-- Modify: `src/content/things-to-do/castell-y-bere.md:49` — add
+- Modify: `src/content/things-to-do/castell-y-bere.md:49` - add
   `loading="lazy"` to virtual tour iframe.
-- Modify: `src/components/VenueMap/VenueMap.astro` — Google Maps
+- Modify: `src/components/VenueMap/VenueMap.astro` - Google Maps
   iframe currently has no `allow=""` attribute, so it inherits the
   embedding page's Permissions Policy and can prompt visitors for
   geolocation. Add `allow=""` (no permissions) since the embedded
@@ -1543,7 +1543,7 @@ encrypted-media; gyroscope; picture-in-picture; web-share"` to
 
 - `grep -rn '<iframe' src/content/` shows every match has
   `loading="lazy"`.
-- Manual: visit `/things-to-do/tywyn-beach/` — the YouTube embed
+- Manual: visit `/things-to-do/tywyn-beach/` - the YouTube embed
   thumbnail shows and plays on click.
 
 ---
@@ -1597,7 +1597,7 @@ src="/_astro/...">` for the bundled tiny scripts (rather than N
 
 ---
 
-### Phase 6 — Verification + tuning
+### Phase 6 - Verification + tuning
 
 - [ ] **Unit 16: Lighthouse baseline + post-pass measurement**
 
@@ -1611,7 +1611,7 @@ looks visibly degraded.
 
 **Files:**
 
-- Create: `docs/perf/2026-04-post-pass.md` — short doc capturing
+- Create: `docs/perf/2026-04-post-pass.md` - short doc capturing
   post-pass Lighthouse mobile scores for: home, `/eating/`,
   `/eating/dovey-inn/` (representative venue with hero + gallery),
   `/things-to-do/cadair-idris/` (representative activity), `/cinema/`
@@ -1679,13 +1679,13 @@ must confirm no regressions before deletion)
 - Delete: `public/img/` directory (verify zero references first).
 - Modify or delete: `tools/migrate-uploads.ts` (default delete; see
   Open Questions).
-- Modify: `package.json` — remove `migrate:uploads` script if the
+- Modify: `package.json` - remove `migrate:uploads` script if the
   tool is deleted.
-- Modify: `.gitignore` — remove the `public/img/20*/` ignore line.
+- Modify: `.gitignore` - remove the `public/img/20*/` ignore line.
 
 **Approach:**
 
-- `grep -rn '/img/' src/ public/ tools/` before deletion — must
+- `grep -rn '/img/' src/ public/ tools/` before deletion - must
   return only `_redirects` and `_headers` rule strings.
 - Commit deletion as a separate, easily-revertable PR.
 
@@ -1715,7 +1715,7 @@ must confirm no regressions before deletion)
 - **Error propagation:** A missing image in frontmatter now fails
   the build (schema enforcement) rather than silently rendering a
   broken `<img>`. This is a desirable behaviour change but means
-  Unit 9 must be exhaustive — verify `astro check` is clean before
+  Unit 9 must be exhaustive - verify `astro check` is clean before
   merging Phase 3.
 - **State lifecycle risks:** None introduced. Static build, no
   runtime state.
@@ -1726,7 +1726,7 @@ must confirm no regressions before deletion)
   legacy `/img/...` inbound links by 301-ing them to the canonical
   consuming page.
 - **Integration coverage:** Card listings + AdSlot insertion is the
-  one cross-cutting interaction worth eyeballing — the perf pass
+  one cross-cutting interaction worth eyeballing - the perf pass
   should not break the every-3-cards ad placement on `/eating/` and
   `/things-to-do/`. Manual smoke after Phase 2.
 - **Unchanged invariants:** Page routes, content collection slugs,
@@ -1742,7 +1742,7 @@ must confirm no regressions before deletion)
 | AVIF encoding inflates build time from seconds to >1 minute.                                                                                                                           | Default `avif.effort: 4` (per Key Technical Decisions) keeps cold-cache builds in the 60-90s range. If still painful, defer AVIF to a later iteration and ship WebP-only first.                                                                                                                                                                                            |
 | CI build cache not persisted between runs → every deploy re-encodes 1,400 transforms from cold cache.                                                                                  | Astro caches generated images in `node_modules/.astro/`. On Netlify, set `[build] cache_directories = ["node_modules/.astro"]` in `netlify.toml`. On Cloudflare Pages, the build cache is automatic for `node_modules/` but verify `.astro/` is included. Without this, every deploy hits the 5-minute cold-cache build path; with it, incremental builds drop to seconds. |
 | `<Picture>` AVIF source delays preload-scanner discovery of LCP image by 100–300ms (the scanner can't evaluate `type` support upfront).                                                | Verify in WebPageTest waterfall after Unit 5; if real, downgrade hero to single-format `<Image>` (WebP only) for a ~15–20% byte cost on the single LCP image, OR emit a manual `<link rel="preload" as="image" imagesrcset type="image/avif">`.                                                                                                                            |
-| Schema cutover is more atomic than a single PR can comfortably contain — Units 3, 5, 6, 7, 8, 9, 10 all touch incompatible types.                                                      | Bridge schema pattern (per Key Technical Decisions): land `cover: image().optional()` alongside legacy `hero_image: imageSchema.optional()` in Phase 1; populate via Phase 3 rewrite; migrate components in Phase 2; remove legacy field in a small follow-up. Allows phased PRs without a giant atomic super-PR.                                                          |
+| Schema cutover is more atomic than a single PR can comfortably contain - Units 3, 5, 6, 7, 8, 9, 10 all touch incompatible types.                                                      | Bridge schema pattern (per Key Technical Decisions): land `cover: image().optional()` alongside legacy `hero_image: imageSchema.optional()` in Phase 1; populate via Phase 3 rewrite; migrate components in Phase 2; remove legacy field in a small follow-up. Allows phased PRs without a giant atomic super-PR.                                                          |
 | AdSense loader runs after per-AdSlot push scripts → if `requestIdleCallback` starves indefinitely, ads never fill (zero impressions, lost revenue).                                    | `{ timeout: 3000 }` on `requestIdleCallback` ceiling guarantees loader runs within 3 seconds of first paint regardless of main thread state. Confirm fill rate matches pre-change baseline on staging.                                                                                                                                                                     |
 | AdSense fill rate may drop because late loading is penalized by ad networks.                                                                                                           | Measure ad revenue 1–2 weeks post-deploy; if material drop, revert to `defer` in `<head>` (no other code change required).                                                                                                                                                                                                                                                 |
 | Schema change (Unit 3) + frontmatter rewrite (Unit 9) must land together. Half-applied state breaks `astro check`.                                                                     | Land in a single PR; CI runs `astro check`. If a hot-fix is needed mid-PR, revert the schema change first.                                                                                                                                                                                                                                                                 |
@@ -1752,9 +1752,9 @@ must confirm no regressions before deletion)
 | GA4 measurement ID mistakenly committed as placeholder.                                                                                                                                | Build skips the snippet entirely if `gaMeasurementId === ''` (Unit 12 test scenario). PR template should mention swapping the ID before merge.                                                                                                                                                                                                                             |
 | AdSense idle-load reduces fill rate (real-world ad networks penalize late-loading inventory).                                                                                          | Measure ad revenue 1–2 weeks post-deploy; if material drop, revert to `defer` in `<head>` (no other code change required).                                                                                                                                                                                                                                                 |
 | Image quality regression on flagship outliers (cinema PNG, Cadair Idris hero).                                                                                                         | Visually inspect during Unit 16; per-call `quality` override on `<Picture>` if the global default is too aggressive.                                                                                                                                                                                                                                                       |
-| Markdown `<img>` with inline `class` attributes loses styling when rewritten to `![]()`.                                                                                               | Audit CSS for selectors targeting `.entry-content img.something` — none expected (WP-export classes were not load-bearing in the SCSS port), but verify via `grep` before Unit 10.                                                                                                                                                                                         |
+| Markdown `<img>` with inline `class` attributes loses styling when rewritten to `![]()`.                                                                                               | Audit CSS for selectors targeting `.entry-content img.something` - none expected (WP-export classes were not load-bearing in the SCSS port), but verify via `grep` before Unit 10.                                                                                                                                                                                         |
 | Three third-party origins (GA4, AdSense, Ahrefs) compete with image and font requests during first paint.                                                                              | After Unit 13 lands, confirm `<head>` preconnect order: Lato font preload → preconnect to ad/analytics origins (not the reverse). Drop dead preconnects (`google-analytics.com`, `stats.g.doubleclick.net` were UA-era). Verify in WebPageTest that no third-party request gets `Priority: High`.                                                                          |
-| Dev hot-reload character changes when images move from `public/` to `src/assets/` — first request to a new image after edit goes through Vite transform pipeline (200ms-2s per image). | Document in `README.md` for content editors. Mitigation: `astro dev --remote` for warm-up; or accept the cost since it only hits new images.                                                                                                                                                                                                                               |
+| Dev hot-reload character changes when images move from `public/` to `src/assets/` - first request to a new image after edit goes through Vite transform pipeline (200ms-2s per image). | Document in `README.md` for content editors. Mitigation: `astro dev --remote` for warm-up; or accept the cost since it only hits new images.                                                                                                                                                                                                                               |
 | TypeScript compile time grows because `image()` validation forces import of every referenced image at content-build time.                                                              | Acceptable; adds a few seconds to fresh builds. If `tsserver` becomes sluggish in editor, suggest editors restart TS server periodically (already a normal workflow).                                                                                                                                                                                                      |
 | LCP element on some pages may be _text_, not an image (e.g., the home page heading rendered before surfcam photo loads). Image preload optimization is wasted work on text-LCP pages.  | Unit 0 (baseline) explicitly identifies the LCP element per page. If a page's LCP is text, drop `priority` on its hero image (still load eager, but don't fight for fetchpriority). Adjust Unit 5/7 per-page accordingly.                                                                                                                                                  |
 
@@ -1767,7 +1767,7 @@ must confirm no regressions before deletion)
   (the content-hashed filenames make this safe).
 - A first entry in `docs/solutions/` (currently nonexistent)
   capturing the WordPress→Astro image migration would be valuable
-  institutional knowledge — recommend running
+  institutional knowledge - recommend running
   `compound-engineering:ce-compound` after Phase 3 to capture the
   pattern for future migrations.
 - GA4 setup requires a measurement ID from Google Analytics admin

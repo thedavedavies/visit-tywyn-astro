@@ -7,7 +7,7 @@
  * us a stable shuffle keyed on a seed string (typically the page
  * slug).
  *
- * The PRNG is a tiny Linear Congruential Generator — not
+ * The PRNG is a tiny Linear Congruential Generator - not
  * cryptographically secure, but uniform enough for picking N
  * items out of M with no observable bias.
  */

@@ -12,7 +12,7 @@ deepened: 2026-04-27
 
 Reorganise the legacy assets tree to drop WordPress-era directory naming and
 shrink the deploy footprint. The current `public/wp-content/uploads/` is 315MB
-across 6,198 files — most of it dead weight from the 59 retired accommodation
+across 6,198 files - most of it dead weight from the 59 retired accommodation
 listings, plus non-image junk (security plugin backups, performance-plugin
 caches, `.php` / `.htaccess` / `.log` files) that came in with the legacy
 backup rsync.
@@ -74,7 +74,7 @@ The user explicitly asked to "scrap the wp-content terminology" and noted
   open; this plan is a precursor that makes that migration easier (a
   smaller, cleaner tree is faster to lift and shift).
 - **No new image optimisation pipeline.** We're preserving exactly the
-  bytes WordPress already generated — not regenerating thumbnails, not
+  bytes WordPress already generated - not regenerating thumbnails, not
   re-encoding to AVIF.
 
 ### Deferred to Separate Tasks
@@ -92,19 +92,19 @@ The user explicitly asked to "scrap the wp-content terminology" and noted
 
 Path-emitting code (must be updated):
 
-- `tools/export-from-sql.ts` — line 428 builds attachment paths as
+- `tools/export-from-sql.ts` - line 428 builds attachment paths as
   `/wp-content/uploads/${file}`. This is the canonical source for
   every frontmatter image path and most body-content image refs.
-- `tools/export-from-sql.ts` — `rewriteContent()` does no path
+- `tools/export-from-sql.ts` - `rewriteContent()` does no path
   rewriting today; needs to translate any
   `/wp-content/uploads/` references already inside post body HTML
   into the new prefix during export.
 
 Hardcoded template references (must be updated):
 
-- `src/components/Header/Header.astro:24` — logo `<img src>`.
-- `src/lib/site.ts:20` — `defaultOgImage` default-OG image path.
-- `src/pages/eating/index.astro:32` — eating archive banner image.
+- `src/components/Header/Header.astro:24` - logo `<img src>`.
+- `src/lib/site.ts:20` - `defaultOgImage` default-OG image path.
+- `src/pages/eating/index.astro:32` - eating archive banner image.
 
 Generated content (rewritten by re-running export):
 
@@ -114,28 +114,28 @@ Generated content (rewritten by re-running export):
 
 Existing migration tooling:
 
-- `tools/copy-uploads.sh` — naive `rsync -a --delete` from the legacy
+- `tools/copy-uploads.sh` - naive `rsync -a --delete` from the legacy
   uploads tree into `public/wp-content/uploads/`. Replaced wholesale
   by the new tool.
 
 Backup source of truth:
 
 - `/Users/dave/Downloads/visit-tywyn.co.uk_2026-Mar-13_backup_69b436db1a3c81.57399253/wp-content/uploads/`
-  — 315MB. Top-level entries include real content directories
+  - 315MB. Top-level entries include real content directories
   (`2022/`, `2023/`, `2024/`) plus plugin junk (`aios/`,
   `ShortpixelBackups/`, `cleantalk_fw_files_for_blog_1/`,
   `hummingbird-assets/`, `smush-webp-test.png`).
 
 Existing `_redirects`:
 
-- `public/_redirects:119` — single hand-curated rule
+- `public/_redirects:119` - single hand-curated rule
   `/wp-content/uploads/2015/04/Overhead.jpg → /` for an old hotlink
   hijack. The new wildcard 301 rule supersedes the need for this
   individual entry but it's harmless to keep.
 
 ### Institutional Learnings
 
-`docs/solutions/` does not exist — confirmed in the prior `ce:review`
+`docs/solutions/` does not exist - confirmed in the prior `ce:review`
 learnings researcher pass. This is the first plan in the project.
 
 ### External References
@@ -152,7 +152,7 @@ Rationale: `/img/` is shorter, advertises "this is images" rather than
 the more generic "uploads", and lets us keep the existing
 `YYYY/MM/filename.ext` substructure unchanged. Restructuring by content
 type (e.g. `/img/eating/proper-gander.jpg`) was considered and rejected
-— it would force the export script to know each file's owning content
+- it would force the export script to know each file's owning content
 type, makes filename deduplication harder when the same file is shared
 across multiple entries, and changes the filename relationship to
 WordPress's original structure (which complicates any future re-export
@@ -178,7 +178,7 @@ the migration.
 **Decision 4: Single one-shot migration, not incremental.**
 
 The legacy backup is frozen as of 2026-03-13. There won't be a
-"refresh" cycle — the migration runs once when an image set changes
+"refresh" cycle - the migration runs once when an image set changes
 (e.g., a new venue is added). The tool is idempotent and
 delete-safe: existing files in `public/img/` not in the needed set
 are left in place (operator decides whether to clean them up).
@@ -193,7 +193,7 @@ Cheap insurance; one line of config.
 
 ### Resolved During Planning
 
-- **What replaces `/wp-content/uploads/` in URLs?** `/img/` — see
+- **What replaces `/wp-content/uploads/` in URLs?** `/img/` - see
   Decision 1.
 - **Does anything currently live at `public/img/`?** A stray empty
   `public/img/svg/` directory created during initial scaffolding
@@ -202,7 +202,7 @@ Cheap insurance; one line of config.
   component pulls SVGs from `src/icons/` at build time via Vite's
   `import.meta.glob`, not from `public/`. Unit 5 deletes the empty
   directory along with `public/wp-content/`. No collision risk.
-- **Do we keep the date-based subdirectory (`YYYY/MM/`)?** Yes —
+- **Do we keep the date-based subdirectory (`YYYY/MM/`)?** Yes -
   preserves filename uniqueness and minimises export-script
   changes (just a prefix swap).
 - **Do we keep WebP companions?** Yes when their source `.jpg`/`.png`
@@ -214,7 +214,7 @@ Cheap insurance; one line of config.
   (no source image) are dropped because nothing references them.
 - **Do we keep WP-generated thumbnail variants
   (`-150x150`, `-300x204`, etc.) when the canonical full-size image
-  is referenced?** No — we copy only files exactly referenced. If
+  is referenced?** No - we copy only files exactly referenced. If
   the body content references `Castell-y-Bere-70-1024x768.jpeg`,
   that exact file is copied; sibling variants are not.
 - **Does `_redirects` get hand-edited or generated?** Generated by
@@ -224,7 +224,7 @@ Cheap insurance; one line of config.
   rule on the next `npm run export`.
 - **Does the wildcard rule sort correctly relative to the explicit
   `Overhead.jpg → /` rule?** Only if it's emitted as a trailing
-  rule, AFTER the existing sorted block — not as a new entry in the
+  rule, AFTER the existing sorted block - not as a new entry in the
   sorted Set. Lexically, `*` (ASCII 42) sorts before digits, so a
   sorted member would override the explicit rule on first-match
   hosts (Netlify). Unit 4 specifies trailing emission.
@@ -232,7 +232,7 @@ Cheap insurance; one line of config.
   Three known hardcoded refs in templates (covered in Unit 2),
   plus `src/data/events.json` (the `_example` block has
   `/img/uploads/example-event.jpg`). The scanner walks the entire
-  `src/` tree to catch all of them automatically — see Unit 3.
+  `src/` tree to catch all of them automatically - see Unit 3.
 - **Does the migration tool consume the existing
   `tools/.upload-references.txt` dotfile produced by the export?**
   No. The dotfile records pre-rewrite paths and would lag the
@@ -242,13 +242,13 @@ Cheap insurance; one line of config.
 ### Deferred to Implementation
 
 - Exact API shape of `tools/migrate-uploads.ts` (CLI flags,
-  output format) — pick during build, prefer terse stdout: counts +
+  output format) - pick during build, prefer terse stdout: counts +
   total bytes copied + skipped reasons.
 - Whether to also include `*.svg` from `src/icons/` in the new
   `public/img/` tree, or leave them as inline-imported SVGs in the
   source tree. Prefer leaving the inline-import workflow as-is.
 - Whether to commit `public/img/` to git or keep it gitignored
-  (current `public/wp-content/` is gitignored). Keep gitignored —
+  (current `public/wp-content/` is gitignored). Keep gitignored -
   the operator runs migrate-uploads after a fresh checkout.
 
 ## Implementation Units
@@ -353,7 +353,7 @@ when verified).
 
 **Test scenarios:**
 
-- Test expectation: none — pure string substitution covered by
+- Test expectation: none - pure string substitution covered by
   the build verification step.
 
 **Verification:**
@@ -401,7 +401,7 @@ The tool runs in three phases:
      case-insensitively. The terminator class excludes whitespace,
      quotes, angle brackets, query strings, fragments, and
      parentheses (e.g., the trailing `)` of a CSS `url(...)`).
-   - Reject any match where the immediate prefix is `://` or `//` —
+   - Reject any match where the immediate prefix is `://` or `//` -
      those are absolute external URLs that happen to contain
      `/img/` (e.g. `https://example.com/img/x.jpg`). Use a
      negative-lookbehind in the regex or post-filter on the
@@ -422,7 +422,7 @@ uploads/` by stripping the leading `/img/`.
    directory exists under `public/img/` and copy the file.
    Track stats: files copied, total bytes, files referenced but
    missing from backup (warn), files in needed Set that hit
-   junk-dir filter (warn — should not happen post-cleanup).
+   junk-dir filter (warn - should not happen post-cleanup).
 
 The tool is idempotent: copying over an existing identical file
 is a no-op. The tool is delete-safe: it does not remove files in
@@ -431,9 +431,9 @@ manual cleanup decision.
 
 CLI:
 
-- `npm run migrate:uploads` — uses the default backup path baked
+- `npm run migrate:uploads` - uses the default backup path baked
   into the script (`tools/copy-uploads.sh` did this too).
-- `npm run migrate:uploads -- /path/to/different/backup` —
+- `npm run migrate:uploads -- /path/to/different/backup` -
   override.
 
 Stdout summary at the end:
@@ -443,7 +443,7 @@ Migration summary:
   Referenced: N files
   Copied:     M files (X.X MB)
   Skipped:    K files (already up to date)
-  Missing:    P files (referenced but not in backup) — see warnings above
+  Missing:    P files (referenced but not in backup) - see warnings above
 ```
 
 **Patterns to follow:**
@@ -510,12 +510,12 @@ file directly would lose the rule on the next `npm run export`.
 
 **Requirements:** R5.
 
-**Dependencies:** None — independent of Units 1-3.
+**Dependencies:** None - independent of Units 1-3.
 
 **Files:**
 
 - Modify: `tools/export-from-sql.ts` (the redirect-emission code
-  near the bottom of the script — adds a trailing `/wp-content/
+  near the bottom of the script - adds a trailing `/wp-content/
 uploads/* /img/:splat 301` line AFTER the sorted block of
   per-URL rules)
 - Regenerated: `public/_redirects`
@@ -525,7 +525,7 @@ uploads/* /img/:splat 301` line AFTER the sorted block of
 The export script today builds an array of `RedirectRow`s, sorts
 them by `from`, and writes them as the body of `public/_redirects`.
 Add the wildcard as a trailing line emitted after the sorted block
-(NOT as a new entry in the sorted array — `*` sorts lexically
+(NOT as a new entry in the sorted array - `*` sorts lexically
 before digits and letters, so a sorted entry would land at the top
 and override the explicit `Overhead.jpg → /` rule on first-match
 hosts like Netlify).
@@ -560,7 +560,7 @@ it works the same in both.
   returns `301` → `/img/2022/05/explore.jpg` (post-deploy +
   post-Unit 5 migration so the destination exists).
 - Edge case: a path that doesn't exist under `/img/` after rewrite
-  returns 404 from the host (not an infinite redirect loop —
+  returns 404 from the host (not an infinite redirect loop -
   `/img/<missing>.jpg` is not in the redirect table).
 
 **Verification:**
@@ -585,7 +585,7 @@ and verify the site is fully on the new asset scheme with no stragglers.
 
 - Modify: `.gitignore` (replace `public/wp-content/` line with
   `public/img/`).
-- Delete (working tree only — gitignored anyway):
+- Delete (working tree only - gitignored anyway):
   `public/wp-content/`.
 - Repopulate: `public/img/` (via `npm run migrate:uploads`).
 
@@ -600,11 +600,11 @@ re-running `tools/copy-uploads.sh` (which has been deleted) or
 re-running migrate-uploads against a working tool.
 
 1. **Pre-flight grep.** `grep -rE "/wp-content/" src/` returns
-   nothing. If non-zero, return to Unit 1 — Unit 5 cannot proceed
+   nothing. If non-zero, return to Unit 1 - Unit 5 cannot proceed
    while content still references the legacy prefix.
 2. **Update `.gitignore`.** Replace `public/wp-content/` with
    `public/img/20*/`. The `20*` glob covers `public/img/2022/`,
-   `public/img/2023/`, `public/img/2024/`, etc. — keeps any
+   `public/img/2023/`, `public/img/2024/`, etc. - keeps any
    manually-curated future content under `public/img/` (e.g., a
    commitable 1200x630 OG card) trackable while keeping the
    year-bucketed migrated content gitignored.
@@ -622,7 +622,7 @@ re-running migrate-uploads against a working tool.
    - A things-to-do gallery loads.
    - The OG image referenced in `<head>` resolves.
 7. `grep -rE "/wp-content/" dist/` should return only the redirect
-   rule line in `dist/_redirects` (expected — the wildcard 301
+   rule line in `dist/_redirects` (expected - the wildcard 301
    we emit in Unit 4 references `/wp-content/uploads/*` by
    design). All other matches must be zero.
 8. **Now safe to delete:** `rm -rf public/wp-content/`.
@@ -636,7 +636,7 @@ re-running migrate-uploads against a working tool.
 
 **Test scenarios:**
 
-- Test expectation: none — this is verification of the units
+- Test expectation: none - this is verification of the units
   above, not new behavior.
 
 **Verification:**
@@ -662,7 +662,7 @@ re-running migrate-uploads against a working tool.
   warning surface catches this at migrate-time so we don't ship
   broken assets unknowingly.
 - **State lifecycle risks.** The migration tool is idempotent
-  and delete-safe — re-running it doesn't break anything. If
+  and delete-safe - re-running it doesn't break anything. If
   someone hand-adds a file to `public/img/` (e.g., a new social
   card), re-running migrate-uploads won't delete it. That's a
   feature.
@@ -684,7 +684,7 @@ re-running migrate-uploads against a working tool.
 | Risk                                                                                                                                                                                                                                                                                         | Mitigation                                                                                                                                                                                                                                                                                                                                                                                        |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Migration tool misses a reference (a stylesheet `url()`, a hand-edited markdown file, a JSON data file, a future component, etc.). The image is in the backup but not copied; the deployed site has a broken image.                                                                          | Discovery-phase scanner walks the entire `src/` tree (every file under `src/`, not just `src/content/`) with a regex tuned to capture `/img/...` substrings while rejecting absolute external URLs. New paths added in any future file are picked up automatically. The wildcard 301 rule catches old-path inbound links. The Unit 5 dev-server smoke test surfaces missing images before deploy. |
-| The 1908×397 hero banner images are referenced by full path (no thumbnail variants), but inline body `<img>` tags reference specific thumbnail sizes (e.g., `Castell-y-Bere-70-1024x768.jpeg`). The migration must copy exact filenames as referenced — not infer "all sizes of this image". | Reference scanner builds the needed Set from exact path strings. No filename normalisation or "include all variants" logic. Keeps the copy footprint minimal AND avoids false negatives.                                                                                                                                                                                                          |
+| The 1908×397 hero banner images are referenced by full path (no thumbnail variants), but inline body `<img>` tags reference specific thumbnail sizes (e.g., `Castell-y-Bere-70-1024x768.jpeg`). The migration must copy exact filenames as referenced - not infer "all sizes of this image". | Reference scanner builds the needed Set from exact path strings. No filename normalisation or "include all variants" logic. Keeps the copy footprint minimal AND avoids false negatives.                                                                                                                                                                                                          |
 | Plugin junk has `.jpg` files that ARE images but live under junk dirs (e.g., `aios/wp-fail2ban-attack-1.jpg`). Naive image-extension filter would copy these.                                                                                                                                | Combine extension filter AND junk-dir denylist. A file passes only if both conditions hold. Verified during build of the migration tool's filter logic.                                                                                                                                                                                                                                           |
 | Re-running `npm run export` clobbers any hand-edited markdown content (frontmatter AND inline body HTML). If someone hand-edits a `<img src>` after a previous export and then we never re-run export, the rewrite never happens; their hand-edited path stays as `/wp-content/uploads/...`. | Unit 5 step 1 ("pre-flight grep") makes Unit 1's `grep -rE "/wp-content/" src/` a hard precondition for cleanup. If anything is hand-edited and not yet re-exported, the grep fails and the cleanup blocks. README already notes export is destructive; the precondition adds a checked gate.                                                                                                     |
 | Editing `public/_redirects` directly to add the wildcard rule would be silently lost on the next `npm run export`, since the file is regenerated.                                                                                                                                            | Unit 4 edits `tools/export-from-sql.ts` to emit the rule, not the generated file directly. The rule is also placed as a TRAILING line (post-sort) so it doesn't override the explicit `Overhead.jpg → /` rule on first-match hosts.                                                                                                                                                               |

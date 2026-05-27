@@ -10,7 +10,7 @@
  * Why static rather than Lighthouse: the new Astro site is not yet
  * deployed, so PageSpeed Insights cannot reach it. Running Lighthouse
  * locally against `astro preview` doesn't represent throttled mobile
- * conditions accurately either — the most reliable signal we can
+ * conditions accurately either - the most reliable signal we can
  * capture today is on-the-wire byte counts, and those translate
  * directly into LCP/INP wins under any network condition. Add
  * Lighthouse-on-deployed-staging once the host decision is made
@@ -27,7 +27,7 @@ const samplePages = [
 	'/eating/',
 	'/eating/dovey-inn/',
 	'/things-to-do/cadair-idris/',
-	'/things-to-do/magic-lantern-cinema/', // formerly /cinema/ — redirect target
+	'/things-to-do/magic-lantern-cinema/', // formerly /cinema/ - redirect target
 ];
 
 type ResourceKind = 'image' | 'font' | 'css' | 'js' | 'html';
@@ -188,7 +188,7 @@ function analyzePage(path: string): PageReport {
 				}
 			}
 		} else if (rel && rel.toLowerCase() === 'preload' && extractAttr(tag, 'as') === 'font') {
-			// font preload — count it
+			// font preload - count it
 			const external =
 				href.startsWith('http://') || href.startsWith('https://') || href.startsWith('//');
 			const filePath = external ? null : resolveRelativeUrl(href, htmlPath);

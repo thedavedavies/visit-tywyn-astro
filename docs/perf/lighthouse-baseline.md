@@ -53,7 +53,7 @@ LCP green ≤ 2.5s, orange 2.5-4.0s, red > 4.0s.
 - `/eating/` at 3.5s LCP is in the orange band. The first venue
   card's image is the LCP candidate; the lazy-loading on cards
   below the fold is working (Lighthouse only loaded ~700 KB of the
-  ~1.6 MB of card images counted statically — a real Q1 win for
+  ~1.6 MB of card images counted statically - a real Q1 win for
   visitors who don't scroll).
 
 **The render-blocking CSS audit is consistent across all pages.**

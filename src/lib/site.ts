@@ -1,5 +1,5 @@
 /**
- * Site-wide constants. Single source of truth — do not duplicate in components.
+ * Site-wide constants. Single source of truth - do not duplicate in components.
  */
 export const SITE = {
 	url: 'https://visit-tywyn.co.uk',

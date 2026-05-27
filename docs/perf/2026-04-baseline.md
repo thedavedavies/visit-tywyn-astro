@@ -18,22 +18,22 @@ The new Astro site has no production deployment yet (host decision is
 an open follow-up in the README), so PageSpeed Insights / CrUX cannot
 reach it and field LCP/INP/CLS are unmeasurable today. The baseline
 therefore prioritizes deterministic, on-disk byte counts of every
-resource each rendered page references — those translate directly
+resource each rendered page references - those translate directly
 into LCP wins under any network condition and reproduce exactly on
 re-run.
 
 - **Build:** `npm run build` against commit `df1df7e` (refactor/perf-pass).
-- **Tool:** [`tools/perf/measure-pages.ts`](../../tools/perf/measure-pages.ts) — parses each
+- **Tool:** [`tools/perf/measure-pages.ts`](../../tools/perf/measure-pages.ts) - parses each
   rendered HTML file in `dist/`, extracts every `<img src>`,
   `<link rel="stylesheet">`, `<script src>`, and `<link rel="preload"
 as="font">`, plus `url(...)` references inside any same-origin
   stylesheet, and sums on-disk file sizes.
 - **Sample pages** (per Unit 0 of the plan):
-  1. `/` (home — banner image LCP)
-  2. `/eating/` (listing page — 20 venue cards)
+  1. `/` (home - banner image LCP)
+  2. `/eating/` (listing page - 20 venue cards)
   3. `/eating/dovey-inn/` (representative venue with hero + gallery)
   4. `/things-to-do/cadair-idris/` (representative activity)
-  5. `/things-to-do/magic-lantern-cinema/` (formerly `/cinema/` — markdown body
+  5. `/things-to-do/magic-lantern-cinema/` (formerly `/cinema/` - markdown body
      contains the 911 KB inline PNG, so LCP is the body image, not
      the page banner)
 - **Counts not captured:** Lighthouse mobile-emulated LCP / INP / CLS
@@ -72,7 +72,7 @@ bytes).
 
 The largest static `<img>` per page, identified statically. Real
 LCP element confirmation needs a runtime PerformanceObserver run on
-deployed staging — these are best-guess based on byte size and DOM
+deployed staging - these are best-guess based on byte size and DOM
 position.
 
 | Path                                  | Likely LCP element                                     |    Bytes |
@@ -115,10 +115,10 @@ that drives CLS to ~0 without touching the asset pipeline.
 
 From the rendered HTML on every sample page:
 
-- `<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:wght@400;700&display=swap">` — render-blocking. Unit 11 removes.
-- `<script src="https://www.googletagmanager.com/gtag/js?id=UA-28386547-1">` — UA tag, sunset July 2023, not collecting. Unit 12 replaces.
-- `<script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" defer>` — AdSense loader. Unit 13 moves to idle.
-- `<script async src="https://analytics.ahrefs.com/analytics.js">` — kept; already async, low priority.
+- `<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:wght@400;700&display=swap">` - render-blocking. Unit 11 removes.
+- `<script src="https://www.googletagmanager.com/gtag/js?id=UA-28386547-1">` - UA tag, sunset July 2023, not collecting. Unit 12 replaces.
+- `<script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" defer>` - AdSense loader. Unit 13 moves to idle.
+- `<script async src="https://analytics.ahrefs.com/analytics.js">` - kept; already async, low priority.
 
 `<link rel="preconnect">` to `fonts.googleapis.com`,
 `fonts.gstatic.com`, `googletagmanager.com`,
@@ -131,7 +131,7 @@ UA tag and will be dropped in Unit 12.
 
 - 155 raster files in `public/img/`, **18 MB on disk**.
 - 73 `.webp` companions (legacy ShortPixel, never referenced from
-  the source — they shipped to `dist/` but no `<img>` points at
+  the source - they shipped to `dist/` but no `<img>` points at
   them). Stage 2 deletes them along with the move to
   `src/assets/img/`.
 - 0 `.avif`. Whole format dimension is unused.
@@ -154,7 +154,7 @@ npx tsx tools/perf/measure-pages.ts
 
 Produces `docs/perf/baseline-pages.json` (committed alongside this
 doc) with per-page resource lists. Re-run after each Stage 1 unit
-to get exact byte deltas. The script is deterministic — same dist
+to get exact byte deltas. The script is deterministic - same dist
 content always produces the same numbers.
 
 ## Open: field metrics

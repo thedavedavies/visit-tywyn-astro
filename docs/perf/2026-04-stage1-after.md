@@ -11,8 +11,8 @@ baseline: docs/perf/2026-04-baseline.md
 # Stage 1 post-pass measurement
 
 Re-runs of [`tools/perf/measure-pages.ts`](../../tools/perf/measure-pages.ts) after Stage 1 (Units 0,
-Q1, 11, 12, 13, 14) lands. Same methodology as the baseline doc — same
-sample pages, same deterministic byte counter — so the deltas below
+Q1, 11, 12, 13, 14) lands. Same methodology as the baseline doc - same
+sample pages, same deterministic byte counter - so the deltas below
 are directly comparable.
 
 The win Stage 1 was designed for is **CLS = 0 on every sample page
@@ -38,29 +38,29 @@ the actual LCP win.
 
 ## Per-unit summary
 
-- **Unit 0** — captured pre-pass baseline ([2026-04-baseline.md](2026-04-baseline.md)) with
+- **Unit 0** - captured pre-pass baseline ([2026-04-baseline.md](2026-04-baseline.md)) with
   deterministic byte-counter and JSON dump for diff comparison.
-- **Unit Q1** — wired intrinsic `width`/`height` into 7 image-rendering
+- **Unit Q1** - wired intrinsic `width`/`height` into 7 image-rendering
   components (BannerImage, VenueCard, ActivityCard, EventCard,
   FeaturedStayCard, StayCategoryCard, RelatedItems, Gallery thumb +
   lightbox) and 2 inline page `<img>` tags. CLS-risk surface
   collapses to 0 across all sample pages. New helper
   [`src/lib/image-dimensions.ts`](../../src/lib/image-dimensions.ts) probes JPEG/PNG headers at
   build time; will retire when astro:assets takes over in Stage 2.
-- **Unit 11** — Lato self-hosted via `fontProviders.fontsource()` at
+- **Unit 11** - Lato self-hosted via `fontProviders.fontsource()` at
   weights 400 + 700, subsets `latin` + `latin-ext`. The 400-latin
   woff2 is `<link rel="preload">`-ed; everything else lazy-loads
   on demand. `optimizedFallbacks: true` synthesizes Arial-derived
   metric overrides so font swap doesn't shift layout. Both
   `fonts.googleapis.com` and `fonts.gstatic.com` requests are gone
   from every page.
-- **Unit 12** — `gaMeasurementId` field added to `SITE`; defaults to
+- **Unit 12** - `gaMeasurementId` field added to `SITE`; defaults to
   empty so the gtag snippet is omitted entirely until a real
   `G-XXXXXXX` ID is provisioned. Dead UA-28386547-1 tag and the
   `dns-prefetch` to `google-analytics.com` /
   `stats.g.doubleclick.net` removed. **Open follow-up:** provide
   the GA4 measurement ID and set it in [`src/lib/site.ts`](../../src/lib/site.ts).
-- **Unit 13** — `placement` prop on AdSlot drives per-context
+- **Unit 13** - `placement` prop on AdSlot drives per-context
   `min-height` (sidebar 90 px / in-feed 250 px). Discovered and
   fixed a pre-existing rendering bug in `/eating/index.astro` and
   `/things-to-do/index.astro`: the `<>` Fragment + conditional
@@ -68,7 +68,7 @@ the actual LCP win.
   Switched to `flatMap` returning an array, which Astro renders
   correctly. /eating/ now ships 5 in-feed slots (was 0); /things-to-do/
   ships 3 (was 0).
-- **Unit 14** — Fixed two malformed `youtube.com/embed//<id>` URLs
+- **Unit 14** - Fixed two malformed `youtube.com/embed//<id>` URLs
   in tywyn-beach markdown bodies (the leading double-slash 404'd
   the embeds). Added `loading="lazy"`,
   `referrerpolicy="no-referrer-when-downgrade"`, and the standard
@@ -78,11 +78,11 @@ the actual LCP win.
 
 ## What didn't move
 
-- **Image bytes per page** — unchanged. Stage 1 was deliberately
+- **Image bytes per page** - unchanged. Stage 1 was deliberately
   scoped to skip the image pipeline; the 18 MB of unprocessed
   `public/img/` raster files stay untouched until Stage 2's
   AVIF + WebP migration.
-- **Build wall-clock** — still ~3 s warm, ~5 s cold. The Fonts
+- **Build wall-clock** - still ~3 s warm, ~5 s cold. The Fonts
   API adds a small per-build font fetch from Fontsource the first
   time it sees a font config (cached on subsequent builds).
 
@@ -90,7 +90,7 @@ the actual LCP win.
 
 - Set the real GA4 measurement ID in `src/lib/site.ts:gaMeasurementId`.
 - Pick a host (Netlify / Cloudflare Pages / Vercel) so PageSpeed
-  Insights can reach a deployed staging URL — that's when LCP /
+  Insights can reach a deployed staging URL - that's when LCP /
   INP / CLS field data first becomes capturable.
 - The `_redirects` rule for `/wp-content/uploads/* → /img/:splat` is
   unchanged; verify that's still serving correctly on the chosen

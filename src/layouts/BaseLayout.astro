@@ -11,8 +11,8 @@
  * is non-empty so individual pages don't have to remember to do it.
  *
  * JSON-LD is emitted via `safeJsonLd` (escapes `</`) so that
- * editor-controlled strings — venue titles, addresses, breadcrumb
- * labels, event names — can't break out of the script block.
+ * editor-controlled strings - venue titles, addresses, breadcrumb
+ * labels, event names - can't break out of the script block.
  */
 import '../styles/global.scss';
 import { Font } from 'astro:assets';
@@ -154,7 +154,7 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema]
 		{resolvedOgImage && <meta property="og:image:alt" content={`${title} – ${SITE.name}`} />}
 		{/*
 		 * og:image:width / og:image:height intentionally omitted.
-		 * The default OG image is 1908x397 — outside the 1.91:1 / 2:1
+		 * The default OG image is 1908x397 - outside the 1.91:1 / 2:1
 		 * range social platforms expect. Letting them probe and crop
 		 * gracefully is preferable to declaring dimensions that
 		 * misrepresent the asset. Follow-up: generate a 1200x630

@@ -212,7 +212,7 @@ async function devReachable(): Promise<boolean> {
 
 if (PROBE_DEV) {
 	if (!(await devReachable())) {
-		console.error(`Skipping dev-server probe — ${DEV_BASE} is not reachable.`);
+		console.error(`Skipping dev-server probe - ${DEV_BASE} is not reachable.`);
 		console.error('  (start `npm run dev` in another terminal to enable this check)');
 	} else {
 		console.error(`Probing ${allTargets.size} unique internal targets against ${DEV_BASE}…`);
@@ -235,7 +235,7 @@ async function runDevProbe() {
 			if (typeof status === 'number' && status >= 400 && status < 500) {
 				devBroken.set(target, allTargets.get(target)!);
 			} else if (typeof status === 'string') {
-				console.error(`! ${target} — fetch error: ${status}`);
+				console.error(`! ${target} - fetch error: ${status}`);
 			}
 		}
 	}

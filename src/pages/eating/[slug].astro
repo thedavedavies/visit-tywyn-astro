@@ -33,7 +33,7 @@ const { Content } = await render(venue);
 // Pick up to 4 related venues. If this one is dog-friendly, prefer
 // other dog-friendly entries; otherwise show any other venues.
 // Use seededShuffle so the same slug always produces the same set
-// — avoids non-deterministic builds and the bias of `sort(Math.random)`.
+// - avoids non-deterministic builds and the bias of `sort(Math.random)`.
 const others = allVenues.filter((v) => v.id !== venue.id);
 const relatedPool = venue.data.dog_friendly ? others.filter((v) => v.data.dog_friendly) : others;
 const related = seededShuffle(relatedPool.length >= 4 ? relatedPool : others, venue.id).slice(0, 4);

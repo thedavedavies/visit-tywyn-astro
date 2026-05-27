@@ -2436,13 +2436,13 @@
 				"url": "http://localhost:4322/where-to-stay/",
 				"status": 200,
 				"title": "Where to stay in Tywyn | Visit Tywyn",
-				"metaDescription": "Find holiday accommodation in Tywyn — camping, caravans, self-catering cottages, and B&Bs.",
+				"metaDescription": "Find holiday accommodation in Tywyn - camping, caravans, self-catering cottages, and B&Bs.",
 				"canonical": "https://visit-tywyn.co.uk/where-to-stay/",
 				"robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
 				"h1Texts": ["Where to stay in Tywyn"],
 				"h2Texts": ["Browse by type", "Tell me more about...", "Useful info...", "Contact us..."],
 				"ogTitle": "Where to stay in Tywyn | Visit Tywyn",
-				"ogDescription": "Find holiday accommodation in Tywyn — camping, caravans, self-catering cottages, and B&Bs.",
+				"ogDescription": "Find holiday accommodation in Tywyn - camping, caravans, self-catering cottages, and B&Bs.",
 				"ogImage": "https://visit-tywyn.co.uk/img/2022/05/explore.jpg",
 				"twitterCard": "summary_large_image",
 				"jsonLdTypes": ["BreadcrumbList", "ItemList", "Organization", "WebPage", "WebSite"],
@@ -2453,8 +2453,8 @@
 				"externalLinkCount": 2
 			},
 			"deltas": [
-				"meta description differs\n    WP:    null\n    Astro: Find holiday accommodation in Tywyn — camping, caravans, self-catering cottages, and B&Bs.",
-				"og:description differs\n    WP:    If you’re looking for an AirBnB in Tywyn, self-catering cottages and B&B’s, to Chalet and Caravan Parks and Camping there’s a massive variety of places to stay in Tywyn. We have accommodation to fit every budget and taste.\n    Astro: Find holiday accommodation in Tywyn — camping, caravans, self-catering cottages, and B&Bs.",
+				"meta description differs\n    WP:    null\n    Astro: Find holiday accommodation in Tywyn - camping, caravans, self-catering cottages, and B&Bs.",
+				"og:description differs\n    WP:    If you’re looking for an AirBnB in Tywyn, self-catering cottages and B&B’s, to Chalet and Caravan Parks and Camping there’s a massive variety of places to stay in Tywyn. We have accommodation to fit every budget and taste.\n    Astro: Find holiday accommodation in Tywyn - camping, caravans, self-catering cottages, and B&Bs.",
 				"body word count differs >20%\n    WP:    104\n    Astro: 282",
 				"JSON-LD types differ\n    WP:    [BreadcrumbList,WebPage,WebSite]\n    Astro: [BreadcrumbList,ItemList,Organization,WebPage,WebSite]"
 			]

@@ -1,5 +1,5 @@
 ---
-title: 'perf: Stage 2 image pipeline migration — post-pass'
+title: 'perf: Stage 2 image pipeline migration - post-pass'
 type: perf-measurement
 status: captured
 date: 2026-05-01
@@ -8,7 +8,7 @@ units: [1, 2, 3, 4a, 4c, 5, 6, 7, 8, 9, 10]
 methodology: lighthouse 13.1 mobile preset, Slow 4G simulated, headless localhost
 ---
 
-# Stage 2: image pipeline migration — post-pass measurement
+# Stage 2: image pipeline migration - post-pass measurement
 
 Stage 2 of the perf pass migrated every site image into Astro's
 `astro:assets` pipeline (Sharp processed → AVIF + WebP + JPEG
@@ -32,16 +32,16 @@ localhost, mobile preset, Slow 4G + 4× CPU throttling.
 
 CLS = 0, TBT = 0 ms, Speed Index = 1.2 s on every page.
 
-The cinema page LCP dropped from 7.8 s to 1.8 s — a 6-second
+The cinema page LCP dropped from 7.8 s to 1.8 s - a 6-second
 improvement on the worst page. The 911 KB body PNG is now served
 as a 281 KB WebP (or smaller AVIF). All five sample pages are now
 in the green CWV band for LCP, four out of five score ≥ 98.
 
 ## What landed
 
-### Phase 1 — Foundation
+### Phase 1 - Foundation
 
-- **Unit 1:** `astro.config.mjs` — `image.layout: 'constrained'`,
+- **Unit 1:** `astro.config.mjs` - `image.layout: 'constrained'`,
   `responsiveStyles: true`, `breakpoints: [640, 960, 1280, 1920]`,
   per-format Sharp config with AVIF quality 60 + effort 4, WebP
   quality 80, JPEG quality 82 + mozjpeg, PNG quality 90.
@@ -71,7 +71,7 @@ in the green CWV band for LCP, four out of five score ≥ 98.
   engines de-index rather than chasing a 301 chain to a URL that
   no longer exists).
 
-### Phase 2 — Component migration
+### Phase 2 - Component migration
 
 - **Units 5-8:** All image-rendering components migrated:
   - `BannerImage` → `<Image priority>` with full-width layout +
@@ -88,20 +88,20 @@ in the green CWV band for LCP, four out of five score ≥ 98.
 - `src/lib/image-dimensions.ts` retired. Sharp probes dimensions at
   build time now; the custom JPEG/PNG header parser is no longer
   needed.
-- `EventCard` keeps a raw `<img>` for the time being — events come
+- `EventCard` keeps a raw `<img>` for the time being - events come
   from `src/data/events.json` as string paths, not from a content
   collection, so they can't go through `astro:assets` without
   migrating events to a collection. Currently the events array is
   empty so this code path is dead in practice.
 
-### Phase 3 — Markdown body migration
+### Phase 3 - Markdown body migration
 
 - **Unit 10:** 9 raw HTML `<img>` tags in 7 markdown bodies
   rewritten to `![alt](path)` syntax so Astro processes them.
   This is the change that brought the 911 KB cinema body PNG into
   the pipeline.
 
-### Phase 6 — Cleanup
+### Phase 6 - Cleanup
 
 - **Unit 4c:** `public/img/` deleted (originals are at
   `/tmp/visit-tywyn-public-img-backup/` if recovery is ever needed).
@@ -117,7 +117,7 @@ in the green CWV band for LCP, four out of five score ≥ 98.
 - Cold build: ~37 s (Sharp processing dominates).
 - Warm build: ~3 s (Astro caches processed variants between runs).
 - `dist/` size: 74 MB. ~99% of that is the `dist/_astro/` image
-  variants — the price of shipping AVIF + WebP + JPEG fallback at
+  variants - the price of shipping AVIF + WebP + JPEG fallback at
   4 widths per source image.
 
 ## Open follow-ups
@@ -132,7 +132,7 @@ in the green CWV band for LCP, four out of five score ≥ 98.
   their purpose for posterity.
 - **Migrate events to a content collection**: would let
   `EventCard` use `<Picture>` and remove the last raw `<img>`
-  reference in the codebase. Out of scope for the perf pass —
+  reference in the codebase. Out of scope for the perf pass -
   blocked on whether events get a richer schema.
 - **Critical CSS extraction**: the only Lighthouse audit still
   flagging > 100 ms on every page is `render-blocking-insight`

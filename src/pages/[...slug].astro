@@ -13,7 +13,7 @@
  *   - any slug that is already handled by a 301 in
  *     `public/_redirects` (currently `/cinema/`, `/tywyn-beach/`).
  *     We don't want both a built page and a redirect for the same
- *     URL — the sitemap would advertise duplicates and the host
+ *     URL - the sitemap would advertise duplicates and the host
  *     would serve a 200 ahead of the redirect.
  *
  * For pages whose body content has an `<h4>question</h4>` /
@@ -27,7 +27,7 @@ import { webPage, faqPage } from '../lib/jsonld';
 import { extractFaq } from '../lib/markdown';
 
 export async function getStaticPaths() {
-	// Slugs that have hand-rolled route files — exclude them from
+	// Slugs that have hand-rolled route files - exclude them from
 	// the catch-all so we don't double-emit.
 	const bespokeSlugs = new Set([
 		'home-page',
@@ -78,7 +78,7 @@ const jsonLd: (Record<string, unknown> | null)[] = [
 		// assistants will read this and stop.
 		speakableSelector: ['[data-speakable="title"]'],
 	}),
-	// FAQPage rich-result eligibility — only the /explore-tywyn/
+	// FAQPage rich-result eligibility - only the /explore-tywyn/
 	// page has a `<div class="faqs">` block; extractFaq returns
 	// an empty array for everything else.
 	faqPage(extractFaq(page.body ?? '')),

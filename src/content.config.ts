@@ -3,7 +3,7 @@ import { glob } from 'astro/loaders';
 import type { ImageFunction } from 'astro:content';
 
 /**
- * Shared SEO frontmatter — Yoast equivalents.
+ * Shared SEO frontmatter - Yoast equivalents.
  */
 const seoSchema = z
 	.object({
@@ -33,7 +33,7 @@ const geoSchema = z
  * field becomes an `ImageMetadata` object (with `.src`, `.width`,
  * `.height`, `.format`) ready to pass to `<Image>` / `<Picture>`.
  *
- * Per-call `width` / `height` overrides are gone — Sharp probes the
+ * Per-call `width` / `height` overrides are gone - Sharp probes the
  * source file at build time, so the frontmatter doesn't need to
  * carry hand-authored dimensions any more (and broken values are
  * caught at build time rather than rendering wrong).
@@ -45,7 +45,7 @@ const imageBlock = (image: ImageFunction) =>
 	});
 
 /**
- * Generic editorial pages — About, Contact, Where to Stay parent, etc.
+ * Generic editorial pages - About, Contact, Where to Stay parent, etc.
  * Migrated 1:1 from the 14 WP pages (minus the home page which is bespoke).
  */
 const pages = defineCollection({
@@ -61,7 +61,7 @@ const pages = defineCollection({
 });
 
 /**
- * Eating venues — cafes, pubs, restaurants. ~18 entries.
+ * Eating venues - cafes, pubs, restaurants. ~18 entries.
  */
 const eating = defineCollection({
 	loader: glob({ pattern: '**/*.md', base: './src/content/eating' }),
@@ -89,7 +89,7 @@ const eating = defineCollection({
 });
 
 /**
- * Things to do — attractions, activities, experiences. ~11 entries.
+ * Things to do - attractions, activities, experiences. ~11 entries.
  *
  * `kind` narrows the Schema.org TouristAttraction node with a more
  * specific type (MovieTheater, TrainStation, etc.) so Google can pull
@@ -137,7 +137,7 @@ const thingsToDo = defineCollection({
 });
 
 /**
- * Stay categories — replaces 59 individual accommodation listings.
+ * Stay categories - replaces 59 individual accommodation listings.
  * Each markdown is a category landing page with intro, external booking
  * search links, and an optional `featured` array for future affiliate /
  * sponsored placements.

@@ -3,13 +3,13 @@ title: Self catering in Tywyn
 subtitle: Find your perfect self catering holiday in Tywyn today
 slug: self-catering
 menu_order: 0
-intro: 'Self-catering cottages and apartments give you the run of the place — a kitchen for fish and chips on the porch, sandy boots by the door, and the freedom to come and go on your own schedule. Browse the booking sites below for places in and around Tywyn.'
+intro: 'Self-catering cottages and apartments give you the run of the place - a kitchen for fish and chips on the porch, sandy boots by the door, and the freedom to come and go on your own schedule. Browse the booking sites below for places in and around Tywyn.'
 booking_search_links:
-  - label: 'Lounge Holidays — Tywyn'
+  - label: 'Lounge Holidays - Tywyn'
     url: 'https://www.lounge-holidays.co.uk/'
-  - label: 'Booking.com — Tywyn'
+  - label: 'Booking.com - Tywyn'
     url: 'https://www.booking.com/searchresults.html?ss=Tywyn%2C+Wales%2C+United+Kingdom'
-  - label: 'Airbnb — Tywyn'
+  - label: 'Airbnb - Tywyn'
     url: 'https://www.airbnb.co.uk/s/Tywyn--Wales/homes'
 seo:
   # WP-indexed title from Yoast; preserved verbatim to hold the
@@ -23,5 +23,5 @@ seo:
 <!--
 This category landing page replaces the legacy individual self-catering listings.
 Featured / sponsored entries can be added to the `featured` array in the
-frontmatter — they'll render as cards above the booking search links.
+frontmatter - they'll render as cards above the booking search links.
 -->

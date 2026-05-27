@@ -33,7 +33,7 @@ export const PRIMARY_NAV: NavItem[] = [
 ];
 
 /**
- * Footer link columns — port of the hardcoded markup in footer.php.
+ * Footer link columns - port of the hardcoded markup in footer.php.
  */
 export const FOOTER_COLUMNS = [
 	{

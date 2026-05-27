@@ -38,7 +38,7 @@ function postalAddress(address: string | undefined): JsonLd | undefined {
 }
 
 /**
- * Standalone Organization node — used as a publisher reference in
+ * Standalone Organization node - used as a publisher reference in
  * other schema objects via `@id`.
  */
 export function organization(): JsonLd {
@@ -53,7 +53,7 @@ export function organization(): JsonLd {
 }
 
 /**
- * Standalone WebSite node — emitted on the home page so search
+ * Standalone WebSite node - emitted on the home page so search
  * engines can tie the site identity together. We omit
  * `potentialAction` because there's no on-site search; including
  * it without a real endpoint would be misleading markup.
@@ -131,7 +131,7 @@ interface ListEntry {
 
 /**
  * ItemList for archive / listing pages. Returns null on empty
- * input so we don't ship `numberOfItems: 0` to search engines —
+ * input so we don't ship `numberOfItems: 0` to search engines -
  * which Google explicitly calls out as low-quality markup.
  */
 export function itemList(name: string, entries: ListEntry[]): JsonLd | null {
@@ -357,20 +357,20 @@ interface ArticleInput {
 }
 
 /**
- * WebPage wrapper for ordinary editorial pages — privacy policy,
+ * WebPage wrapper for ordinary editorial pages - privacy policy,
  * "getting around", "wales coastal path", etc. Lighter-weight than
  * Article (which is for news-style content) and avoids the schema
  * police flagging missing author/headline fields.
  *
  * `isPartOf` / `publisher` references that pointed at @ids only
- * defined on the home page have been removed — dangling cross-
+ * defined on the home page have been removed - dangling cross-
  * page references make some validators unhappy without measurable
  * search-engine benefit. The Organization + WebSite nodes are
  * still emitted on the home page where they belong.
  *
  * Pass `speakableSelector` to mark sections that voice assistants
  * can read aloud. Targets must be selectors present in the
- * rendered DOM — CSS-modules-hashed class names won't match, so
+ * rendered DOM - CSS-modules-hashed class names won't match, so
  * use data attributes (`[data-speakable="title"]`) or unscoped
  * global classes.
  */
