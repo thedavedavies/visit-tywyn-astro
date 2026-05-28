@@ -135,6 +135,10 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema]
 			)
 		}
 
+		{SITE.gscVerification && (
+			<meta name="google-site-verification" content={SITE.gscVerification} />
+		)}
+
 		<meta name="theme-color" content={SITE.themeColor} />
 		<meta name="format-detection" content="telephone=no" />
 

@@ -25,6 +25,13 @@ export const SITE = {
 	// rather than emitting `id=`.
 	gaMeasurementId: 'G-QG6TSQ40PV',
 	adsenseClient: 'ca-pub-4920514279045356',
+	// Google Search Console HTML-tag verification token. Carried over
+	// verbatim from the WordPress site so the existing GSC property
+	// stays verified through DNS cutover - without it Google's periodic
+	// re-check fails and we lose access to the property (and submitted
+	// sitemaps) right when launch monitoring matters most. Emitted as a
+	// <meta google-site-verification> by BaseLayout when non-empty.
+	gscVerification: 'IxBPx06knoRIhbThdxKgUdunU1tgXwUrTfyAu2Boc8Y',
 	themeColor: '#046d8b',
 	location: {
 		lat: 52.58643,
