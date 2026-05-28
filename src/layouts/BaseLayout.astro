@@ -215,10 +215,39 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema]
 				</script>
 			)
 		}
-		<script
-			defer
-			src="https://analytics.ahrefs.com/analytics.js"
-			data-key="RHUgFDUqpEFNoIEFLipsjA"></script>
+		{
+			/*
+			 * Ahrefs Web Analytics: gated identically to GA4 above.
+			 *
+			 *   - `import.meta.env.PROD` drops the tag from `astro dev`
+			 *     builds entirely.
+			 *   - The runtime `location.host` check keeps it off
+			 *     `astro preview` and Cloudflare branch/preview deploys
+			 *     (`*.pages.dev`), which are prod builds served on a
+			 *     non-canonical host. Only the canonical production host
+			 *     injects the script, so preview traffic stays out of
+			 *     the Ahrefs project. The `data-key` is set on the
+			 *     injected element so analytics.js reads it the same way
+			 *     it would from the original static tag.
+			 */
+			import.meta.env.PROD && (
+				<script
+					is:inline
+					define:vars={{
+						ahrefsKey: 'RHUgFDUqpEFNoIEFLipsjA',
+						productionHost: new URL(SITE.url).host,
+					}}
+				>
+					if (location.host === productionHost) {
+						const s = document.createElement('script');
+						s.async = true;
+						s.src = 'https://analytics.ahrefs.com/analytics.js';
+						s.setAttribute('data-key', ahrefsKey);
+						document.head.appendChild(s);
+					}
+				</script>
+			)
+		}
 
 		{
 			SITE.adsenseClient && hasAds && (
