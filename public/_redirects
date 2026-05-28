@@ -76,6 +76,13 @@
 /accommodation/woodlands/  /holiday-accommodation/caravan/  301
 /accommodation/ynysymaengwyn-camping-caravan-park/  /holiday-accommodation/caravan/  301
 /accommodation/ynysymaengwyn/  /holiday-accommodation/caravan/  301
+# Defensive tail rule. Every known accommodation slug is mapped to
+# the most relevant category above; this catch-all only fires for
+# slugs that exist in the wild (external backlinks, search caches)
+# but were already gone from the WP sitemap at cutover. First-match-
+# wins on Cloudflare Pages, so the explicit rules above still take
+# precedence.
+/accommodation/*  /where-to-stay/  301
 /category/uncategorized/  /  301
 /category/bed-and-breakfast/  /holiday-accommodation/bed-and-breakfast/  301
 /category/camping/  /holiday-accommodation/camping/  301
@@ -127,7 +134,11 @@
 /webcam/getting-around/index.html  /getting-around/  301
 /webcam/index.html  /webcam/  301
 /webcams/  /webcam/  301
-# Legacy WP media URLs. Google Images and third-party embeds still
-# link to the old `/wp-content/uploads/*` paths; without this rule
-# they 404 on cutover and image-search rankings drop.
-/wp-content/uploads/*  /  301
+# Legacy WP media URLs (`/wp-content/uploads/*`) intentionally not
+# redirected. The original Yoast intent was to map them to `/img/:splat`,
+# but Astro hashes every asset into `dist/_astro/` so no equivalent path
+# exists. Sending them to `/` (the previous rule) produced a soft-404
+# for Google Images: the image URL resolved to an HTML page, which
+# Google then dropped from the index anyway. Letting them 404 cleanly
+# is the same outcome with honest signal; Google Images drops the
+# listing within ~30 days either way.
