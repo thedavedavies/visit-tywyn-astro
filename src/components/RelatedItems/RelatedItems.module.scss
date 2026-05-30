@@ -5,6 +5,8 @@
 	margin: $space-7 0 $space-5;
 	border-top: 1px dotted $color-primary;
 	padding-block-start: $space-5;
+	content-visibility: auto;
+	contain-intrinsic-size: auto 450px;
 }
 
 .heading {

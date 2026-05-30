@@ -5,6 +5,8 @@
 	background: $color-footer-bg;
 	margin-top: $space-6;
 	color: #fff;
+	content-visibility: auto;
+	contain-intrinsic-size: auto 400px;
 }
 
 .container {
