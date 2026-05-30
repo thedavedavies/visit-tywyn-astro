@@ -117,8 +117,11 @@ export default defineConfig({
 		inlineStylesheets: 'always',
 	},
 	prefetch: {
-		prefetchAll: false,
+		prefetchAll: true,
 		defaultStrategy: 'hover',
+	},
+	experimental: {
+		clientPrerender: true,
 	},
 	integrations: [
 		sitemap({
