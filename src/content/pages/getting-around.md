@@ -5,6 +5,8 @@ hero_image:
   src: '../../assets/img/pages/getting-around.jpg'
   alt: Getting around Tywyn
 updated: 2024-06-05
+seo:
+  description: 'How to get to Tywyn by road, rail, and bus, plus the best ways to get around the town, the beach, and the Dysynni valley once you arrive.'
 ---
 
 <article>

@@ -6,7 +6,7 @@ hero_image:
   alt: Privacy Policy
 updated: 2025-01-31
 seo:
-  description: 'Read Visit Tywyn’s Privacy Policy to learn how we collect, store, and protect your personal data in compliance with UK GDPR. Understand your rights and how we handle cookies, security, and data sharing. Last updated: 1st February 2025'
+  description: 'Read Visit Tywyn’s Privacy Policy to learn how we collect, store, and protect your personal data under UK GDPR, and how we handle cookies and your rights.'
 ---
 
 <article>

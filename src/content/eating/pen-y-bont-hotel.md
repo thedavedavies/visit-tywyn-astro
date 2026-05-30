@@ -1,6 +1,6 @@
 ---
 title: Pen-Y-Bont Hotel
-summary: The Pen-y-Bont Hotel, near Tywyn, is a 16th Century Lakeside Hotel offering 2 bars, 2 Restaurants, a Patio and glorious Beer Garden overlooking the picturesque Tal y Llyn lake.
+summary: The Pen-y-Bont Hotel near Tywyn is a 16th-century lakeside hotel with two bars, two restaurants, a patio, and a beer garden overlooking Tal-y-llyn lake.
 address: Pen-Y-Bont Hotel, Tal-Y-Llyn, Tywyn LL36 9AJ
 phone: 01654 782285
 website: 'http://www.penybonthotel.co.uk/'

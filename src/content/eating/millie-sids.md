@@ -12,8 +12,6 @@ geo:
 photo:
   src: '../../assets/img/eating/millie-sids/cover.jpg'
   alt: "Millie & Sid's"
-seo:
-  description: "One of our favourite places to get coffee and cake, and with the cafe being named after the owners lovable dogs - it's no surprise that Millie & Sid's is very dog friendly."
 ---
 
 One of our favourite places to get coffee and cake, and with the cafe being named after the owners lovable dogs - it's no surprise that Millie &amp; Sid's is very dog friendly.

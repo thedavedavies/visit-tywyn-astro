@@ -14,6 +14,13 @@ const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Events' }];
 
 const events = upcomingEvents();
 
+// Fallback meta description when the events page entry carries no
+// Yoast-style seo.description. Shared by the CollectionPage JSON-LD
+// and the <PageLayout> meta tag so the two never drift.
+const eventsDescription =
+	page?.data.seo?.description ??
+	'Upcoming festivals, fairs, markets, and community events in Tywyn and the surrounding Dysynni valley villages, with dates, details, and links.';
+
 // CollectionPage wraps the listing intent so crawlers recognise the
 // URL as a curated set rather than a single article. The ItemList
 // orders the events by their canonical URLs, and each Event node
@@ -21,9 +28,7 @@ const events = upcomingEvents();
 const jsonLd: (Record<string, unknown> | null)[] = [
 	collectionPage({
 		title: page?.data.seo?.title ?? page?.data.title ?? 'Events in Tywyn',
-		description:
-			page?.data.seo?.description ??
-			'Upcoming festivals, fairs, and events in Tywyn and the surrounding villages.',
+		description: eventsDescription,
 		url: Astro.url,
 	}),
 	itemList(
@@ -53,8 +58,7 @@ const jsonLd: (Record<string, unknown> | null)[] = [
 
 <PageLayout
 	title={page?.data.seo?.title ?? page?.data.title ?? 'Events in Tywyn'}
-	description={page?.data.seo?.description ??
-		'Upcoming festivals, fairs, and events in Tywyn and the surrounding villages.'}
+	description={eventsDescription}
 	heroImage={page?.data.hero_image}
 	breadcrumbs={breadcrumbs}
 	jsonLd={jsonLd}

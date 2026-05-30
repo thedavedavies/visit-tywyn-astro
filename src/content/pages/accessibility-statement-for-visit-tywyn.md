@@ -2,7 +2,7 @@
 title: Accessibility Statement for Visit Tywyn
 updated: 2025-02-14
 seo:
-  description: 'Visit Tywyn is committed to web accessibility. Read our Accessibility Statement to learn about our efforts to meet WCAG 2.1 AA standards, improve usability, and support all users. Last updated: 1st February 2025'
+  description: 'Read Visit Tywyn’s Accessibility Statement to learn how we work to meet WCAG 2.1 AA standards and support all users across our website.'
 ---
 
 <time datetime="2025-01-01">Last updated: 01/01/2025</time>

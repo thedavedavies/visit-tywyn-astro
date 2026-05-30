@@ -9,7 +9,7 @@ booking_search_links:
     url: 'https://www.pitchup.com/search/Wales/North-Wales/Gwynedd/Tywyn/'
 seo:
   title: 'Camping in Tywyn'
-  description: Tywyn sits between the sea and the southern edge of Eryri (Snowdonia), and the campsites here run the full range from quiet farm fields to fully serviced parks with shops and pubs on site.
+  description: 'Campsites in and around Tywyn, from quiet farm fields to fully serviced parks with shops and pubs on site, between the sea and Eryri (Snowdonia).'
 ---
 
 <!--

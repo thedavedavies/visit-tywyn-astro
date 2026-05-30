@@ -1,6 +1,6 @@
 ---
 title: 'Coast Deli & Dining'
-summary: Offering the very best of Welsh food and drink overlooking Church Bay, Aberdyfi.
+summary: 'Coast Deli & Dining serves the very best of Welsh food and drink overlooking Church Bay in Aberdyfi, a short drive south of Tywyn. Dog friendly.'
 address: 7 Sea View Terrace, Aberdyfi, Snowdonia National Park LL35 0EE
 phone: 01654 767470
 website: 'http://www.coastdelidining.co.uk/'

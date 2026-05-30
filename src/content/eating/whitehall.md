@@ -1,6 +1,6 @@
 ---
 title: Whitehall
-summary: Restaurant on Corbett Square in central Tywyn, serving lunches and evening meals.
+summary: Whitehall is a restaurant on Corbett Square in central Tywyn, serving freshly prepared lunches and evening meals in a relaxed, friendly setting.
 address: Whitehall, 1 Corbett Square, Tywyn LL36 9DF
 phone: 01654 710212
 dog_friendly: false

@@ -5,6 +5,8 @@ hero_image:
   src: '../../assets/img/pages/cookie-policy.jpg'
   alt: Cookie Policy
 updated: 2025-01-31
+seo:
+  description: 'Learn what cookies are, how Visit Tywyn uses them, and how you can manage or disable cookies in your browser while using our website.'
 ---
 
 <article>

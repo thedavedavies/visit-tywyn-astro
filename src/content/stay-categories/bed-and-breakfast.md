@@ -15,7 +15,7 @@ seo:
   # H1 stays "Bed & Breakfast in Tywyn" (the `title` field above) so
   # the page heading reads naturally; only the SERP title differs.
   title: 'Top Bed & Breakfasts in Tywyn'
-  description: 'A friendly Welsh welcome and a proper cooked breakfast: the B&Bs in Tywyn are mostly small, family-run, and well placed for the seafront, the railway, and the town centre.'
+  description: 'Small, friendly, family-run B&Bs in Tywyn with a proper cooked breakfast, well placed for the seafront, the railway, and the town centre.'
 ---
 
 <!--

@@ -1,6 +1,6 @@
 ---
 title: 'The Retreat Bar & Cafe'
-summary: 'A friendly and relaxed small bar & cafe situated in the historic Old Market Hall in Tywyn, offering freshly cooked food made using mainly local ingredients and serving beers, a selection of carefully chosen wines & gins, and fabulous cocktails.'
+summary: 'A relaxed bar and cafe in the historic Old Market Hall in Tywyn, serving freshly cooked local food alongside beers, wines, gins, and cocktails.'
 address: Market Hall College Green, Tywyn LL36 9BY
 phone: 01654 710669
 dog_friendly: true

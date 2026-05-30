@@ -15,8 +15,6 @@ geo:
 hero_image:
   src: '../../assets/img/things-to-do/tywyn-wharf/cover.jpg'
   alt: Tywyn Wharf - The Talyllyn Railway
-seo:
-  description: Tywyn Wharf is a must-visit destination for anyone interested in history, trains, or stunning scenery. This historic wharf is the starting point of the Talyllyn Railway.
 ---
 
 Located right in the centre of the town, Tywyn Wharf is a must-visit destination for anyone interested in history, trains, or stunning scenery. This historic wharf is the starting point of the <a href="/things-to-do/the-talyllyn-railway/">Talyllyn Railway</a>, a narrow-gauge railway that has been operating since 1865 and is one of the oldest in the world. Here's everything you need to know about visiting Tywyn Wharf.

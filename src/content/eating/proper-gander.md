@@ -1,6 +1,6 @@
 ---
 title: Proper Gander
-summary: The Proper Gander on Tywyn High Street, serves high quality meals made using local Welsh produce. Specialising in quality home cooked food, the Proper Gander uses only the best locally caught fish, locally reared Welsh Lamb, Beef and Pork.
+summary: 'The Proper Gander on Tywyn High Street serves quality home-cooked meals made with local Welsh produce: locally caught fish and Welsh lamb, beef, and pork.'
 address: Proper Gander, 4 High Street, Tywyn, Gwynedd, LL36 9AA
 phone: 01654 712169
 website: 'http://www.propergandertywyn.com/'

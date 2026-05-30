@@ -16,8 +16,6 @@ gallery:
     alt: The Secret Garden
   - src: '../../assets/img/things-to-do/the-secret-garden/gallery/02.jpg'
     alt: The Secret Garden
-seo:
-  description: 'The Secret Garden in Tywyn has permanently closed. Browse other things to do in Tywyn.'
 ---
 
 Come on a very special treasure hunt, and find The Secret Garden in Tywyn! Right next to the <a href="/things-to-do/magic-lantern-cinema/">Magic Lantern Cinema</a>, come and enjoy a cocktail, mocktails and cinema snacks.

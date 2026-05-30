@@ -1,7 +1,7 @@
 ---
 title: Honey Ice Cream at Holgates
 subtitle: Fabulous honey ice cream
-summary: "Holgates Honey Ice Cream Shop is the only place where you can buy their famous Honey Ice Cream. Freshly made each day, this delicious ice cream is made to a secret recipe using real honey. And don't forget to watch out for the honey bear!"
+summary: 'Holgates Honey Ice Cream Shop in Tywyn is the only place to buy their famous honey ice cream, freshly made each day to a secret recipe using real honey.'
 address: holgates honey ice cream
 published: 2022-07-12
 geo:
@@ -11,8 +11,6 @@ geo:
 hero_image:
   src: '../../assets/img/things-to-do/honey-ice-cream/cover.jpeg'
   alt: Honey Ice Cream at Holgates
-seo:
-  description: Holgates Honey Ice Cream Shop is the only place where you can buy their famous Honey Ice Cream. Freshly made each day, this delicious ice cream is made to a secret recipe using real honey.
 ---
 
 Start your trip to Tywyn by enjoying a Honey Ice Cream!

@@ -1,6 +1,6 @@
 ---
 title: Salt Marsh Kitchen
-summary: Serving the best quality food, made from the wonderful produce we have growing locally the in area. Meat that has been born, bred and butchered just 3 miles from the restaurant, and fish plucked from the Cardigan Bay.
+summary: 'Salt Marsh Kitchen serves top-quality food from local produce: meat born, bred, and butchered within 3 miles, and fish landed from Cardigan Bay.'
 address: 6 College Green LL36 9BS Tywyn
 phone: 01654 711949
 dog_friendly: false

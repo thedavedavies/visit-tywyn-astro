@@ -82,7 +82,10 @@ export function touristDestination(): JsonLd {
 		name: SITE.name,
 		url: SITE.url,
 		description: SITE.description,
-		inLanguage: SITE.locale,
+		// `inLanguage` is intentionally omitted here: it is a CreativeWork
+		// property and not valid on Place / TouristDestination, so the
+		// schema.org validator flags it. Page language is already conveyed
+		// by <html lang> plus the WebSite and WebPage nodes.
 		geo: {
 			'@type': 'GeoCoordinates',
 			latitude: SITE.location.lat,
@@ -179,7 +182,6 @@ export function restaurant(input: RestaurantInput): JsonLd {
 		'@id': `${url}#${input.dogFriendly ? 'restaurant' : 'establishment'}`,
 		name: input.title,
 		url,
-		publisher: { '@id': `${SITE.url}/#organization` },
 		...(input.description ? { description: input.description } : {}),
 		...(input.phone ? { telephone: input.phone } : {}),
 		// Wrap address in PostalAddress so Place rich-result eligibility
@@ -242,7 +244,6 @@ export function touristAttraction(input: AttractionInput): JsonLd {
 		'@id': `${url}#attraction`,
 		name: input.title,
 		url,
-		publisher: { '@id': `${SITE.url}/#organization` },
 		...(input.description ? { description: input.description } : {}),
 		...(input.phone ? { telephone: input.phone } : {}),
 		// Wrap address in PostalAddress for typed Place markup.

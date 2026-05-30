@@ -21,7 +21,7 @@ seo:
   # H1 stays "Caravan in Tywyn" (the `title` field above) so the
   # page heading reads naturally; only the SERP title differs.
   title: 'Caravans to rent in Tywyn'
-  description: Static caravan parks line the Cardigan Bay coast either side of Tywyn. Most welcome touring caravans and motorhomes too, and several are within walking distance of the beach and the railway station.
+  description: Static and touring caravan parks along the Cardigan Bay coast around Tywyn, many within walking distance of the beach and the railway station.
 ---
 
 <!--
