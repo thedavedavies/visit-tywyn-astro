@@ -9,7 +9,8 @@ import { SITE } from './site';
 
 export interface NavItem {
 	label: string;
-	href: string;
+	/** Optional: a parent that only opens a submenu has no href of its own. */
+	href?: string;
 	children?: NavItem[];
 }
 
@@ -19,9 +20,12 @@ export const PRIMARY_NAV: NavItem[] = [
 	{ label: 'Where to stay', href: '/where-to-stay/' },
 	{ label: 'Webcam', href: '/webcam/' },
 	{
+		// Renders as a disclosure button (no href of its own). The
+		// /explore-tywyn/ page is reachable as the first submenu link, so
+		// every destination works by tap, click, or keyboard. See Nav.astro.
 		label: 'Explore Tywyn',
-		href: '/explore-tywyn/',
 		children: [
+			{ label: 'Tywyn FAQs', href: '/explore-tywyn/' },
 			{ label: 'Tywyn Cinema', href: '/things-to-do/magic-lantern-cinema/' },
 			{ label: 'Getting around Tywyn', href: '/getting-around/' },
 			{
