@@ -2,20 +2,19 @@
 /**
  * Primary navigation. Replaces wp_nav_menu().
  *
- * Toggle behaviour: hidden by default on mobile; revealed by a
- * button click which flips `aria-expanded` and adds the `.is-open`
- * class to the nav (matching the legacy Underscores convention).
- * On desktop the menu is always visible and the toggle is hidden.
+ * Mobile: the menu is hidden and revealed by the hamburger toggle
+ * button (flips `aria-expanded`, adds `.is-open`). On desktop the menu
+ * is always visible and the toggle is hidden.
  *
- * Submenu accessibility: this is a disclosure pattern, not a menu.
- * Items with children get `aria-expanded` on the parent link (no
- * `aria-haspopup`, because that would promise a `role="menu"`
- * popup with arrow-key navigation which we deliberately do not
- * implement: the popup is a plain navigation list of anchors).
- * CSS reveals the submenu on `:hover` and `:focus-within`; the
- * JS at the bottom manages `aria-expanded` state and closes the
- * submenu on focusout so assistive tech stays in sync with what's
- * visible. WAI-ARIA APG calls this the "disclosure" pattern:
+ * Submenu: the WAI-ARIA APG "disclosure" pattern. A parent item with
+ * children renders as a `<button>` (not a link) that toggles its
+ * submenu on click via `aria-expanded` + `aria-controls` (no
+ * `aria-haspopup`: this is a plain list of links, not a `role="menu"`).
+ * The parent page itself lives as the first link inside the submenu, so
+ * every destination is reachable by tap, click, or keyboard alike. The
+ * previous link-that-also-toggled broke on touch, where a tap followed
+ * the link instead of opening the submenu, leaving the children
+ * unreachable from the flyout. Escape and outside-click close it.
  * https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/
  */
 import { PRIMARY_NAV } from '../../lib/nav';
@@ -41,38 +40,55 @@ function isActive(href: string): boolean {
 	</button>
 	<ul id="primary-menu" class={styles.menu}>
 		{
-			PRIMARY_NAV.map((item) => {
-				const hasChildren = !!item.children && item.children.length > 0;
-				return (
-					<li
-						class:list={[
-							styles.item,
-							{ [styles.itemActive]: isActive(item.href) },
-							{ [styles.hasChildren]: hasChildren },
-						]}
-					>
-						<a
-							href={item.href}
-							aria-current={isActive(item.href) ? 'page' : undefined}
-							aria-expanded={hasChildren ? 'false' : undefined}
-							data-vt-submenu-trigger={hasChildren ? '' : undefined}
+			PRIMARY_NAV.map((item, index) => {
+				const children = item.children ?? [];
+				const hasChildren = children.length > 0;
+
+				if (hasChildren) {
+					const submenuId = `primary-submenu-${index}`;
+					// Highlight the parent when the current page is one of its
+					// children (the dropdown "contains" where you are).
+					const sectionActive = children.some((child) => !!child.href && isActive(child.href));
+					return (
+						<li
+							class:list={[styles.item, styles.hasChildren, { [styles.itemActive]: sectionActive }]}
 						>
-							{item.label}
-							{hasChildren && <span aria-hidden="true"> ▼</span>}
-						</a>
-						{hasChildren && (
-							<ul class={styles.subMenu}>
-								{item.children!.map((child) => (
+							<button
+								type="button"
+								class={styles.disclosure}
+								aria-expanded="false"
+								aria-controls={submenuId}
+								data-vt-submenu-trigger
+							>
+								{item.label}
+								<span class={styles.caret} aria-hidden="true">▼</span>
+							</button>
+							<ul id={submenuId} class={styles.subMenu}>
+								{children.map((child) => (
 									<li
-										class:list={[styles.subItem, { [styles.subItemActive]: isActive(child.href) }]}
+										class:list={[
+											styles.subItem,
+											{ [styles.subItemActive]: child.href ? isActive(child.href) : false },
+										]}
 									>
-										<a href={child.href} aria-current={isActive(child.href) ? 'page' : undefined}>
+										<a
+											href={child.href}
+											aria-current={child.href && isActive(child.href) ? 'page' : undefined}
+										>
 											{child.label}
 										</a>
 									</li>
 								))}
 							</ul>
-						)}
+						</li>
+					);
+				}
+
+				return (
+					<li class:list={[styles.item, { [styles.itemActive]: item.href ? isActive(item.href) : false }]}>
+						<a href={item.href} aria-current={item.href && isActive(item.href) ? 'page' : undefined}>
+							{item.label}
+						</a>
 					</li>
 				);
 			})
@@ -85,52 +101,73 @@ function isActive(href: string): boolean {
 		const toggle = document.querySelector('[data-vt-nav-toggle]');
 		const menu = document.getElementById('primary-menu');
 		if (!toggle || !menu) return;
-		const setExpanded = (open) => {
+
+		const triggers = Array.from(document.querySelectorAll('[data-vt-submenu-trigger]'));
+		const closeAllSubmenus = (except) => {
+			triggers.forEach((t) => {
+				if (t !== except) t.setAttribute('aria-expanded', 'false');
+			});
+		};
+
+		// Mobile hamburger: show/hide the whole menu. Collapsing the menu
+		// also collapses any open submenu so it does not reappear expanded.
+		const setMenuOpen = (open) => {
 			toggle.setAttribute('aria-expanded', String(open));
 			menu.classList.toggle('is-open', open);
+			if (!open) closeAllSubmenus(null);
 		};
 		toggle.addEventListener('click', () => {
-			const expanded = toggle.getAttribute('aria-expanded') === 'true';
-			setExpanded(!expanded);
+			setMenuOpen(toggle.getAttribute('aria-expanded') !== 'true');
 		});
 
-		// Disclosure state. Each parent link marked with the
-		// `data-vt-submenu-trigger` attribute owns the `aria-expanded`
-		// flag for its sibling `<ul>`. Hover is handled in CSS; focus
-		// we sync here so screen readers announce the disclosed state.
-		// `focusout` with relatedTarget outside the parent <li> closes
-		// the menu so tabbing past the last child doesn't leave a
-		// phantom-open state.
-		const triggers = document.querySelectorAll('[data-vt-submenu-trigger]');
+		// Submenu disclosure: clicking the button toggles its submenu via
+		// `aria-expanded` (CSS reveals it). Opening one closes the others.
+		// A click/tap behaves the same on touch, mouse, and keyboard
+		// (Enter/Space activate the button), unlike the old link trigger.
 		triggers.forEach((trigger) => {
 			const li = trigger.closest('li');
-			if (!li) return;
-			const open = () => trigger.setAttribute('aria-expanded', 'true');
-			const close = () => trigger.setAttribute('aria-expanded', 'false');
-			trigger.addEventListener('focus', open);
-			li.addEventListener('mouseenter', open);
-			li.addEventListener('mouseleave', close);
-			li.addEventListener('focusout', (event) => {
-				const next = event.relatedTarget;
-				if (next instanceof Node && li.contains(next)) return;
-				close();
+			trigger.addEventListener('click', () => {
+				const open = trigger.getAttribute('aria-expanded') === 'true';
+				closeAllSubmenus(trigger);
+				trigger.setAttribute('aria-expanded', String(!open));
+			});
+			// Close when focus leaves the item (e.g. tabbing past the last
+			// child) so the announced state matches what is visible.
+			if (li) {
+				li.addEventListener('focusout', (event) => {
+					const next = event.relatedTarget;
+					if (next instanceof Node && li.contains(next)) return;
+					trigger.setAttribute('aria-expanded', 'false');
+				});
+			}
+		});
+
+		// A click/tap anywhere outside an open submenu closes it.
+		document.addEventListener('click', (event) => {
+			const target = event.target;
+			if (!(target instanceof Node)) return;
+			triggers.forEach((trigger) => {
+				const li = trigger.closest('li');
+				if (li && !li.contains(target)) trigger.setAttribute('aria-expanded', 'false');
 			});
 		});
 
-		// Close on Escape and return focus to the toggle so keyboard
-		// users aren't stranded inside the dismissed menu's DOM.
+		// Escape closes an open submenu (focus returns to its button);
+		// failing that, it closes the mobile menu.
 		document.addEventListener('keydown', (event) => {
 			if (event.key !== 'Escape') return;
-			// Close the open submenu, if any.
-			const openTrigger = document.querySelector('[data-vt-submenu-trigger][aria-expanded="true"]');
+			const openTrigger = document.querySelector(
+				'[data-vt-submenu-trigger][aria-expanded="true"]',
+			);
 			if (openTrigger instanceof HTMLElement) {
 				openTrigger.setAttribute('aria-expanded', 'false');
 				openTrigger.focus();
 				return;
 			}
-			if (toggle.getAttribute('aria-expanded') !== 'true') return;
-			setExpanded(false);
-			toggle.focus();
+			if (toggle.getAttribute('aria-expanded') === 'true') {
+				setMenuOpen(false);
+				toggle.focus();
+			}
 		});
 	})();
 </script>

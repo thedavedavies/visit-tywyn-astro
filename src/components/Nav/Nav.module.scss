@@ -76,48 +76,75 @@
 }
 
 .itemActive {
-	a {
+	a,
+	.disclosure {
 		background-color: $color-primary-dark;
+	}
+}
+
+// Disclosure toggle for a parent item with a submenu. Styled to match
+// the sibling nav links (.item a) but it is a real <button>.
+.disclosure {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	padding: $space-2 $space-5;
+	font-family: $font-body;
+	font-size: 16px;
+	color: #fff;
+	background: transparent;
+	border: 0;
+	text-align: left;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+
+	&:hover,
+	&:focus-visible {
+		background-color: $color-primary-darker;
+	}
+
+	@include breakpoint(md) {
+		width: auto;
+		height: 100%;
+	}
+}
+
+.caret {
+	margin-left: $space-2;
+	font-size: 0.7em;
+	transition: transform 0.2s ease;
+
+	.disclosure[aria-expanded='true'] & {
+		transform: rotate(180deg);
 	}
 }
 
 .hasChildren {
 	position: relative;
+}
 
-	&:hover,
-	&:focus-within {
-		.subMenu {
-			display: flex;
-		}
-	}
-
-	// When the parent link itself receives keyboard focus (i.e. a
-	// user tabs to it), reveal the submenu so its children become
-	// part of the tab order. Without this rule the submenu stays
-	// `display: none` until focus is already inside it, which is
-	// unreachable by tab from the parent link.
-	& > a:focus + .subMenu,
-	& > a:focus-visible + .subMenu {
-		display: flex;
-	}
+// Reveal the submenu when its disclosure button is expanded. On mobile
+// the submenu is in-flow (it pushes the menu open and uses a darker
+// background to read as nested); on desktop it is an absolutely
+// positioned flyout.
+.disclosure[aria-expanded='true'] + .subMenu {
+	display: flex;
 }
 
 .subMenu {
 	@include reset-list;
 	display: none;
 	flex-direction: column;
-	position: absolute;
-	left: 0;
-	top: 100%;
-	min-width: 280px;
-	background-color: $color-primary;
-	box-shadow: 0 16px 40px rgba(5, 42, 52, 0.12);
+	background-color: $color-primary-dark;
 	z-index: 100;
 
 	@include breakpoint(md) {
-		left: auto;
+		position: absolute;
+		top: 100%;
 		right: 0;
 		min-width: 320px;
+		background-color: $color-primary;
+		box-shadow: 0 16px 40px rgba(5, 42, 52, 0.12);
 	}
 }
 
@@ -131,11 +158,14 @@
 		color: #fff;
 		text-decoration: none;
 		transition: background-color 0.2s ease;
-		white-space: nowrap;
 
 		&:hover,
 		&:focus-visible {
 			background-color: $color-primary-darker;
+		}
+
+		@include breakpoint(md) {
+			white-space: nowrap;
 		}
 	}
 }
