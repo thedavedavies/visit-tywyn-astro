@@ -11,6 +11,13 @@ name: Accessibility
 on:
   push:
     branches: [main]
+    # The weather/tides refresh cron commits src/data/*.json to main
+    # every few hours. Those snapshots are text content only and cannot
+    # affect markup or styles, so skip the (slow, Chromium-backed) a11y
+    # scan on pushes that touch nothing else. The `test` workflow still
+    # runs on them, since a malformed snapshot could break the build.
+    paths-ignore:
+      - 'src/data/**'
   pull_request:
 
 jobs:
