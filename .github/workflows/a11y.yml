@@ -1,0 +1,36 @@
+name: Accessibility
+
+# Builds the site and runs axe-core (via puppeteer, in tools/a11y-scan.ts)
+# against a representative set of pages, failing on any WCAG A/AA
+# violation. Kept separate from the fast `test` job (type-check + build +
+# link check) so an a11y regression is its own clearly-named check.
+#
+# Note: this gates on axe *violations* only. See tools/a11y-scan.ts for
+# why we run axe directly rather than via pa11y-ci.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  a11y:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      # Cache Puppeteer's Chromium download (npm's cache only covers
+      # registry tarballs, not the browser binary).
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/puppeteer
+          key: puppeteer-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - run: npm ci
+
+      - run: npm run test:a11y

@@ -12,6 +12,7 @@
 		"astro": "astro",
 		"check": "astro check",
 		"test": "npm run build && npm run check:links -- --no-dev",
+		"test:a11y": "astro build && tsx tools/a11y-scan.ts",
 		"refresh:conditions": "tsx tools/refresh-conditions.ts",
 		"check:links": "tsx tools/check-links.ts",
 		"format": "prettier --write .",
@@ -26,8 +27,10 @@
 	"devDependencies": {
 		"@astrojs/check": "^0.9.9",
 		"@types/node": "^25.6.0",
+		"axe-core": "^4.12.0",
 		"prettier": "3.8.3",
 		"prettier-plugin-astro": "0.14.1",
+		"puppeteer": "^25.1.0",
 		"sass": "^1.99.0",
 		"tsx": "^4.21.0",
 		"typescript": "^5.9.3"
