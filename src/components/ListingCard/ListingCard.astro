@@ -25,7 +25,7 @@ const HTag = `h${headingLevel}` as 'h2' | 'h3';
 ---
 
 <article class={styles.row}>
-	<a href={href} class={styles.media}>
+	<a href={href} class={styles.media} aria-hidden="true" tabindex="-1">
 		{
 			image && (
 				<Picture

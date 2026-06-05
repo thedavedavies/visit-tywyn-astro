@@ -15,6 +15,6 @@ Cadair Idris is one of Wales’s most iconic mountains, standing around 893m in 
 
 A few of the nearby lakes – such as Llyn Mwyngul (commonly known as Tal-y-llyn lake) are reputed to be bottomless, and those who venture up the mountain at night should take heed before sleeping on its slopes. It is said that those who sleep on the mountain will awaken either as a madman or as a poet.
 
-![](../../assets/img/things-to-do/cadair-idris/inline/cadair.jpg)
+![The dark waters of Llyn Cau lake in a steep green and rocky cwm below the summit of Cadair Idris](../../assets/img/things-to-do/cadair-idris/inline/cadair.jpg)
 
 &nbsp;

@@ -35,7 +35,7 @@ seo:
 
 It may be remote, but Castell y Bere in North Wales is a magnet for all castle lovers. Strung along a jagged rocky outcrop in the Dysynni Valley at the foot of the mighty Cader Idris, Castell y Bere is especially good at evoking the spirit and atmosphere of Wales’s native castles.
 
-![](../../assets/img/things-to-do/castell-y-bere/inline/castell-y-bere-70.jpeg)
+![The low stone wall ruins of Castell y Bere on a grassy hilltop, looking out over the green fields and hills of the Dysynni valley](../../assets/img/things-to-do/castell-y-bere/inline/castell-y-bere-70.jpeg)
 
 Built by Welsh ruler <em>Llywelyn ap Iorwerth</em> (Llywelyn the Great) to protect Gwynedd’s southern frontier, construction began in 1221 with the castle remaining in use until 1294. Castell y Bere was a remote outpost on Llywelyn’s southern frontier, but it was vital to his security. Llywelyn ab Iorwerth was Prince, but in those days cattle were king! Castell y Bere guarded his cattle range, protected the homeland of Gwynedd and dominated the neighbouring lordship of Meirionydd.
 

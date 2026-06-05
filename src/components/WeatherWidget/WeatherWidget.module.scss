@@ -54,7 +54,7 @@
 	}
 
 	dt {
-		color: rgba(255, 255, 255, 0.85);
+		color: #fff;
 	}
 
 	dd {
@@ -66,15 +66,15 @@
 .stamp {
 	margin: $space-3 0 0;
 	font-size: 0.8rem;
-	color: rgba(255, 255, 255, 0.85);
+	color: #fff;
 }
 
 .stale {
 	font-style: italic;
-	color: rgba(255, 255, 255, 0.7);
+	color: #fff;
 }
 
 .empty {
 	margin: 0;
-	color: rgba(255, 255, 255, 0.85);
+	color: #fff;
 }

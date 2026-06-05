@@ -60,3 +60,18 @@ a {
 	text-decoration-thickness: 1px;
 	text-underline-offset: 2px;
 }
+
+/* Honour the OS "reduce motion" setting globally. Component modules
+ * opt motion back in with `@media (prefers-reduced-motion: no-preference)`
+ * where an animation is essential (e.g. the gallery); everything else
+ * (card hovers, nav transitions) collapses to a near-instant change. */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
