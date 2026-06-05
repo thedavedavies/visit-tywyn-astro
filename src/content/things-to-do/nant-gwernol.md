@@ -37,11 +37,11 @@ If you're feeling adventurous, you can try the 4 mile Quarryman's Trail. A circu
 
 Nant Gwernol woodland has a diverse range of wildlife, including rare hazel dormice, bats, many species of bird and a variety of invertebrates. Also look out for otters foraging along the river!
 
-![](../../assets/img/things-to-do/nant-gwernol/inline/ef08fc67f6167b69880000e680ea6ae13477a4c8.jpg)
+![A wooden footbridge crossing a rocky stream in the lush green woodland at Nant Gwernol](../../assets/img/things-to-do/nant-gwernol/inline/ef08fc67f6167b69880000e680ea6ae13477a4c8.jpg)
 
 <h2>How to get to Nant Gwernol Forest?</h2>
 To get to Nant Gwernol, you can either park in the village of Abergynolwyn (around 15 minutes drive from <a href="/things-to-do/tywyn-beach/">Tywyn</a>), or get the <a href="/things-to-do/the-talyllyn-railway/">Talyllyn railway</a> stright into the heart of the forrest.
 <h2>Nant Gwernol map</h2>
 <a href="https://explore.osmaps.com/route/12688392/bbc-countryfile-magazine-nant-gwernol-gwynedd-wales?lat=52.639447&amp;lon=-3.942535&amp;zoom=14.4732&amp;overlays=&amp;style=Leisure&amp;type=2d&amp;placesCategory=" target="_blank" rel="noopener">Nant Gwernol walking route and map</a>
 
-[![](../../assets/img/things-to-do/nant-gwernol/inline/nant-gwernol-walking-route-and-map-41c61.png)](https://explore.osmaps.com/route/12688392/bbc-countryfile-magazine-nant-gwernol-gwynedd-wales?lat=52.639447&lon=-3.942535&zoom=14.4732&overlays=&style=Leisure&type=2d&placesCategory=)
+[![Ordnance Survey map showing the circular walking route around Nant Gwernol, near Abergynolwyn](../../assets/img/things-to-do/nant-gwernol/inline/nant-gwernol-walking-route-and-map-41c61.png)](https://explore.osmaps.com/route/12688392/bbc-countryfile-magazine-nant-gwernol-gwynedd-wales?lat=52.639447&lon=-3.942535&zoom=14.4732&overlays=&style=Leisure&type=2d&placesCategory=)

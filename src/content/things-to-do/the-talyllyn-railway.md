@@ -45,12 +45,12 @@ The Talyllyn Railway, known for its historical use of steam locomotives, is the 
 
 Originally built in 1866 for carrying slate from Abergynolwyn to Tywyn, it runs for 7.25 miles through beautiful and unspoilt countryside - passing through the delightful <a href="/things-to-do/dolgoch-falls/">Dolgoch Falls</a> along the way. And with the excellent forest walks at <a href="/things-to-do/nant-gwernol/">Nant Gwernol</a>, it's a great family day out. The steam train experience enhances the visit by offering a unique opportunity to learn to drive a historic steam locomotive or hire a steam-hauled train for special occasions such as weddings.
 
-<h3>History of the Talyllyn Railway</h3>
+<h2>History of the Talyllyn Railway</h2>
 Since preservation in 1951, the Talyllyn Railway has thrived as a tourist attraction. The formal passenger service began during the early history of the railway, significantly growing in the Haydn Jones era with the operation of passenger trains on certain days. Steam locomotives have played a crucial role in the history and operations of the railway, contributing to the unique experience of the journey. The Talyllyn Railway Preservation Society, which took over in 1951, has been instrumental in preserving the railway, acquiring new locomotives, and establishing a museum. In 1976, an extension was opened along the former mineral line from Abergynolwyn to the new station at Nant Gwernol. In 2001, the preservation society celebrated its 50th anniversary, and in 2005 a major rebuilding and extension of Tywyn Wharf station took place, including a much-expanded facility for the Narrow Gauge Railway Museum.
 
 ![A steam train from the Talyllyn Railway travelling through the lush Welsh Afon Fathew valley. With purple foxglove flowers in the foreground, and green forest in the background.](../../assets/img/things-to-do/the-talyllyn-railway/inline/s8henfsp9d.jpg)
 
-<h3>Narrow Guage Railway Museum</h3>
+<h2>Narrow Guage Railway Museum</h2>
 Tywyn Wharf station is also home to the <a href="https://narrowgaugerailwaymuseum.org.uk" rel="nofollow noopener" target="_blank">Narrow Gauge Railway Museum</a>, which tells the fascinating story of over 90 little railways across Britain and their 200 year history. Enjoy the museum experience through video, sound and with over 800 items on display - from complete locomotives to smaller pieces such as signalling equipment and tickets.
 
 The museum also features exhibits on the Talyllyn Railway steam, showcasing its historical significance and the scenic journeys through the picturesque Fathew valley in Snowdonia National Park.

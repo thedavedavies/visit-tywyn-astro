@@ -15,11 +15,11 @@ export interface FaqEntry {
  *
  * Strict scope: returns entries ONLY when the body contains a
  * `<div class="faqs">…</div>` section. Without this guard, *any*
- * page using `<h4>` for sub-headings would produce a FAQPage
+ * page using `<h3>` for sub-headings would produce a FAQPage
  * schema, which is misleading markup that Google can flag.
  *
- * Inside the `.faqs` slice each `<h4>` becomes a question;
- * everything between it and the next `<h2|h3|h4>` (or end of slice)
+ * Inside the `.faqs` slice each `<h3>` becomes a question;
+ * everything between it and the next `<h2|h3>` (or end of slice)
  * becomes the answer. HTML tags are stripped so the JSON-LD output
  * is plain text.
  */
@@ -28,7 +28,7 @@ export function extractFaq(body: string): FaqEntry[] {
 	if (!sliceMatch) return [];
 
 	const scope = sliceMatch[1]!;
-	const re = /<h4[^>]*>([\s\S]*?)<\/h4>([\s\S]*?)(?=<h[1-4][^>]*>|$)/gi;
+	const re = /<h3[^>]*>([\s\S]*?)<\/h3>([\s\S]*?)(?=<h[1-3][^>]*>|$)/gi;
 	const out: FaqEntry[] = [];
 	let m: RegExpExecArray | null;
 	while ((m = re.exec(scope))) {
