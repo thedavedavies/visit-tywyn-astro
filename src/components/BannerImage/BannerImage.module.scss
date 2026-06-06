@@ -1,14 +1,15 @@
 .wrap {
 	width: 100%;
+	// Fallback ratio; BannerImage overrides this inline with the image's
+	// real intrinsic ratio so the box is reserved before the image loads.
+	aspect-ratio: 16 / 6;
 	max-height: 500px;
 	overflow: hidden;
-	display: flex;
-	align-items: center;
 }
 
 .image {
 	display: block;
 	width: 100%;
-	height: auto;
+	height: 100%;
 	object-fit: cover;
 }

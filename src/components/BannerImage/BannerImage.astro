@@ -25,9 +25,15 @@ const { src, alt = '', priority = true } = Astro.props;
 const loading = priority ? 'eager' : 'lazy';
 const decoding = priority ? 'sync' : 'async';
 const fetchpriority = priority ? 'high' : 'auto';
+
+// Reserve the banner box from the image's intrinsic ratio so the space
+// exists at first paint, before any bytes arrive. Without it the unsized
+// <picture> wrapper collapses to a line-box (~20px) until the image loads
+// and then jumps to full height, which is a large layout shift (CLS).
+const aspectRatio = `${src.width} / ${src.height}`;
 ---
 
-<div class={styles.wrap}>
+<div class={styles.wrap} style={`aspect-ratio: ${aspectRatio};`}>
 	<Picture
 		class={styles.image}
 		src={src}
