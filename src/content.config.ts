@@ -178,9 +178,40 @@ const stayCategories = defineCollection({
 		}),
 });
 
+/**
+ * Events with their own page. Most events are lightweight calendar
+ * entries in `src/data/events.json`; an event only needs a file here
+ * when it warrants a full page. The factual fields (title, dates,
+ * location, summary) stay in the calendar JSON, matched to this file by
+ * slug, so they are never duplicated - this collection carries the page
+ * body (a fuller description) plus links and media. The matching
+ * calendar entry must set `internal_url` to `/events/<slug>/`.
+ */
+const events = defineCollection({
+	loader: glob({ pattern: '**/*.md', base: './src/content/events' }),
+	schema: ({ image }) =>
+		z.object({
+			hero_image: imageBlock(image).optional(),
+			// Official listing / organiser site, shown in the "Find out
+			// more" links alongside any social profiles.
+			website: z.string().url().optional(),
+			website_label: z.string().optional(),
+			social: z
+				.object({
+					facebook: z.string().url().optional(),
+					instagram: z.string().url().optional(),
+					twitter: z.string().url().optional(),
+				})
+				.optional(),
+			geo: geoSchema,
+			seo: seoSchema,
+		}),
+});
+
 export const collections = {
 	pages,
 	eating,
 	'things-to-do': thingsToDo,
 	'stay-categories': stayCategories,
+	events,
 };

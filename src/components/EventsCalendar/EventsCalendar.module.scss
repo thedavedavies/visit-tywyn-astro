@@ -1,0 +1,191 @@
+@use '../../styles/abstracts/variables' as *;
+
+.calendar {
+	margin-top: $space-6;
+}
+
+.month {
+	margin-top: $space-7;
+
+	&:first-child {
+		margin-top: 0;
+	}
+}
+
+// Pins to the top while you scroll through its month, then the next
+// month's heading pushes it out and takes over - sticky is confined to
+// its own `.month` parent, so the handoff is automatic. The opaque
+// background is load-bearing: without it the event rows would show
+// through the heading text as they scroll underneath. The site header
+// scrolls away (it isn't fixed), so `top: 0` is correct.
+.monthHeading {
+	position: sticky;
+	top: 0;
+	z-index: 2;
+	margin: 0 0 $space-4;
+	padding: $space-3 0 $space-2;
+	background: $color-bg;
+	border-bottom: 2px solid $color-border;
+	font-size: 1.5rem;
+	color: $color-primary;
+}
+
+.events {
+	margin: 0;
+	padding: 0;
+	// Empty string (not `none`) keeps VoiceOver announcing the list while
+	// hiding the bullets - the repo-wide a11y convention.
+	list-style-type: '';
+	display: flex;
+	flex-direction: column;
+	gap: $space-4;
+
+	li {
+		margin: 0;
+	}
+}
+
+.event {
+	display: grid;
+	grid-template-columns: 9.5rem 1fr;
+	gap: $space-2 $space-5;
+	padding: $space-4 $space-5;
+	border: 1px solid $color-border;
+	border-radius: $radius-lg;
+	background: #fff;
+
+	@media (max-width: $breakpoint-md) {
+		grid-template-columns: 1fr;
+		gap: $space-2;
+		padding: $space-4;
+	}
+}
+
+// Past events are de-emphasised with a muted background, a greyed date
+// and title, and the "Event finished" badge - deliberately NOT with
+// `opacity`. A faded opacity drags the summary / location / badge text
+// below the WCAG AA contrast ratio, and the a11y gate composites parent
+// opacity into its colour-contrast check, so it (rightly) fails. These
+// muted tokens still clear AA on the alt background.
+.eventPast {
+	background: $color-bg-alt;
+
+	.date,
+	.title {
+		color: $color-text-muted;
+	}
+}
+
+.when {
+	// Date column. Stays empty for undated month-only events so titles
+	// still line up down the page.
+	padding-top: 0.15rem;
+}
+
+.date {
+	display: inline-flex;
+	align-items: baseline;
+	gap: $space-2;
+	color: $color-primary;
+	font-weight: 700;
+	line-height: 1.3;
+
+	:global(svg) {
+		position: relative;
+		top: 0.15rem;
+		width: 18px;
+		height: 18px;
+		flex: none;
+
+		:global(path) {
+			fill: currentColor;
+		}
+	}
+}
+
+.what {
+	min-width: 0;
+}
+
+.title {
+	margin: 0;
+	font-size: 1.2rem;
+	line-height: 1.3;
+	color: $color-heading;
+}
+
+.location {
+	margin: $space-1 0 0;
+	display: inline-flex;
+	align-items: center;
+	gap: $space-2;
+	color: $color-text-dim;
+	font-size: 0.95rem;
+
+	:global(svg) {
+		width: 15px;
+		height: 15px;
+		flex: none;
+
+		:global(path) {
+			fill: currentColor;
+		}
+	}
+}
+
+.summary {
+	margin: $space-2 0 0;
+	color: $color-text-muted;
+}
+
+.actions {
+	margin: $space-4 0 0;
+}
+
+// "Find out more" navigates, so it is an <a> styled as a button. Filled
+// primary gives an obvious, high-contrast affordance (5.9:1 white-on-
+// primary), and the focus-visible outline is a clear, non-colour cue for
+// keyboard users. The accessible name ("Find out more about <event>")
+// comes from aria-label so each button is distinct to a screen reader.
+.moreLink {
+	display: inline-flex;
+	align-items: center;
+	gap: $space-2;
+	padding: $space-3 $space-4;
+	border-radius: $radius-md;
+	background: $color-primary;
+	color: #fff;
+	font-weight: 700;
+	font-size: 0.95rem;
+	line-height: 1.1;
+	text-decoration: none;
+
+	&:hover {
+		background: $color-primary-dark;
+	}
+
+	&:focus-visible {
+		outline: 3px solid $color-primary-darker;
+		outline-offset: 2px;
+	}
+
+	&:hover .moreArrow,
+	&:focus-visible .moreArrow {
+		transform: translateX(3px);
+	}
+}
+
+.moreArrow {
+	transition: transform 0.15s ease;
+}
+
+.finished {
+	margin: $space-3 0 0;
+	display: inline-block;
+	padding: $space-1 $space-3;
+	border-radius: $radius-pill;
+	background: $color-text-dim;
+	color: #fff;
+	font-size: 0.8rem;
+	font-weight: 700;
+}

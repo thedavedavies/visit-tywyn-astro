@@ -58,13 +58,17 @@
 	line-height: 1.25;
 	color: $color-heading;
 
+	// Linked titles use the site's link convention - primary colour plus
+	// a permanent underline - so it is obvious which cards click through.
 	a {
-		color: inherit;
-		text-decoration: none;
+		color: $color-primary;
+		text-decoration: underline;
+		text-underline-offset: 2px;
 
 		&:hover,
 		&:focus-visible {
-			text-decoration: underline;
+			color: $color-primary-dark;
+			text-decoration-thickness: 2px;
 		}
 	}
 }

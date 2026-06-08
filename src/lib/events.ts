@@ -27,6 +27,13 @@ export interface RawEvent {
 	internal_url?: string;
 	external_url?: string;
 	external_label?: string;
+	/**
+	 * Set when only the month is known, not a specific day (the printed
+	 * calendar lists many events this way). The card then shows the month
+	 * name instead of a fabricated date, and the event stays "upcoming"
+	 * for the whole month rather than flipping to "past" on the 1st.
+	 */
+	month_only?: boolean;
 }
 
 const RawEventSchema = z.object({
@@ -42,6 +49,7 @@ const RawEventSchema = z.object({
 	internal_url: z.string().optional(),
 	external_url: z.string().optional(),
 	external_label: z.string().optional(),
+	month_only: z.boolean().optional(),
 });
 
 const EventsJsonSchema = z.object({ events: z.array(RawEventSchema).optional() }).passthrough();
@@ -55,6 +63,7 @@ export interface NormalisedEvent {
 	startIso: string;
 	endIso: string;
 	dateLabel: string;
+	monthOnly: boolean;
 	isPast: boolean;
 	isOngoing: boolean;
 	isUpcoming: boolean;
@@ -74,6 +83,11 @@ const SHORT_FORMATTER = new Intl.DateTimeFormat('en-GB', {
 const DAY_FORMATTER = new Intl.DateTimeFormat('en-GB', {
 	day: 'numeric',
 	month: 'short',
+	timeZone: 'Europe/London',
+});
+
+const MONTH_FORMATTER = new Intl.DateTimeFormat('en-GB', {
+	month: 'long',
 	timeZone: 'Europe/London',
 });
 
@@ -133,6 +147,28 @@ function fmtRange(startIso: string, endIso: string): string {
 	return `${DAY_FORMATTER.format(start)} to ${DAY_FORMATTER.format(end)}`;
 }
 
+/**
+ * Label for a month-only event: the month name when it sits inside a
+ * single month ("January"), or a span when an explicit `end_date`
+ * pushes it across months ("May to September" for a seasonal display).
+ */
+function monthRangeLabel(startIso: string, endIso: string): string {
+	const startMonth = MONTH_FORMATTER.format(new Date(startIso));
+	const endMonth = MONTH_FORMATTER.format(new Date(endIso));
+	return startMonth === endMonth ? startMonth : `${startMonth} to ${endMonth}`;
+}
+
+/** `YYYY-MM-DD` of the last calendar day of the month a date falls in. */
+function lastDayOfMonth(date: string): string {
+	const parts = date.split('-').map((n) => Number.parseInt(n, 10));
+	const year = parts[0]!;
+	const month = parts[1]!;
+	// Day 0 of the *next* month (UTC noon to dodge DST rounding) is the
+	// last day of this one.
+	const last = new Date(Date.UTC(year, month, 0, 12)).getUTCDate();
+	return `${year}-${String(month).padStart(2, '0')}-${String(last).padStart(2, '0')}`;
+}
+
 export function getEvents(now: Date = new Date()): NormalisedEvent[] {
 	const parsed = EventsJsonSchema.safeParse(eventsJson);
 	if (!parsed.success) {
@@ -142,15 +178,22 @@ export function getEvents(now: Date = new Date()): NormalisedEvent[] {
 	const out: NormalisedEvent[] = [];
 
 	for (const ev of raw) {
+		const monthOnly = ev.month_only ?? false;
 		const startIso = combine(ev.start_date, ev.start_time ?? '', false);
 		// When `end_date` is set but `end_time` is missing, default to
 		// 23:59 so a multi-day festival stays "upcoming" / "ongoing"
 		// for the whole final day rather than flipping to "past" at
 		// whatever hour `start_time` happened to be.
-		const endDate = ev.end_date ?? ev.start_date;
+		//
+		// A month-only event with no explicit `end_date` runs to the last
+		// day of its month, so "sometime in June" stays upcoming through
+		// 30 June rather than turning "past" on the 1st.
+		const endDate = ev.end_date ?? (monthOnly ? lastDayOfMonth(ev.start_date) : ev.start_date);
 		const endTime =
 			ev.end_time ??
-			(ev.end_date && ev.end_date !== ev.start_date ? '23:59' : (ev.start_time ?? '23:59'));
+			(monthOnly || (ev.end_date && ev.end_date !== ev.start_date)
+				? '23:59'
+				: (ev.start_time ?? '23:59'));
 		const endIso = combine(endDate, endTime, true);
 		const start = new Date(startIso);
 		const end = new Date(endIso);
@@ -168,7 +211,8 @@ export function getEvents(now: Date = new Date()): NormalisedEvent[] {
 			imageAlt: ev.image_alt ?? ev.title,
 			startIso,
 			endIso,
-			dateLabel: fmtRange(startIso, endIso),
+			dateLabel: monthOnly ? monthRangeLabel(startIso, endIso) : fmtRange(startIso, endIso),
+			monthOnly,
 			isPast,
 			isOngoing,
 			isUpcoming,
@@ -186,4 +230,82 @@ export function getEvents(now: Date = new Date()): NormalisedEvent[] {
 export function upcomingEvents(limit?: number, now: Date = new Date()): NormalisedEvent[] {
 	const items = getEvents(now).filter((e) => !e.isPast);
 	return typeof limit === 'number' ? items.slice(0, limit) : items;
+}
+
+export interface EventMonthGroup {
+	/** `YYYY-MM` sort key. */
+	key: string;
+	/** Display heading, e.g. "January". */
+	label: string;
+	events: NormalisedEvent[];
+}
+
+function monthLabel(key: string): string {
+	const parts = key.split('-').map((n) => Number.parseInt(n, 10));
+	// UTC noon dodges any DST / midnight rollover when formatting.
+	return MONTH_FORMATTER.format(new Date(Date.UTC(parts[0]!, parts[1]! - 1, 1, 12)));
+}
+
+/**
+ * Every event grouped by calendar month for the year-round calendar
+ * view. Months are returned in chronological order; within a month,
+ * dated events come first (earliest day first) and month-only events
+ * sit after them, since we can't slot an undated event between two
+ * dated ones. Unlike `upcomingEvents`, this keeps past events so the
+ * page reads as a full annual reference (the card dims them).
+ */
+export function eventsByMonth(now: Date = new Date()): EventMonthGroup[] {
+	const groups = new Map<string, NormalisedEvent[]>();
+	for (const ev of getEvents(now)) {
+		const key = ev.startIso.slice(0, 7);
+		const bucket = groups.get(key);
+		if (bucket) bucket.push(ev);
+		else groups.set(key, [ev]);
+	}
+	return [...groups.entries()]
+		.sort(([a], [b]) => a.localeCompare(b))
+		.map(([key, events]) => ({
+			key,
+			label: monthLabel(key),
+			events: events.sort((a, b) => {
+				if (a.monthOnly !== b.monthOnly) return a.monthOnly ? 1 : -1;
+				return a.startIso.localeCompare(b.startIso);
+			}),
+		}));
+}
+
+// How many days before month-end the events H1 / <title> rolls forward
+// to the next month. The site is statically built but the conditions
+// cron rebuilds it every ~3h, so this build-time value tracks the real
+// month closely; the lead window gives search engines time to index
+// "{next month} events ..." before the month begins (and, since weather
+// data shifts within any few-day span, all but guarantees a rebuild
+// actually lands during the window). Tunable.
+const ROLLOVER_LEAD_DAYS = 5;
+
+/**
+ * Month name to feature in the events page H1 / title - normally the
+ * current month, but within the final `ROLLOVER_LEAD_DAYS` days it rolls
+ * forward to the next month (see the constant above). Resolved in
+ * Europe/London so the rollover flips on the UK calendar rather than the
+ * build server's UTC midnight, and December correctly rolls into January.
+ */
+export function featuredEventsMonth(now: Date = new Date(), leadDays = ROLLOVER_LEAD_DAYS): string {
+	const parts = new Intl.DateTimeFormat('en-GB', {
+		timeZone: 'Europe/London',
+		year: 'numeric',
+		month: 'numeric',
+		day: 'numeric',
+	}).formatToParts(now);
+	const part = (type: string) => Number.parseInt(parts.find((p) => p.type === type)!.value, 10);
+	const year = part('year');
+	const month = part('month'); // 1-12
+	const day = part('day');
+	// Day 0 of the next month (UTC noon to dodge DST) is the last of this one.
+	const daysInMonth = new Date(Date.UTC(year, month, 0, 12)).getUTCDate();
+	const rollToNext = daysInMonth - day < leadDays;
+	// 0-indexed month for Date.UTC: current = month - 1, next = month
+	// (Date.UTC rolls a December "next" into January of year + 1).
+	const targetMonth0 = rollToNext ? month : month - 1;
+	return MONTH_FORMATTER.format(new Date(Date.UTC(year, targetMonth0, 15, 12)));
 }

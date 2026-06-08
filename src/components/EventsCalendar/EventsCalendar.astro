@@ -1,0 +1,79 @@
+---
+import Icon from '../Icon/Icon.astro';
+import { eventsByMonth } from '../../lib/events';
+import styles from './EventsCalendar.module.scss';
+
+interface Props {
+	/** Accessible label for the calendar region. */
+	label?: string;
+	sectionId?: string;
+}
+
+const { label = 'Tywyn and Aberdyfi events calendar', sectionId = 'vt-events-calendar' } =
+	Astro.props;
+
+const months = eventsByMonth();
+---
+
+{
+	months.length > 0 && (
+		<section class={styles.calendar} aria-label={label}>
+			{months.map((month) => (
+				<section class={styles.month} aria-labelledby={`${sectionId}-${month.key}`}>
+					<h2 id={`${sectionId}-${month.key}`} class={styles.monthHeading}>
+						{month.label}
+					</h2>
+					<ul class={styles.events}>
+						{month.events.map((event) => {
+							// A month-only event that stays inside one month has no
+							// date to show (the month heading already conveys it); a
+							// month-spanning one ("May to September") still does.
+							const isMultiMonth = event.startIso.slice(0, 7) !== event.endIso.slice(0, 7);
+							const showDate = !event.monthOnly || isMultiMonth;
+							return (
+								<li class:list={[styles.event, { [styles.eventPast]: event.isPast }]}>
+									<div class={styles.when}>
+										{showDate && (
+											<time datetime={event.startIso} class={styles.date}>
+												<Icon name="calendar" />
+												{event.dateLabel}
+											</time>
+										)}
+									</div>
+									<div class={styles.what}>
+										<h3 class={styles.title}>{event.title}</h3>
+										{event.location && (
+											<p class={styles.location}>
+												<Icon name="marker" />
+												{event.location}
+											</p>
+										)}
+										{event.summary && <p class={styles.summary}>{event.summary}</p>}
+										{event.isPast && <p class={styles.finished}>Event finished</p>}
+										{event.primaryUrl && (
+											<p class={styles.actions}>
+												<a
+													class={styles.moreLink}
+													href={event.primaryUrl}
+													aria-label={`Find out more about ${event.title}${event.internalPath ? '' : ' (opens in new tab)'}`}
+													{...(event.internalPath
+														? {}
+														: { target: '_blank', rel: 'noopener noreferrer' })}
+												>
+													Find out more
+													<span aria-hidden="true" class={styles.moreArrow}>
+														→
+													</span>
+												</a>
+											</p>
+										)}
+									</div>
+								</li>
+							);
+						})}
+					</ul>
+				</section>
+			))}
+		</section>
+	)
+}

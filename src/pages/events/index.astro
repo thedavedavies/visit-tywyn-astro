@@ -2,8 +2,8 @@
 import { getEntry, render } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
-import EventsSection from '../../components/EventsSection/EventsSection.astro';
-import { upcomingEvents } from '../../lib/events';
+import EventsCalendar from '../../components/EventsCalendar/EventsCalendar.astro';
+import { featuredEventsMonth, upcomingEvents } from '../../lib/events';
 import { collectionPage, eventSchema, itemList } from '../../lib/jsonld';
 import { absoluteUrl } from '../../lib/url';
 
@@ -11,6 +11,22 @@ const page = await getEntry('pages', 'events');
 const Content = page ? (await render(page)).Content : null;
 
 const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Events' }];
+
+// H1 + <title> lead with the month ("June events in Tywyn and Aberdyfi")
+// and roll forward a few days before month-end so search engines index
+// the next month ahead of time. Recomputed on every ~3-hourly rebuild.
+const month = featuredEventsMonth();
+const eventsTitle = `${month} events in Tywyn and Aberdyfi`;
+
+// The subtitle + intro copy live in events.md (so the owner can edit the
+// prose) but carry a `{month}` placeholder. The subtitle is a plain
+// frontmatter string; the body is the compiled markdown HTML. We swap
+// the token for the live month in both, falling back to <Content /> if
+// the compiled HTML ever isn't available.
+const subtitle = page?.data.subtitle?.replaceAll('{month}', month);
+const introHtml = (
+	page as { rendered?: { html?: string } } | undefined
+)?.rendered?.html?.replaceAll('{month}', month);
 
 const events = upcomingEvents();
 
@@ -27,7 +43,7 @@ const eventsDescription =
 // stays at the top level so rich-result eligibility is per-event.
 const jsonLd: (Record<string, unknown> | null)[] = [
 	collectionPage({
-		title: page?.data.seo?.title ?? page?.data.title ?? 'Events in Tywyn',
+		title: eventsTitle,
 		description: eventsDescription,
 		url: Astro.url,
 	}),
@@ -57,22 +73,21 @@ const jsonLd: (Record<string, unknown> | null)[] = [
 ---
 
 <PageLayout
-	title={page?.data.seo?.title ?? page?.data.title ?? 'Events in Tywyn'}
+	title={eventsTitle}
 	description={eventsDescription}
 	heroImage={page?.data.hero_image}
 	breadcrumbs={breadcrumbs}
 	jsonLd={jsonLd}
 >
-	<EntryHeader title={page?.data.title ?? 'Events in Tywyn'} subtitle={page?.data.subtitle} />
+	<EntryHeader title={eventsTitle} subtitle={subtitle} />
 
-	<div class="entry-content">
-		{Content && <Content />}
-	</div>
+	{
+		introHtml ? (
+			<div class="entry-content" set:html={introHtml} />
+		) : (
+			<div class="entry-content">{Content && <Content />}</div>
+		)
+	}
 
-	<EventsSection
-		title="All upcoming events"
-		intro=""
-		sectionId="vt-events-page"
-		showAllLink={false}
-	/>
+	<EventsCalendar sectionId="vt-events-page" />
 </PageLayout>

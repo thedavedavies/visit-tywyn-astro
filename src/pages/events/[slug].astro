@@ -1,0 +1,205 @@
+---
+/**
+ * Single event page. Generated for each entry in the `events` content
+ * collection (the events that warrant a full page). The factual fields
+ * - title, dates, location, summary - come from the matching calendar
+ * entry in `src/data/events.json` (looked up by slug), so they live in
+ * exactly one place; this page adds the body, links, and structured
+ * data on top.
+ */
+import { getCollection, render } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
+import Icon from '../../components/Icon/Icon.astro';
+import { getEvents } from '../../lib/events';
+import { eventSchema, breadcrumbList } from '../../lib/jsonld';
+
+export async function getStaticPaths() {
+	const events = await getCollection('events');
+	return events.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+// Facts come from the calendar, matched by slug - never duplicated here.
+const path = `/events/${entry.id}/`;
+const event = getEvents().find((e) => e.internalPath === path);
+if (!event) {
+	throw new Error(
+		`Event page "${entry.id}" has no matching calendar entry. Add it to src/data/events.json with "internal_url": "${path}".`,
+	);
+}
+
+// The card uses a compact date ("27 Jun to 28 Jun"); the page reads
+// better with the full weekday + year. Month-only events keep their
+// month label rather than inventing days.
+const LONG_DATE = new Intl.DateTimeFormat('en-GB', {
+	weekday: 'long',
+	day: 'numeric',
+	month: 'long',
+	year: 'numeric',
+	timeZone: 'Europe/London',
+});
+const sameDay = event.startIso.slice(0, 10) === event.endIso.slice(0, 10);
+const dateLabel = event.monthOnly
+	? event.dateLabel
+	: sameDay
+		? LONG_DATE.format(new Date(event.startIso))
+		: `${LONG_DATE.format(new Date(event.startIso))} to ${LONG_DATE.format(new Date(event.endIso))}`;
+
+const heroUrl = entry.data.hero_image?.src.src;
+
+const breadcrumbs = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Events', href: '/events/' },
+	{ label: event.title },
+];
+
+const links = [
+	entry.data.website && {
+		href: entry.data.website,
+		label: entry.data.website_label ?? 'Official event website',
+	},
+	entry.data.social?.facebook && { href: entry.data.social.facebook, label: 'Facebook' },
+	entry.data.social?.instagram && { href: entry.data.social.instagram, label: 'Instagram' },
+].filter(Boolean) as { href: string; label: string }[];
+
+const jsonLd = [
+	eventSchema({
+		name: event.title,
+		startIso: event.startIso,
+		endIso: event.endIso,
+		location: event.location || undefined,
+		locationAddress: event.location || undefined,
+		url: path,
+		image: heroUrl ?? null,
+		description: event.summary || undefined,
+	}),
+	breadcrumbList(breadcrumbs, Astro.url),
+];
+---
+
+<PageLayout
+	title={entry.data.seo?.title ?? event.title}
+	description={entry.data.seo?.description ?? event.summary}
+	ogImage={entry.data.seo?.og_image ?? heroUrl}
+	noindex={entry.data.seo?.noindex}
+	heroImage={entry.data.hero_image}
+	breadcrumbs={breadcrumbs}
+	jsonLd={jsonLd}
+>
+	<EntryHeader title={event.title} subtitle={dateLabel} />
+
+	{
+		event.location && (
+			<p class="event-location">
+				<Icon name="marker" />
+				<span>{event.location}</span>
+			</p>
+		)
+	}
+
+	<div class="entry-content">
+		<Content />
+	</div>
+
+	{
+		links.length > 0 && (
+			<section class="event-links" aria-labelledby="event-links-title">
+				<h2 id="event-links-title">Find out more</h2>
+				<ul>
+					{links.map((l) => (
+						<li>
+							<a href={l.href} target="_blank" rel="noopener noreferrer">
+								{l.label}
+								<span class="sr-only"> (opens in new tab)</span>
+							</a>
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+
+	<p class="back-link">
+		<a href="/events/">
+			<span aria-hidden="true">←</span> All events in Tywyn and Aberdyfi
+		</a>
+	</p>
+</PageLayout>
+
+<style lang="scss">
+	@use '../../styles/abstracts/variables' as *;
+
+	.event-location {
+		display: flex;
+		align-items: center;
+		gap: $space-2;
+		margin: 0 0 $space-5;
+		color: $color-text-dim;
+		font-size: 1.05rem;
+
+		:global(svg) {
+			width: 20px;
+			height: 20px;
+			flex: 0 0 auto;
+
+			:global(path) {
+				fill: currentColor;
+			}
+		}
+	}
+
+	.event-links {
+		margin-top: $space-6;
+
+		h2 {
+			font-size: 1.4rem;
+			margin: 0 0 $space-3;
+		}
+
+		ul {
+			margin: 0;
+			padding: 0;
+			list-style-type: '';
+			display: flex;
+			flex-wrap: wrap;
+			gap: $space-3;
+		}
+
+		li {
+			margin: 0;
+		}
+
+		a {
+			display: inline-flex;
+			align-items: center;
+			padding: $space-2 $space-4;
+			border: 1px solid $color-border;
+			border-radius: $radius-pill;
+			color: $color-primary;
+			font-weight: 700;
+			text-decoration: none;
+
+			&:hover {
+				border-color: $color-primary;
+				background: $color-bg-alt;
+			}
+
+			&:focus-visible {
+				outline: 2px solid $color-primary;
+				outline-offset: 2px;
+			}
+		}
+	}
+
+	.back-link {
+		margin-top: $space-7;
+
+		a {
+			color: $color-primary;
+			font-weight: 700;
+		}
+	}
+</style>
