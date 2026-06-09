@@ -28,18 +28,24 @@ jobs:
 
       # Persist Astro's Sharp image cache (the `assets/` folder under the
       # default cacheDir, node_modules/.astro) between runs so the build
-      # copies the ~2,900 already-optimised variants instead of
-      # reprocessing them from scratch. A cold cache adds 1-3 min of Sharp
-      # work. Must come after `npm ci`, which wipes node_modules. Keyed on
-      # the source images + image config so it invalidates only when an
-      # image or a Sharp setting changes; restore-keys lets every other
-      # build warm-start and process just the new/changed files.
+      # copies the already-optimised variants instead of re-encoding them
+      # through Sharp from scratch. A cold cache adds 1-3 min of work.
+      # Must come after `npm ci`, which wipes node_modules.
+      #
+      # The key busts the whole cache whenever the toolchain that emits
+      # the bytes changes: a package-lock.json bump (Astro/Sharp version)
+      # or any astro.config.mjs edit (global Sharp settings). Astro keys
+      # its own cache on the source image + per-image transform only, so
+      # it would otherwise reuse outputs encoded by the old toolchain.
+      # Within a fixed toolchain the image hash moves the exact key as
+      # images change, and restore-keys (scoped to the same toolchain)
+      # warm-starts the build so Sharp only touches new/changed files.
       - uses: actions/cache@v4
         with:
           path: node_modules/.astro
-          key: astro-cache-${{ runner.os }}-${{ hashFiles('src/assets/img/**', 'astro.config.mjs') }}
+          key: astro-cache-${{ runner.os }}-${{ hashFiles('package-lock.json', 'astro.config.mjs') }}-${{ hashFiles('src/assets/img/**') }}
           restore-keys: |
-            astro-cache-${{ runner.os }}-
+            astro-cache-${{ runner.os }}-${{ hashFiles('package-lock.json', 'astro.config.mjs') }}-
 
       - run: npm run check
 
