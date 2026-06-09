@@ -40,4 +40,14 @@ jobs:
 
       - run: npm ci
 
+      # Reuse Astro's Sharp image cache between runs (see test.yml for the
+      # rationale). Shares a key with the `test` job, so whichever build
+      # runs first warms the cache for the other. Must follow `npm ci`.
+      - uses: actions/cache@v4
+        with:
+          path: node_modules/.astro
+          key: astro-cache-${{ runner.os }}-${{ hashFiles('src/assets/img/**', 'astro.config.mjs') }}
+          restore-keys: |
+            astro-cache-${{ runner.os }}-
+
       - run: npm run test:a11y
