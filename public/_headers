@@ -20,6 +20,11 @@
 
 # Default headers for every response. The HTML cache is short so
 # editorial updates appear within minutes of a deploy.
+# `stale-while-revalidate` lets browsers render a just-expired copy
+# instantly and refresh it in the background - repeat visits within
+# a day paint from cache instead of waiting on the network. Chrome
+# and Firefox honour it; Safari and Cloudflare's edge ignore it
+# harmlessly.
 #
 # Note: the Cloudflare zone has its own HSTS setting (currently
 # max-age=15552000 without includeSubDomains) which REPLACES the
@@ -27,7 +32,7 @@
 # for this header to take effect; `preload` is only valid alongside
 # `includeSubDomains`.
 /*
-  Cache-Control: public, max-age=300, s-maxage=600
+  Cache-Control: public, max-age=300, s-maxage=600, stale-while-revalidate=86400
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: interest-cohort=()
