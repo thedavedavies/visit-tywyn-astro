@@ -14,4 +14,4 @@ npm run dev
 
 ## Useful scripts
 
-- `npm run refresh:conditions` - refresh `src/data/{weather,tides}.json`. Runs automatically every 3h via `.github/workflows/refresh-conditions.yml`.
+- `npm run refresh:conditions` - refresh `src/data/{weather,tides}.json` (skips sources fresher than ~2h45m; `FORCE_REFRESH=1` to override). `.github/workflows/refresh-conditions.yml` runs it every 30 min, which nets out to a ~3h refresh cadence plus automatic retries while an upstream is down.

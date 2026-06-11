@@ -2,7 +2,11 @@
  * Refresh src/data/weather.json and src/data/tides.json from the
  * upstream APIs.
  *
- * Run with `npm run refresh:conditions`. Safe to run repeatedly.
+ * Run with `npm run refresh:conditions`. Safe to run repeatedly: a
+ * source whose snapshot is younger than REFRESH_AFTER_MS is skipped,
+ * so the scheduled workflow can tick every 30 minutes (cheap no-ops)
+ * while data is actually fetched, committed, and deployed on a ~3h
+ * cadence. Set FORCE_REFRESH=1 to bypass the freshness check.
  *
  * This is the build-time equivalent of the WP `vt_sidebar_*_cache`
  * options. Outputs are tiny (<2KB) and meant to be committed so the
@@ -13,12 +17,19 @@
  *   - Admiralty EasyTide (no CORS) for upcoming tide events
  *
  * Behaviour on failure:
- *   - We never overwrite an existing JSON with garbage. If the API
- *     returns an error or shape we don't recognise, we keep the old
- *     snapshot in place.
- *   - When at least one of the two refreshes fails the process exits
- *     non-zero so GitHub Actions surfaces the failure (default
- *     "no diff = success" would otherwise mask a multi-day outage).
+ *   - Each fetch gets a few attempts with backoff, so a transient 502
+ *     or one slow response doesn't sink the run (Open-Meteo had a
+ *     morning of exactly that on 2026-06-11).
+ *   - We never overwrite an existing JSON with garbage. If an API
+ *     still fails after the retries, or returns a shape we don't
+ *     recognise, we keep the old snapshot in place. The other source
+ *     is refreshed and committed independently, and the next 30-min
+ *     tick retries the failed one because its snapshot stayed old.
+ *   - The process exits non-zero only when a failing source's
+ *     snapshot has outlived its serving TTL (SITE.conditions, the
+ *     same thresholds the widgets use for the "last good reading"
+ *     badge). Red CI therefore means "visitors are seeing data we
+ *     consider too old", not "one upstream request blipped".
  */
 
 import * as fs from 'node:fs';
@@ -34,7 +45,17 @@ const LNG = SITE.location.lng;
 const TIDE_STATION = SITE.location.tideStationId;
 
 const TZ = 'Europe/London';
-const FETCH_TIMEOUT_MS = 15_000;
+// 20s rather than 15s: during the 2026-06-11 Open-Meteo degradation,
+// otherwise-healthy responses took 17-58s. Still bounded well inside
+// the workflow's 5-minute job timeout even at three attempts.
+const FETCH_TIMEOUT_MS = 20_000;
+// Pauses between fetch attempts; total attempts = length + 1.
+const RETRY_DELAYS_MS = [5_000, 15_000];
+// Skip a source whose snapshot is younger than this. With the
+// workflow ticking every 30 minutes this gives an effective ~3h
+// refresh cadence, and a ~30-minute retry loop while a source fails.
+const REFRESH_AFTER_MS = 165 * 60 * 1000; // 2h45m
+const FORCE_REFRESH = process.env.FORCE_REFRESH === '1';
 const TIME_FMT = new Intl.DateTimeFormat('en-GB', {
 	hour: 'numeric',
 	minute: '2-digit',
@@ -143,6 +164,45 @@ async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
 	}
 }
 
+function sleep(ms: number): Promise<void> {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Age of the snapshot already on disk, from its `fetchedAt`. Missing,
+// unreadable, or unparseable snapshots count as infinitely old, so they
+// are always refreshed and always alarm while the refresh keeps failing.
+function snapshotAgeMs(file: string): number {
+	try {
+		const raw = JSON.parse(fs.readFileSync(file, 'utf8')) as { fetchedAt?: unknown };
+		const ts = typeof raw.fetchedAt === 'string' ? Date.parse(raw.fetchedAt) : NaN;
+		return Number.isFinite(ts) ? Date.now() - ts : Infinity;
+	} catch {
+		return Infinity;
+	}
+}
+
+function formatAge(ms: number): string {
+	if (!Number.isFinite(ms)) return 'missing/unreadable';
+	const mins = Math.max(0, Math.round(ms / 60_000));
+	if (mins < 60) return `${mins}m`;
+	return `${Math.floor(mins / 60)}h${String(mins % 60).padStart(2, '0')}m`;
+}
+
+async function fetchJsonWithRetry<T>(name: string, url: string): Promise<T> {
+	for (let attempt = 0; ; attempt++) {
+		try {
+			return await fetchJson<T>(url);
+		} catch (err) {
+			const delay = RETRY_DELAYS_MS[attempt];
+			if (delay === undefined) throw err;
+			console.error(
+				`  ${name}: attempt ${attempt + 1} failed (${err instanceof Error ? err.message : err}); retrying in ${delay / 1000}s`,
+			);
+			await sleep(delay);
+		}
+	}
+}
+
 async function refreshWeather(): Promise<boolean> {
 	const params = new URLSearchParams({
 		latitude: String(LAT),
@@ -159,10 +219,12 @@ async function refreshWeather(): Promise<boolean> {
 
 	let response: OpenMeteoResponse;
 	try {
-		response = await fetchJson<OpenMeteoResponse>(url);
+		response = await fetchJsonWithRetry<OpenMeteoResponse>('weather', url);
 	} catch (err) {
-		console.error('  weather: fetch failed:', err instanceof Error ? err.message : err);
-		console.error('  weather: keeping previous snapshot');
+		console.error(
+			'  weather: all fetch attempts failed:',
+			err instanceof Error ? err.message : err,
+		);
 		return false;
 	}
 
@@ -223,10 +285,9 @@ async function refreshTides(): Promise<boolean> {
 
 	let response: EasyTideResponse;
 	try {
-		response = await fetchJson<EasyTideResponse>(url);
+		response = await fetchJsonWithRetry<EasyTideResponse>('tides', url);
 	} catch (err) {
-		console.error('  tides: fetch failed:', err instanceof Error ? err.message : err);
-		console.error('  tides: keeping previous snapshot');
+		console.error('  tides: all fetch attempts failed:', err instanceof Error ? err.message : err);
 		return false;
 	}
 
@@ -272,19 +333,54 @@ async function refreshTides(): Promise<boolean> {
 	return true;
 }
 
-console.log('Refreshing sidebar conditions...');
-const weatherOk = await refreshWeather();
-const tidesOk = await refreshTides();
+type SourceStatus = 'refreshed' | 'fresh' | 'failed';
 
-if (!weatherOk && !tidesOk) {
-	console.error('Both refreshes failed. Exiting non-zero so CI surfaces the failure.');
-	process.exit(1);
+async function runSource(
+	name: string,
+	file: string,
+	refresh: () => Promise<boolean>,
+): Promise<SourceStatus> {
+	const age = snapshotAgeMs(file);
+	if (!FORCE_REFRESH && age < REFRESH_AFTER_MS) {
+		console.log(`  ${name}: snapshot is ${formatAge(age)} old, still fresh; skipping`);
+		return 'fresh';
+	}
+	return (await refresh()) ? 'refreshed' : 'failed';
 }
-if (!weatherOk || !tidesOk) {
+
+// A failed refresh only fails the run once the snapshot we kept has
+// outlived its serving TTL (the same threshold that makes the widgets
+// show "last good reading"). Anything younger exits 0: the data on
+// disk is still fine and the next 30-minute tick retries.
+function failureIsAlarming(name: string, file: string, ttlMs: number): boolean {
+	const age = snapshotAgeMs(file);
+	if (age > ttlMs) {
+		console.error(
+			`  ${name}: refresh failing and the kept snapshot is ${formatAge(age)} old, ` +
+				`past its ${formatAge(ttlMs)} serving TTL. Exiting non-zero so CI surfaces the outage.`,
+		);
+		return true;
+	}
 	console.error(
-		'Partial refresh: one upstream failed. Exiting non-zero so CI surfaces the failure.',
+		`  ${name}: keeping the ${formatAge(age)}-old snapshot (within its ` +
+			`${formatAge(ttlMs)} serving TTL); the next scheduled tick retries.`,
 	);
-	process.exit(1);
+	return false;
 }
 
+console.log('Refreshing sidebar conditions...');
+const [weatherStatus, tidesStatus] = await Promise.all([
+	runSource('weather', WEATHER_OUT, refreshWeather),
+	runSource('tides', TIDES_OUT, refreshTides),
+]);
+
+let alarm = false;
+if (weatherStatus === 'failed') {
+	alarm = failureIsAlarming('weather', WEATHER_OUT, SITE.conditions.weatherStaleTtlMs);
+}
+if (tidesStatus === 'failed') {
+	alarm = failureIsAlarming('tides', TIDES_OUT, SITE.conditions.tidesStaleTtlMs) || alarm;
+}
+
+if (alarm) process.exit(1);
 console.log('Done.');

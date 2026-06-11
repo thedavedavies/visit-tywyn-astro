@@ -39,6 +39,17 @@ export const SITE = {
 		// Admiralty EasyTide station ID for Aberdovey (closest reliable station to Tywyn).
 		tideStationId: '0486',
 	},
+	// Sidebar conditions snapshots: how old committed data may get before
+	// the widgets flag it as "last good reading" (src/lib/conditions.ts).
+	// The scheduled refresh job (tools/refresh-conditions.ts) reuses these
+	// as its alarm thresholds, so its CI run only goes red once a snapshot
+	// has outlived its serving TTL. Defined here rather than in
+	// conditions.ts because that module imports `astro:content`, which
+	// only resolves inside Astro builds, not under the tsx-run tool.
+	conditions: {
+		weatherStaleTtlMs: 6 * 60 * 60 * 1000,
+		tidesStaleTtlMs: 12 * 60 * 60 * 1000,
+	},
 } as const;
 
 export type SiteConfig = typeof SITE;

@@ -10,7 +10,8 @@
  *   - or by a scheduled job that commits the JSON back so the next
  *     deploy carries fresh data.
  *
- * If a snapshot is older than the TTL we still return it but flag
+ * If a snapshot is older than the TTL (SITE.conditions in site.ts,
+ * shared with the refresh tool) we still return it but flag
  * `stale: true` so the widget can show a subtle indicator. If the
  * snapshot is malformed (manual edit, corrupt write, schema drift on
  * the upstream API) we return null so the widget renders its
@@ -18,6 +19,7 @@
  */
 
 import { z } from 'astro:content';
+import { SITE } from './site';
 import weatherJson from '../data/weather.json' with { type: 'json' };
 import tidesJson from '../data/tides.json' with { type: 'json' };
 
@@ -73,8 +75,6 @@ export interface TidesSnapshot {
 	stale?: boolean;
 }
 
-const HOUR = 60 * 60 * 1000;
-
 function isStale(fetchedAt: string, ttlMs: number): boolean {
 	const ts = Date.parse(fetchedAt);
 	if (Number.isNaN(ts)) return true;
@@ -86,7 +86,7 @@ export function getWeatherSnapshot(): WeatherSnapshot | null {
 	if (!parsed.success) return null;
 	return {
 		...parsed.data,
-		stale: isStale(parsed.data.fetchedAt, 6 * HOUR),
+		stale: isStale(parsed.data.fetchedAt, SITE.conditions.weatherStaleTtlMs),
 	};
 }
 
@@ -107,6 +107,6 @@ export function getTidesSnapshot(now: Date = new Date()): TidesSnapshot | null {
 	return {
 		...parsed.data,
 		upcoming,
-		stale: isStale(parsed.data.fetchedAt, 12 * HOUR),
+		stale: isStale(parsed.data.fetchedAt, SITE.conditions.tidesStaleTtlMs),
 	};
 }

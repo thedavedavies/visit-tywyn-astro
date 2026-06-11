@@ -1,20 +1,33 @@
 name: Refresh weather + tides snapshots
 
 # Refreshes src/data/{weather,tides}.json from Open-Meteo and Admiralty
-# EasyTide, then commits the result so the next deploy carries the
+# EasyTide, then commits whatever changed so the next deploy carries the
 # updated snapshot. The static site is rebuilt by whatever pipeline
-# watches this repo (Cloudflare Pages, Netlify, etc.) — pushing the
+# watches this repo (Cloudflare Pages, Netlify, etc.): pushing the
 # commit is what triggers the rebuild.
 #
-# Cadence: every 3 hours. Weather changes hourly upstream; the widget's
-# stale TTL is 6 hours, so 3h keeps us comfortably fresh without
-# overspending build minutes. Tides are astronomical predictions and
-# barely change, but refreshing them in the same job keeps the
-# upcoming-events list from emptying out.
+# Cadence: the cron ticks every 30 minutes, but the script skips any
+# source whose snapshot is younger than ~2h45m, so data is actually
+# fetched (and a rebuild triggered) roughly every 3 hours. Same
+# effective refresh cadence and build spend as the old 3-hourly cron;
+# the frequent tick exists purely as the retry mechanism. When an
+# upstream fails, its snapshot stays old, so the next tick retries it
+# ~30 minutes later instead of waiting out a full 3-hour gap.
+#
+# Failure semantics: a failed fetch keeps the previous snapshot, and
+# the other source still refreshes and commits independently. The job
+# only goes red once a failing source's snapshot outlives its serving
+# TTL (6h weather / 12h tides, shared via SITE.conditions in
+# src/lib/site.ts). Red means visitors are seeing data we consider too
+# old, not that one request blipped.
+#
+# Tick minutes are 7,37 rather than 0,30: GitHub's cron scheduler is
+# most congested at the top of the hour, where ticks are delayed by up
+# to an hour or silently dropped (both observed on this workflow).
 
 on:
   schedule:
-    - cron: '0 */3 * * *'
+    - cron: '7,37 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -39,11 +52,18 @@ jobs:
       - run: npm ci
 
       - run: npm run refresh:conditions
+        env:
+          # Manual runs always refetch, skipping the freshness check.
+          FORCE_REFRESH: ${{ github.event_name == 'workflow_dispatch' && '1' || '' }}
 
+      # `!cancelled()` so this still runs when the refresh step exits
+      # non-zero (snapshot past its TTL): the other source may have
+      # refreshed fine and its data should still ship.
       - name: Commit + push if data changed
+        if: ${{ !cancelled() }}
         run: |
           if git diff --quiet src/data/weather.json src/data/tides.json; then
-            echo "No changes — upstream APIs returned identical data."
+            echo "No changes - upstream APIs returned identical data."
             exit 0
           fi
           git config user.name 'github-actions[bot]'
