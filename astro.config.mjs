@@ -1,5 +1,5 @@
 // @ts-check
-import { readdirSync, readFileSync } from 'node:fs';
+import { appendFileSync, readdirSync, readFileSync } from 'node:fs';
 import { rename } from 'node:fs/promises';
 import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
@@ -99,6 +99,49 @@ const sitemapUnderscoreAlias = {
 	},
 };
 
+/**
+ * Append a `Link: rel=preload` rule for the body font to the built
+ * `_headers` file. Cloudflare converts Link response headers into
+ * 103 Early Hints, so browsers start fetching the font while the
+ * HTML response is still in flight - a small first-paint win on
+ * cold visits. The woff2 filename is content-hashed, so the URL
+ * cannot live in `public/_headers` statically; this hook reads it
+ * out of the built home page (the same `<link rel="preload">` the
+ * Fonts API injects) after every build.
+ *
+ * Scoped to `/` and `/*\/` (every page URL ends in a slash via
+ * `trailingSlash: 'always'`) so asset responses don't carry a
+ * pointless font hint. If Pages ever rejects the `/*\/` pattern it
+ * fails soft: the rule is ignored and we're simply back to no
+ * early hint.
+ */
+/** @type {import('astro').AstroIntegration} */
+const fontEarlyHints = {
+	name: 'font-early-hints',
+	hooks: {
+		'astro:build:done': async ({ dir, logger }) => {
+			let html;
+			try {
+				html = readFileSync(new URL('index.html', dir), 'utf8');
+			} catch {
+				logger.warn('font-early-hints: dist/index.html not found, skipping');
+				return;
+			}
+			const preload = html.match(
+				/<link rel="preload" href="(\/_astro\/fonts\/[^"]+\.woff2)"[^>]*as="font"/,
+			);
+			if (!preload) {
+				logger.warn('font-early-hints: no font preload link found in home page, skipping');
+				return;
+			}
+			const link = `Link: <${preload[1]}>; rel=preload; as=font; type=font/woff2; crossorigin`;
+			const rules = `\n# Early Hints: preload the body font on page responses. Appended\n# at build time by the font-early-hints integration (hashed URL).\n/\n  ${link}\n/*/\n  ${link}\n`;
+			appendFileSync(new URL('_headers', dir), rules);
+			logger.info(`font-early-hints: appended Link preload for ${preload[1]}`);
+		},
+	},
+};
+
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://visit-tywyn.co.uk',
@@ -164,6 +207,7 @@ export default defineConfig({
 			},
 		}),
 		sitemapUnderscoreAlias,
+		fontEarlyHints,
 	],
 	image: {
 		// Global image rendering defaults. `constrained` layout gives

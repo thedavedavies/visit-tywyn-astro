@@ -1,46 +1,63 @@
-# HTTP response headers for Cloudflare Pages / Netlify.
+# HTTP response headers for Cloudflare Pages.
 #
-# Sensible defaults for a static marketing site:
-#   - Long-lived caching for fingerprinted Astro assets and the
-#     Sharp-processed images under /_astro/, since their filenames
-#     include a content hash and never change.
-#   - Short revalidation on HTML so editorial updates appear within
-#     minutes of a deploy without burning bandwidth on every visit.
-#   - Conservative security headers (no JS framework, no third-party
-#     iframe sandbox escapes possible).
+# IMPORTANT - matching semantics: Pages applies EVERY rule whose
+# pattern matches, top to bottom, and JOINS duplicate headers into
+# one comma-separated value. It is NOT first-match-wins. An earlier
+# version of this file assumed first-match, which made /_astro/
+# assets ship
+#   Cache-Control: public, max-age=31536000, immutable, public,
+#                  max-age=300, s-maxage=600
+# (both rules joined). Duplicate directives are invalid per RFC 9111
+# and Cloudflare's edge honoured the short ones - fingerprinted
+# "immutable" assets were being revalidated every few minutes
+# (`cf-cache-status: REVALIDATED` instead of long-lived HITs).
 #
-# These rules are first-match-wins on Cloudflare Pages and Netlify.
-# Put the most specific paths first.
+# So: the catch-all comes FIRST, and every more specific rule
+# detaches the inherited Cache-Control with `! Cache-Control`
+# before setting its own. After deploying changes here, verify with
+#   curl -sI https://visit-tywyn.co.uk/_astro/<any-asset>
+# and expect exactly ONE Cache-Control value.
 
-
-/_astro/*
-  Cache-Control: public, max-age=31536000, immutable
-
-/img/*
-  Cache-Control: public, max-age=2592000
-
-/favicon.ico
-  Cache-Control: public, max-age=86400
-
-/favicon.svg
-  Cache-Control: public, max-age=86400
-
-/sitemap_index.xml
-  Cache-Control: public, max-age=3600
-  Content-Type: application/xml; charset=utf-8
-
-/sitemap-0.xml
-  Cache-Control: public, max-age=3600
-  Content-Type: application/xml; charset=utf-8
-
-/robots.txt
-  Cache-Control: public, max-age=86400
-
-# Default headers applied to every response. The HTML cache is short
-# so editorial updates appear within minutes of a deploy.
+# Default headers for every response. The HTML cache is short so
+# editorial updates appear within minutes of a deploy.
+#
+# Note: the Cloudflare zone has its own HSTS setting (currently
+# max-age=15552000 without includeSubDomains) which REPLACES the
+# value below at the edge. Align or disable the dashboard setting
+# for this header to take effect; `preload` is only valid alongside
+# `includeSubDomains`.
 /*
   Cache-Control: public, max-age=300, s-maxage=600
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: interest-cohort=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+# Fingerprinted Astro build assets (hashed filenames, including the
+# Sharp-processed images and self-hosted fonts) never change content
+# under the same URL: cache forever.
+/_astro/*
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable
+
+/favicon.ico
+  ! Cache-Control
+  Cache-Control: public, max-age=86400
+
+/favicon.svg
+  ! Cache-Control
+  Cache-Control: public, max-age=86400
+
+/sitemap_index.xml
+  ! Cache-Control
+  Cache-Control: public, max-age=3600
+  Content-Type: application/xml; charset=utf-8
+
+/sitemap-0.xml
+  ! Cache-Control
+  Cache-Control: public, max-age=3600
+  Content-Type: application/xml; charset=utf-8
+
+/robots.txt
+  ! Cache-Control
+  Cache-Control: public, max-age=86400
