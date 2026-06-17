@@ -1,11 +1,11 @@
 {
-  "fetchedAt": "2026-06-17T05:53:13.228Z",
+  "fetchedAt": "2026-06-17T10:12:59.774Z",
   "location": "Tywyn beach",
-  "summary": "Light drizzle",
-  "tempC": 15.1,
-  "feelsLikeC": 13.4,
-  "windMph": 13.4,
-  "windDir": "SW",
-  "rainChance": null,
-  "observedLabel": "7:45 am"
+  "summary": "Overcast",
+  "tempC": 15,
+  "feelsLikeC": 13.9,
+  "windMph": 11,
+  "windDir": "WSW",
+  "rainChance": 73,
+  "observedLabel": "12:00 pm"
 }
