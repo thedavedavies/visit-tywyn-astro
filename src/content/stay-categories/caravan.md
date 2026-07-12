@@ -15,6 +15,8 @@ booking_search_links:
     url: 'https://www.neptunecaravanpark.uk/'
   - label: 'Ynysymaengwyn Caravan & Camping'
     url: 'https://www.ynysy.co.uk/'
+  - label: 'Llwynderw Caravan Park'
+    url: 'https://llwynderwcaravanpark.co.uk/'
 seo:
   # WP-indexed title from Yoast; preserved verbatim to hold the
   # ranking equity Google has built up against this URL. The visible
