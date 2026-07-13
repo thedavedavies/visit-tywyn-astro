@@ -18,9 +18,18 @@ interface Props {
 	address?: string;
 	image?: { src: ImageMetadata; alt?: string };
 	headingLevel?: 2 | 3;
+	/**
+	 * Eager-load the image with fetchpriority=high. Pass for the first
+	 * card or two on an archive: the hero banner renders as a thin
+	 * strip on phones, so the first card image is the mobile LCP
+	 * element (Lighthouse 2026-07-13 on live /eating/: LCP 4.4s with
+	 * 643ms of lazy-discovery Load Delay on exactly this image).
+	 * Cards further down should stay lazy.
+	 */
+	eager?: boolean;
 }
 
-const { href, title, summary, address, image, headingLevel = 3 } = Astro.props;
+const { href, title, summary, address, image, headingLevel = 3, eager = false } = Astro.props;
 const HTag = `h${headingLevel}` as 'h2' | 'h3';
 ---
 
@@ -31,7 +40,8 @@ const HTag = `h${headingLevel}` as 'h2' | 'h3';
 				<Picture
 					src={image.src}
 					alt={image.alt ?? title}
-					loading="lazy"
+					loading={eager ? 'eager' : 'lazy'}
+					fetchpriority={eager ? 'high' : undefined}
 					formats={['avif', 'webp']}
 					widths={[320, 480, 640]}
 					sizes="(min-width: 768px) 320px, 100vw"

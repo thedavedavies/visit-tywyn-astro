@@ -55,6 +55,7 @@ const jsonLd = itemList(
 						address={activity.data.address}
 						image={activity.data.hero_image}
 						headingLevel={2}
+						eager={idx < 2}
 					/>
 				);
 				const showAd = (idx + 1) % 3 === 0 && idx < activities.length - 1;
