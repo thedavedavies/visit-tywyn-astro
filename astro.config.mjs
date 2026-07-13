@@ -52,6 +52,44 @@ const thingsToDoDates = readContentDates('./src/content/things-to-do');
 const stayCategoryDates = readContentDates('./src/content/stay-categories');
 
 /**
+ * Slugs of entries marked `closed: true` in a content directory's
+ * frontmatter (same regex-scan approach as `readContentDates`).
+ * Closed-venue pages stay live (additive-only URL policy) and every
+ * listing surface already filters them out, which leaves them with
+ * zero internal links; advertising such orphans in the sitemap at
+ * priority 0.8 invites soft-404 / "crawled, not indexed" flags, so
+ * the sitemap filter drops them instead.
+ *
+ * @param {string} dir
+ * @returns {Set<string>}
+ */
+function readClosedSlugs(dir) {
+	const closed = new Set();
+	let entries;
+	try {
+		entries = readdirSync(dir, { withFileTypes: true });
+	} catch {
+		return closed;
+	}
+	for (const ent of entries) {
+		if (!ent.isFile() || !ent.name.endsWith('.md')) continue;
+		let raw;
+		try {
+			raw = readFileSync(`${dir}/${ent.name}`, 'utf8');
+		} catch {
+			continue;
+		}
+		const fmEnd = raw.indexOf('\n---', 4);
+		const front = fmEnd > 0 ? raw.slice(0, fmEnd) : raw;
+		if (/^closed:\s*true\s*$/m.test(front)) closed.add(ent.name.slice(0, -3));
+	}
+	return closed;
+}
+
+const closedEating = readClosedSlugs('./src/content/eating');
+const closedThingsToDo = readClosedSlugs('./src/content/things-to-do');
+
+/**
  * Map a sitemap URL back to the most recent edit date in our
  * content collections. Returns undefined for any URL that doesn't
  * resolve to a known content file (e.g. the home page, which is
@@ -170,7 +208,14 @@ export default defineConfig({
 		sitemap({
 			// Exact match — `.includes('/404')` would catch any URL
 			// containing that substring (e.g. a future `/404-redirect/`).
-			filter: (page) => page !== 'https://visit-tywyn.co.uk/404/',
+			// Closed venues are also dropped (see `readClosedSlugs`).
+			filter: (page) => {
+				if (page === 'https://visit-tywyn.co.uk/404/') return false;
+				const m = page.match(/\/(eating|things-to-do)\/([^/]+)\/$/);
+				if (!m) return true;
+				const closed = m[1] === 'eating' ? closedEating : closedThingsToDo;
+				return !closed.has(m[2]);
+			},
 			// Set per-route priority + changefreq based on URL pattern,
 			// so the home page and high-traffic listings outrank deep
 			// editorial content in crawl prioritisation. `lastmod` is
