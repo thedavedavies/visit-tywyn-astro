@@ -12,7 +12,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import Icon from '../../components/Icon/Icon.astro';
 import { getEvents } from '../../lib/events';
-import { eventSchema, breadcrumbList } from '../../lib/jsonld';
+import { eventSchema } from '../../lib/jsonld';
 
 export async function getStaticPaths() {
 	const events = await getCollection('events');
@@ -85,7 +85,9 @@ const jsonLd = [
 					description: event.summary || undefined,
 				}),
 			]),
-	breadcrumbList(breadcrumbs, Astro.url),
+	// No breadcrumbList here: BaseLayout already auto-emits one from
+	// the `breadcrumbs` prop below; passing it again shipped the only
+	// duplicated BreadcrumbList on the site.
 ];
 ---
 
