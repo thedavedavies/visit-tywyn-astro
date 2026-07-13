@@ -25,14 +25,19 @@ export type JsonLd = Record<string, unknown>;
  * content model carries a single combined address line, so we set
  * streetAddress and a fixed addressCountry rather than guessing
  * locality/postcode/etc. boundaries.
+ *
+ * No addressLocality/addressRegion: this helper serves venues and
+ * events in Aberdyfi, Bryncrug, Corris, etc., so a hardcoded "Tywyn,
+ * Gwynedd" contradicted the streetAddress in the same node for
+ * anything outside the town. The combined address line already
+ * carries the real locality; add a locality parameter (fed from the
+ * area taxonomy) if typed locality ever becomes worth it.
  */
 function postalAddress(address: string | undefined): JsonLd | undefined {
 	if (!address) return undefined;
 	return {
 		'@type': 'PostalAddress',
 		streetAddress: address,
-		addressLocality: 'Tywyn',
-		addressRegion: 'Gwynedd',
 		addressCountry: 'GB',
 	};
 }
@@ -234,7 +239,13 @@ interface AttractionInput {
 	closed?: boolean;
 }
 
-export function touristAttraction(input: AttractionInput): JsonLd {
+export function touristAttraction(input: AttractionInput): JsonLd | null {
+	// Closed venues get no attraction node at all. The previous
+	// `isPermanentlyClosed: true` marker is not a schema.org property
+	// (validators flag it, Google ignores it), so the node read as an
+	// open attraction. The visible page already carries the closed
+	// notice; BaseLayout filters null blocks.
+	if (input.closed) return null;
 	// `thingsToDoUrl` returns a root-relative path; Schema.org @id and
 	// url require an absolute IRI for canonical entity identity.
 	const url = absoluteUrl(thingsToDoUrl(input.id))!;
@@ -258,7 +269,6 @@ export function touristAttraction(input: AttractionInput): JsonLd {
 					},
 				}
 			: {}),
-		...(input.closed ? { isPermanentlyClosed: true } : {}),
 	};
 	const sameAs = [input.website, ...(input.sameAs ?? [])].filter((u): u is string => !!u);
 	if (sameAs.length > 0) node.sameAs = sameAs;
@@ -283,25 +293,24 @@ interface EventInput {
 	image?: string | null;
 	description?: string;
 	/**
-	 * Set `false` (or pass `offers`) for paid events so Google's
-	 * Event rich result accepts the markup. Defaults to `true`
-	 * because the bulk of Tywyn community events (Race the Train
-	 * spectator-side, town festivals, etc.) are free to attend.
+	 * Only emitted when explicitly set. Google's Event rich result
+	 * requires none of offers/isAccessibleForFree (only name,
+	 * startDate, location), and the calendar data doesn't record
+	 * pricing, so defaulting was asserting "free" for ticketed
+	 * festivals. Set `true` on genuinely free events to surface
+	 * Google's "Free" attribute.
 	 */
 	isAccessibleForFree?: boolean;
 	offers?: EventOffer;
+	/** The actual host. Only emitted when known; asserting the site
+	 * publisher as organizer of third-party events is wrong markup. */
+	organizer?: { name: string; url?: string };
 }
 
 /**
  * Event node. Exported as `eventSchema` (not `event`) to avoid
  * shadowing the global `Event` constructor and the `event`
  * variable name commonly used in handlers.
- *
- * Google's Event rich result requires EITHER `offers` OR
- * `isAccessibleForFree: true`; without one the markup is silently
- * rejected. We default `isAccessibleForFree: true` and let callers
- * override by passing `offers` (which takes precedence and implies
- * a paid event) or by setting `isAccessibleForFree: false`.
  *
  * `location` resolves to a `Place` node. Pass `locationAddress` to
  * include a typed `PostalAddress` (improves rich-result quality);
@@ -310,7 +319,6 @@ interface EventInput {
  * sit outside the town (Aberdyfi, Dolgellau, etc.).
  */
 export function eventSchema(input: EventInput): JsonLd {
-	const isFree = input.isAccessibleForFree ?? !input.offers;
 	const place: JsonLd | undefined = input.location
 		? {
 				'@type': 'Place',
@@ -335,17 +343,23 @@ export function eventSchema(input: EventInput): JsonLd {
 		endDate: input.endIso,
 		eventStatus: 'https://schema.org/EventScheduled',
 		eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-		isAccessibleForFree: isFree,
+		...(input.isAccessibleForFree !== undefined
+			? { isAccessibleForFree: input.isAccessibleForFree }
+			: {}),
 		...(place ? { location: place } : {}),
 		...(offers ? { offers } : {}),
 		...(input.url ? { url: absoluteUrl(input.url) } : {}),
 		...(input.image ? { image: absoluteUrl(input.image) } : {}),
 		...(input.description ? { description: input.description } : {}),
-		organizer: {
-			'@type': 'Organization',
-			name: SITE.name,
-			url: SITE.url,
-		},
+		...(input.organizer
+			? {
+					organizer: {
+						'@type': 'Organization',
+						name: input.organizer.name,
+						...(input.organizer.url ? { url: input.organizer.url } : {}),
+					},
+				}
+			: {}),
 	};
 }
 

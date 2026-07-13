@@ -65,17 +65,26 @@ const links = [
 	entry.data.social?.instagram && { href: entry.data.social.instagram, label: 'Instagram' },
 ].filter(Boolean) as { href: string; label: string }[];
 
+// No Event node once the event has ended: Google's guidelines say
+// not to mark up past events (Search Console flags them as stale),
+// and the ~daily data-refresh rebuilds would otherwise re-emit a
+// "scheduled" event with past dates forever. The page itself stays
+// live (additive-only URL policy); only the markup is dropped.
 const jsonLd = [
-	eventSchema({
-		name: event.title,
-		startIso: event.startIso,
-		endIso: event.endIso,
-		location: event.location || undefined,
-		locationAddress: event.location || undefined,
-		url: path,
-		image: heroUrl ?? null,
-		description: event.summary || undefined,
-	}),
+	...(event.isPast
+		? []
+		: [
+				eventSchema({
+					name: event.title,
+					startIso: event.startIso,
+					endIso: event.endIso,
+					location: event.location || undefined,
+					locationAddress: event.location || undefined,
+					url: path,
+					image: heroUrl ?? null,
+					description: event.summary || undefined,
+				}),
+			]),
 	breadcrumbList(breadcrumbs, Astro.url),
 ];
 ---
