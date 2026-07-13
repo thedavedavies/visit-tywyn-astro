@@ -198,6 +198,13 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema]
 			 * appended and the page_view fire. Saves the ~80 KB library
 			 * fetch on every non-prod render and keeps preview traffic
 			 * out of the GA4 property.
+			 *
+			 * Prerender gate: with `clientPrerender` + hover prefetch
+			 * enabled, every hovered link fully prerenders its target,
+			 * running this script for pages never visited. Waiting for
+			 * `prerenderingchange` (fired on activation) keeps the
+			 * library fetch off speculative loads; normal navigations
+			 * are unaffected because `document.prerendering` is false.
 			 */
 			SITE.gaMeasurementId && import.meta.env.PROD && (
 				<script
@@ -205,16 +212,23 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema]
 					define:vars={{ gaId: SITE.gaMeasurementId, productionHost: new URL(SITE.url).host }}
 				>
 					if (location.host === productionHost) {
-						const s = document.createElement('script');
-						s.async = true;
-						s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
-						document.head.appendChild(s);
-						window.dataLayer = window.dataLayer || [];
-						function gtag() {
-							dataLayer.push(arguments);
+						const fire = () => {
+							const s = document.createElement('script');
+							s.async = true;
+							s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+							document.head.appendChild(s);
+							window.dataLayer = window.dataLayer || [];
+							function gtag() {
+								dataLayer.push(arguments);
+							}
+							gtag('js', new Date());
+							gtag('config', gaId);
+						};
+						if (document.prerendering) {
+							document.addEventListener('prerenderingchange', fire, { once: true });
+						} else {
+							fire();
 						}
-						gtag('js', new Date());
-						gtag('config', gaId);
 					}
 				</script>
 			)
@@ -243,23 +257,56 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema]
 					}}
 				>
 					if (location.host === productionHost) {
-						const s = document.createElement('script');
-						s.async = true;
-						s.src = 'https://analytics.ahrefs.com/analytics.js';
-						s.setAttribute('data-key', ahrefsKey);
-						document.head.appendChild(s);
+						const fire = () => {
+							const s = document.createElement('script');
+							s.async = true;
+							s.src = 'https://analytics.ahrefs.com/analytics.js';
+							s.setAttribute('data-key', ahrefsKey);
+							document.head.appendChild(s);
+						};
+						// Prerender gate (see GA4 above). Ahrefs has no
+						// documented prerender handling, so without this it
+						// records a pageview for every hovered link.
+						if (document.prerendering) {
+							document.addEventListener('prerenderingchange', fire, { once: true });
+						} else {
+							fire();
+						}
 					}
 				</script>
 			)
 		}
 
 		{
+			/*
+			 * AdSense library, injected instead of a static `defer` tag
+			 * so it can carry the same prerender gate as GA4/Ahrefs
+			 * above: a speculative prerender must not fetch the ~30 KB
+			 * loader or run ad auctions for a page that may never be
+			 * shown. AdSlot's per-slot `push({})` calls just queue on
+			 * the `window.adsbygoogle` array, so they are safe to run
+			 * before (or without) the library loading; it drains the
+			 * queue on arrival.
+			 */
 			SITE.adsenseClient && hasAds && (
-				<script
-					defer
-					src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${SITE.adsenseClient}`}
-					crossorigin="anonymous"
-				/>
+				<script is:inline define:vars={{ adsClient: SITE.adsenseClient }}>
+					(() => {
+						const load = () => {
+							const s = document.createElement('script');
+							s.async = true;
+							s.crossOrigin = 'anonymous';
+							s.src =
+								'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' +
+								adsClient;
+							document.head.appendChild(s);
+						};
+						if (document.prerendering) {
+							document.addEventListener('prerenderingchange', load, { once: true });
+						} else {
+							load();
+						}
+					})();
+				</script>
 			)
 		}
 
