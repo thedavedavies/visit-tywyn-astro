@@ -91,6 +91,16 @@
 /cinema/  /things-to-do/magic-lantern-cinema/  301
 /cinema/index.html  /things-to-do/magic-lantern-cinema/  301
 /easter-street-market/  /  301
+# Bare no-slash variant: Pages matches sources exactly, and only the
+# splat rule above covers /accommodation/<anything>. Without this the
+# human-typed form 404s (verified live 2026-07-13).
+/accommodation  /where-to-stay/  301
+# No-slash variants of high-value legacy sources. Pages matches
+# exactly, so /cinema and /cinema/ are different sources; the no-slash
+# forms were returning 404 (verified live 2026-07-13).
+/cinema  /things-to-do/magic-lantern-cinema/  301
+/webcams  /webcam/  301
+/tywyn-beach  /things-to-do/tywyn-beach/  301
 /eating/dine-india/index.html  /eating/dine-india/  301
 /eating/index.html  /eating/  301
 /eating/peniarth-arms-at-bryncrug/index.html  /eating/peniarth-arms-at-bryncrug/  301
@@ -99,12 +109,23 @@
 /eating/salt-marsh-kitchen/index.html  /eating/salt-marsh-kitchen/  301
 /event/race-the-train/  /events/  301
 /event/race-the-train/index.html  /events/  301
+/events/getting-around/  /getting-around/  301
 /events/getting-around/index.html  /getting-around/  301
+# Bare directory forms of the legacy URLs below. Google indexes the
+# directory form (it normalizes /index.html away), so these are the
+# variants crawlers and backlinks actually hold; they were 404ing
+# while only the /index.html forms redirected (verified live
+# 2026-07-13).
+/explore/  /getting-around/  301
 /explore/index.html  /getting-around/  301
 # WP RSS feeds: currently 200 on live, would 404 on cutover.
 /feed/  /  301
 /comments/feed/  /  301
 /getting-around/index.html  /getting-around/  301
+# The parent path has no page of its own (categories are children of
+# /where-to-stay/); crawlers and users probe it and were getting 404
+# (verified live 2026-07-13).
+/holiday-accommodation/  /where-to-stay/  301
 /holiday-accommodation/bed-and-breakfast/2/  /holiday-accommodation/bed-and-breakfast/  301
 /holiday-accommodation/bed-and-breakfast/3/  /holiday-accommodation/bed-and-breakfast/  301
 /holiday-accommodation/bed-and-breakfast/4/  /holiday-accommodation/bed-and-breakfast/  301
@@ -130,7 +151,9 @@
 /tywyn-beach/  /things-to-do/tywyn-beach/  301
 /tywyn-beach/index.html  /things-to-do/tywyn-beach/  301
 /wales-coastal-path/index.html  /wales-coastal-path/  301
+/webcam/advertise/  /webcam/  301
 /webcam/advertise/index.html  /webcam/  301
+/webcam/getting-around/  /getting-around/  301
 /webcam/getting-around/index.html  /getting-around/  301
 /webcam/index.html  /webcam/  301
 /webcams/  /webcam/  301
