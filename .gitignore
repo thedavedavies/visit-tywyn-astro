@@ -34,3 +34,4 @@ pnpm-debug.log*
 # kept; the raw traces are not.
 docs/perf/lighthouse/
 docs/perf/lighthouse-stage2/
+.claude/
