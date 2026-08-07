@@ -234,9 +234,11 @@ const heroEarlyHints = {
 					if (links.length === 2) break;
 					const pictureStart = html.lastIndexOf('<picture', img.index);
 					if (pictureStart === -1) continue;
-					const avif = html
-						.slice(pictureStart, img.index)
-						.match(/<source srcset="([^"]+)" type="image\/avif"(?:[^>]*sizes="([^"]+)")?/);
+					const enclosing = html.slice(pictureStart, img.index);
+					if (enclosing.includes('</picture>')) continue;
+					const avif = enclosing.match(
+						/<source srcset="([^"]+)" type="image\/avif"(?:[^>]*sizes="([^"]+)")?/,
+					);
 					if (!avif) continue;
 					const srcset = avif[1];
 					const sizes = avif[2] ?? '100vw';
