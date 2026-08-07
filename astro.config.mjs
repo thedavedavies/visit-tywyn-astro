@@ -1,6 +1,8 @@
 // @ts-check
-import { appendFileSync, readdirSync, readFileSync } from 'node:fs';
+import { appendFileSync, readdirSync, readFileSync, statSync, unlinkSync } from 'node:fs';
 import { rename } from 'node:fs/promises';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
@@ -165,17 +167,71 @@ const fontEarlyHints = {
 				logger.warn('font-early-hints: dist/index.html not found, skipping');
 				return;
 			}
-			const preload = html.match(
-				/<link rel="preload" href="(\/_astro\/fonts\/[^"]+\.woff2)"[^>]*as="font"/,
-			);
-			if (!preload) {
+			const preloads = [
+				...html.matchAll(
+					/<link rel="preload" href="(\/_astro\/fonts\/[^"]+\.woff2)"[^>]*as="font"/g,
+				),
+			].map((m) => m[1]);
+			if (preloads.length === 0) {
 				logger.warn('font-early-hints: no font preload link found in home page, skipping');
 				return;
 			}
-			const link = `Link: <${preload[1]}>; rel=preload; as=font; type=font/woff2; crossorigin`;
-			const rules = `\n# Early Hints: preload the body font on page responses. Appended\n# at build time by the font-early-hints integration (hashed URL).\n/\n  ${link}\n/*/\n  ${link}\n`;
+			const links = preloads
+				.map((url) => `  Link: <${url}>; rel=preload; as=font; type=font/woff2; crossorigin`)
+				.join('\n');
+			const rules = `\n# Early Hints: preload the body fonts on page responses. Appended\n# at build time by the font-early-hints integration (hashed URLs).\n/\n${links}\n/*/\n${links}\n`;
 			appendFileSync(new URL('_headers', dir), rules);
-			logger.info(`font-early-hints: appended Link preload for ${preload[1]}`);
+			logger.info(`font-early-hints: appended Link preload for ${preloads.join(', ')}`);
+		},
+	},
+};
+
+/** @type {import('astro').AstroIntegration} */
+const pruneUnreferencedAssets = {
+	name: 'prune-unreferenced-assets',
+	hooks: {
+		'astro:build:done': async ({ dir, logger }) => {
+			const root = fileURLToPath(dir);
+			const astroDir = join(root, '_astro');
+			/** @type {string[]} */
+			const textFiles = [];
+			/** @type {string[]} */
+			const assetFiles = [];
+			/** @param {string} d */
+			const walk = (d) => {
+				for (const ent of readdirSync(d, { withFileTypes: true })) {
+					const p = join(d, ent.name);
+					if (ent.isDirectory()) {
+						walk(p);
+						continue;
+					}
+					if (
+						/\.(html|css|js|mjs|xml|txt|json)$/.test(ent.name) ||
+						/^_(headers|redirects)$/.test(ent.name)
+					) {
+						textFiles.push(p);
+					}
+					if (p.startsWith(astroDir)) assetFiles.push(p);
+				}
+			};
+			walk(root);
+			const referenced = new Set();
+			for (const p of textFiles) {
+				for (const m of readFileSync(p, 'utf8').matchAll(/\/_astro\/[^"'\s)>,]+/g)) {
+					referenced.add(join(root, m[0]));
+				}
+			}
+			let removed = 0;
+			let removedBytes = 0;
+			for (const p of assetFiles) {
+				if (referenced.has(p)) continue;
+				removedBytes += statSync(p).size;
+				unlinkSync(p);
+				removed++;
+			}
+			logger.info(
+				`prune-unreferenced-assets: removed ${removed} unreferenced files (${(removedBytes / 1e6).toFixed(1)} MB)`,
+			);
 		},
 	},
 };
@@ -253,6 +309,7 @@ export default defineConfig({
 		}),
 		sitemapUnderscoreAlias,
 		fontEarlyHints,
+		pruneUnreferencedAssets,
 	],
 	image: {
 		// Global image rendering defaults. `constrained` layout gives
@@ -295,9 +352,10 @@ export default defineConfig({
 	// `sans-serif` so the fallback face renders at the same height
 	// as Lato — neutralizes font-swap CLS.
 	//
-	// Only weight 400 is preloaded (body text). Weight 700 lazy-loads
-	// when first heading/badge using it paints — an extra ~25 KB on
-	// initial load is not worth the LCP cost.
+	// Both latin weights are preloaded (BaseLayout). 700 loads on every
+	// page anyway (bold h1/headings); preloading it reorders rather than
+	// adds bytes, and measurably fixes the late-bold-swap CLS (0.136 -> 0
+	// on detail pages, Lighthouse mobile 2026-08-07) with no LCP change.
 	fonts: [
 		{
 			name: 'Lato',

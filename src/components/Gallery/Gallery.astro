@@ -40,6 +40,7 @@ const fullImages = await Promise.all(
 	images.map((img) =>
 		getImage({
 			src: img.src,
+			width: 1600,
 			widths: [1024, 1600],
 			sizes: '(min-width: 1024px) 80vw, 100vw',
 			format: 'avif',
@@ -77,6 +78,7 @@ const fullImages = await Promise.all(
 									alt={altText}
 									loading="lazy"
 									formats={['avif', 'webp']}
+									width={480}
 									widths={[200, 320, 480]}
 									sizes="(min-width: 768px) 200px, 50vw"
 								/>

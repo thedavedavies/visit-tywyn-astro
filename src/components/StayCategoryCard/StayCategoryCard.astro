@@ -27,6 +27,7 @@ const { href, title, intro, heroImage } = Astro.props;
 						alt={heroImage.alt ?? title}
 						loading="lazy"
 						formats={['avif', 'webp']}
+						width={640}
 						widths={[320, 480, 640]}
 						sizes="(min-width: 768px) 280px, 100vw"
 					/>
