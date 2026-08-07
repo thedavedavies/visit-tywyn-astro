@@ -29,9 +29,9 @@ const { href, name, summary, image, sponsored = false } = Astro.props;
 						alt={image.alt ?? name}
 						loading="lazy"
 						formats={['avif', 'webp']}
-						width={640}
-						widths={[320, 480, 640]}
-						sizes="(min-width: 768px) 320px, 100vw"
+						width={760}
+						widths={[320, 480, 640, 760]}
+						sizes="(min-width: 768px) 330px, calc(100vw - 32px)"
 					/>
 				</div>
 			)

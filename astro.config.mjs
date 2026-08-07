@@ -1,9 +1,10 @@
 // @ts-check
 import { appendFileSync, readdirSync, readFileSync, statSync, unlinkSync } from 'node:fs';
 import { rename } from 'node:fs/promises';
-import { join } from 'node:path';
+import { dirname, join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig, fontProviders } from 'astro/config';
+import { satteri } from '@astrojs/markdown-satteri';
 import sitemap from '@astrojs/sitemap';
 
 /**
@@ -186,6 +187,79 @@ const fontEarlyHints = {
 	},
 };
 
+const CONTENT_COLUMN_SIZES =
+	'(min-width: 1240px) 708px, (min-width: 1024px) calc(100vw - 478px), calc(100vw - 40px)';
+const CONTENT_COLUMN_MAX_WIDTH = 984;
+
+/** @type {import('satteri').HastPluginDefinition} */
+const contentImageSizes = {
+	name: 'content-image-sizes',
+	element: {
+		filter: ['img'],
+		visit(node, ctx) {
+			const props = node.properties ?? {};
+			const src = typeof props.src === 'string' ? decodeURI(props.src) : undefined;
+			if (!src || !ctx.data.astro?.localImagePaths?.has(src)) return;
+			if (props.width || props.sizes) return;
+			ctx.setProperty(node, 'width', CONTENT_COLUMN_MAX_WIDTH);
+			ctx.setProperty(node, 'sizes', CONTENT_COLUMN_SIZES);
+		},
+	},
+};
+
+/** @type {import('astro').AstroIntegration} */
+const heroEarlyHints = {
+	name: 'hero-early-hints',
+	hooks: {
+		'astro:build:done': async ({ dir, logger }) => {
+			const root = fileURLToPath(dir);
+			/** @type {string[]} */
+			const pages = [];
+			/** @param {string} d */
+			const walk = (d) => {
+				for (const ent of readdirSync(d, { withFileTypes: true })) {
+					const p = join(d, ent.name);
+					if (ent.isDirectory()) walk(p);
+					else if (ent.name === 'index.html') pages.push(p);
+				}
+			};
+			walk(root);
+			/** @type {string[]} */
+			const rules = [];
+			for (const p of pages) {
+				const html = readFileSync(p, 'utf8');
+				/** @type {string[]} */
+				const links = [];
+				for (const img of html.matchAll(/<img[^>]*fetchpriority="high"/g)) {
+					if (links.length === 2) break;
+					const pictureStart = html.lastIndexOf('<picture', img.index);
+					if (pictureStart === -1) continue;
+					const avif = html
+						.slice(pictureStart, img.index)
+						.match(/<source srcset="([^"]+)" type="image\/avif"(?:[^>]*sizes="([^"]+)")?/);
+					if (!avif) continue;
+					const srcset = avif[1];
+					const sizes = avif[2] ?? '100vw';
+					const href = srcset.split(',')[0].trim().split(' ')[0];
+					links.push(
+						`  Link: <${href}>; rel=preload; as=image; imagesrcset="${srcset}"; imagesizes="${sizes}"; fetchpriority=high`,
+					);
+				}
+				if (links.length === 0) continue;
+				const rel = relative(root, dirname(p)).split(sep).filter(Boolean).join('/');
+				const route = rel === '' ? '/' : `/${rel}/`;
+				rules.push(`${route}\n${links.join('\n')}`);
+			}
+			if (rules.length === 0) {
+				logger.warn('hero-early-hints: no hero images found, skipping');
+				return;
+			}
+			appendFileSync(new URL('_headers', dir), `\n${rules.join('\n')}\n`);
+			logger.info(`hero-early-hints: appended LCP image preloads for ${rules.length} pages`);
+		},
+	},
+};
+
 /** @type {import('astro').AstroIntegration} */
 const pruneUnreferencedAssets = {
 	name: 'prune-unreferenced-assets',
@@ -309,8 +383,12 @@ export default defineConfig({
 		}),
 		sitemapUnderscoreAlias,
 		fontEarlyHints,
+		heroEarlyHints,
 		pruneUnreferencedAssets,
 	],
+	markdown: {
+		processor: satteri({ hastPlugins: [contentImageSizes] }),
+	},
 	image: {
 		// Global image rendering defaults. `constrained` layout gives
 		// every `<Image>` / `<Picture>` (and markdown `![]()`) a
@@ -329,8 +407,12 @@ export default defineConfig({
 				// AVIF: aggressive compression at acceptable quality.
 				// `effort: 4` is the speed/size sweet-spot recommended
 				// by libavif maintainers; effort 9 is ~2x slower for
-				// ~2-3% extra compression.
-				avif: { quality: 60, effort: 4 },
+				// ~2-3% extra compression. Quality 55 measured ~17%
+				// smaller than 60 with no visible difference (2026-08-07
+				// side-by-side on high-detail gallery shots and flat sky
+				// gradients); q50 saves ~30% but was left on the table
+				// to keep a crispness margin.
+				avif: { quality: 55, effort: 4 },
 				webp: { quality: 80 },
 				jpeg: { quality: 82, mozjpeg: true },
 				png: { quality: 90, compressionLevel: 9 },

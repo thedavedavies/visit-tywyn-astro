@@ -78,9 +78,9 @@ const fullImages = await Promise.all(
 									alt={altText}
 									loading="lazy"
 									formats={['avif', 'webp']}
-									width={480}
-									widths={[200, 320, 480]}
-									sizes="(min-width: 768px) 200px, 50vw"
+									width={720}
+									widths={[200, 320, 480, 720]}
+									sizes="(min-width: 768px) 250px, (min-width: 420px) 50vw, calc(100vw - 32px)"
 								/>
 							</button>
 						</li>

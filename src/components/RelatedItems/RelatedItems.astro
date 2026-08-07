@@ -45,9 +45,9 @@ const { heading, items, headingId = 'related-items' } = Astro.props;
 										alt={item.image.alt ?? item.title}
 										loading="lazy"
 										formats={['avif', 'webp']}
-										width={480}
-										widths={[240, 360, 480]}
-										sizes="(min-width: 768px) 240px, 50vw"
+										width={720}
+										widths={[240, 360, 480, 720]}
+										sizes="(min-width: 1240px) 220px, (min-width: 1024px) calc((100vw - 510px) / 3), (min-width: 768px) calc((100vw - 72px) / 3), (min-width: 480px) calc(50vw - 26px), calc(100vw - 32px)"
 									/>
 								</div>
 							)}
