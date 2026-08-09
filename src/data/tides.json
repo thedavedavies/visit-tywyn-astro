@@ -1,13 +1,7 @@
 {
-  "fetchedAt": "2026-08-08T22:13:31.436Z",
+  "fetchedAt": "2026-08-09T01:41:13.396Z",
   "station": "Tywyn",
   "upcoming": [
-    {
-      "type": "low",
-      "timeIso": "2026-08-08T23:20:00.000Z",
-      "timeLabel": "Sun 12:20 am",
-      "heightM": 1.4122931432341332
-    },
     {
       "type": "high",
       "timeIso": "2026-08-09T04:46:00.000Z",
@@ -37,6 +31,12 @@
       "timeIso": "2026-08-10T05:58:00.000Z",
       "timeLabel": "Mon 6:58 am",
       "heightM": 4.116136978015917
+    },
+    {
+      "type": "low",
+      "timeIso": "2026-08-10T13:05:00.000Z",
+      "timeLabel": "Mon 2:05 pm",
+      "heightM": 1.1481667289295634
     }
   ]
 }
