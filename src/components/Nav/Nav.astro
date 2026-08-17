@@ -61,7 +61,9 @@ function isActive(href: string): boolean {
 								data-vt-submenu-trigger
 							>
 								{item.label}
-								<span class={styles.caret} aria-hidden="true">▼</span>
+								<span class={styles.caret} aria-hidden="true">
+									▼
+								</span>
 							</button>
 							<ul id={submenuId} class={styles.subMenu}>
 								{children.map((child) => (
@@ -85,8 +87,16 @@ function isActive(href: string): boolean {
 				}
 
 				return (
-					<li class:list={[styles.item, { [styles.itemActive]: item.href ? isActive(item.href) : false }]}>
-						<a href={item.href} aria-current={item.href && isActive(item.href) ? 'page' : undefined}>
+					<li
+						class:list={[
+							styles.item,
+							{ [styles.itemActive]: item.href ? isActive(item.href) : false },
+						]}
+					>
+						<a
+							href={item.href}
+							aria-current={item.href && isActive(item.href) ? 'page' : undefined}
+						>
 							{item.label}
 						</a>
 					</li>
@@ -156,9 +166,7 @@ function isActive(href: string): boolean {
 		// failing that, it closes the mobile menu.
 		document.addEventListener('keydown', (event) => {
 			if (event.key !== 'Escape') return;
-			const openTrigger = document.querySelector(
-				'[data-vt-submenu-trigger][aria-expanded="true"]',
-			);
+			const openTrigger = document.querySelector('[data-vt-submenu-trigger][aria-expanded="true"]');
 			if (openTrigger instanceof HTMLElement) {
 				openTrigger.setAttribute('aria-expanded', 'false');
 				openTrigger.focus();

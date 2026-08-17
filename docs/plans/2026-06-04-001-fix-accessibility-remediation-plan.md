@@ -32,18 +32,18 @@ instead of using the design tokens.
 
 ## Findings and resolution
 
-| # | Severity | Issue | WCAG | Status |
-|---|----------|-------|------|--------|
-| F1 | AA | Weather + Tides widget text `rgba(255,255,255,.85/.7)` on `#13729b` (4.37 / 3.49:1) | 1.4.3 | Fixed |
-| F2 | AA | `ListingCard` address `color: grey` (#808080) on white = 3.95:1 | 1.4.3 | Fixed |
-| F3 | A | 5 content images with empty `alt` | 1.1.1 | Fixed |
-| F4 | A | Linked map image (F3) had no accessible name | 2.4.4 / 4.1.2 | Fixed |
-| F5 | A | Data table (1bws prices) with no `<th>` / caption | 1.3.1 | Fixed |
-| F6 | A/AA | Heading skips: 3 archive pages (h1 to h3) + 2 content pages + 1 disordered | 1.3.1 / 2.4.10 | Fixed |
-| F7 | AAA | No global `prefers-reduced-motion` guard | 2.3.3 | Fixed |
-| F8 | AAA | 19 author `target="_blank"` links omit new-tab cue | 3.2.5 | Deferred |
-| F9 | AA | `ListingCard` redundant duplicate link | 2.4.4 | Fixed |
-| F10 | minor | Accessibility statement date mismatch | n/a | Fixed (dates aligned) |
+| #   | Severity | Issue                                                                               | WCAG           | Status                |
+| --- | -------- | ----------------------------------------------------------------------------------- | -------------- | --------------------- |
+| F1  | AA       | Weather + Tides widget text `rgba(255,255,255,.85/.7)` on `#13729b` (4.37 / 3.49:1) | 1.4.3          | Fixed                 |
+| F2  | AA       | `ListingCard` address `color: grey` (#808080) on white = 3.95:1                     | 1.4.3          | Fixed                 |
+| F3  | A        | 5 content images with empty `alt`                                                   | 1.1.1          | Fixed                 |
+| F4  | A        | Linked map image (F3) had no accessible name                                        | 2.4.4 / 4.1.2  | Fixed                 |
+| F5  | A        | Data table (1bws prices) with no `<th>` / caption                                   | 1.3.1          | Fixed                 |
+| F6  | A/AA     | Heading skips: 3 archive pages (h1 to h3) + 2 content pages + 1 disordered          | 1.3.1 / 2.4.10 | Fixed                 |
+| F7  | AAA      | No global `prefers-reduced-motion` guard                                            | 2.3.3          | Fixed                 |
+| F8  | AAA      | 19 author `target="_blank"` links omit new-tab cue                                  | 3.2.5          | Deferred              |
+| F9  | AA       | `ListingCard` redundant duplicate link                                              | 2.4.4          | Fixed                 |
+| F10 | minor    | Accessibility statement date mismatch                                               | n/a            | Fixed (dates aligned) |
 
 Two findings from the automated-tool plan were **rejected after verification**
 and deliberately NOT applied:
@@ -52,7 +52,7 @@ and deliberately NOT applied:
   `#333` footer = **5.31:1, passes.** The 2.37 figure assumed a white
   background; `content-visibility: auto` does not feed a white background to
   the accessibility tree. The proposed "fix" (darken to `#767676`) would have
-  *reduced* real contrast on `#333` to ~2.78:1, manufacturing a failure. Left
+  _reduced_ real contrast on `#333` to ~2.78:1, manufacturing a failure. Left
   unchanged.
 - **AdSense untitled iframe.** A hidden 1x1 tracking pixel flagged by pa11y is
   not a user-facing barrier; the proposed runtime patch targeted `body > iframe`
@@ -62,26 +62,31 @@ and deliberately NOT applied:
 ## What changed (by area)
 
 ### Contrast (F1, F2)
+
 - `WeatherWidget.module.scss`: `dt`, `.stamp`, `.stale`, `.empty` translucent
   white to solid `#fff` (now 5.37:1 on the teal sidebar).
 - `TidesWidget.module.scss`: `.stale`, `.empty` same fix.
 - `ListingCard.module.scss`: `.address` `grey` to `$color-text-dim` (5.4:1).
 
 ### Images (F3, F4)
+
 Real alt text written from inspecting each image (not the filename, e.g. the
 `magiclantern2.jpg` on the Secret Garden page is the dusk garden patio, not a
 cinema building):
+
 - `cadair-idris.md`, `castell-y-bere.md`, `the-secret-garden.md`,
   `nant-gwernol.md` (woodland photo plus the linked OS Maps route map, whose
   alt is now the link's accessible name).
 
 ### Data table (F5)
+
 `getting-around.md` 1bws price table now has `<caption>`, `<thead>` with
 `<th scope="col">`, and `<th scope="row">` on each ticket type. (Newly found
 during implementation: neither prior plan caught it because it is raw HTML, not
 a markdown pipe table, so grep-for-pipes and Lighthouse both missed it.)
 
 ### Heading order (F6)
+
 - Archives (`eating/index.astro`, `things-to-do/index.astro`,
   `dog-friendly-cafes.astro`): `ListingCard` cards now `headingLevel={2}` so the
   page is h1 then h2 (no skip), instead of h1 then h3.
@@ -94,16 +99,19 @@ a markdown pipe table, so grep-for-pipes and Lighthouse both missed it.)
   questions.
 
 ### Motion (F7)
+
 `styles/base/_reset.scss`: global `@media (prefers-reduced-motion: reduce)`
 block neutralising animations/transitions. Gallery keeps its own
 `no-preference` opt-in.
 
 ### Duplicate link (F9)
+
 `ListingCard.astro`: the image-wrapper link is now `aria-hidden="true"
 tabindex="-1"` (mirrors `EventCard`), so each card exposes one link instead of
 two to the same URL. Also removes the latent empty-link risk.
 
 ### Statement (F10)
+
 `accessibility-statement-for-visit-tywyn.md`: frontmatter `updated` and the
 visible `<time>` both set to 2026-06-04 (were 2025-02-14 and 2025-01-01).
 WCAG version left at 2.1 deliberately, see Outstanding.
@@ -123,6 +131,7 @@ dead code shipped). Reason, verified in the build:
   the pair.
 
 Two viable paths, neither done here:
+
 1. **Add `rehype-raw`** to reparse raw HTML into elements before a clean
    element-based cue plugin runs. Cost: one build dependency (the repo
    currently avoids adding deps; see the `gray-matter`-avoidance note in
@@ -137,6 +146,7 @@ new-tab links, and the destinations are obviously external.
 ## Outstanding (rendered audit, not source)
 
 Static analysis and the build cannot confirm these; they need a browser:
+
 - Focus-ring visibility (2.4.7): expected to pass (no `outline:none`; components
   define `:focus-visible`).
 - Target sizes of the lightbox prev/next/close buttons (2.5.8).
@@ -167,8 +177,8 @@ and 2.5.8 target size, are exactly the rendered-only items above).
 Principal token pairings pass AA. The three failures were component instances
 that deviated from the tokens (now fixed):
 
-| Element | Was | Ratio | Now |
-|---------|-----|-------|-----|
-| Weather/Tides `dt`/`.stamp`/`.stale`/`.empty` | `#fff @ .85` / `.7` on `#13729b` | 4.37 / 3.49:1 | `#fff` (5.37:1) |
-| ListingCard `.address` | `grey` #808080 on white | 3.95:1 | `$color-text-dim` (5.4:1) |
-| Footer copyright (rejected finding) | `#a8a8a8` on `#333` | 5.31:1 | unchanged (passes) |
+| Element                                       | Was                              | Ratio         | Now                       |
+| --------------------------------------------- | -------------------------------- | ------------- | ------------------------- |
+| Weather/Tides `dt`/`.stamp`/`.stale`/`.empty` | `#fff @ .85` / `.7` on `#13729b` | 4.37 / 3.49:1 | `#fff` (5.37:1)           |
+| ListingCard `.address`                        | `grey` #808080 on white          | 3.95:1        | `$color-text-dim` (5.4:1) |
+| Footer copyright (rejected finding)           | `#a8a8a8` on `#333`              | 5.31:1        | unchanged (passes)        |

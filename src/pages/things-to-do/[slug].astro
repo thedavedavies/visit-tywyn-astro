@@ -77,18 +77,16 @@ const jsonLd = touristAttraction({
 	heroImage={activity.data.hero_image}
 	breadcrumbs={breadcrumbs}
 	jsonLd={jsonLd}
-	sidebarProps={
-		isClosed
-			? undefined
-			: {
-					thingsToDo: {
-						title: activity.data.title,
-						website: activity.data.website,
-						phone: activity.data.phone,
-						grid_reference: activity.data.grid_reference,
-					},
-				}
-	}
+	sidebarProps={isClosed
+		? undefined
+		: {
+				thingsToDo: {
+					title: activity.data.title,
+					website: activity.data.website,
+					phone: activity.data.phone,
+					grid_reference: activity.data.grid_reference,
+				},
+			}}
 >
 	{
 		/*

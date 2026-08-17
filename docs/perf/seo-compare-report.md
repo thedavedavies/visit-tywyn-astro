@@ -323,7 +323,7 @@ Generated 2026-04-30T20:53:07.863Z
   Astro: Upcoming festivals, fairs, and events in Tywyn and the surrounding villages.
 - og:description differs
   WP: Great events and activities happen all year round in Tywyn, Aberdyfi and the surrounding villages. From the Abergynolwyn Carnival in July, to the famous Talyllyn Railway Race the Train event every August. Weekly events in Tywyn  
-   Astro: Upcoming festivals, fairs, and events in Tywyn and the surrounding villages.
+  Astro: Upcoming festivals, fairs, and events in Tywyn and the surrounding villages.
 - JSON-LD types differ
   WP: [BreadcrumbList,WebPage,WebSite]
   Astro: [BreadcrumbList,Organization,WebSite]

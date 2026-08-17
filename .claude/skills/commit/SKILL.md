@@ -29,14 +29,14 @@ tells the story better than the subject can.
 
 **Types and scopes observed in this repo's history:**
 
-| Form         | When to use                                              |
-| ------------ | -------------------------------------------------------- |
-| feat         | New user-facing feature, page, or content capability      |
-| fix          | Bug fix (scoped when it names a subsystem: `fix(icons)`)  |
-| perf         | Performance work (`perf(images)`, or bare `perf`)         |
-| chore(deps)  | Dependency bumps and security-advisory fixes              |
-| chore(data)  | RESERVED for the refresh cron. Never write this by hand   |
-| refactor     | Restructuring with no behaviour change                    |
+| Form        | When to use                                              |
+| ----------- | -------------------------------------------------------- |
+| feat        | New user-facing feature, page, or content capability     |
+| fix         | Bug fix (scoped when it names a subsystem: `fix(icons)`) |
+| perf        | Performance work (`perf(images)`, or bare `perf`)        |
+| chore(deps) | Dependency bumps and security-advisory fixes             |
+| chore(data) | RESERVED for the refresh cron. Never write this by hand  |
+| refactor    | Restructuring with no behaviour change                   |
 
 **Examples from this repo:**
 
@@ -123,10 +123,10 @@ erases its snapshots and rewrites the only branch there is.
 
 Two GitHub Actions run on push to `main`:
 
-| Workflow      | What it gates                                             | Runs                                        |
-| ------------- | --------------------------------------------------------- | ------------------------------------------- |
-| Test          | `astro check`, full build, link checker                    | every push                                  |
-| Accessibility | axe-core WCAG A/AA scan over representative built pages    | skipped when only `src/data/**` changed     |
+| Workflow      | What it gates                                           | Runs                                    |
+| ------------- | ------------------------------------------------------- | --------------------------------------- |
+| Test          | `astro check`, full build, link checker                 | every push                              |
+| Accessibility | axe-core WCAG A/AA scan over representative built pages | skipped when only `src/data/**` changed |
 
 Two more check runs appear alongside the Actions: **Cloudflare Pages** (completes
 when the deploy finishes, and usually lands first since Pages builds independently
