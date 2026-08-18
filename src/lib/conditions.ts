@@ -22,6 +22,7 @@ import { z } from 'astro:content';
 import { SITE } from './site';
 import weatherJson from '../data/weather.json' with { type: 'json' };
 import tidesJson from '../data/tides.json' with { type: 'json' };
+import waterJson from '../data/water-quality.json' with { type: 'json' };
 
 const DailyForecastSchema = z.object({
 	date: z.string(),
@@ -91,6 +92,44 @@ const TideEventSchema = z.object({
 	timeLabel: z.string(),
 	heightM: z.number(),
 });
+
+const WaterQualitySchema = z.object({
+	fetchedAt: z.string(),
+	site: z.string(),
+	classification: z.string(),
+	classificationYear: z.number().nullable(),
+	rainImpacted: z.boolean(),
+	sample: z
+		.object({
+			takenIso: z.string(),
+			eColi: z.number().nullable(),
+			eColiQualifier: z.string(),
+			enterococci: z.number().nullable(),
+			enterococciQualifier: z.string(),
+		})
+		.nullable(),
+});
+
+export interface WaterQualitySnapshot {
+	site: string;
+	classification: string;
+	classificationYear: number | null;
+	rainImpacted: boolean;
+	sample: {
+		takenIso: string;
+		eColi: number | null;
+		eColiQualifier: string;
+		enterococci: number | null;
+		enterococciQualifier: string;
+	} | null;
+}
+
+export function getWaterQualitySnapshot(): WaterQualitySnapshot | null {
+	const parsed = WaterQualitySchema.safeParse(waterJson);
+	if (!parsed.success) return null;
+	const { fetchedAt: _fetchedAt, ...rest } = parsed.data;
+	return rest;
+}
 
 const TidesSchema = z.object({
 	fetchedAt: z.string(),

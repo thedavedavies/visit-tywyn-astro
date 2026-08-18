@@ -52,3 +52,18 @@
 	margin: 0;
 	color: #fff;
 }
+
+.widget .more {
+	display: inline-block;
+	margin-top: $space-3;
+	color: $color-sidebar-link;
+	font-weight: 700;
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 3px;
+
+	&:hover,
+	&:focus-visible {
+		text-decoration-thickness: 2px;
+	}
+}

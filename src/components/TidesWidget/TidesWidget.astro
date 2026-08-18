@@ -22,6 +22,9 @@ const events = snap?.upcoming.slice(0, 4) ?? [];
 					))}
 				</ul>
 				{snap.stale && <p class={styles.stale}>Last good reading.</p>}
+				<a class={styles.more} href="/tide-times/">
+					This week's tide times
+				</a>
 			</>
 		)
 	}

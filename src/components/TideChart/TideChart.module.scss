@@ -1,91 +1,186 @@
 @use '../../styles/abstracts/variables' as *;
+@use '../../styles/abstracts/redesign' as rd;
 
 .figure {
-	margin: $space-5 0;
+	margin: 0;
+}
+
+.card {
+	background: rd.$surface;
+	border: 1px solid rd.$hairline;
+	border-radius: 14px;
+	padding: $space-4 $space-5 $space-5;
+}
+
+.legend {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	align-items: center;
+	gap: $space-2 $space-4;
+	margin-bottom: $space-3;
+}
+
+.key {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 0.82rem;
+	color: rd.$ink;
+}
+
+.keyHigh :global(svg),
+.keyLow :global(svg) {
+	width: 16px;
+	height: 16px;
+	display: block;
+}
+
+.keyHigh :global(svg) {
+	fill: rd.$teal;
+}
+
+.keyLow :global(svg) {
+	fill: rd.$rain;
+}
+
+.keyNight {
+	width: 16px;
+	height: 16px;
+	border-radius: 3px;
+	background: rd.$night;
+	border: 1px solid rd.$muted;
+}
+
+.keyNow {
+	width: 2px;
+	height: 16px;
+	background: rd.$ink;
+}
+
+.staleChip {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 3px $space-3;
+	border-radius: $radius-pill;
+	background: rd.$sky-wash;
+	border: 1px solid rd.$hairline;
+	font-size: 0.78rem;
+	font-weight: 600;
+	color: rd.$ink;
+
+	:global(svg) {
+		width: 14px;
+		height: 14px;
+		display: block;
+		fill: rd.$muted;
+	}
 }
 
 .scroll {
 	overflow-x: auto;
+
+	&:focus-visible {
+		outline: 2px solid rd.$teal;
+		outline-offset: 3px;
+	}
 }
 
-.frame {
+.plotWrap {
 	position: relative;
-	min-width: 680px;
+	min-width: 660px;
 }
 
-.frame svg {
+.plotWrap svg {
 	display: block;
 	width: 100%;
 	height: auto;
 }
 
 .night {
-	fill: #eef3f5;
+	fill: rd.$night;
 }
 
 .grid {
-	stroke: $color-border;
+	stroke: rd.$hairline;
+	stroke-width: 1;
+}
+
+.baseline {
+	stroke: rd.$muted;
 	stroke-width: 1;
 }
 
 .dayline {
-	stroke: $color-border;
+	stroke: rd.$hairline;
 	stroke-width: 1;
 }
 
 .tick {
-	fill: $color-text-dim;
-	font-size: 14px;
+	fill: rd.$muted;
+	font-size: 13px;
 	text-anchor: end;
 }
 
 .day {
-	fill: $color-text-muted;
-	font-size: 15px;
-	font-weight: 700;
+	fill: rd.$muted;
+	font-size: 13px;
+	font-weight: 600;
 	letter-spacing: 0.06em;
 	text-transform: uppercase;
 	text-anchor: middle;
 }
 
 .area {
-	fill: rgba($color-data, 0.1);
+	fill: rgba(43, 111, 134, 0.12);
 }
 
 .line {
 	fill: none;
-	stroke: $color-data;
+	stroke: rd.$teal;
 	stroke-width: 2;
 	stroke-linejoin: round;
 	stroke-linecap: round;
 }
 
 .dot {
-	fill: $color-data;
-	stroke: $color-bg;
+	stroke: rd.$surface;
 	stroke-width: 2;
 }
 
+.dotHigh {
+	fill: rd.$teal;
+}
+
+.dotLow {
+	fill: rd.$rain;
+}
+
 .eventLabel {
-	fill: $color-text;
-	font-size: 14px;
+	fill: rd.$ink;
+	font-size: 13px;
+	font-weight: 600;
 	text-anchor: middle;
 }
 
 .eventHeight {
+	font-size: 15px;
 	font-weight: 700;
-	font-size: 16px;
 }
 
 .nowline {
-	stroke: $color-text-muted;
-	stroke-width: 1.5;
-	stroke-dasharray: none;
+	stroke: rd.$ink;
+	stroke-width: 2;
+}
+
+.nowchip {
+	fill: rd.$ink;
 }
 
 .nowlabel {
-	fill: $color-text-muted;
-	font-size: 13px;
+	fill: rd.$on-deep;
+	font-size: 11px;
 	font-weight: 700;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
@@ -93,13 +188,13 @@
 }
 
 .crosshair {
-	stroke: $color-text-dim;
+	stroke: rd.$muted;
 	stroke-width: 1;
 }
 
 .cursordot {
-	fill: $color-data;
-	stroke: $color-bg;
+	fill: rd.$teal;
+	stroke: rd.$surface;
 	stroke-width: 2;
 }
 
@@ -109,23 +204,29 @@
 	}
 
 	position: absolute;
-	top: 6px;
+	top: 4px;
 	transform: translateX(-50%);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	padding: $space-2 $space-3;
-	background: $color-bg;
-	border: 1px solid $color-border;
+	background: rd.$surface;
+	border: 1px solid rd.$hairline;
 	border-radius: $radius-sm;
 	box-shadow: $shadow-sm;
 	pointer-events: none;
 	white-space: nowrap;
 	font-size: 0.8rem;
-	color: $color-text-muted;
+	color: rd.$muted;
 
 	strong {
 		font-size: 1rem;
-		color: $color-text;
+		color: rd.$ink;
 	}
+}
+
+.fallback {
+	margin: $space-3 0 0;
+	font-size: 0.88rem;
+	color: rd.$muted;
 }

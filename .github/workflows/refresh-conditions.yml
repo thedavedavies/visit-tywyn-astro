@@ -62,12 +62,12 @@ jobs:
       - name: Commit + push if data changed
         if: ${{ !cancelled() }}
         run: |
-          if git diff --quiet src/data/weather.json src/data/tides.json; then
+          if git diff --quiet src/data/weather.json src/data/tides.json src/data/water-quality.json; then
             echo "No changes - upstream APIs returned identical data."
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add src/data/weather.json src/data/tides.json
-          git commit -m "chore(data): refresh weather + tides snapshots"
+          git add src/data/weather.json src/data/tides.json src/data/water-quality.json
+          git commit -m "chore(data): refresh conditions snapshots"
           git push

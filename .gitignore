@@ -36,3 +36,4 @@ docs/perf/lighthouse/
 docs/perf/lighthouse-stage2/
 .claude/*
 !.claude/skills/
+design/

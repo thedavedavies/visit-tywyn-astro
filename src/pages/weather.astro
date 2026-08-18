@@ -528,19 +528,20 @@ const jsonLd = webPage({ title, description, url: Astro.url });
 
 <style lang="scss">
 	@use '../styles/abstracts/variables' as *;
+	@use '../styles/abstracts/redesign' as rd;
 
-	$paper: #fbfaf7;
-	$surface: #ffffff;
-	$ink: #24353f;
-	$muted: #5c7280;
-	$teal: #2b6f86;
-	$sun: #eba53f;
-	$rain: #2f6e93;
-	$green: #3e8348;
-	$sky: #e3f0f4;
-	$deep: #1e5265;
-	$on-deep: #f2f8f7;
-	$hairline: #e2e6e3;
+	$paper: rd.$paper;
+	$surface: rd.$surface;
+	$ink: rd.$ink;
+	$muted: rd.$muted;
+	$teal: rd.$teal;
+	$sun: rd.$sun;
+	$rain: rd.$rain;
+	$green: rd.$green;
+	$sky: rd.$sky;
+	$deep: rd.$deep;
+	$on-deep: rd.$on-deep;
+	$hairline: rd.$hairline;
 
 	:global(body.weather-page) {
 		background: $paper;

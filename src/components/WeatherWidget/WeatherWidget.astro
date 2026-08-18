@@ -1,5 +1,5 @@
 ---
-import { getWeatherSnapshot } from '../../lib/conditions';
+import { getWeatherSnapshot, windDirectionName } from '../../lib/conditions';
 import styles from './WeatherWidget.module.scss';
 
 const snap = getWeatherSnapshot();
@@ -27,7 +27,7 @@ const snap = getWeatherSnapshot();
 						<div class={styles.fact}>
 							<dt>Wind</dt>
 							<dd>
-								{snap.windMph.toFixed(0)}mph {snap.windDir ?? ''}
+								{snap.windMph.toFixed(0)}mph {windDirectionName(snap.windDir) ?? ''}
 							</dd>
 						</div>
 					)}
@@ -42,6 +42,9 @@ const snap = getWeatherSnapshot();
 					Updated {snap.observedLabel}
 					{snap.stale && <span class={styles.stale}> · last good reading</span>}
 				</p>
+				<a class={styles.more} href="/weather/">
+					7-day weather forecast
+				</a>
 			</>
 		)
 	}

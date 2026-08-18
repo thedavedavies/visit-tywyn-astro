@@ -12,15 +12,18 @@
  * is complete except those two enhancements, and the table on the
  * page carries every prediction, so nothing is gated on the script.
  */
+import Icon from '../Icon/Icon.astro';
 import type { TideEvent, DailyForecast } from '../../lib/conditions';
 import styles from './TideChart.module.scss';
 
 interface Props {
 	events: TideEvent[];
 	days: DailyForecast[];
+	stale?: boolean;
+	staleLabel?: string | null;
 }
 
-const { events, days } = Astro.props;
+const { events, days, stale = false, staleLabel = null } = Astro.props;
 
 const TZ = 'Europe/London';
 const DAY_KEY = new Intl.DateTimeFormat('en-CA', { dateStyle: 'short', timeZone: TZ });
@@ -36,12 +39,13 @@ const TIME_LABEL = new Intl.DateTimeFormat('en-GB', {
 	timeZone: TZ,
 });
 
-const W = 1000;
+const W = 1164;
 const H = 300;
-const PX0 = 40;
-const PX1 = W - 12;
-const PY0 = H - 14;
-const PY1 = 40;
+const PX0 = 44;
+const PX1 = W;
+const PY0 = 266;
+const PY1 = 8;
+const MAX_M = 5;
 
 const points = events
 	.map((ev) => ({ t: Date.parse(ev.timeIso), h: ev.heightM, type: ev.type }))
@@ -49,12 +53,11 @@ const points = events
 	.sort((a, b) => a.t - b.t);
 
 const buildNow = Date.now();
-const t0 = Math.max(points[0]?.t ?? buildNow, buildNow - 6 * 3600_000);
-const t1 = points.at(-1)?.t ?? buildNow;
-const yMax = Math.max(...points.map((p) => p.h), 4) + 0.4;
+const t0 = points[0]?.t ?? buildNow;
+const t1 = points.at(-1)?.t ?? buildNow + 6 * 86400_000;
 
 const x = (t: number) => PX0 + ((t - t0) / (t1 - t0)) * (PX1 - PX0);
-const y = (h: number) => PY0 - (h / yMax) * (PY0 - PY1);
+const y = (h: number) => PY0 - (Math.min(h, MAX_M) / MAX_M) * (PY0 - PY1);
 
 const heightAt = (t: number): number => {
 	if (points.length === 0) return 0;
@@ -67,14 +70,14 @@ const heightAt = (t: number): number => {
 	return a.h + ((b.h - a.h) * (1 - Math.cos(Math.PI * ((t - a.t) / (b.t - a.t))))) / 2;
 };
 
-const STEP = 12 * 60_000;
+const STEP = 15 * 60_000;
 const samples: string[] = [];
 for (let t = t0; t <= t1; t += STEP) {
 	samples.push(`${x(t).toFixed(1)},${y(heightAt(t)).toFixed(1)}`);
 }
 samples.push(`${x(t1).toFixed(1)},${y(heightAt(t1)).toFixed(1)}`);
 const linePath = `M${samples.join('L')}`;
-const areaPath = `${linePath}L${PX1},${PY0}L${PX0},${PY0}Z`;
+const areaPath = `${linePath}L${x(t1).toFixed(1)},${PY0}L${PX0},${PY0}Z`;
 
 const sun = days
 	.map((d) => ({
@@ -122,122 +125,165 @@ const visible = points.filter((p) => p.t >= t0 && p.t <= t1);
 const labelled = visible.filter((p) => DAY_KEY.format(new Date(p.t)) === todayKey);
 
 const ticks = [];
-for (let m = 1; m < yMax; m += 1) ticks.push(m);
+for (let m = 1; m <= MAX_M; m += 1) ticks.push(m);
 
 const eventData = JSON.stringify(visible.map((p) => [p.t, Number(p.h.toFixed(2)), p.type]));
+
+const clampLabelX = (px: number) => Math.min(Math.max(px, PX0 + 42), PX1 - 42);
 ---
 
 <figure class={styles.figure}>
-	<div class={styles.scroll}>
-		<div class={styles.frame}>
-			<svg
-				viewBox={`0 0 ${W} ${H}`}
-				role="img"
-				aria-label="Chart of predicted tide height for the week; every high and low is listed in the table below"
-				data-tide-chart
-				data-t0={t0}
-				data-t1={t1}
-				data-px0={PX0}
-				data-px1={PX1}
-				data-py0={PY0}
-				data-py1={PY1}
-				data-ymax={yMax}
-				data-events={eventData}
-			>
-				{
-					nights.map(([from, to]) => (
-						<rect
-							class={styles.night}
-							x={x(from).toFixed(1)}
-							y={PY1}
-							width={(x(to) - x(from)).toFixed(1)}
-							height={PY0 - PY1}
-						/>
-					))
-				}
-				{
-					ticks.map((m) => (
-						<>
-							<line
-								class={styles.grid}
-								x1={PX0}
-								x2={PX1}
-								y1={y(m).toFixed(1)}
-								y2={y(m).toFixed(1)}
-							/>
-							<text class={styles.tick} x={PX0 - 6} y={y(m) + 4}>
-								{m}m
-							</text>
-						</>
-					))
-				}
-				{
-					bands
-						.slice(1)
-						.map((band) => (
-							<line
-								class={styles.dayline}
-								x1={x(band.from).toFixed(1)}
-								x2={x(band.from).toFixed(1)}
-								y1={PY1 - 18}
-								y2={PY0}
+	<div class={styles.card}>
+		<div class={styles.legend}>
+			<span class={styles.key}>
+				<span class={styles.keyHigh}><Icon name="ms-arrow_upward" /></span>
+				High water
+			</span>
+			<span class={styles.key}>
+				<span class={styles.keyLow}><Icon name="ms-arrow_downward" /></span>
+				Low water
+			</span>
+			<span class={styles.key}>
+				<span class={styles.keyNight}></span>
+				Night
+			</span>
+			<span class={styles.key}>
+				<span class={styles.keyNow}></span>
+				Now
+			</span>
+			{
+				stale && (
+					<span class={styles.staleChip}>
+						<Icon name="ms-schedule" />
+						Last good reading{staleLabel ? ` ${staleLabel}` : ''}
+					</span>
+				)
+			}
+		</div>
+
+		<div class={styles.scroll} tabindex="0" role="region" aria-label="Tide curve for the week">
+			<div class={styles.plotWrap}>
+				<svg
+					viewBox={`0 0 ${W} ${H}`}
+					role="img"
+					aria-label="Chart of predicted tide height across the week. Every high and low water is listed in the table below."
+					data-tide-chart
+					data-t0={t0}
+					data-t1={t1}
+					data-px0={PX0}
+					data-px1={PX1}
+					data-py0={PY0}
+					data-py1={PY1}
+					data-maxm={MAX_M}
+					data-events={eventData}
+				>
+					{
+						nights.map(([from, to]) => (
+							<rect
+								class={styles.night}
+								x={x(from).toFixed(1)}
+								y={PY1}
+								width={Math.max(x(to) - x(from), 0).toFixed(1)}
+								height={PY0 - PY1}
 							/>
 						))
-				}
-				{
-					bands.map(
-						(band) =>
-							x(band.to) - x(band.from) > 55 && (
-								<text
-									class={styles.day}
-									x={((x(band.from) + x(band.to)) / 2).toFixed(1)}
-									y={PY1 - 24}
-								>
-									{band.label}
+					}
+					{
+						ticks.map((m) => (
+							<>
+								<line
+									class={styles.grid}
+									x1={PX0}
+									x2={PX1}
+									y1={y(m).toFixed(1)}
+									y2={y(m).toFixed(1)}
+								/>
+								<text class={styles.tick} x={PX0 - 10} y={y(m) + 5}>
+									{m}m
 								</text>
-							),
-					)
-				}
-				<path class={styles.area} d={areaPath}></path>
-				<path class={styles.line} d={linePath}></path>
-				{
-					visible.map((p) => (
-						<circle class={styles.dot} cx={x(p.t).toFixed(1)} cy={y(p.h).toFixed(1)} r="4.5" />
-					))
-				}
-				{
-					labelled.map((p) => (
-						<text
-							class={styles.eventLabel}
-							x={x(p.t).toFixed(1)}
-							y={p.type === 'high' ? y(p.h) - 26 : y(p.h) + 24}
-						>
-							<tspan class={styles.eventHeight}>{p.h.toFixed(1)}m</tspan>
-							<tspan x={x(p.t).toFixed(1)} dy="16">
-								{TIME_LABEL.format(new Date(p.t))}
-							</tspan>
-						</text>
-					))
-				}
-				<g data-now style="display:none">
-					<line class={styles.nowline} x1="0" x2="0" y1={PY1 - 14} y2={PY0}></line>
-					<text class={styles.nowlabel} x="0" y={PY1 - 4}> now </text>
-				</g>
-				<g data-cursor style="display:none">
-					<line class={styles.crosshair} x1="0" x2="0" y1={PY1} y2={PY0}></line>
-					<circle class={styles.cursordot} cx="0" cy="0" r="5"></circle>
-				</g>
-			</svg>
-			<div class={styles.tooltip} data-tooltip hidden>
-				<strong data-tt-height></strong>
-				<span data-tt-detail></span>
+							</>
+						))
+					}
+					<line class={styles.baseline} x1={PX0} x2={PX1} y1={PY0} y2={PY0}></line>
+					<text class={styles.tick} x={PX0 - 10} y={PY0 + 5}>0m</text>
+
+					{
+						bands
+							.slice(1)
+							.map((band) => (
+								<line
+									class={styles.dayline}
+									x1={x(band.from).toFixed(1)}
+									x2={x(band.from).toFixed(1)}
+									y1={PY1}
+									y2={PY0 + 8}
+								/>
+							))
+					}
+					{
+						bands.map(
+							(band) =>
+								x(band.to) - x(band.from) > 46 && (
+									<text
+										class={styles.day}
+										x={((x(band.from) + x(band.to)) / 2).toFixed(1)}
+										y={PY0 + 26}
+									>
+										{band.label}
+									</text>
+								),
+						)
+					}
+
+					<path class={styles.area} d={areaPath}></path>
+					<path class={styles.line} d={linePath}></path>
+
+					{
+						visible.map((p) => (
+							<circle
+								class:list={[styles.dot, p.type === 'high' ? styles.dotHigh : styles.dotLow]}
+								cx={x(p.t).toFixed(1)}
+								cy={y(p.h).toFixed(1)}
+								r="5"
+							/>
+						))
+					}
+					{
+						labelled.map((p) => {
+							const above = p.type === 'high' && y(p.h) - 44 > PY1;
+							const ty = above ? y(p.h) - 30 : y(p.h) + 22;
+							return (
+								<text class={styles.eventLabel} x={clampLabelX(x(p.t))} y={ty}>
+									<tspan class={styles.eventHeight}>{p.h.toFixed(1)}m</tspan>
+									<tspan x={clampLabelX(x(p.t))} dy="16">
+										{TIME_LABEL.format(new Date(p.t)).replace(/\s/g, '')}
+									</tspan>
+								</text>
+							);
+						})
+					}
+
+					<g data-now style="display:none">
+						<line class={styles.nowline} x1="0" x2="0" y1={PY1} y2={PY0}></line>
+						<rect class={styles.nowchip} x="-34" y={PY1} width="68" height="20" rx="4"></rect>
+						<text class={styles.nowlabel} x="0" y={PY1 + 14}>Now</text>
+					</g>
+					<g data-cursor style="display:none">
+						<line class={styles.crosshair} x1="0" x2="0" y1={PY1} y2={PY0}></line>
+						<circle class={styles.cursordot} cx="0" cy="0" r="5.5"></circle>
+					</g>
+				</svg>
+				<div class={styles.tooltip} data-tooltip hidden>
+					<strong data-tt-height></strong>
+					<span data-tt-detail></span>
+				</div>
 			</div>
 		</div>
+
+		<p class={styles.fallback}>
+			Every high and low water, with heights, is listed in the table below.
+		</p>
 	</div>
-	<figcaption class="sr-only">
-		Predicted tide height at Tywyn for the coming week. Exact high and low water times are in the
-		table below.
-	</figcaption>
 </figure>
 
 <script>
@@ -250,11 +296,11 @@ const eventData = JSON.stringify(visible.map((p) => [p.t, Number(p.h.toFixed(2))
 		const px1 = num('px1');
 		const py0 = num('py0');
 		const py1 = num('py1');
-		const yMax = num('ymax');
+		const maxM = num('maxm');
 		const events: [number, number, string][] = JSON.parse(svg.dataset.events ?? '[]');
 
 		const xFor = (t: number) => px0 + ((t - t0) / (t1 - t0)) * (px1 - px0);
-		const yFor = (h: number) => py0 - (h / yMax) * (py0 - py1);
+		const yFor = (h: number) => py0 - (Math.min(h, maxM) / maxM) * (py0 - py1);
 		const heightAt = (t: number): number | null => {
 			if (events.length < 2 || t < events[0]![0] || t > events.at(-1)![0]) return null;
 			let i = 0;
@@ -304,7 +350,7 @@ const eventData = JSON.stringify(visible.map((p) => [p.t, Number(p.h.toFixed(2))
 			if (!cursor || !crossLine || !crossDot || !tooltip || !ttHeight || !ttDetail || !frame)
 				return;
 			const rect = svg.getBoundingClientRect();
-			const vx = ((event.clientX - rect.left) / rect.width) * 1000;
+			const vx = ((event.clientX - rect.left) / rect.width) * 1164;
 			if (vx < px0 || vx > px1) {
 				hide();
 				return;
@@ -328,7 +374,7 @@ const eventData = JSON.stringify(visible.map((p) => [p.t, Number(p.h.toFixed(2))
 			tooltip.hidden = false;
 			const frameRect = frame.getBoundingClientRect();
 			const left = ((vx - px0) / (px1 - px0)) * frameRect.width;
-			tooltip.style.left = `${Math.min(Math.max(left, 70), frameRect.width - 90)}px`;
+			tooltip.style.left = `${Math.min(Math.max(left, 80), frameRect.width - 100)}px`;
 		});
 	}
 </script>

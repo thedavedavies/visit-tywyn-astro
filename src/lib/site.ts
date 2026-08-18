@@ -38,6 +38,7 @@ export const SITE = {
 		lng: -4.08916,
 		// Admiralty EasyTide station ID for Aberdovey (closest reliable station to Tywyn).
 		tideStationId: '0486',
+		bathingWaterId: 'ukl1200-39100',
 	},
 	// Sidebar conditions snapshots: how old committed data may get before
 	// the widgets flag it as "last good reading" (src/lib/conditions.ts).
@@ -49,6 +50,7 @@ export const SITE = {
 	conditions: {
 		weatherStaleTtlMs: 6 * 60 * 60 * 1000,
 		tidesStaleTtlMs: 12 * 60 * 60 * 1000,
+		waterStaleTtlMs: 7 * 24 * 60 * 60 * 1000,
 	},
 } as const;
 

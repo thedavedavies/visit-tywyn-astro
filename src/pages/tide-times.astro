@@ -1,72 +1,116 @@
 ---
+import { Image } from 'astro:assets';
 import PageLayout from '../layouts/PageLayout.astro';
-import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
+import Icon from '../components/Icon/Icon.astro';
 import TideChart from '../components/TideChart/TideChart.astro';
-import { getTidesSnapshot, getWeatherSnapshot, type TideEvent } from '../lib/conditions';
+import {
+	getTidesSnapshot,
+	getWaterQualitySnapshot,
+	getWeatherSnapshot,
+	type TideEvent,
+} from '../lib/conditions';
+import {
+	aboutRangeSentence,
+	biggestDay,
+	eventsOn,
+	rangeFigure,
+	rangeNote,
+	springNeapSentence,
+} from '../lib/tide-copy';
 import { webPage } from '../lib/jsonld';
+import beachImg from '../assets/img/things-to-do/tywyn-beach/cover.jpg';
+import railwayImg from '../assets/img/things-to-do/the-talyllyn-railway/cover.jpg';
+import cinemaImg from '../assets/img/things-to-do/magic-lantern-cinema/cover.jpg';
 
 const snap = getTidesSnapshot();
 const chartSnap = getTidesSnapshot(new Date(), { includePast: true });
-const sunDays = getWeatherSnapshot()?.daily ?? [];
+const weather = getWeatherSnapshot();
+const water = getWaterQualitySnapshot();
+const sunDays = weather?.daily ?? [];
 
 const TZ = 'Europe/London';
-const DAY_KEY_FMT = new Intl.DateTimeFormat('en-CA', {
-	year: 'numeric',
-	month: '2-digit',
-	day: '2-digit',
-	timeZone: TZ,
-});
-const DAY_LABEL_FMT = new Intl.DateTimeFormat('en-GB', {
-	weekday: 'long',
-	day: 'numeric',
-	month: 'long',
-	timeZone: TZ,
-});
 const TIME_FMT = new Intl.DateTimeFormat('en-GB', {
 	hour: 'numeric',
 	minute: '2-digit',
 	hour12: true,
 	timeZone: TZ,
 });
+const DAY_KEY_FMT = new Intl.DateTimeFormat('en-CA', { dateStyle: 'short', timeZone: TZ });
+const WEEKDAY_FMT = new Intl.DateTimeFormat('en-GB', { weekday: 'short', timeZone: TZ });
+const FULL_DATE_FMT = new Intl.DateTimeFormat('en-GB', {
+	weekday: 'long',
+	day: 'numeric',
+	month: 'long',
+	timeZone: TZ,
+});
+const DAY_ROW_FMT = new Intl.DateTimeFormat('en-GB', {
+	weekday: 'long',
+	day: 'numeric',
+	timeZone: TZ,
+});
+const SAMPLE_FMT = new Intl.DateTimeFormat('en-GB', {
+	day: 'numeric',
+	month: 'long',
+	year: 'numeric',
+	timeZone: TZ,
+});
+
+const time = (iso: string) => TIME_FMT.format(new Date(iso)).replace(/\s/g, '');
+const now = new Date();
+const todayKey = DAY_KEY_FMT.format(now);
+
+const allEvents = snap?.upcoming ?? [];
+const todayEvents = eventsOn(allEvents, now);
+const bandEvents = allEvents.slice(0, 4).map((event) => {
+	const when = new Date(event.timeIso);
+	const isToday = DAY_KEY_FMT.format(when) === todayKey;
+	return {
+		type: event.type,
+		time: time(event.timeIso),
+		heightM: event.heightM,
+		suffix: isToday ? '' : ` (${WEEKDAY_FMT.format(when)})`,
+	};
+});
 
 interface TideDay {
 	key: string;
 	label: string;
+	isToday: boolean;
 	events: TideEvent[];
 }
+const tableEvents = (chartSnap?.upcoming ?? allEvents).filter(
+	(e) => DAY_KEY_FMT.format(new Date(e.timeIso)) >= todayKey,
+);
 
 const days: TideDay[] = [];
-for (const event of snap?.upcoming ?? []) {
+for (const event of tableEvents) {
 	const when = new Date(event.timeIso);
 	const key = DAY_KEY_FMT.format(when);
 	const last = days.at(-1);
 	if (last && last.key === key) {
 		last.events.push(event);
 	} else {
-		days.push({ key, label: DAY_LABEL_FMT.format(when), events: [event] });
+		days.push({
+			key,
+			label: DAY_ROW_FMT.format(when),
+			isToday: key === todayKey,
+			events: [event],
+		});
 	}
 }
+const maxCols = Math.max(4, ...days.map((d) => d.events.length));
+const bandAllToday = bandEvents.every((e) => e.suffix === '');
+const bandHeading = bandAllToday ? "Today's tides" : 'Next tides';
 
-const next = snap?.upcoming[0];
-
-const ranges = days.map((day) => {
-	const highs = day.events.filter((e) => e.type === 'high').map((e) => e.heightM);
-	const lows = day.events.filter((e) => e.type === 'low').map((e) => e.heightM);
-	return highs.length && lows.length ? Math.max(...highs) - Math.min(...lows) : 0;
-});
-const biggestDay = ranges.length ? days[ranges.indexOf(Math.max(...ranges))] : undefined;
+const rangeOfToday = rangeFigure(todayEvents);
+const noteOfToday = rangeNote(todayEvents);
+const biggest = biggestDay(allEvents);
 
 const title = 'Tywyn tide times';
 const description =
-	'High and low tide times and heights for Tywyn beach for the week ahead, from UK Hydrographic Office predictions for the Aberdyfi station, refreshed every few hours.';
-
+	'High and low water times and heights for Tywyn beach, today and for the week ahead, from UK Hydrographic Office predictions for the Aberdyfi station.';
 const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Tide times' }];
-
-const jsonLd = webPage({
-	title,
-	description,
-	url: Astro.url,
-});
+const jsonLd = webPage({ title, description, url: Astro.url });
 ---
 
 <PageLayout
@@ -74,174 +118,737 @@ const jsonLd = webPage({
 	description={description}
 	breadcrumbs={breadcrumbs}
 	jsonLd={jsonLd}
-	sidebarProps={{ showTides: false }}
+	hideSidebar
+	displayFont
+	bodyClass="tide-page"
 >
-	<EntryHeader
-		title="Tywyn tide times"
-		subtitle="High and low water for the week ahead at Tywyn beach"
-	/>
-
-	<div class="entry-content">
-		{
-			!snap || !next ? (
+	{
+		!snap || bandEvents.length === 0 ? (
+			<div class="entry-content">
+				<h1>Tide times</h1>
 				<p>Tide predictions are being refreshed. Check back in a few minutes.</p>
-			) : (
-				<>
-					<p class="next" aria-label="Next tide">
-						Next tide: <strong>{next.type === 'high' ? 'high water' : 'low water'}</strong> at{' '}
-						<strong>{TIME_FMT.format(new Date(next.timeIso))}</strong> on{' '}
-						{DAY_LABEL_FMT.format(new Date(next.timeIso))} ({next.heightM.toFixed(1)}m)
-						{snap.stale && <em> &middot; last good reading</em>}
+			</div>
+		) : (
+			<div class="tx">
+				<section class="hero">
+					<p class="eyebrow">Tywyn beach</p>
+					<h1 class="hero__title">Tide times</h1>
+					<p class="hero__lede">
+						High and low water for Tywyn beach, today and for the week ahead, with heights, the
+						shape of the curve and what it means for the sand.
 					</p>
+				</section>
 
-					{chartSnap && <TideChart events={chartSnap.upcoming} days={sunDays} />}
+				<section class="band bleed" aria-labelledby="today-heading">
+					<div class="band__inner">
+						<div class="band__head">
+							<div>
+								<p class="eyebrow eyebrow--band">{bandAllToday ? 'Today' : 'Coming up'}</p>
+								<h2 id="today-heading">{bandHeading}</h2>
+							</div>
+							<p class="band__date">{FULL_DATE_FMT.format(now)}</p>
+						</div>
+						<ul class="events">
+							{bandEvents.map((event) => (
+								<li>
+									<span class="events__label">
+										<span class:list={['events__arrow', event.type === 'high' && 'is-high']}>
+											<Icon
+												name={event.type === 'high' ? 'ms-arrow_upward' : 'ms-arrow_downward'}
+											/>
+										</span>
+										{event.type === 'high' ? 'High water' : 'Low water'}
+										{event.suffix}
+									</span>
+									<span class="events__time">{event.time}</span>
+									<span class="events__height">{event.heightM.toFixed(1)}m</span>
+								</li>
+							))}
+						</ul>
+					</div>
+				</section>
 
-					<section aria-labelledby="week-heading">
-						<h2 id="week-heading">This week's tides</h2>
-						{biggestDay && (
-							<p class="rangeNote">
-								The biggest tides of the week fall on {biggestDay.label}, with about{' '}
-								{Math.max(...ranges).toFixed(1)}m between high and low water.
-							</p>
-						)}
+				{chartSnap && (
+					<section aria-labelledby="curve-heading">
+						<p class="eyebrow">The week ahead</p>
+						<h2 id="curve-heading">Your next seven days in Tywyn</h2>
+						<TideChart
+							events={chartSnap.upcoming}
+							days={sunDays}
+							stale={snap.stale === true}
+							staleLabel={weather?.observedLabel ?? null}
+						/>
+					</section>
+				)}
+
+				<section aria-labelledby="table-heading">
+					<p class="eyebrow">Times &amp; heights</p>
+					<h2 id="table-heading">The week's tides</h2>
+					<div class="tableScroll" tabindex="0" role="region" aria-labelledby="table-heading">
 						<table class="tides">
 							<caption class="sr-only">
-								High and low water times and heights for the week ahead
+								High and low water times and heights for each day of the week ahead
 							</caption>
 							<thead>
 								<tr>
 									<th scope="col">Day</th>
-									<th scope="col">Tide</th>
-									<th scope="col">Time</th>
-									<th scope="col" class="num">
-										Height
-									</th>
+									{Array.from({ length: maxCols }).map(() => (
+										<th scope="col">Tide</th>
+									))}
 								</tr>
 							</thead>
-							{days.map((day) => (
-								<tbody>
-									{day.events.map((event, i) => (
-										<tr>
-											{i === 0 && (
-												<th scope="rowgroup" rowspan={day.events.length}>
-													{day.label}
-												</th>
-											)}
-											<td class:list={[event.type === 'high' ? 'high' : 'low']}>
-												{event.type === 'high' ? 'High' : 'Low'}
-											</td>
-											<td>{TIME_FMT.format(new Date(event.timeIso))}</td>
-											<td class="num">{event.heightM.toFixed(1)}m</td>
-										</tr>
-									))}
-								</tbody>
-							))}
+							<tbody>
+								{days.map((day) => (
+									<tr class:list={[day.isToday && 'is-today']}>
+										<th scope="row">
+											<span class="tides__day">{day.label}</span>
+											{day.isToday && <span class="tides__today">Today</span>}
+										</th>
+										{Array.from({ length: maxCols }).map((_, i) => {
+											const event = day.events[i];
+											return (
+												<td>
+													{event ? (
+														<>
+															<span class="tides__cellLabel">
+																<span
+																	class:list={['tides__arrow', event.type === 'high' && 'is-high']}
+																>
+																	<Icon
+																		name={
+																			event.type === 'high'
+																				? 'ms-arrow_upward'
+																				: 'ms-arrow_downward'
+																		}
+																	/>
+																</span>
+																{event.type === 'high' ? 'High' : 'Low'}
+															</span>
+															<span class="tides__time">{time(event.timeIso)}</span>
+															<span class="tides__height">{event.heightM.toFixed(1)}m</span>
+														</>
+													) : (
+														<span class="tides__empty" aria-hidden="true">
+															&ndash;
+														</span>
+													)}
+												</td>
+											);
+										})}
+									</tr>
+								))}
+							</tbody>
 						</table>
-					</section>
-				</>
-			)
-		}
+					</div>
+				</section>
 
-		<h2>About the tides at Tywyn</h2>
-		<p>
-			These are UK Hydrographic Office predictions for the Aberdyfi station (0486), the nearest
-			standard measuring point to Tywyn beach; actual times along the beach differ by only a few
-			minutes. The tide here typically rises and falls between three and five metres, with the
-			biggest ranges on spring tides around the full and new moon. Low water uncovers a wide, flat
-			stretch of sand that makes for the best beach walks and rock pooling.
-		</p>
+				<section aria-labelledby="about-heading">
+					<p class="eyebrow">The shape of it</p>
+					<h2 id="about-heading">About the tides at Tywyn</h2>
+					<div class="about">
+						<div class="about__body">
+							<p>{aboutRangeSentence(todayEvents)}</p>
+							<p>{springNeapSentence(allEvents)}</p>
+							{biggest && (
+								<p>
+									The biggest range this week falls on {biggest.label}, with about{' '}
+									{biggest.rangeM.toFixed(1)}m between high and low water. Low water uncovers the
+									widest stretch of firm sand, which is when the beach walks are best.
+								</p>
+							)}
+						</div>
+						{rangeOfToday && (
+							<aside class="about__aside">
+								<p class="about__label">Today's range</p>
+								<p class="about__figure">{rangeOfToday}</p>
+								{noteOfToday && <p class="about__note">{noteOfToday}</p>}
+							</aside>
+						)}
+					</div>
+				</section>
 
-		<h2>Staying safe</h2>
-		<p>
-			The flood tide comes in quickly over the flat sand, and currents run hard near the Dysynni and
-			Dyfi river mouths. Check the times above before a long walk towards Aberdyfi, keep off
-			sandbanks on a rising tide, and if you're swimming, stay between the flags when the beach is
-			patrolled in summer.
-		</p>
+				<section aria-labelledby="safe-heading">
+					<p class="eyebrow">Before you go</p>
+					<h2 id="safe-heading">Staying safe</h2>
+					<div class="safe">
+						<ul class="safe__list">
+							<li>
+								<span class="safe__icon">
+									<Icon name="ms-waves" />
+								</span>
+								<div>
+									<h3>The flood tide runs fast over flat sand</h3>
+									<p>
+										The beach shelves gently, so an incoming tide covers a lot of ground quickly.
+										Keep an eye on the water behind you when the tide is making.
+									</p>
+								</div>
+							</li>
+							<li>
+								<span class="safe__icon">
+									<Icon name="ms-water" />
+								</span>
+								<div>
+									<h3>Currents at the river mouths</h3>
+									<p>
+										The Dysynni to the north and the Dyfi to the south both run strongly on the ebb.
+										Stay clear of the channels when the tide is falling.
+									</p>
+								</div>
+							</li>
+							<li>
+								<span class="safe__icon">
+									<Icon name="swimmer" />
+								</span>
+								<div>
+									<h3>Swim between the flags</h3>
+									<p>
+										Lifeguards patrol the main beach in season. Check conditions locally before
+										swimming.
+									</p>
+								</div>
+							</li>
+						</ul>
 
-		<h2>Make a day of it</h2>
-		<p>
-			Check the <a href="/weather/">Tywyn weather forecast</a> alongside the tides, see the beach right
-			now on the <a href="/webcam/">live seafront webcam</a>, or browse
-			<a href="/things-to-do/tywyn-beach/">our guide to Tywyn beach</a>.
-		</p>
+						{water && (
+							<aside class="wq">
+								<p class="wq__label">
+									<span class="wq__icon">
+										<Icon name="ms-water" />
+									</span>
+									Water quality
+								</p>
+								<p class="wq__figure">{water.classification}</p>
+								<ul class="wq__meter" aria-hidden="true">
+									{['Poor', 'Sufficient', 'Good', 'Excellent'].map((step, i) => {
+										const rank =
+											['Poor', 'Sufficient', 'Good', 'Excellent'].indexOf(water.classification) + 1;
+										return <li class:list={[i < rank && 'is-filled']} />;
+									})}
+								</ul>
+								<p class="wq__note">
+									{water.classification} is the highest of four bathing water ratings.
+									{water.classificationYear ? ` Rated for ${water.classificationYear}.` : ''}
+									{water.sample
+										? ` Last sample ${SAMPLE_FMT.format(new Date(water.sample.takenIso))}.`
+										: ''}
+								</p>
+								{water.rainImpacted && (
+									<p class="wq__rain">
+										Water quality here can dip for a day or two after heavy rain.
+									</p>
+								)}
+							</aside>
+						)}
+					</div>
+				</section>
 
-		<p class="provenance">
-			Tidal predictions from the UK Hydrographic Office via <a
-				href="https://easytide.admiralty.co.uk/"
-				target="_blank"
-				rel="noopener noreferrer nofollow"
-				>Admiralty EasyTide<span class="sr-only"> (opens in new tab)</span></a
-			>, refreshed roughly every three hours.
-		</p>
-	</div>
+				<section aria-labelledby="day-heading">
+					<p class="eyebrow">Make the most of it</p>
+					<h2 id="day-heading">Make a day of it</h2>
+					<div class="cards">
+						<article class="card">
+							<Image src={beachImg} alt="" width={640} class="card__img" />
+							<h3>Beach &amp; promenade</h3>
+							<p>Two miles of Blue Flag sand, widest and firmest around low water.</p>
+							<a href="/things-to-do/tywyn-beach/">Beach &amp; sea &rarr;</a>
+						</article>
+						<article class="card">
+							<Image src={railwayImg} alt="" width={640} class="card__img" />
+							<h3>Talyllyn Railway</h3>
+							<p>Steam up the Fathew valley to Dolgoch Falls when the tide is in.</p>
+							<a href="/things-to-do/the-talyllyn-railway/">Plan a ride &rarr;</a>
+						</article>
+						<article class="card">
+							<Image src={cinemaImg} alt="" width={640} class="card__img" />
+							<h3>Weather &amp; webcam</h3>
+							<p>Check the forecast, or look at the bay as it is right now.</p>
+							<a href="/weather/">Tywyn weather &rarr;</a>
+						</article>
+					</div>
+				</section>
+
+				<p class="provenance">
+					Tide predictions &copy; UK Hydrographic Office via{' '}
+					<a
+						href="https://easytide.admiralty.co.uk/"
+						target="_blank"
+						rel="noopener noreferrer nofollow"
+					>
+						Admiralty EasyTide<span class="sr-only"> (opens in new tab)</span>
+					</a>
+					, for the Aberdyfi station. Classification and sample data: Natural Resources Wales.
+				</p>
+			</div>
+		)
+	}
 </PageLayout>
 
 <style lang="scss">
 	@use '../styles/abstracts/variables' as *;
+	@use '../styles/abstracts/redesign' as rd;
 
-	.next {
-		margin: $space-5 0;
-		padding: $space-3 $space-4;
-		border-left: 4px solid $color-data;
-		background: $color-bg-alt;
-		border-radius: 0 $radius-sm $radius-sm 0;
-		font-size: 1.05rem;
+	:global(body.tide-page) {
+		background: rd.$paper;
+	}
 
-		em {
-			font-size: 0.85rem;
-			color: $color-text-dim;
+	.tx {
+		font-family: var(--font-page), system-ui, sans-serif;
+		color: rd.$ink;
+
+		h1,
+		h2,
+		h3 {
+			font-family: var(--font-display), Georgia, serif;
+			color: rd.$ink;
+		}
+
+		h2 {
+			font-size: 2.2rem;
+			font-weight: 600;
+			line-height: 1.15;
+			margin: $space-2 0 $space-5;
+		}
+
+		section {
+			margin: $space-8 0 4.5rem;
 		}
 	}
 
-	.rangeNote {
+	.eyebrow {
+		margin: 0;
+		font-size: 0.8rem;
+		font-weight: 700;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: rd.$teal;
+	}
+
+	.eyebrow--band {
+		color: rd.$sky;
+	}
+
+	.hero {
+		margin: $space-7 0 $space-6 !important;
+	}
+
+	.hero__title {
+		margin: $space-2 0 0;
+		font-size: clamp(2.4rem, 5vw, 3.5rem);
+		font-weight: 500;
+		line-height: 1.1;
+	}
+
+	.hero__lede {
+		margin: $space-4 0 0;
+		max-width: 36em;
+		font-size: 1.2rem;
+		line-height: 1.55;
+		color: rd.$muted;
+	}
+
+	.bleed {
+		margin-inline: calc(50% - 50vw);
+	}
+
+	.band {
+		background: rd.$deep;
+		color: rd.$on-deep;
+		padding: 3.5rem 0;
+
+		h2 {
+			color: rd.$on-deep;
+			margin: $space-2 0 0;
+		}
+	}
+
+	.band__inner {
+		max-width: $container-max;
+		margin: 0 auto;
+		padding: 0 $space-5;
+	}
+
+	.band__head {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: flex-end;
+		gap: $space-3;
+		margin-bottom: $space-6;
+	}
+
+	.band__date {
+		margin: 0;
+		font-style: italic;
+		color: rd.$sky;
+	}
+
+	.events {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+		gap: 0;
+		margin: 0;
+		padding: 0;
+		list-style-type: '';
+
+		li {
+			padding: 0 $space-5;
+			border-left: 1px solid rgba(242, 248, 247, 0.25);
+
+			&:first-child {
+				padding-left: 0;
+				border-left: 0;
+			}
+		}
+	}
+
+	.events__label {
+		display: flex;
+		align-items: center;
+		gap: $space-2;
 		font-size: 0.95rem;
-		color: $color-text-muted;
+		color: rd.$sky;
+	}
+
+	.events__arrow :global(svg) {
+		width: 20px;
+		height: 20px;
+		display: block;
+		fill: rd.$sky;
+	}
+
+	.events__arrow.is-high :global(svg) {
+		fill: rd.$sun;
+	}
+
+	.events__time {
+		display: block;
+		margin-top: $space-2;
+		font-family: var(--font-display), Georgia, serif;
+		font-size: 1.9rem;
+		font-weight: 500;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.events__height {
+		display: block;
+		font-size: 0.95rem;
+		color: rd.$sky;
+	}
+
+	.tableScroll {
+		overflow-x: auto;
+
+		&:focus-visible {
+			outline: 2px solid rd.$teal;
+			outline-offset: 3px;
+		}
 	}
 
 	.tides {
 		width: 100%;
+		min-width: 660px;
 		border-collapse: collapse;
-		font-size: 0.95rem;
 
 		th,
 		td {
-			padding: $space-2 $space-3;
+			padding: $space-4 $space-3;
 			text-align: left;
-			border-bottom: 1px solid $color-border;
+			border-bottom: 1px solid rd.$hairline;
 			vertical-align: top;
 		}
 
 		thead th {
-			font-size: 0.8rem;
-			font-weight: 700;
-			letter-spacing: 0.06em;
+			padding-top: 0;
+			font-size: 0.72rem;
+			font-weight: 600;
+			letter-spacing: 0.12em;
 			text-transform: uppercase;
-			color: $color-text-muted;
+			color: rd.$muted;
+			border-bottom: 2px solid rd.$ink;
 		}
 
-		tbody th {
-			font-weight: 700;
-			white-space: nowrap;
-		}
-
-		.high {
-			color: $color-primary;
-			font-weight: 700;
-		}
-
-		.low {
-			color: $color-text-muted;
-		}
-
-		.num {
-			text-align: right;
-			font-variant-numeric: tabular-nums;
+		tbody tr.is-today {
+			background: rd.$sky-wash;
 		}
 	}
 
+	.tides__day {
+		font-family: var(--font-display), Georgia, serif;
+		font-size: 1.15rem;
+		font-weight: 500;
+		white-space: nowrap;
+	}
+
+	.tides__today {
+		display: block;
+		margin-top: 2px;
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: rd.$teal;
+	}
+
+	.tides__cellLabel {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: rd.$muted;
+	}
+
+	.tides__arrow :global(svg) {
+		width: 14px;
+		height: 14px;
+		display: block;
+		fill: rd.$rain;
+	}
+
+	.tides__arrow.is-high :global(svg) {
+		fill: rd.$teal;
+	}
+
+	.tides__time {
+		display: block;
+		margin-top: 2px;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.tides__height {
+		display: block;
+		font-size: 0.88rem;
+		color: rd.$muted;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.tides__empty {
+		color: rd.$muted;
+	}
+
+	.about {
+		display: grid;
+		grid-template-columns: 1.6fr 1fr;
+		gap: $space-8;
+	}
+
+	.about__body p {
+		margin: 0 0 $space-4;
+		font-size: 1.05rem;
+		line-height: 1.6;
+		color: rd.$muted;
+		max-width: 36em;
+	}
+
+	.about__aside {
+		padding: $space-5;
+		background: rd.$sky-wash;
+		border: 1px solid rd.$hairline;
+		border-radius: 14px;
+		align-self: start;
+	}
+
+	.about__label {
+		margin: 0 0 $space-2;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: rd.$teal;
+	}
+
+	.about__figure {
+		margin: 0;
+		font-family: var(--font-display), Georgia, serif;
+		font-size: 2rem;
+		font-weight: 500;
+	}
+
+	.about__note {
+		margin: $space-2 0 0;
+		font-size: 0.92rem;
+		color: rd.$ink;
+	}
+
+	.safe {
+		display: grid;
+		grid-template-columns: 1.6fr 1fr;
+		gap: $space-8;
+	}
+
+	.safe__list {
+		margin: 0;
+		padding: 0;
+		list-style-type: '';
+
+		li {
+			display: flex;
+			gap: $space-4;
+			padding: $space-4 0;
+			border-bottom: 1px solid rd.$hairline;
+
+			&:first-child {
+				padding-top: 0;
+			}
+		}
+
+		h3 {
+			margin: 0 0 $space-2;
+			font-size: 1.15rem;
+			font-weight: 600;
+		}
+
+		p {
+			margin: 0;
+			font-size: 0.97rem;
+			line-height: 1.55;
+			color: rd.$muted;
+		}
+	}
+
+	.safe__icon {
+		flex: 0 0 auto;
+
+		:global(svg) {
+			width: 26px;
+			height: 26px;
+			display: block;
+			fill: rd.$teal;
+			color: rd.$teal;
+		}
+	}
+
+	.wq {
+		align-self: start;
+		padding: $space-5;
+		background: rd.$surface;
+		border: 1px solid rd.$hairline;
+		border-radius: 14px;
+	}
+
+	.wq__label {
+		display: flex;
+		align-items: center;
+		gap: $space-2;
+		margin: 0 0 $space-3;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: rd.$teal;
+	}
+
+	.wq__icon :global(svg) {
+		width: 18px;
+		height: 18px;
+		display: block;
+		fill: rd.$teal;
+	}
+
+	.wq__figure {
+		margin: 0 0 $space-3;
+		font-family: var(--font-display), Georgia, serif;
+		font-size: 2.4rem;
+		font-weight: 500;
+		line-height: 1;
+	}
+
+	.wq__meter {
+		display: flex;
+		gap: 6px;
+		margin: 0 0 $space-3;
+		padding: 0;
+		list-style-type: '';
+
+		li {
+			width: 34px;
+			height: 10px;
+			border-radius: 3px;
+			border: 1px solid rd.$muted;
+			background: rd.$surface;
+		}
+
+		li.is-filled {
+			background: rd.$green;
+			border-color: rd.$green;
+		}
+	}
+
+	.wq__note {
+		margin: 0;
+		font-size: 0.9rem;
+		line-height: 1.5;
+		color: rd.$muted;
+	}
+
+	.wq__rain {
+		margin: $space-3 0 0;
+		padding-top: $space-3;
+		border-top: 1px solid rd.$hairline;
+		font-size: 0.9rem;
+		line-height: 1.5;
+		color: rd.$ink;
+	}
+
+	.cards {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: $space-7;
+
+		h3 {
+			margin: $space-3 0 $space-2;
+			font-size: 1.35rem;
+			font-weight: 600;
+		}
+
+		p {
+			margin: 0 0 $space-3;
+			font-size: 0.95rem;
+			color: rd.$muted;
+		}
+
+		a {
+			font-weight: 600;
+			color: rd.$teal;
+			text-decoration: underline;
+			text-underline-offset: 3px;
+		}
+	}
+
+	:global(.card__img) {
+		width: 100%;
+		height: 190px;
+		object-fit: cover;
+		border-radius: 14px;
+	}
+
 	.provenance {
-		font-size: 0.85rem;
-		color: $color-text-dim;
+		margin: 4.5rem 0 $space-5;
+		padding-top: $space-4;
+		border-top: 1px solid rd.$hairline;
+		font-size: 0.84rem;
+		color: rd.$muted;
+	}
+
+	@media (max-width: $breakpoint-lg) {
+		.about,
+		.safe {
+			grid-template-columns: 1fr;
+			gap: $space-6;
+		}
+
+		.events li {
+			padding: $space-3 0;
+			border-left: 0;
+			border-top: 1px solid rgba(242, 248, 247, 0.25);
+
+			&:first-child {
+				border-top: 0;
+			}
+		}
 	}
 </style>

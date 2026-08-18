@@ -17,6 +17,8 @@
  *     the 7-day daily forecast (/weather/)
  *   - Admiralty EasyTide (no CORS) for the week's tide events
  *     (/tide-times/ and the sidebar widget)
+ *   - Natural Resources Wales bathing water quality (daily cadence:
+ *     an annual classification plus periodic in-season samples)
  *
  * Behaviour on failure:
  *   - Each fetch gets a few attempts with backoff, so a transient 502
@@ -41,10 +43,12 @@ import { SITE } from '../src/lib/site.ts';
 const PROJECT_ROOT = path.resolve(import.meta.dirname, '..');
 const WEATHER_OUT = path.join(PROJECT_ROOT, 'src/data/weather.json');
 const TIDES_OUT = path.join(PROJECT_ROOT, 'src/data/tides.json');
+const WATER_OUT = path.join(PROJECT_ROOT, 'src/data/water-quality.json');
 
 const LAT = SITE.location.lat;
 const LNG = SITE.location.lng;
 const TIDE_STATION = SITE.location.tideStationId;
+const BATHING_WATER_ID = SITE.location.bathingWaterId;
 
 const TZ = 'Europe/London';
 // 20s rather than 15s: during the 2026-06-11 Open-Meteo degradation,
@@ -57,6 +61,7 @@ const RETRY_DELAYS_MS = [5_000, 15_000];
 // workflow ticking every 30 minutes this gives an effective ~3h
 // refresh cadence, and a ~30-minute retry loop while a source fails.
 const REFRESH_AFTER_MS = 165 * 60 * 1000; // 2h45m
+const WATER_REFRESH_AFTER_MS = 20 * 60 * 60 * 1000; // ~daily
 const FORCE_REFRESH = process.env.FORCE_REFRESH === '1';
 const TIME_FMT = new Intl.DateTimeFormat('en-GB', {
 	hour: 'numeric',
@@ -502,6 +507,108 @@ async function refreshWeather(): Promise<boolean> {
 	return true;
 }
 
+interface BathingWaterRecord {
+	result?: {
+		primaryTopic?: {
+			name?: { _value?: string };
+			yearDesignated?: string;
+			waterQualityImpactedByHeavyRain?: boolean;
+			latestSampleAssessment?: string;
+			latestComplianceAssessment?: {
+				_about?: string;
+				complianceClassification?: { name?: { _value?: string } };
+			};
+		};
+	};
+}
+
+interface SampleRecord {
+	result?: {
+		primaryTopic?: {
+			escherichiaColiCount?: number;
+			escherichiaColiQualifier?: { countQualifierNotation?: string };
+			intestinalEnterococciCount?: number;
+			intestinalEnterococciQualifier?: { countQualifierNotation?: string };
+			sampleDateTime?: { inXSDDateTime?: { _value?: string } };
+		};
+	};
+}
+
+function classificationYear(uri: string | undefined): number | null {
+	const match = /\/year\/(\d{4})/.exec(uri ?? '');
+	return match ? Number(match[1]) : null;
+}
+
+async function refreshWaterQuality(): Promise<boolean> {
+	const base = 'https://environment.data.gov.uk/wales/bathing-waters';
+	const url = `${base}/id/bathing-water/${encodeURIComponent(BATHING_WATER_ID)}.json`;
+
+	let record: BathingWaterRecord;
+	try {
+		record = await fetchJsonWithRetry<BathingWaterRecord>('water', url);
+	} catch (err) {
+		console.error('  water: all fetch attempts failed:', err instanceof Error ? err.message : err);
+		return false;
+	}
+
+	const topic = record.result?.primaryTopic;
+	const classification = topic?.latestComplianceAssessment?.complianceClassification?.name?._value;
+	if (!topic || !classification) {
+		console.error('  water: response missing compliance classification, keeping previous snapshot');
+		return false;
+	}
+
+	let sample: {
+		takenIso: string;
+		eColi: number | null;
+		eColiQualifier: string;
+		enterococci: number | null;
+		enterococciQualifier: string;
+	} | null = null;
+	if (typeof topic.latestSampleAssessment === 'string') {
+		try {
+			const raw = await fetchJsonWithRetry<SampleRecord>(
+				'water sample',
+				`${topic.latestSampleAssessment}.json`,
+			);
+			const s = raw.result?.primaryTopic;
+			const taken = s?.sampleDateTime?.inXSDDateTime?._value;
+			if (s && taken && Number.isFinite(Date.parse(`${taken}Z`))) {
+				sample = {
+					takenIso: new Date(Date.parse(`${taken}Z`)).toISOString(),
+					eColi: typeof s.escherichiaColiCount === 'number' ? s.escherichiaColiCount : null,
+					eColiQualifier: s.escherichiaColiQualifier?.countQualifierNotation ?? '=',
+					enterococci:
+						typeof s.intestinalEnterococciCount === 'number' ? s.intestinalEnterococciCount : null,
+					enterococciQualifier: s.intestinalEnterococciQualifier?.countQualifierNotation ?? '=',
+				};
+			}
+		} catch (err) {
+			console.error(
+				'  water: classification kept, latest sample unavailable:',
+				err instanceof Error ? err.message : err,
+			);
+		}
+	}
+
+	const snapshot = {
+		fetchedAt: new Date().toISOString(),
+		site: topic.name?._value ?? 'Tywyn',
+		classification,
+		classificationYear: classificationYear(topic.latestComplianceAssessment?._about),
+		rainImpacted: topic.waterQualityImpactedByHeavyRain === true,
+		sample,
+	};
+
+	fs.writeFileSync(WATER_OUT, JSON.stringify(snapshot, null, 2) + '\n', 'utf8');
+	console.log(
+		`  water: ${snapshot.classification}` +
+			(snapshot.classificationYear ? ` (${snapshot.classificationYear})` : '') +
+			(sample ? `, last sampled ${sample.takenIso.slice(0, 10)}` : ', no sample data'),
+	);
+	return true;
+}
+
 interface EasyTideEvent {
 	dateTime?: string;
 	eventType?: number; // 0 = high, 1 = low
@@ -510,6 +617,10 @@ interface EasyTideEvent {
 
 interface EasyTideResponse {
 	tidalEventList?: EasyTideEvent[];
+}
+
+function parseUkhoUtc(dateTime: string): number {
+	return Date.parse(/([Zz]|[+-]\d{2}:?\d{2})$/.test(dateTime) ? dateTime : `${dateTime}Z`);
 }
 
 async function refreshTides(): Promise<boolean> {
@@ -531,7 +642,7 @@ async function refreshTides(): Promise<boolean> {
 	const keepFrom = Date.now() - 30 * 60 * 60 * 1000;
 	const upcoming = response.tidalEventList.flatMap((ev) => {
 		if (!ev.dateTime || ev.eventType === undefined) return [];
-		const t = Date.parse(ev.dateTime);
+		const t = parseUkhoUtc(ev.dateTime);
 		if (!Number.isFinite(t) || t < keepFrom) return [];
 		const type: 'high' | 'low' = ev.eventType === 0 ? 'high' : 'low';
 		const date = new Date(t);
@@ -569,9 +680,10 @@ async function runSource(
 	name: string,
 	file: string,
 	refresh: () => Promise<boolean>,
+	refreshAfterMs: number = REFRESH_AFTER_MS,
 ): Promise<SourceStatus> {
 	const age = snapshotAgeMs(file);
-	if (!FORCE_REFRESH && age < REFRESH_AFTER_MS) {
+	if (!FORCE_REFRESH && age < refreshAfterMs) {
 		console.log(`  ${name}: snapshot is ${formatAge(age)} old, still fresh; skipping`);
 		return 'fresh';
 	}
@@ -599,9 +711,10 @@ function failureIsAlarming(name: string, file: string, ttlMs: number): boolean {
 }
 
 console.log('Refreshing sidebar conditions...');
-const [weatherStatus, tidesStatus] = await Promise.all([
+const [weatherStatus, tidesStatus, waterStatus] = await Promise.all([
 	runSource('weather', WEATHER_OUT, refreshWeather),
 	runSource('tides', TIDES_OUT, refreshTides),
+	runSource('water', WATER_OUT, refreshWaterQuality, WATER_REFRESH_AFTER_MS),
 ]);
 
 let alarm = false;
@@ -610,6 +723,9 @@ if (weatherStatus === 'failed') {
 }
 if (tidesStatus === 'failed') {
 	alarm = failureIsAlarming('tides', TIDES_OUT, SITE.conditions.tidesStaleTtlMs) || alarm;
+}
+if (waterStatus === 'failed') {
+	alarm = failureIsAlarming('water', WATER_OUT, SITE.conditions.waterStaleTtlMs) || alarm;
 }
 
 if (alarm) process.exit(1);
