@@ -1,180 +1,180 @@
 {
-  "fetchedAt": "2026-08-17T15:05:32.217Z",
+  "fetchedAt": "2026-08-18T11:44:17.248Z",
   "station": "Tywyn",
   "upcoming": [
     {
       "type": "high",
-      "timeIso": "2026-08-16T09:13:00.000Z",
-      "timeLabel": "Sun 10:13 am",
-      "heightM": 4.671446081028821
-    },
-    {
-      "type": "low",
-      "timeIso": "2026-08-16T16:02:00.000Z",
-      "timeLabel": "Sun 5:02 pm",
-      "heightM": 0.8009208476696111
-    },
-    {
-      "type": "high",
-      "timeIso": "2026-08-16T21:30:00.000Z",
-      "timeLabel": "Sun 10:30 pm",
-      "heightM": 4.917919824128039
-    },
-    {
-      "type": "low",
-      "timeIso": "2026-08-17T04:27:00.000Z",
-      "timeLabel": "Mon 5:27 am",
-      "heightM": 0.853290904895803
-    },
-    {
-      "type": "high",
-      "timeIso": "2026-08-17T09:48:00.000Z",
-      "timeLabel": "Mon 10:48 am",
+      "timeIso": "2026-08-17T10:48:00.000Z",
+      "timeLabel": "Mon 11:48 am",
       "heightM": 4.460882645817338
     },
     {
       "type": "low",
-      "timeIso": "2026-08-17T16:30:00.000Z",
-      "timeLabel": "Mon 5:30 pm",
+      "timeIso": "2026-08-17T17:30:00.000Z",
+      "timeLabel": "Mon 6:30 pm",
       "heightM": 1.036871975142702
     },
     {
       "type": "high",
-      "timeIso": "2026-08-17T22:06:00.000Z",
-      "timeLabel": "Mon 11:06 pm",
+      "timeIso": "2026-08-17T23:06:00.000Z",
+      "timeLabel": "Tue 12:06 am",
       "heightM": 4.601054639847022
     },
     {
       "type": "low",
-      "timeIso": "2026-08-18T04:55:00.000Z",
-      "timeLabel": "Tue 5:55 am",
+      "timeIso": "2026-08-18T05:55:00.000Z",
+      "timeLabel": "Tue 6:55 am",
       "heightM": 1.1759787193220796
     },
     {
       "type": "high",
-      "timeIso": "2026-08-18T10:23:00.000Z",
-      "timeLabel": "Tue 11:23 am",
+      "timeIso": "2026-08-18T11:23:00.000Z",
+      "timeLabel": "Tue 12:23 pm",
       "heightM": 4.176705369138305
     },
     {
       "type": "low",
-      "timeIso": "2026-08-18T16:55:00.000Z",
-      "timeLabel": "Tue 5:55 pm",
+      "timeIso": "2026-08-18T17:55:00.000Z",
+      "timeLabel": "Tue 6:55 pm",
       "heightM": 1.3048663616025433
     },
     {
       "type": "high",
-      "timeIso": "2026-08-18T22:43:00.000Z",
-      "timeLabel": "Tue 11:43 pm",
+      "timeIso": "2026-08-18T23:43:00.000Z",
+      "timeLabel": "Wed 12:43 am",
       "heightM": 4.221417159011027
     },
     {
       "type": "low",
-      "timeIso": "2026-08-19T05:21:00.000Z",
-      "timeLabel": "Wed 6:21 am",
+      "timeIso": "2026-08-19T06:21:00.000Z",
+      "timeLabel": "Wed 7:21 am",
       "heightM": 1.503439859979953
     },
     {
       "type": "high",
-      "timeIso": "2026-08-19T11:00:00.000Z",
-      "timeLabel": "Wed 12:00 pm",
+      "timeIso": "2026-08-19T12:00:00.000Z",
+      "timeLabel": "Wed 1:00 pm",
       "heightM": 3.8444781943214483
     },
     {
       "type": "low",
-      "timeIso": "2026-08-19T17:23:00.000Z",
-      "timeLabel": "Wed 6:23 pm",
+      "timeIso": "2026-08-19T18:23:00.000Z",
+      "timeLabel": "Wed 7:23 pm",
       "heightM": 1.58158341487321
     },
     {
       "type": "high",
-      "timeIso": "2026-08-19T23:23:00.000Z",
-      "timeLabel": "Thu 12:23 am",
+      "timeIso": "2026-08-20T00:23:00.000Z",
+      "timeLabel": "Thu 1:23 am",
       "heightM": 3.8156256469733343
     },
     {
       "type": "low",
-      "timeIso": "2026-08-20T05:51:00.000Z",
-      "timeLabel": "Thu 6:51 am",
+      "timeIso": "2026-08-20T06:51:00.000Z",
+      "timeLabel": "Thu 7:51 am",
       "heightM": 1.8193057537830855
     },
     {
       "type": "high",
-      "timeIso": "2026-08-20T11:41:00.000Z",
-      "timeLabel": "Thu 12:41 pm",
+      "timeIso": "2026-08-20T12:41:00.000Z",
+      "timeLabel": "Thu 1:41 pm",
       "heightM": 3.491708550897602
     },
     {
       "type": "low",
-      "timeIso": "2026-08-20T18:01:00.000Z",
-      "timeLabel": "Thu 7:01 pm",
+      "timeIso": "2026-08-20T19:01:00.000Z",
+      "timeLabel": "Thu 8:01 pm",
       "heightM": 1.8544883212353571
     },
     {
       "type": "high",
-      "timeIso": "2026-08-21T00:12:00.000Z",
-      "timeLabel": "Fri 1:12 am",
+      "timeIso": "2026-08-21T01:12:00.000Z",
+      "timeLabel": "Fri 2:12 am",
       "heightM": 3.4242435117367465
     },
     {
       "type": "low",
-      "timeIso": "2026-08-21T06:35:00.000Z",
-      "timeLabel": "Fri 7:35 am",
+      "timeIso": "2026-08-21T07:35:00.000Z",
+      "timeLabel": "Fri 8:35 am",
       "heightM": 2.111123969521014
     },
     {
       "type": "high",
-      "timeIso": "2026-08-21T12:35:00.000Z",
-      "timeLabel": "Fri 1:35 pm",
+      "timeIso": "2026-08-21T13:35:00.000Z",
+      "timeLabel": "Fri 2:35 pm",
       "heightM": 3.160967992924126
     },
     {
       "type": "low",
-      "timeIso": "2026-08-21T18:56:00.000Z",
-      "timeLabel": "Fri 7:56 pm",
+      "timeIso": "2026-08-21T19:56:00.000Z",
+      "timeLabel": "Fri 8:56 pm",
       "heightM": 2.0965425342730137
     },
     {
       "type": "high",
-      "timeIso": "2026-08-22T01:24:00.000Z",
-      "timeLabel": "Sat 2:24 am",
+      "timeIso": "2026-08-22T02:24:00.000Z",
+      "timeLabel": "Sat 3:24 am",
       "heightM": 3.1163131606501278
     },
     {
       "type": "low",
-      "timeIso": "2026-08-22T07:47:00.000Z",
-      "timeLabel": "Sat 8:47 am",
+      "timeIso": "2026-08-22T08:47:00.000Z",
+      "timeLabel": "Sat 9:47 am",
       "heightM": 2.3390701296946452
     },
     {
       "type": "high",
-      "timeIso": "2026-08-22T14:02:00.000Z",
-      "timeLabel": "Sat 3:02 pm",
+      "timeIso": "2026-08-22T15:02:00.000Z",
+      "timeLabel": "Sat 4:02 pm",
       "heightM": 2.9475797226633498
     },
     {
       "type": "low",
-      "timeIso": "2026-08-22T20:43:00.000Z",
-      "timeLabel": "Sat 9:43 pm",
+      "timeIso": "2026-08-22T21:43:00.000Z",
+      "timeLabel": "Sat 10:43 pm",
       "heightM": 2.233206445840313
     },
     {
       "type": "high",
-      "timeIso": "2026-08-23T03:51:00.000Z",
-      "timeLabel": "Sun 4:51 am",
+      "timeIso": "2026-08-23T04:51:00.000Z",
+      "timeLabel": "Sun 5:51 am",
       "heightM": 3.075284875532846
     },
     {
       "type": "low",
-      "timeIso": "2026-08-23T11:22:00.000Z",
-      "timeLabel": "Sun 12:22 pm",
+      "timeIso": "2026-08-23T12:22:00.000Z",
+      "timeLabel": "Sun 1:22 pm",
       "heightM": 2.2017629423125338
     },
     {
       "type": "high",
-      "timeIso": "2026-08-23T16:25:00.000Z",
-      "timeLabel": "Sun 5:25 pm",
+      "timeIso": "2026-08-23T17:25:00.000Z",
+      "timeLabel": "Sun 6:25 pm",
       "heightM": 3.059317260676626
+    },
+    {
+      "type": "low",
+      "timeIso": "2026-08-24T00:36:00.000Z",
+      "timeLabel": "Mon 1:36 am",
+      "heightM": 1.9327054167181479
+    },
+    {
+      "type": "high",
+      "timeIso": "2026-08-24T06:14:00.000Z",
+      "timeLabel": "Mon 7:14 am",
+      "heightM": 3.3530935068867493
+    },
+    {
+      "type": "low",
+      "timeIso": "2026-08-24T13:08:00.000Z",
+      "timeLabel": "Mon 2:08 pm",
+      "heightM": 1.9054485110045183
+    },
+    {
+      "type": "high",
+      "timeIso": "2026-08-24T18:22:00.000Z",
+      "timeLabel": "Mon 7:22 pm",
+      "heightM": 3.374631215692982
     }
   ]
 }
