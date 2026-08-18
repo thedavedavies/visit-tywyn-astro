@@ -1,0 +1,1268 @@
+---
+import { Image } from 'astro:assets';
+import PageLayout from '../layouts/PageLayout.astro';
+import Icon from '../components/Icon/Icon.astro';
+import { getTidesSnapshot, getWeatherSnapshot } from '../lib/conditions';
+import {
+	aqiFlavour,
+	dayOutlook,
+	daylightDuration,
+	heroHeadline,
+	heroSupport,
+	pickOfWeekIndex,
+	pickOfWeekNote,
+	pollenFlavour,
+	seaVsAir,
+	swellNarrative,
+	todayNarrative,
+	updatedLine,
+	uvInfo,
+	wavesDetail,
+	wavesHeadline,
+} from '../lib/weather-copy';
+import { webPage } from '../lib/jsonld';
+import beachImg from '../assets/img/things-to-do/tywyn-beach/cover.jpg';
+import railwayImg from '../assets/img/things-to-do/the-talyllyn-railway/cover.jpg';
+import cinemaImg from '../assets/img/things-to-do/magic-lantern-cinema/cover.jpg';
+
+const snap = getWeatherSnapshot();
+const tides = getTidesSnapshot();
+const daily = snap?.daily ?? [];
+const hourly = snap?.hourly ?? [];
+const today = daily[0];
+
+interface Glyph {
+	icon: string;
+	tone: 'sun' | 'muted' | 'rain';
+}
+
+function glyphFor(code: number | null, isDay = true): Glyph {
+	if (code === null || code < 0 || code > 99) return { icon: 'ms-cloud', tone: 'muted' };
+	if (code <= 1)
+		return isDay ? { icon: 'ms-sunny', tone: 'sun' } : { icon: 'ms-clear_night', tone: 'muted' };
+	if (code === 2)
+		return isDay
+			? { icon: 'ms-partly_cloudy_day', tone: 'sun' }
+			: { icon: 'ms-cloud', tone: 'muted' };
+	if (code === 3) return { icon: 'ms-cloud', tone: 'muted' };
+	if (code <= 48) return { icon: 'ms-foggy', tone: 'muted' };
+	if (code <= 67) return { icon: 'ms-rainy', tone: 'rain' };
+	if (code <= 77) return { icon: 'ms-weather_snowy', tone: 'muted' };
+	if (code <= 82) return { icon: 'ms-rainy', tone: 'rain' };
+	if (code <= 86) return { icon: 'ms-weather_snowy', tone: 'muted' };
+	return { icon: 'ms-thunderstorm', tone: 'rain' };
+}
+
+function iconFor(code: number | null, isDay = true): string {
+	const dn = (day: string, night: string) => (isDay ? day : night);
+	if (code === null || code < 0 || code > 99) return 'cloudy';
+	if (code <= 1) return dn('clear-day', 'clear-night');
+	if (code === 2) return dn('cloudy-1-day', 'cloudy-1-night');
+	if (code === 3) return 'cloudy';
+	if (code <= 48) return dn('fog-day', 'fog-night');
+	if (code <= 57) return 'rainy-1';
+	if (code <= 63) return 'rainy-2';
+	if (code <= 67) return 'rainy-3';
+	if (code <= 73) return 'snowy-2';
+	if (code <= 77) return 'snowy-3';
+	if (code <= 81) return dn('rainy-2-day', 'rainy-2-night');
+	if (code === 82) return 'rainy-3';
+	if (code <= 86) return 'snowy-2';
+	if (code === 95) return 'thunderstorms';
+	if (code === 96 || code === 99) return 'severe-thunderstorm';
+	return 'cloudy';
+}
+
+const TZ = 'Europe/London';
+const TIME_FMT = new Intl.DateTimeFormat('en-GB', {
+	hour: 'numeric',
+	minute: '2-digit',
+	hour12: true,
+	timeZone: TZ,
+});
+const DAY_KEY_FMT = new Intl.DateTimeFormat('en-CA', { dateStyle: 'short', timeZone: TZ });
+const WEEKDAY_FMT = new Intl.DateTimeFormat('en-GB', { weekday: 'short', timeZone: TZ });
+const FULL_DAY_FMT = new Intl.DateTimeFormat('en-GB', {
+	weekday: 'long',
+	day: 'numeric',
+	timeZone: TZ,
+});
+const TIDE_DATE_FMT = new Intl.DateTimeFormat('en-GB', {
+	weekday: 'long',
+	day: 'numeric',
+	month: 'long',
+	timeZone: TZ,
+});
+
+const headline = snap ? heroHeadline(snap) : null;
+const support = snap ? heroSupport(snap, today) : '';
+const updated = snap ? updatedLine(snap) : '';
+
+const stats = snap
+	? [
+			snap.windMph !== null && {
+				label: 'Wind',
+				value:
+					`${snap.windDir ?? ''} ${snap.windMph.toFixed(0)} mph${snap.gustsMph != null ? `, gusts ${snap.gustsMph.toFixed(0)}` : ''}`.trim(),
+			},
+			snap.humidity != null && { label: 'Humidity', value: `${snap.humidity}%` },
+			today?.uvIndexMax != null && { label: 'UV', value: uvInfo(today.uvIndexMax).band },
+			snap.pressureHpa != null && { label: 'Pressure', value: `${snap.pressureHpa} hPa` },
+			snap.seaTempC != null && { label: 'Sea', value: `${snap.seaTempC.toFixed(1)}°C` },
+		].filter((s): s is { label: string; value: string } => Boolean(s))
+	: [];
+
+const todayLine = todayNarrative(hourly, today?.sunsetIso);
+const pickIdx = snap ? pickOfWeekIndex(daily) : null;
+
+const todayKey = DAY_KEY_FMT.format(new Date());
+const dayRows = daily.map((day, i) => ({
+	day,
+	glyph: glyphFor(day.code),
+	isToday: DAY_KEY_FMT.format(new Date(`${day.date}T12:00:00Z`)) === todayKey,
+	fullLabel: FULL_DAY_FMT.format(new Date(`${day.date}T12:00:00Z`)),
+	outlook: dayOutlook(day),
+	isPick: i === pickIdx,
+}));
+
+const sunsetMs = today?.sunsetIso ? Date.parse(today.sunsetIso) : NaN;
+const hourCells = hourly.slice(0, 7).map((hour, i, arr) => {
+	const start = Date.parse(hour.timeIso);
+	const next = arr[i + 1] ? Date.parse(arr[i + 1]!.timeIso) : start + 3600_000;
+	return {
+		...hour,
+		glyph: glyphFor(hour.code, hour.isDay),
+		sunset:
+			Number.isFinite(sunsetMs) && sunsetMs >= start && sunsetMs < next
+				? TIME_FMT.format(new Date(sunsetMs))
+				: null,
+	};
+});
+
+const tideEvents = (tides?.upcoming ?? []).slice(0, 4).map((event) => {
+	const when = new Date(event.timeIso);
+	const isToday = DAY_KEY_FMT.format(when) === todayKey;
+	return {
+		type: event.type,
+		time: TIME_FMT.format(when),
+		heightM: event.heightM,
+		daySuffix: isToday ? null : WEEKDAY_FMT.format(when),
+	};
+});
+const tidesDateLabel = TIDE_DATE_FMT.format(new Date());
+
+const waves = snap?.waves ?? null;
+const swellLine = waves ? swellNarrative(waves.week) : null;
+const uv = today?.uvIndexMax != null ? uvInfo(today.uvIndexMax) : null;
+const daylight = daylightDuration(today?.sunriseIso, today?.sunsetIso);
+const sunrise = today?.sunriseIso ? TIME_FMT.format(new Date(today.sunriseIso)) : null;
+const sunset = today?.sunsetIso ? TIME_FMT.format(new Date(today.sunsetIso)) : null;
+
+const title = 'Tywyn beach weather forecast';
+const description =
+	'Live weather for Tywyn beach: current conditions, the rest of today hour by hour, the week ahead, sea and tide conditions, sunshine, air quality and pollen.';
+
+const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Weather' }];
+
+const jsonLd = webPage({ title, description, url: Astro.url });
+---
+
+<PageLayout
+	title={title}
+	description={description}
+	breadcrumbs={breadcrumbs}
+	jsonLd={jsonLd}
+	hideSidebar
+	displayFont
+	bodyClass="weather-page"
+>
+	{
+		!snap ? (
+			<div class="entry-content">
+				<h1>Tywyn weather</h1>
+				<p>The forecast is being refreshed. Check back in a few minutes.</p>
+			</div>
+		) : (
+			<div class="wx">
+				<section class="hero" aria-label="Current conditions">
+					<div class="hero__text">
+						<h1 class="hero__headline">{headline ?? 'Tywyn weather'}</h1>
+						{support && <p class="hero__support">{support}</p>}
+						<p class="hero__updated">
+							{updated}
+							{snap.stale && <em> · last good reading</em>}
+						</p>
+					</div>
+					<div class="hero__disc">
+						<Icon
+							name={`weather-anim-${iconFor(snap.code ?? today?.code ?? null, snap.isDay ?? true)}`}
+						/>
+					</div>
+				</section>
+
+				{stats.length > 0 && (
+					<ul class="stats">
+						{stats.map((stat) => (
+							<li>
+								<span class="stats__label">{stat.label}</span>
+								<span class="stats__value">{stat.value}</span>
+							</li>
+						))}
+					</ul>
+				)}
+
+				{hourCells.length > 0 && (
+					<section aria-labelledby="today-heading">
+						<p class="eyebrow">Today</p>
+						<h2 id="today-heading">The rest of today, hour by hour</h2>
+						{todayLine && <p class="sectionNote">{todayLine}</p>}
+						<div class="hourScroll" tabindex="0" role="region" aria-labelledby="today-heading">
+							<ol class="hours">
+								{hourCells.map((hour) => (
+									<li>
+										<span class="hours__time">{hour.label}</span>
+										<span class={`hours__icon tone-${hour.glyph.tone}`}>
+											<Icon name={hour.glyph.icon} />
+										</span>
+										<span class="hours__temp">
+											{hour.tempC !== null ? `${hour.tempC.toFixed(0)}°` : '–'}
+										</span>
+										{hour.rainChance !== null && (
+											<span class="hours__rain">
+												<span class="hours__rainIcon tone-rain">
+													<Icon name="ms-water_drop" />
+												</span>
+												{hour.rainChance}%
+											</span>
+										)}
+										{hour.sunset && (
+											<span class="hours__sunset">
+												<span class="tone-sun">
+													<Icon name="ms-wb_twilight" />
+												</span>
+												{hour.sunset}
+											</span>
+										)}
+									</li>
+								))}
+							</ol>
+						</div>
+					</section>
+				)}
+
+				{dayRows.length > 0 && (
+					<section aria-labelledby="week-heading">
+						<p class="eyebrow">The week ahead</p>
+						<h2 id="week-heading">Your next seven days in Tywyn</h2>
+						<div class="weekScroll" tabindex="0" role="region" aria-labelledby="week-heading">
+							<table class="week">
+								<caption class="sr-only">
+									Daily forecast for the week ahead: outlook, temperatures, rain chance and wind
+								</caption>
+								<thead>
+									<tr>
+										<th scope="col">Day</th>
+										<th scope="col">Outlook</th>
+										<th scope="col" class="num">
+											High / low
+										</th>
+										<th scope="col" class="num">
+											Rain
+										</th>
+										<th scope="col" class="num">
+											Wind
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									{dayRows.map(({ day, glyph, isToday, fullLabel, outlook, isPick }) => (
+										<tr class:list={[isPick && 'week__pick']}>
+											<th scope="row">
+												<span class="week__day">{fullLabel}</span>
+												{isToday && <span class="week__today">Today</span>}
+											</th>
+											<td>
+												<span class="week__outlook">
+													<span class={`week__icon tone-${glyph.tone}`}>
+														<Icon name={glyph.icon} />
+													</span>
+													<span>
+														{outlook}
+														{isPick && (
+															<span class="week__pickline">
+																<span class="week__badge">Pick of the week</span>
+																<em>{pickOfWeekNote(day)}</em>
+															</span>
+														)}
+													</span>
+												</span>
+											</td>
+											<td class="num">
+												<span class="week__high">
+													{day.tempMaxC !== null ? `${day.tempMaxC.toFixed(0)}°` : '–'}
+												</span>{' '}
+												<span class="week__low">
+													{day.tempMinC !== null ? `${day.tempMinC.toFixed(0)}°` : ''}
+												</span>
+											</td>
+											<td class="num week__rain">
+												{day.rainChance !== null ? `${day.rainChance}%` : '–'}
+											</td>
+											<td class="num week__wind">
+												{day.windMph !== null
+													? `${day.windDir ?? ''} ${day.windMph.toFixed(0)} mph`.trim()
+													: '–'}
+											</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						</div>
+					</section>
+				)}
+
+				<section class="beach bleed" aria-labelledby="beach-heading">
+					<div class="beach__inner">
+						<div class="beach__conditions">
+							<p class="eyebrow eyebrow--band">Sea &amp; shore</p>
+							<h2 id="beach-heading">Down at the beach</h2>
+							{snap.seaTempC != null && (
+								<div class="beach__block">
+									<p class="beach__label">
+										<span class="beach__labelIcon">
+											<Icon name="ms-water" />
+										</span>
+										Sea temperature
+									</p>
+									<p class="beach__big">{snap.seaTempC.toFixed(1)}°C</p>
+									<p class="beach__note">{seaVsAir(snap.seaTempC, snap.tempC)}</p>
+								</div>
+							)}
+							{waves?.heightM != null && (
+								<div class="beach__block">
+									<p class="beach__label">
+										<span class="beach__labelIcon">
+											<Icon name="ms-waves" />
+										</span>
+										Waves
+									</p>
+									<p class="beach__mid">{wavesHeadline(waves.heightM)}</p>
+									<p class="beach__note">{wavesDetail(waves.heightM, waves.periodS)}</p>
+								</div>
+							)}
+							{swellLine && (
+								<div class="beach__block">
+									<p class="beach__label">The week's swell</p>
+									<p class="beach__swell">{swellLine}</p>
+								</div>
+							)}
+							<p class="beach__smallprint">
+								Tide predictions &copy; UK Hydrographic Office. Check conditions locally before
+								swimming.
+							</p>
+						</div>
+						{tideEvents.length > 0 && (
+							<div class="beach__tides">
+								<div class="beach__tidesHead">
+									<p class="beach__label">Today's tides</p>
+									<p class="beach__tidesDate">{tidesDateLabel}</p>
+								</div>
+								<ul class="tideList">
+									{tideEvents.map((event) => (
+										<li>
+											<span
+												class:list={[
+													'tideList__arrow',
+													event.type === 'high' ? 'tone-sun' : 'tideList__arrow--down',
+												]}
+											>
+												<Icon
+													name={event.type === 'high' ? 'ms-arrow_upward' : 'ms-arrow_downward'}
+												/>
+											</span>
+											<span class="tideList__type">
+												{event.type === 'high' ? 'High water' : 'Low water'}
+												{event.daySuffix && ` (${event.daySuffix})`}
+											</span>
+											<span class="tideList__time">{event.time}</span>
+											<span class="tideList__height">{event.heightM.toFixed(1)}m</span>
+										</li>
+									))}
+								</ul>
+								<a class="beach__link" href="/tide-times/">
+									This week's tide times
+								</a>
+							</div>
+						)}
+					</div>
+				</section>
+
+				<section aria-labelledby="sky-heading">
+					<p class="eyebrow">Sun &amp; sky</p>
+					<h2 id="sky-heading">Sunshine, air and pollen</h2>
+					{daylight && sunrise && sunset && (
+						<div class="daylight">
+							<p class="daylight__duration">
+								<strong>{daylight}</strong>
+								<span>of daylight</span>
+							</p>
+							<div class="daylight__horizon" aria-hidden="true">
+								<span class="daylight__sun" />
+								<span class="daylight__dot daylight__dot--rise" />
+								<span class="daylight__dot daylight__dot--set" />
+							</div>
+							<div class="daylight__ends">
+								<p>
+									<span class="daylight__label">
+										<span class="tone-sun">
+											<Icon name="ms-wb_twilight" />
+										</span>
+										Sunrise
+									</span>
+									<span class="daylight__time">{sunrise}</span>
+								</p>
+								<p>
+									<span class="daylight__label">
+										<span class="tone-sun">
+											<Icon name="ms-wb_twilight" />
+										</span>
+										Sunset
+									</span>
+									<span class="daylight__time">{sunset}</span>
+								</p>
+							</div>
+						</div>
+					)}
+					<div class="skyStats">
+						{uv && (
+							<div class="skyStats__item">
+								<p class="skyStats__label">
+									<span class="tone-sun">
+										<Icon name="ms-clear_day" />
+									</span>
+									UV index
+								</p>
+								<p class="skyStats__value">
+									{uv.value} <em>{uv.band}</em>
+								</p>
+								<p class="skyStats__note">{uv.advice}</p>
+							</div>
+						)}
+						{snap.aqi && (
+							<div class="skyStats__item">
+								<p class="skyStats__label">
+									<span class="tone-rain">
+										<Icon name="ms-air" />
+									</span>
+									Air quality
+								</p>
+								<p class="skyStats__value">
+									{snap.aqi.label} <em>European AQI {snap.aqi.value}</em>
+								</p>
+								<p class="skyStats__note">{aqiFlavour(snap.aqi.label)}</p>
+							</div>
+						)}
+						{snap.pollen && (
+							<div class="skyStats__item">
+								<p class="skyStats__label">
+									<span class="tone-green">
+										<Icon name="ms-eco" />
+									</span>
+									Pollen
+								</p>
+								<p class="skyStats__value">
+									{snap.pollen.label} <em>{snap.pollen.species}</em>
+								</p>
+								<p class="skyStats__note">{pollenFlavour(snap.pollen)}</p>
+							</div>
+						)}
+					</div>
+				</section>
+
+				<section aria-labelledby="whatever-heading">
+					<p class="eyebrow">Make the most of it</p>
+					<h2 id="whatever-heading">Whatever the weather</h2>
+					<p class="sectionNote">
+						Tywyn's a proper seaside town: there's plenty to do, come sunshine or drizzle.
+					</p>
+					<div class="cards">
+						<article class="card">
+							<Image src={beachImg} alt="" width={640} class="card__img" />
+							<p class="card__tag card__tag--green">On fine days</p>
+							<h3>Beach &amp; promenade</h3>
+							<p>
+								Two miles of Blue Flag sand with dolphins offshore and sunsets over Cardigan Bay.
+							</p>
+							<a href="/things-to-do/tywyn-beach/">Beach &amp; sea &rarr;</a>
+						</article>
+						<article class="card">
+							<Image src={railwayImg} alt="" width={640} class="card__img" />
+							<p class="card__tag card__tag--rain">If drizzle sets in</p>
+							<h3>Talyllyn Railway</h3>
+							<p>
+								Steam up the Fathew valley to Dolgoch Falls: the carriages are cosy, come rain or
+								shine.
+							</p>
+							<a href="/things-to-do/the-talyllyn-railway/">Plan a ride &rarr;</a>
+						</article>
+						<article class="card">
+							<Image src={cinemaImg} alt="" width={640} class="card__img" />
+							<p class="card__tag card__tag--teal">For blowy evenings</p>
+							<h3>Cinema &amp; caf&eacute;s</h3>
+							<p>
+								The Magic Lantern cinema and the town's caf&eacute;s were made for weather-watching.
+							</p>
+							<a href="/things-to-do/magic-lantern-cinema/">Eat, drink &amp; watch &rarr;</a>
+						</article>
+					</div>
+				</section>
+
+				<p class="provenance">
+					Forecast &copy; Open-Meteo &middot; Tide predictions &copy; UK Hydrographic Office
+					&middot; Air quality &copy; Copernicus CAMS &middot; Updated every few hours
+				</p>
+			</div>
+		)
+	}
+</PageLayout>
+
+<style lang="scss">
+	@use '../styles/abstracts/variables' as *;
+
+	$paper: #fbfaf7;
+	$surface: #ffffff;
+	$ink: #24353f;
+	$muted: #5c7280;
+	$teal: #2b6f86;
+	$sun: #eba53f;
+	$rain: #2f6e93;
+	$green: #3e8348;
+	$sky: #e3f0f4;
+	$deep: #1e5265;
+	$on-deep: #f2f8f7;
+	$hairline: #e2e6e3;
+
+	:global(body.weather-page) {
+		background: $paper;
+	}
+
+	.wx {
+		font-family: var(--font-page), system-ui, sans-serif;
+		color: $ink;
+		font-size: 1rem;
+
+		h1,
+		h2,
+		h3 {
+			font-family: var(--font-display), Georgia, serif;
+			color: $ink;
+		}
+
+		h2 {
+			font-size: 2.2rem;
+			font-weight: 600;
+			margin: $space-2 0 $space-4;
+			line-height: 1.15;
+		}
+
+		section {
+			margin: $space-8 0 4.5rem;
+		}
+	}
+
+	.tone-sun :global(svg) {
+		fill: $sun;
+	}
+	.tone-muted :global(svg) {
+		fill: $muted;
+	}
+	.tone-rain :global(svg) {
+		fill: $rain;
+	}
+	.tone-green :global(svg) {
+		fill: $green;
+	}
+
+	.eyebrow {
+		margin: 0;
+		font-size: 0.8rem;
+		font-weight: 700;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: $teal;
+	}
+
+	.eyebrow--band {
+		color: $sky;
+	}
+
+	.sectionNote {
+		margin: 0 0 $space-6;
+		font-size: 1.1rem;
+		color: $muted;
+		max-width: 42em;
+	}
+
+	.hero {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: $space-8;
+		align-items: center;
+		margin: $space-7 0 $space-5 !important;
+	}
+
+	.hero__headline {
+		margin: 0;
+		font-size: clamp(2.1rem, 4.6vw, 3.5rem);
+		font-weight: 500;
+		line-height: 1.12;
+		max-width: 13em;
+	}
+
+	.hero__support {
+		margin: $space-4 0 0;
+		max-width: 32em;
+		font-size: 1.2rem;
+		line-height: 1.55;
+		color: $muted;
+	}
+
+	.hero__updated {
+		margin: $space-4 0 0;
+		font-size: 0.88rem;
+		letter-spacing: 0.02em;
+		color: $muted;
+	}
+
+	.hero__disc {
+		display: grid;
+		place-items: center;
+		width: 220px;
+		height: 220px;
+		border-radius: 50%;
+		background: $sky;
+
+		:global(svg) {
+			width: 148px;
+			height: 127px;
+			display: block;
+		}
+	}
+
+	.stats {
+		display: flex;
+		flex-wrap: wrap;
+		gap: $space-2 $space-7;
+		margin: 0;
+		padding: $space-4 0;
+		border-block: 1px solid $hairline;
+		list-style-type: '';
+
+		li {
+			display: flex;
+			gap: $space-2;
+			align-items: baseline;
+		}
+	}
+
+	.stats__label {
+		font-size: 0.94rem;
+		color: $muted;
+	}
+
+	.stats__value {
+		font-weight: 600;
+		font-size: 0.94rem;
+	}
+
+	.hourScroll,
+	.weekScroll {
+		overflow-x: auto;
+
+		&:focus-visible {
+			outline: 2px solid $teal;
+			outline-offset: 3px;
+		}
+	}
+
+	.hours {
+		display: flex;
+		margin: 0;
+		padding: $space-5 0;
+		border-block: 1px solid $hairline;
+		list-style-type: '';
+		min-width: 600px;
+
+		li {
+			flex: 1 1 0;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: $space-3;
+		}
+	}
+
+	.hours__time {
+		font-size: 0.88rem;
+		font-weight: 600;
+	}
+
+	.hours__icon :global(svg) {
+		width: 30px;
+		height: 30px;
+		display: block;
+	}
+
+	.hours__temp {
+		font-family: var(--font-display), Georgia, serif;
+		font-size: 1.75rem;
+		font-weight: 500;
+	}
+
+	.hours__rain {
+		display: inline-flex;
+		align-items: center;
+		gap: 3px;
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: $muted;
+	}
+
+	.hours__rainIcon :global(svg) {
+		width: 12px;
+		height: 12px;
+		display: block;
+	}
+
+	.hours__sunset {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		font-size: 0.85rem;
+		font-weight: 600;
+
+		:global(svg) {
+			width: 15px;
+			height: 15px;
+			display: block;
+		}
+	}
+
+	.week {
+		width: 100%;
+		min-width: 680px;
+		border-collapse: collapse;
+
+		th,
+		td {
+			padding: $space-4;
+			text-align: left;
+			border-bottom: 1px solid $hairline;
+			vertical-align: top;
+		}
+
+		thead th {
+			padding-top: 0;
+			font-size: 0.72rem;
+			font-weight: 600;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: $muted;
+			border-bottom: 2px solid $ink;
+		}
+
+		.num {
+			text-align: right;
+			white-space: nowrap;
+		}
+	}
+
+	.week__day {
+		font-family: var(--font-display), Georgia, serif;
+		font-size: 1.2rem;
+		font-weight: 500;
+		white-space: nowrap;
+	}
+
+	.week__today {
+		display: block;
+		margin-top: 2px;
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: $teal;
+	}
+
+	.week__outlook {
+		display: flex;
+		gap: $space-3;
+		align-items: flex-start;
+	}
+
+	.week__icon :global(svg) {
+		width: 30px;
+		height: 30px;
+		display: block;
+		flex: 0 0 auto;
+	}
+
+	.week__high {
+		font-family: var(--font-display), Georgia, serif;
+		font-size: 1.6rem;
+		font-weight: 500;
+	}
+
+	.week__low {
+		font-family: var(--font-display), Georgia, serif;
+		font-size: 1rem;
+		color: $muted;
+	}
+
+	.week__rain {
+		font-weight: 600;
+		color: $teal;
+	}
+
+	.week__wind {
+		color: $muted;
+	}
+
+	.week__pick {
+		background: $sky;
+
+		:is(th, td):first-child {
+			border-radius: 10px 0 0 10px;
+		}
+
+		:is(th, td):last-child {
+			border-radius: 0 10px 10px 0;
+		}
+
+		.week__low,
+		.week__wind {
+			color: $ink;
+		}
+	}
+
+	.week__pickline {
+		display: flex;
+		flex-wrap: wrap;
+		gap: $space-2;
+		align-items: center;
+		margin-top: $space-2;
+
+		em {
+			color: $teal;
+			font-size: 0.94rem;
+		}
+	}
+
+	.week__badge {
+		padding: 3px $space-3;
+		background: $sun;
+		color: $ink;
+		border-radius: $radius-pill;
+		font-size: 0.68rem;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+	}
+
+	.bleed {
+		margin-inline: calc(50% - 50vw);
+	}
+
+	.beach {
+		background: $deep;
+		color: $on-deep;
+		padding: 4.5rem 0;
+
+		h2 {
+			color: $on-deep;
+		}
+	}
+
+	.beach__inner {
+		max-width: $container-max;
+		margin: 0 auto;
+		padding: 0 $space-5;
+		display: grid;
+		grid-template-columns: 1.2fr 1fr;
+		gap: $space-8;
+	}
+
+	.beach__block {
+		padding: $space-5 0;
+		border-top: 1px solid rgba(242, 248, 247, 0.25);
+	}
+
+	.beach__label {
+		display: flex;
+		align-items: center;
+		gap: $space-2;
+		margin: 0 0 $space-2;
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: $sky;
+	}
+
+	.beach__labelIcon :global(svg) {
+		width: 18px;
+		height: 18px;
+		display: block;
+		fill: $sky;
+	}
+
+	.beach__big {
+		margin: 0;
+		font-family: var(--font-display), Georgia, serif;
+		font-size: 4rem;
+		font-weight: 500;
+		line-height: 1;
+	}
+
+	.beach__mid {
+		margin: 0;
+		font-family: var(--font-display), Georgia, serif;
+		font-size: 1.75rem;
+		font-weight: 500;
+	}
+
+	.beach__note {
+		margin: $space-2 0 0;
+		color: $sky;
+	}
+
+	.beach__swell {
+		margin: 0;
+		font-family: var(--font-display), Georgia, serif;
+		font-style: italic;
+		font-size: 1.25rem;
+	}
+
+	.beach__smallprint {
+		margin: $space-5 0 0;
+		font-size: 0.82rem;
+		color: $sky;
+	}
+
+	.beach__tides {
+		border-left: 1px solid rgba(242, 248, 247, 0.25);
+		padding-left: $space-7;
+	}
+
+	.beach__tidesHead {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: $space-3;
+	}
+
+	.beach__tidesDate {
+		margin: 0;
+		font-size: 0.9rem;
+		font-style: italic;
+		color: $sky;
+	}
+
+	.tideList {
+		margin: $space-3 0 0;
+		padding: 0;
+		list-style-type: '';
+
+		li {
+			display: grid;
+			grid-template-columns: auto 1fr auto auto;
+			gap: $space-3;
+			align-items: center;
+			padding: $space-3 0;
+			border-bottom: 1px solid rgba(242, 248, 247, 0.25);
+		}
+	}
+
+	.tideList__arrow :global(svg) {
+		width: 20px;
+		height: 20px;
+		display: block;
+	}
+
+	.tideList__arrow--down :global(svg) {
+		fill: $sky;
+	}
+
+	.tideList__type {
+		font-size: 1rem;
+	}
+
+	.tideList__time {
+		font-family: var(--font-display), Georgia, serif;
+		font-size: 1.45rem;
+		font-weight: 500;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.tideList__height {
+		color: $sky;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.beach__link {
+		display: inline-block;
+		margin-top: $space-5;
+		color: $on-deep;
+		font-weight: 600;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+
+		&:hover,
+		&:focus-visible {
+			color: #fff;
+			text-decoration-thickness: 2px;
+		}
+	}
+
+	.daylight {
+		max-width: 560px;
+		margin: $space-6 auto $space-7;
+		text-align: center;
+	}
+
+	.daylight__duration {
+		margin: 0 0 $space-5;
+
+		strong {
+			display: block;
+			font-family: var(--font-display), Georgia, serif;
+			font-size: 2.9rem;
+			font-weight: 400;
+		}
+
+		span {
+			font-size: 0.94rem;
+			color: $muted;
+		}
+	}
+
+	.daylight__horizon {
+		position: relative;
+		height: 40px;
+		border-bottom: 1px solid $hairline;
+	}
+
+	.daylight__sun {
+		position: absolute;
+		left: 50%;
+		bottom: -14px;
+		transform: translateX(-50%);
+		width: 28px;
+		height: 28px;
+		border-radius: 50%;
+		background: $sun;
+	}
+
+	.daylight__dot {
+		position: absolute;
+		bottom: -5px;
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		background: $sun;
+	}
+
+	.daylight__dot--rise {
+		left: 0;
+	}
+
+	.daylight__dot--set {
+		right: 0;
+	}
+
+	.daylight__ends {
+		display: flex;
+		justify-content: space-between;
+		margin-top: $space-5;
+
+		p {
+			margin: 0;
+			text-align: left;
+		}
+
+		p:last-child {
+			text-align: right;
+		}
+	}
+
+	.daylight__label {
+		display: flex;
+		align-items: center;
+		gap: $space-2;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: $muted;
+
+		:global(svg) {
+			width: 18px;
+			height: 18px;
+			display: block;
+		}
+	}
+
+	.daylight__time {
+		display: block;
+		margin-top: $space-1;
+		font-family: var(--font-display), Georgia, serif;
+		font-size: 1.5rem;
+	}
+
+	.skyStats {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: $space-7;
+	}
+
+	.skyStats__item {
+		border-top: 1px solid $hairline;
+		padding-top: $space-4;
+	}
+
+	.skyStats__label {
+		display: flex;
+		align-items: center;
+		gap: $space-2;
+		margin: 0 0 $space-2;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: $muted;
+
+		:global(svg) {
+			width: 20px;
+			height: 20px;
+			display: block;
+		}
+	}
+
+	.skyStats__value {
+		margin: 0;
+		font-family: var(--font-display), Georgia, serif;
+		font-size: 2.6rem;
+		font-weight: 400;
+		line-height: 1.1;
+
+		em {
+			font-size: 1.1rem;
+			font-style: italic;
+			color: $muted;
+		}
+	}
+
+	.skyStats__note {
+		margin: $space-2 0 0;
+		font-size: 0.94rem;
+		color: $muted;
+	}
+
+	.cards {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: $space-7;
+	}
+
+	.card {
+		h3 {
+			margin: $space-2 0;
+			font-size: 1.45rem;
+			font-weight: 600;
+		}
+
+		p {
+			margin: 0 0 $space-3;
+			font-size: 0.97rem;
+			color: $muted;
+		}
+
+		a {
+			font-weight: 600;
+			color: $teal;
+			text-decoration: underline;
+			text-underline-offset: 3px;
+		}
+	}
+
+	.card__tag {
+		margin: $space-4 0 0 !important;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.card__tag--green {
+		color: $green;
+	}
+
+	.card__tag--rain {
+		color: $rain;
+	}
+
+	.card__tag--teal {
+		color: $teal;
+	}
+
+	:global(.card__img) {
+		width: 100%;
+		height: 200px;
+		object-fit: cover;
+		border-radius: 14px;
+	}
+
+	.provenance {
+		margin: 4.5rem 0 $space-5;
+		padding-top: $space-4;
+		border-top: 1px solid $hairline;
+		font-size: 0.84rem;
+		color: $muted;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global([class^='am-weather']),
+		:global([class*=' am-weather']) {
+			animation: none !important;
+		}
+	}
+
+	@media (max-width: $breakpoint-lg) {
+		.hero {
+			grid-template-columns: 1fr;
+			gap: $space-5;
+		}
+
+		.hero__disc {
+			width: 150px;
+			height: 150px;
+
+			:global(svg) {
+				width: 100px;
+				height: 86px;
+			}
+		}
+
+		.beach__inner {
+			grid-template-columns: 1fr;
+			gap: $space-6;
+		}
+
+		.beach__tides {
+			border-left: 0;
+			padding-left: 0;
+			border-top: 1px solid rgba(242, 248, 247, 0.25);
+			padding-top: $space-5;
+		}
+	}
+</style>

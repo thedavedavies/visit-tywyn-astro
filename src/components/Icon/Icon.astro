@@ -34,6 +34,14 @@ if (import.meta.env.DEV && !raw) {
 let html = raw ?? '';
 html = html.replace(/<svg\b/, '<svg aria-hidden="true" focusable="false"');
 
+if (html.includes('id="')) {
+	const g = globalThis as { __vtIconInstance?: number };
+	const n = (g.__vtIconInstance = (g.__vtIconInstance ?? 0) + 1);
+	html = html
+		.replace(/id="([^"]+)"/g, (_, id) => `id="${id}--i${n}"`)
+		.replace(/url\(#([^)]+)\)/g, (_, id) => `url(#${id}--i${n})`);
+}
+
 if (className) {
 	if (/<svg\b[^>]*\sclass="/.test(html)) {
 		html = html.replace(/(<svg\b[^>]*\sclass=")([^"]*)(")/, `$1$2 ${className}$3`);

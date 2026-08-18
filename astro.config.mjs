@@ -442,6 +442,33 @@ export default defineConfig({
 	// on detail pages, Lighthouse mobile 2026-08-07) with no LCP change.
 	fonts: [
 		{
+			name: 'Lora',
+			cssVariable: '--font-display',
+			provider: fontProviders.fontsource(),
+			weights: [400, 500, 600],
+			styles: ['normal', 'italic'],
+			subsets: ['latin', 'latin-ext'],
+			fallbacks: ['Georgia', 'Times New Roman', 'serif'],
+			optimizedFallbacks: true,
+		},
+		{
+			name: 'Source Sans 3',
+			cssVariable: '--font-page',
+			provider: fontProviders.fontsource(),
+			weights: [400, 600, 700],
+			styles: ['normal', 'italic'],
+			subsets: ['latin', 'latin-ext'],
+			fallbacks: [
+				'system-ui',
+				'-apple-system',
+				'Segoe UI',
+				'Roboto',
+				'Helvetica Neue',
+				'sans-serif',
+			],
+			optimizedFallbacks: true,
+		},
+		{
 			name: 'Lato',
 			cssVariable: '--font-body',
 			provider: fontProviders.fontsource(),

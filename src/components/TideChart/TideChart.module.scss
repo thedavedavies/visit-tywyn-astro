@@ -1,0 +1,131 @@
+@use '../../styles/abstracts/variables' as *;
+
+.figure {
+	margin: $space-5 0;
+}
+
+.scroll {
+	overflow-x: auto;
+}
+
+.frame {
+	position: relative;
+	min-width: 680px;
+}
+
+.frame svg {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.night {
+	fill: #eef3f5;
+}
+
+.grid {
+	stroke: $color-border;
+	stroke-width: 1;
+}
+
+.dayline {
+	stroke: $color-border;
+	stroke-width: 1;
+}
+
+.tick {
+	fill: $color-text-dim;
+	font-size: 14px;
+	text-anchor: end;
+}
+
+.day {
+	fill: $color-text-muted;
+	font-size: 15px;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	text-anchor: middle;
+}
+
+.area {
+	fill: rgba($color-data, 0.1);
+}
+
+.line {
+	fill: none;
+	stroke: $color-data;
+	stroke-width: 2;
+	stroke-linejoin: round;
+	stroke-linecap: round;
+}
+
+.dot {
+	fill: $color-data;
+	stroke: $color-bg;
+	stroke-width: 2;
+}
+
+.eventLabel {
+	fill: $color-text;
+	font-size: 14px;
+	text-anchor: middle;
+}
+
+.eventHeight {
+	font-weight: 700;
+	font-size: 16px;
+}
+
+.nowline {
+	stroke: $color-text-muted;
+	stroke-width: 1.5;
+	stroke-dasharray: none;
+}
+
+.nowlabel {
+	fill: $color-text-muted;
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	text-anchor: middle;
+}
+
+.crosshair {
+	stroke: $color-text-dim;
+	stroke-width: 1;
+}
+
+.cursordot {
+	fill: $color-data;
+	stroke: $color-bg;
+	stroke-width: 2;
+}
+
+.tooltip {
+	&[hidden] {
+		display: none;
+	}
+
+	position: absolute;
+	top: 6px;
+	transform: translateX(-50%);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: $space-2 $space-3;
+	background: $color-bg;
+	border: 1px solid $color-border;
+	border-radius: $radius-sm;
+	box-shadow: $shadow-sm;
+	pointer-events: none;
+	white-space: nowrap;
+	font-size: 0.8rem;
+	color: $color-text-muted;
+
+	strong {
+		font-size: 1rem;
+		color: $color-text;
+	}
+}

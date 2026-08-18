@@ -13,8 +13,10 @@
  * deploy carries a known-good snapshot if the next refresh fails.
  *
  * Sources:
- *   - Open-Meteo  (CORS-friendly, no key) for current conditions
- *   - Admiralty EasyTide (no CORS) for upcoming tide events
+ *   - Open-Meteo  (CORS-friendly, no key) for current conditions and
+ *     the 7-day daily forecast (/weather/)
+ *   - Admiralty EasyTide (no CORS) for the week's tide events
+ *     (/tide-times/ and the sidebar widget)
  *
  * Behaviour on failure:
  *   - Each fetch gets a few attempts with backoff, so a transient 502
@@ -66,6 +68,16 @@ const DAYTIME_FMT = new Intl.DateTimeFormat('en-GB', {
 	weekday: 'short',
 	hour: 'numeric',
 	minute: '2-digit',
+	hour12: true,
+	timeZone: TZ,
+});
+const DAY_FMT = new Intl.DateTimeFormat('en-GB', {
+	weekday: 'short',
+	day: 'numeric',
+	timeZone: TZ,
+});
+const HOUR_FMT = new Intl.DateTimeFormat('en-GB', {
+	hour: 'numeric',
 	hour12: true,
 	timeZone: TZ,
 });
@@ -126,6 +138,132 @@ function compass(deg: number | null | undefined): string | null {
 	return dirs[idx]!;
 }
 
+// Grains/m3 band edges [low<, moderate<, high<], else "very high".
+// Grass and birch edges follow the Met Office scales; other trees
+// borrow birch's, weeds borrow grass's as the nearest published fit.
+const POLLEN_SPECIES: { key: string; name: string; edges: [number, number, number] }[] = [
+	{ key: 'grass_pollen', name: 'grass', edges: [30, 50, 150] },
+	{ key: 'birch_pollen', name: 'birch', edges: [41, 81, 201] },
+	{ key: 'alder_pollen', name: 'alder', edges: [41, 81, 201] },
+	{ key: 'olive_pollen', name: 'olive', edges: [41, 81, 201] },
+	{ key: 'mugwort_pollen', name: 'mugwort', edges: [30, 50, 150] },
+	{ key: 'ragweed_pollen', name: 'ragweed', edges: [30, 50, 150] },
+];
+const POLLEN_LABELS = ['Low', 'Moderate', 'High', 'Very high'] as const;
+
+interface AirSnapshot {
+	pollen: PollenSnapshot | null;
+	aqi: { value: number; label: string } | null;
+}
+
+interface PollenSnapshot {
+	label: (typeof POLLEN_LABELS)[number];
+	species: string;
+	grainsM3: number;
+}
+
+async function fetchAir(): Promise<AirSnapshot> {
+	const params = new URLSearchParams({
+		latitude: String(LAT),
+		longitude: String(LNG),
+		current: [...POLLEN_SPECIES.map((s) => s.key), 'european_aqi'].join(','),
+	});
+	const url = `https://air-quality-api.open-meteo.com/v1/air-quality?${params.toString()}`;
+	try {
+		const response = await fetchJsonWithRetry<{ current?: Record<string, unknown> }>('pollen', url);
+		const cur = response.current;
+		if (!cur) return { pollen: null, aqi: null };
+		let aqi: AirSnapshot['aqi'] = null;
+		const aqiValue = cur['european_aqi'];
+		if (typeof aqiValue === 'number' && Number.isFinite(aqiValue)) {
+			aqi = {
+				value: Math.round(aqiValue),
+				label:
+					aqiValue <= 20
+						? 'Good'
+						: aqiValue <= 40
+							? 'Fair'
+							: aqiValue <= 60
+								? 'Moderate'
+								: aqiValue <= 80
+									? 'Poor'
+									: aqiValue <= 100
+										? 'Very poor'
+										: 'Extremely poor',
+			};
+		}
+		let worst: (PollenSnapshot & { bandIndex: number }) | null = null;
+		for (const species of POLLEN_SPECIES) {
+			const grains = cur[species.key];
+			if (typeof grains !== 'number' || !Number.isFinite(grains) || grains < 0) continue;
+			const bandIndex = species.edges.findIndex((edge) => grains < edge);
+			const idx = bandIndex === -1 ? 3 : bandIndex;
+			if (!worst || idx > worst.bandIndex || (idx === worst.bandIndex && grains > worst.grainsM3)) {
+				worst = {
+					label: POLLEN_LABELS[idx]!,
+					species: species.name,
+					grainsM3: grains,
+					bandIndex: idx,
+				};
+			}
+		}
+		return {
+			pollen: worst
+				? { label: worst.label, species: worst.species, grainsM3: worst.grainsM3 }
+				: null,
+			aqi,
+		};
+	} catch (err) {
+		console.error('  pollen: fetch failed, omitting:', err instanceof Error ? err.message : err);
+		return { pollen: null, aqi: null };
+	}
+}
+
+interface MarineSnapshot {
+	seaTempC: number | null;
+	waveHeightM: number | null;
+	wavePeriodS: number | null;
+	waveWeek: { date: string; heightM: number }[];
+}
+
+async function fetchMarine(): Promise<MarineSnapshot> {
+	const empty: MarineSnapshot = {
+		seaTempC: null,
+		waveHeightM: null,
+		wavePeriodS: null,
+		waveWeek: [],
+	};
+	const params = new URLSearchParams({
+		latitude: String(LAT),
+		longitude: String(LNG),
+		timezone: TZ,
+		current: 'sea_surface_temperature,wave_height,wave_period',
+		daily: 'wave_height_max',
+	});
+	const url = `https://marine-api.open-meteo.com/v1/marine?${params.toString()}`;
+	try {
+		const response = await fetchJsonWithRetry<{
+			current?: { sea_surface_temperature?: number; wave_height?: number; wave_period?: number };
+			daily?: { time?: string[]; wave_height_max?: number[] };
+		}>('sea', url);
+		const cur = response.current;
+		const num = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? v : null);
+		const waveWeek = (response.daily?.time ?? []).flatMap((date, i) => {
+			const h = num(response.daily?.wave_height_max?.[i]);
+			return h === null ? [] : [{ date, heightM: h }];
+		});
+		return {
+			seaTempC: num(cur?.sea_surface_temperature),
+			waveHeightM: num(cur?.wave_height),
+			wavePeriodS: num(cur?.wave_period),
+			waveWeek,
+		};
+	} catch (err) {
+		console.error('  sea: fetch failed, omitting:', err instanceof Error ? err.message : err);
+		return empty;
+	}
+}
+
 interface OpenMeteoResponse {
 	current?: {
 		time?: string;
@@ -135,11 +273,31 @@ interface OpenMeteoResponse {
 		wind_direction_10m?: number;
 		weather_code?: number;
 		is_day?: number;
+		relative_humidity_2m?: number;
+		pressure_msl?: number;
+		wind_gusts_10m?: number;
 	};
 	hourly?: {
 		time?: string[];
 		precipitation_probability?: number[];
+		temperature_2m?: number[];
+		weather_code?: number[];
+		is_day?: number[];
 	};
+	daily?: {
+		time?: string[];
+		weather_code?: number[];
+		temperature_2m_max?: number[];
+		temperature_2m_min?: number[];
+		precipitation_probability_max?: number[];
+		wind_speed_10m_max?: number[];
+		wind_direction_10m_dominant?: number[];
+		sunrise?: string[];
+		sunset?: string[];
+		uv_index_max?: number[];
+		precipitation_hours?: number[];
+	};
+	utc_offset_seconds?: number;
 }
 
 async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
@@ -208,12 +366,14 @@ async function refreshWeather(): Promise<boolean> {
 		latitude: String(LAT),
 		longitude: String(LNG),
 		timezone: TZ,
-		forecast_days: '1',
+		forecast_days: '8',
 		temperature_unit: 'celsius',
 		wind_speed_unit: 'mph',
 		current:
-			'temperature_2m,apparent_temperature,weather_code,wind_speed_10m,wind_direction_10m,is_day',
-		hourly: 'precipitation_probability',
+			'temperature_2m,apparent_temperature,weather_code,wind_speed_10m,wind_direction_10m,is_day,relative_humidity_2m,pressure_msl,wind_gusts_10m',
+		hourly: 'precipitation_probability,temperature_2m,weather_code,is_day',
+		daily:
+			'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,wind_direction_10m_dominant,sunrise,sunset,uv_index_max,precipitation_hours',
 	});
 	const url = `https://api.open-meteo.com/v1/forecast?${params.toString()}`;
 
@@ -250,22 +410,94 @@ async function refreshWeather(): Promise<boolean> {
 
 	const observedDate = new Date(cur.time);
 	const observedLabel = TIME_FMT.format(observedDate);
+	const [air, marine] = await Promise.all([fetchAir(), fetchMarine()]);
+
+	const d = response.daily;
+	const offsetMs = (response.utc_offset_seconds ?? 0) * 1000;
+	const localIsoToUtc = (naive: string | undefined): string | null => {
+		if (!naive) return null;
+		const ms = Date.parse(`${naive}Z`);
+		return Number.isFinite(ms) ? new Date(ms - offsetMs).toISOString() : null;
+	};
+	const daily = (d?.time ?? []).flatMap((date, i) => {
+		const dayMs = Date.parse(`${date}T12:00:00Z`);
+		if (!Number.isFinite(dayMs)) return [];
+		const dayCode = typeof d?.weather_code?.[i] === 'number' ? d.weather_code[i]! : null;
+		const dayLabels = dayCode !== null ? WEATHER_LABELS[dayCode] : undefined;
+		return [
+			{
+				date,
+				label: DAY_FMT.format(new Date(dayMs)),
+				code: dayCode,
+				summary: dayLabels ? dayLabels[0] : 'Conditions unknown',
+				tempMaxC: typeof d?.temperature_2m_max?.[i] === 'number' ? d.temperature_2m_max[i]! : null,
+				tempMinC: typeof d?.temperature_2m_min?.[i] === 'number' ? d.temperature_2m_min[i]! : null,
+				rainChance:
+					typeof d?.precipitation_probability_max?.[i] === 'number'
+						? Math.round(d.precipitation_probability_max[i]!)
+						: null,
+				windMph: typeof d?.wind_speed_10m_max?.[i] === 'number' ? d.wind_speed_10m_max[i]! : null,
+				windDir: compass(d?.wind_direction_10m_dominant?.[i]),
+				sunriseIso: localIsoToUtc(d?.sunrise?.[i]),
+				sunsetIso: localIsoToUtc(d?.sunset?.[i]),
+				uvIndexMax: typeof d?.uv_index_max?.[i] === 'number' ? d.uv_index_max[i]! : null,
+				precipHours:
+					typeof d?.precipitation_hours?.[i] === 'number' ? d.precipitation_hours[i]! : null,
+			},
+		];
+	});
+
+	const h = response.hourly;
+	const nowMs = Date.now();
+	const hourlyToday = (h?.time ?? [])
+		.flatMap((t, i) => {
+			const ms = Date.parse(`${t}:00Z`) - offsetMs;
+			if (!Number.isFinite(ms) || ms < nowMs - 30 * 60_000) return [];
+			return [
+				{
+					timeIso: new Date(ms).toISOString(),
+					label: HOUR_FMT.format(new Date(ms)).replace(/\s/g, ''),
+					code: typeof h?.weather_code?.[i] === 'number' ? h.weather_code[i]! : null,
+					isDay: !!h?.is_day?.[i],
+					tempC: typeof h?.temperature_2m?.[i] === 'number' ? h.temperature_2m[i]! : null,
+					rainChance:
+						typeof h?.precipitation_probability?.[i] === 'number'
+							? Math.round(h.precipitation_probability[i]!)
+							: null,
+				},
+			];
+		})
+		.slice(0, 8);
 
 	const snapshot = {
 		fetchedAt: new Date().toISOString(),
 		location: 'Tywyn beach',
 		summary,
+		code,
+		isDay,
 		tempC: typeof cur.temperature_2m === 'number' ? cur.temperature_2m : null,
 		feelsLikeC: typeof cur.apparent_temperature === 'number' ? cur.apparent_temperature : null,
 		windMph: typeof cur.wind_speed_10m === 'number' ? cur.wind_speed_10m : null,
 		windDir: compass(cur.wind_direction_10m),
+		gustsMph: typeof cur.wind_gusts_10m === 'number' ? cur.wind_gusts_10m : null,
+		humidity: typeof cur.relative_humidity_2m === 'number' ? cur.relative_humidity_2m : null,
+		pressureHpa: typeof cur.pressure_msl === 'number' ? Math.round(cur.pressure_msl) : null,
 		rainChance,
 		observedLabel,
+		pollen: air.pollen,
+		aqi: air.aqi,
+		seaTempC: marine.seaTempC,
+		waves:
+			marine.waveHeightM !== null || marine.waveWeek.length
+				? { heightM: marine.waveHeightM, periodS: marine.wavePeriodS, week: marine.waveWeek }
+				: null,
+		hourly: hourlyToday,
+		daily,
 	};
 
 	fs.writeFileSync(WEATHER_OUT, JSON.stringify(snapshot, null, 2) + '\n', 'utf8');
 	console.log(
-		`  weather: ${snapshot.tempC?.toFixed(0)}C ${snapshot.summary} (rain ${snapshot.rainChance ?? '-'}%)`,
+		`  weather: ${snapshot.tempC?.toFixed(0)}C ${snapshot.summary} (rain ${snapshot.rainChance ?? '-'}%, ${daily.length} forecast days)`,
 	);
 	return true;
 }
@@ -296,24 +528,22 @@ async function refreshTides(): Promise<boolean> {
 		return false;
 	}
 
-	const now = Date.now();
-	const upcoming = response.tidalEventList
-		.flatMap((ev) => {
-			if (!ev.dateTime || ev.eventType === undefined) return [];
-			const t = Date.parse(ev.dateTime);
-			if (!Number.isFinite(t) || t < now) return [];
-			const type: 'high' | 'low' = ev.eventType === 0 ? 'high' : 'low';
-			const date = new Date(t);
-			return [
-				{
-					type,
-					timeIso: date.toISOString(),
-					timeLabel: DAYTIME_FMT.format(date),
-					heightM: typeof ev.height === 'number' ? ev.height : 0,
-				},
-			];
-		})
-		.slice(0, 6);
+	const keepFrom = Date.now() - 30 * 60 * 60 * 1000;
+	const upcoming = response.tidalEventList.flatMap((ev) => {
+		if (!ev.dateTime || ev.eventType === undefined) return [];
+		const t = Date.parse(ev.dateTime);
+		if (!Number.isFinite(t) || t < keepFrom) return [];
+		const type: 'high' | 'low' = ev.eventType === 0 ? 'high' : 'low';
+		const date = new Date(t);
+		return [
+			{
+				type,
+				timeIso: date.toISOString(),
+				timeLabel: DAYTIME_FMT.format(date),
+				heightM: typeof ev.height === 'number' ? ev.height : 0,
+			},
+		];
+	});
 
 	if (upcoming.length === 0) {
 		console.error('  tides: no upcoming events, keeping previous snapshot');

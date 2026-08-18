@@ -41,6 +41,8 @@ const PATHS = [
 	'/getting-around/',
 	'/holiday-accommodation/bed-and-breakfast/',
 	'/contact/',
+	'/weather/',
+	'/tide-times/',
 ];
 
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];

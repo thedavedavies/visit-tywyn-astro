@@ -1,0 +1,334 @@
+---
+/**
+ * Week-long tide curve, rendered server-side as SVG.
+ *
+ * The curve is a cosine interpolation between successive high/low
+ * predictions - the standard approximation for tidal height between
+ * extremes - sampled at build time into a single path. Night is
+ * shaded from the daily sunrise/sunset times carried by the weather
+ * snapshot. A small inline script adds the parts only a browser can
+ * know: the "now" marker and a crosshair tooltip that re-runs the
+ * same cosine formula for the hovered instant. Without JS the chart
+ * is complete except those two enhancements, and the table on the
+ * page carries every prediction, so nothing is gated on the script.
+ */
+import type { TideEvent, DailyForecast } from '../../lib/conditions';
+import styles from './TideChart.module.scss';
+
+interface Props {
+	events: TideEvent[];
+	days: DailyForecast[];
+}
+
+const { events, days } = Astro.props;
+
+const TZ = 'Europe/London';
+const DAY_KEY = new Intl.DateTimeFormat('en-CA', { dateStyle: 'short', timeZone: TZ });
+const DAY_LABEL = new Intl.DateTimeFormat('en-GB', {
+	weekday: 'short',
+	day: 'numeric',
+	timeZone: TZ,
+});
+const TIME_LABEL = new Intl.DateTimeFormat('en-GB', {
+	hour: 'numeric',
+	minute: '2-digit',
+	hour12: true,
+	timeZone: TZ,
+});
+
+const W = 1000;
+const H = 300;
+const PX0 = 40;
+const PX1 = W - 12;
+const PY0 = H - 14;
+const PY1 = 40;
+
+const points = events
+	.map((ev) => ({ t: Date.parse(ev.timeIso), h: ev.heightM, type: ev.type }))
+	.filter((p) => Number.isFinite(p.t))
+	.sort((a, b) => a.t - b.t);
+
+const buildNow = Date.now();
+const t0 = Math.max(points[0]?.t ?? buildNow, buildNow - 6 * 3600_000);
+const t1 = points.at(-1)?.t ?? buildNow;
+const yMax = Math.max(...points.map((p) => p.h), 4) + 0.4;
+
+const x = (t: number) => PX0 + ((t - t0) / (t1 - t0)) * (PX1 - PX0);
+const y = (h: number) => PY0 - (h / yMax) * (PY0 - PY1);
+
+const heightAt = (t: number): number => {
+	if (points.length === 0) return 0;
+	if (t <= points[0]!.t) return points[0]!.h;
+	if (t >= points.at(-1)!.t) return points.at(-1)!.h;
+	let i = 0;
+	while (points[i + 1]!.t < t) i++;
+	const a = points[i]!;
+	const b = points[i + 1]!;
+	return a.h + ((b.h - a.h) * (1 - Math.cos(Math.PI * ((t - a.t) / (b.t - a.t))))) / 2;
+};
+
+const STEP = 12 * 60_000;
+const samples: string[] = [];
+for (let t = t0; t <= t1; t += STEP) {
+	samples.push(`${x(t).toFixed(1)},${y(heightAt(t)).toFixed(1)}`);
+}
+samples.push(`${x(t1).toFixed(1)},${y(heightAt(t1)).toFixed(1)}`);
+const linePath = `M${samples.join('L')}`;
+const areaPath = `${linePath}L${PX1},${PY0}L${PX0},${PY0}Z`;
+
+const sun = days
+	.map((d) => ({
+		rise: d.sunriseIso ? Date.parse(d.sunriseIso) : NaN,
+		set: d.sunsetIso ? Date.parse(d.sunsetIso) : NaN,
+	}))
+	.filter((s) => Number.isFinite(s.rise) && Number.isFinite(s.set))
+	.sort((a, b) => a.rise - b.rise);
+
+const nights: [number, number][] = [];
+if (sun.length > 0) {
+	if (sun[0]!.rise > t0) nights.push([t0, sun[0]!.rise]);
+	for (let i = 0; i < sun.length; i++) {
+		const from = sun[i]!.set;
+		const to = sun[i + 1]?.rise ?? t1;
+		if (from < t1) nights.push([Math.max(from, t0), Math.min(to, t1)]);
+	}
+}
+
+interface DayBand {
+	from: number;
+	to: number;
+	label: string;
+}
+const bands: DayBand[] = [];
+{
+	const hour = 3600_000;
+	let cursor = t0;
+	let bandStart = t0;
+	let key = DAY_KEY.format(new Date(t0));
+	while (cursor < t1) {
+		const next = Math.min(cursor + hour, t1);
+		const nextKey = DAY_KEY.format(new Date(next));
+		if (nextKey !== key || next >= t1) {
+			bands.push({ from: bandStart, to: next, label: DAY_LABEL.format(new Date(bandStart)) });
+			bandStart = next;
+			key = nextKey;
+		}
+		cursor = next;
+	}
+}
+
+const todayKey = DAY_KEY.format(new Date(buildNow));
+const visible = points.filter((p) => p.t >= t0 && p.t <= t1);
+const labelled = visible.filter((p) => DAY_KEY.format(new Date(p.t)) === todayKey);
+
+const ticks = [];
+for (let m = 1; m < yMax; m += 1) ticks.push(m);
+
+const eventData = JSON.stringify(visible.map((p) => [p.t, Number(p.h.toFixed(2)), p.type]));
+---
+
+<figure class={styles.figure}>
+	<div class={styles.scroll}>
+		<div class={styles.frame}>
+			<svg
+				viewBox={`0 0 ${W} ${H}`}
+				role="img"
+				aria-label="Chart of predicted tide height for the week; every high and low is listed in the table below"
+				data-tide-chart
+				data-t0={t0}
+				data-t1={t1}
+				data-px0={PX0}
+				data-px1={PX1}
+				data-py0={PY0}
+				data-py1={PY1}
+				data-ymax={yMax}
+				data-events={eventData}
+			>
+				{
+					nights.map(([from, to]) => (
+						<rect
+							class={styles.night}
+							x={x(from).toFixed(1)}
+							y={PY1}
+							width={(x(to) - x(from)).toFixed(1)}
+							height={PY0 - PY1}
+						/>
+					))
+				}
+				{
+					ticks.map((m) => (
+						<>
+							<line
+								class={styles.grid}
+								x1={PX0}
+								x2={PX1}
+								y1={y(m).toFixed(1)}
+								y2={y(m).toFixed(1)}
+							/>
+							<text class={styles.tick} x={PX0 - 6} y={y(m) + 4}>
+								{m}m
+							</text>
+						</>
+					))
+				}
+				{
+					bands
+						.slice(1)
+						.map((band) => (
+							<line
+								class={styles.dayline}
+								x1={x(band.from).toFixed(1)}
+								x2={x(band.from).toFixed(1)}
+								y1={PY1 - 18}
+								y2={PY0}
+							/>
+						))
+				}
+				{
+					bands.map(
+						(band) =>
+							x(band.to) - x(band.from) > 55 && (
+								<text
+									class={styles.day}
+									x={((x(band.from) + x(band.to)) / 2).toFixed(1)}
+									y={PY1 - 24}
+								>
+									{band.label}
+								</text>
+							),
+					)
+				}
+				<path class={styles.area} d={areaPath}></path>
+				<path class={styles.line} d={linePath}></path>
+				{
+					visible.map((p) => (
+						<circle class={styles.dot} cx={x(p.t).toFixed(1)} cy={y(p.h).toFixed(1)} r="4.5" />
+					))
+				}
+				{
+					labelled.map((p) => (
+						<text
+							class={styles.eventLabel}
+							x={x(p.t).toFixed(1)}
+							y={p.type === 'high' ? y(p.h) - 26 : y(p.h) + 24}
+						>
+							<tspan class={styles.eventHeight}>{p.h.toFixed(1)}m</tspan>
+							<tspan x={x(p.t).toFixed(1)} dy="16">
+								{TIME_LABEL.format(new Date(p.t))}
+							</tspan>
+						</text>
+					))
+				}
+				<g data-now style="display:none">
+					<line class={styles.nowline} x1="0" x2="0" y1={PY1 - 14} y2={PY0}></line>
+					<text class={styles.nowlabel} x="0" y={PY1 - 4}> now </text>
+				</g>
+				<g data-cursor style="display:none">
+					<line class={styles.crosshair} x1="0" x2="0" y1={PY1} y2={PY0}></line>
+					<circle class={styles.cursordot} cx="0" cy="0" r="5"></circle>
+				</g>
+			</svg>
+			<div class={styles.tooltip} data-tooltip hidden>
+				<strong data-tt-height></strong>
+				<span data-tt-detail></span>
+			</div>
+		</div>
+	</div>
+	<figcaption class="sr-only">
+		Predicted tide height at Tywyn for the coming week. Exact high and low water times are in the
+		table below.
+	</figcaption>
+</figure>
+
+<script>
+	const svg = document.querySelector<SVGSVGElement>('[data-tide-chart]');
+	if (svg) {
+		const num = (name: string) => Number(svg.dataset[name]);
+		const t0 = num('t0');
+		const t1 = num('t1');
+		const px0 = num('px0');
+		const px1 = num('px1');
+		const py0 = num('py0');
+		const py1 = num('py1');
+		const yMax = num('ymax');
+		const events: [number, number, string][] = JSON.parse(svg.dataset.events ?? '[]');
+
+		const xFor = (t: number) => px0 + ((t - t0) / (t1 - t0)) * (px1 - px0);
+		const yFor = (h: number) => py0 - (h / yMax) * (py0 - py1);
+		const heightAt = (t: number): number | null => {
+			if (events.length < 2 || t < events[0]![0] || t > events.at(-1)![0]) return null;
+			let i = 0;
+			while (events[i + 1]![0] < t) i++;
+			const [ta, ha] = events[i]!;
+			const [tb, hb] = events[i + 1]!;
+			return ha + ((hb - ha) * (1 - Math.cos(Math.PI * ((t - ta) / (tb - ta))))) / 2;
+		};
+
+		const fmt = new Intl.DateTimeFormat('en-GB', {
+			weekday: 'short',
+			hour: 'numeric',
+			minute: '2-digit',
+			hour12: true,
+			timeZone: 'Europe/London',
+		});
+
+		const nowGroup = svg.querySelector<SVGGElement>('[data-now]');
+		const placeNow = () => {
+			if (!nowGroup) return;
+			const t = Date.now();
+			if (t < t0 || t > t1) {
+				nowGroup.style.display = 'none';
+				return;
+			}
+			nowGroup.style.display = '';
+			nowGroup.setAttribute('transform', `translate(${xFor(t)},0)`);
+		};
+		placeNow();
+		setInterval(placeNow, 60_000);
+
+		const cursor = svg.querySelector<SVGGElement>('[data-cursor]');
+		const crossLine = cursor?.querySelector('line');
+		const crossDot = cursor?.querySelector('circle');
+		const tooltip = document.querySelector<HTMLElement>('[data-tooltip]');
+		const ttHeight = tooltip?.querySelector('[data-tt-height]');
+		const ttDetail = tooltip?.querySelector('[data-tt-detail]');
+		const frame = svg.parentElement;
+
+		const hide = () => {
+			if (cursor) cursor.style.display = 'none';
+			if (tooltip) tooltip.hidden = true;
+		};
+
+		svg.addEventListener('pointerleave', hide);
+		svg.addEventListener('pointermove', (event) => {
+			if (!cursor || !crossLine || !crossDot || !tooltip || !ttHeight || !ttDetail || !frame)
+				return;
+			const rect = svg.getBoundingClientRect();
+			const vx = ((event.clientX - rect.left) / rect.width) * 1000;
+			if (vx < px0 || vx > px1) {
+				hide();
+				return;
+			}
+			const t = t0 + ((vx - px0) / (px1 - px0)) * (t1 - t0);
+			const h = heightAt(t);
+			if (h === null) {
+				hide();
+				return;
+			}
+			const next = events.find((e) => e[0] > t);
+			cursor.style.display = '';
+			crossLine.setAttribute('x1', String(vx));
+			crossLine.setAttribute('x2', String(vx));
+			crossDot.setAttribute('cx', String(vx));
+			crossDot.setAttribute('cy', String(yFor(h)));
+			ttHeight.textContent = `${h.toFixed(1)}m`;
+			ttDetail.textContent = next
+				? `${fmt.format(t)} · ${next[2] === 'high' ? 'rising' : 'falling'} to ${next[1].toFixed(1)}m at ${fmt.format(next[0])}`
+				: fmt.format(t);
+			tooltip.hidden = false;
+			const frameRect = frame.getBoundingClientRect();
+			const left = ((vx - px0) / (px1 - px0)) * frameRect.width;
+			tooltip.style.left = `${Math.min(Math.max(left, 70), frameRect.width - 90)}px`;
+		});
+	}
+</script>

@@ -70,5 +70,8 @@ seo:
 <h3>8. Links to Other Websites</h3>
 <p>Our site may contain links to external websites. We are not responsible for their privacy policies.</p>
 
+<h3>Credits</h3>
+<p>Wave icon created by <a href="https://www.flaticon.com/free-icon/wave_2311489" target="_blank" rel="noopener noreferrer nofollow">Ayub Irawan &ndash; Flaticon<span class="sr-only"> (opens in new tab)</span></a>. Thermometer, rain, wind, swimmer and flower icons from <a href="https://www.flaticon.com/" target="_blank" rel="noopener noreferrer nofollow">Flaticon<span class="sr-only"> (opens in new tab)</span></a>. Weather icons from <a href="https://github.com/Makin-Things/weather-icons" target="_blank" rel="noopener noreferrer nofollow">Makin-Things weather-icons<span class="sr-only"> (opens in new tab)</span></a> (MIT licence).</p>
+
 <p><em>This privacy policy was last updated on 1st February 2025.</em></p>
 </article>
