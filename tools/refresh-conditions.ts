@@ -18,7 +18,10 @@
  *   - Admiralty EasyTide (no CORS) for the week's tide events
  *     (/tide-times/ and the sidebar widget)
  *   - Natural Resources Wales bathing water quality (daily cadence:
- *     an annual classification plus periodic in-season samples)
+ *     an annual classification plus periodic in-season samples),
+ *     read through the Cloudflare Worker in workers/water-proxy:
+ *     environment.data.gov.uk 403s GitHub runner IPs, and Cloudflare's
+ *     edge is not blocked
  *
  * Behaviour on failure:
  *   - Each fetch gets a few attempts with backoff, so a transient 502
@@ -29,11 +32,12 @@
  *     recognise, we keep the old snapshot in place. The other source
  *     is refreshed and committed independently, and the next 30-min
  *     tick retries the failed one because its snapshot stayed old.
- *   - The process exits non-zero only when a failing source's
+ *   - The process exits non-zero only when a failing weather or tides
  *     snapshot has outlived its serving TTL (SITE.conditions, the
  *     same thresholds the widgets use for the "last good reading"
  *     badge). Red CI therefore means "visitors are seeing data we
- *     consider too old", not "one upstream request blipped".
+ *     consider too old", not "one upstream request blipped". Water
+ *     never fails the run: it only logs the age it kept.
  */
 
 import * as fs from 'node:fs';
@@ -49,6 +53,7 @@ const LAT = SITE.location.lat;
 const LNG = SITE.location.lng;
 const TIDE_STATION = SITE.location.tideStationId;
 const BATHING_WATER_ID = SITE.location.bathingWaterId;
+const WATER_PROXY = 'https://visit-tywyn-water-proxy.highalt.workers.dev';
 
 const TZ = 'Europe/London';
 // 20s rather than 15s: during the 2026-06-11 Open-Meteo degradation,
@@ -540,7 +545,7 @@ function classificationYear(uri: string | undefined): number | null {
 }
 
 async function refreshWaterQuality(): Promise<boolean> {
-	const base = 'https://environment.data.gov.uk/wales/bathing-waters';
+	const base = `${WATER_PROXY}/wales/bathing-waters`;
 	const url = `${base}/doc/bathing-water/${encodeURIComponent(BATHING_WATER_ID)}.json`;
 
 	let record: BathingWaterRecord;
@@ -569,7 +574,7 @@ async function refreshWaterQuality(): Promise<boolean> {
 		try {
 			const raw = await fetchJsonWithRetry<SampleRecord>(
 				'water sample',
-				`${topic.latestSampleAssessment.replace(/^http:/, 'https:')}.json`,
+				`${topic.latestSampleAssessment.replace(/^https?:\/\/environment\.data\.gov\.uk/, WATER_PROXY)}.json`,
 			);
 			const s = raw.result?.primaryTopic;
 			const taken = s?.sampleDateTime?.inXSDDateTime?._value;
