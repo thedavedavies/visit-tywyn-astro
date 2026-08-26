@@ -1,14 +1,14 @@
 {
-	"fetchedAt": "2026-08-18T15:12:33.732Z",
-	"site": "Tywyn",
-	"classification": "Excellent",
-	"classificationYear": 2025,
-	"rainImpacted": true,
-	"sample": {
-		"takenIso": "2026-07-29T13:32:00.000Z",
-		"eColi": 91,
-		"eColiQualifier": "=",
-		"enterococci": 10,
-		"enterococciQualifier": "<"
-	}
+  "fetchedAt": "2026-08-26T07:24:46.967Z",
+  "site": "Tywyn",
+  "classification": "Excellent",
+  "classificationYear": 2025,
+  "rainImpacted": true,
+  "sample": {
+    "takenIso": "2026-08-11T10:51:00.000Z",
+    "eColi": 10,
+    "eColiQualifier": "<",
+    "enterococci": 10,
+    "enterococciQualifier": "<"
+  }
 }
