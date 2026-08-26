@@ -541,7 +541,7 @@ function classificationYear(uri: string | undefined): number | null {
 
 async function refreshWaterQuality(): Promise<boolean> {
 	const base = 'https://environment.data.gov.uk/wales/bathing-waters';
-	const url = `${base}/id/bathing-water/${encodeURIComponent(BATHING_WATER_ID)}.json`;
+	const url = `${base}/doc/bathing-water/${encodeURIComponent(BATHING_WATER_ID)}.json`;
 
 	let record: BathingWaterRecord;
 	try {
@@ -569,7 +569,7 @@ async function refreshWaterQuality(): Promise<boolean> {
 		try {
 			const raw = await fetchJsonWithRetry<SampleRecord>(
 				'water sample',
-				`${topic.latestSampleAssessment}.json`,
+				`${topic.latestSampleAssessment.replace(/^http:/, 'https:')}.json`,
 			);
 			const s = raw.result?.primaryTopic;
 			const taken = s?.sampleDateTime?.inXSDDateTime?._value;
