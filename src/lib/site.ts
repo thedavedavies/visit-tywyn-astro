@@ -50,7 +50,6 @@ export const SITE = {
 	conditions: {
 		weatherStaleTtlMs: 6 * 60 * 60 * 1000,
 		tidesStaleTtlMs: 12 * 60 * 60 * 1000,
-		waterStaleTtlMs: 7 * 24 * 60 * 60 * 1000,
 	},
 } as const;
 

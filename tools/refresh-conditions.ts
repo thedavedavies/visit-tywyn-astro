@@ -725,7 +725,10 @@ if (tidesStatus === 'failed') {
 	alarm = failureIsAlarming('tides', TIDES_OUT, SITE.conditions.tidesStaleTtlMs) || alarm;
 }
 if (waterStatus === 'failed') {
-	alarm = failureIsAlarming('water', WATER_OUT, SITE.conditions.waterStaleTtlMs) || alarm;
+	console.error(
+		`  water: refresh failed; keeping the ${formatAge(snapshotAgeMs(WATER_OUT))}-old snapshot. ` +
+			'Upstream 403s GitHub runners, so this never fails the run.',
+	);
 }
 
 if (alarm) process.exit(1);
