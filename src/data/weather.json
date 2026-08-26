@@ -1,25 +1,25 @@
 {
-  "fetchedAt": "2026-08-26T06:58:21.107Z",
+  "fetchedAt": "2026-08-26T07:19:26.030Z",
   "location": "Tywyn beach",
   "summary": "Overcast",
   "code": 3,
   "isDay": true,
-  "tempC": 17.7,
-  "feelsLikeC": 16.8,
-  "windMph": 7.8,
+  "tempC": 17.9,
+  "feelsLikeC": 16.9,
+  "windMph": 8.3,
   "windDir": "ENE",
-  "gustsMph": 13.6,
+  "gustsMph": 14.8,
   "humidity": 73,
   "pressureHpa": 1012,
   "rainChance": null,
-  "observedLabel": "8:45 am",
+  "observedLabel": "9:15 am",
   "pollen": {
     "label": "Low",
     "species": "grass",
     "grainsM3": 0.5
   },
   "aqi": {
-    "value": 27,
+    "value": 24,
     "label": "Fair"
   },
   "seaTempC": 19.4,
