@@ -20,8 +20,9 @@
  *   - Natural Resources Wales bathing water quality (daily cadence:
  *     an annual classification plus periodic in-season samples),
  *     read through the Cloudflare Worker in workers/water-proxy:
- *     environment.data.gov.uk 403s GitHub runner IPs, and Cloudflare's
- *     edge is not blocked
+ *     environment.data.gov.uk 403s requests from outside the UK, and
+ *     GitHub's runners are US-based, so the Worker makes the call from
+ *     a Western Europe location instead
  *
  * Behaviour on failure:
  *   - Each fetch gets a few attempts with backoff, so a transient 502

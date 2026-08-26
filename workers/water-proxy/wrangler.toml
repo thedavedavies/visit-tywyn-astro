@@ -2,3 +2,11 @@ name = "visit-tywyn-water-proxy"
 main = "worker.js"
 compatibility_date = "2026-08-01"
 workers_dev = true
+
+[[durable_objects.bindings]]
+name = "UK_FETCHER"
+class_name = "UkFetcher"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["UkFetcher"]
