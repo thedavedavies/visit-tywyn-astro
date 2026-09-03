@@ -9,9 +9,9 @@ import { eatingUrl } from '../lib/url';
 const page = await getEntry('pages', 'dog-friendly-cafes');
 const Content = page ? (await render(page)).Content : null;
 
-const dogFriendly = (await getCollection('eating', (e) => e.data.dog_friendly === true)).sort(
-	(a, b) => a.data.title.localeCompare(b.data.title),
-);
+const dogFriendly = (
+	await getCollection('eating', (e) => e.data.dog_friendly === true && !e.data.closed)
+).sort((a, b) => a.data.title.localeCompare(b.data.title));
 
 const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Dog friendly cafes' }];
 

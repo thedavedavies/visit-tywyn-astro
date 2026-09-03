@@ -175,9 +175,11 @@ interface RestaurantInput {
 	priceRange?: string;
 	/** Free-form cuisine label, e.g. "British", "Italian", "Indian". */
 	servesCuisine?: string;
+	closed?: boolean;
 }
 
-export function restaurant(input: RestaurantInput): JsonLd {
+export function restaurant(input: RestaurantInput): JsonLd | null {
+	if (input.closed) return null;
 	// `eatingUrl` returns a root-relative path; Schema.org @id and url
 	// require an absolute IRI for canonical entity identity.
 	const url = absoluteUrl(eatingUrl(input.id))!;

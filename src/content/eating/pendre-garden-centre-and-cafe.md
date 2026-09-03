@@ -1,11 +1,12 @@
 ---
 title: Pendre Garden Centre and Cafe
-summary: Family-run garden centre in Tywyn with an on-site café serving home-baked cakes, light lunches, and afternoon teas.
+summary: Pendre Garden Centre and Cafe in Tywyn has permanently closed. It was a family-run garden centre with an on-site café.
 address: Pendre Garden Centre, Tywyn, LL36 9LW
 phone: 01654 711747
 website: 'http://www.pendregardencentre.co.uk/'
 dog_friendly: false
 published: 2022-05-28
+closed: true
 geo:
   lat: 52.5881817
   lng: -4.080178

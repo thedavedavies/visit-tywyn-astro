@@ -8,9 +8,9 @@ import { itemList } from '../../lib/jsonld';
 import { eatingUrl } from '../../lib/url';
 import eatingBannerSrc from '../../assets/img/heroes/eating.jpg';
 
-const venues = (await getCollection('eating')).sort((a, b) =>
-	a.data.title.localeCompare(b.data.title),
-);
+const venues = (await getCollection('eating'))
+	.filter((v) => !v.data.closed)
+	.sort((a, b) => a.data.title.localeCompare(b.data.title));
 
 const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Eating in Tywyn' }];
 

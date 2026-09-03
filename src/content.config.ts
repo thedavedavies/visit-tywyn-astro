@@ -84,6 +84,7 @@ const eating = defineCollection({
 			trip_advisor_link: z.string().url().optional(),
 			facebook_link: z.string().url().optional(),
 			published: z.coerce.date().optional(),
+			closed: z.boolean().default(false),
 			seo: seoSchema,
 		}),
 });

@@ -1,0 +1,17 @@
+---
+import styles from './ClosedNotice.module.scss';
+
+interface Props {
+	title: string;
+	browse: string;
+}
+
+const { title, browse } = Astro.props;
+---
+
+<aside class={styles.notice} aria-label="Closure notice">
+	<p class={styles.title}>Permanently closed</p>
+	<p class={styles.body}>
+		{title} has permanently closed. Browse other {browse} in Tywyn below.
+	</p>
+</aside>

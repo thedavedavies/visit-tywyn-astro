@@ -16,6 +16,7 @@ import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import Gallery from '../../components/Gallery/Gallery.astro';
 import Icon from '../../components/Icon/Icon.astro';
 import RelatedItems from '../../components/RelatedItems/RelatedItems.astro';
+import ClosedNotice from '../../components/ClosedNotice/ClosedNotice.astro';
 import { touristAttraction } from '../../lib/jsonld';
 import { thingsToDoUrl } from '../../lib/url';
 import { seededShuffle } from '../../lib/random';
@@ -106,16 +107,7 @@ const jsonLd = touristAttraction({
 		)
 	}
 
-	{
-		isClosed && (
-			<aside class="closed-notice">
-				<p class="closed-title">Permanently closed</p>
-				<p class="closed-body">
-					{activity.data.title} has permanently closed. Browse other things to do in Tywyn below.
-				</p>
-			</aside>
-		)
-	}
+	{isClosed && <ClosedNotice title={activity.data.title} browse="things to do" />}
 
 	{
 		!isClosed && (
@@ -160,27 +152,5 @@ const jsonLd = touristAttraction({
 			height: 20px;
 			flex: 0 0 auto;
 		}
-	}
-
-	.closed-notice {
-		margin: 0 0 $space-5;
-		padding: $space-4 $space-5;
-		border-left: 4px solid #b3261e;
-		background: #fdecea;
-		border-radius: $radius-md;
-	}
-
-	.closed-title {
-		margin: 0 0 $space-1;
-		font-weight: 700;
-		color: #b3261e;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		font-size: 0.85rem;
-	}
-
-	.closed-body {
-		margin: 0;
-		color: #5c1f1b;
 	}
 </style>

@@ -15,6 +15,7 @@ import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import VenueMap from '../../components/VenueMap/VenueMap.astro';
 import Icon from '../../components/Icon/Icon.astro';
 import RelatedItems from '../../components/RelatedItems/RelatedItems.astro';
+import ClosedNotice from '../../components/ClosedNotice/ClosedNotice.astro';
 import { restaurant } from '../../lib/jsonld';
 import { eatingUrl } from '../../lib/url';
 import { seededShuffle } from '../../lib/random';
@@ -29,12 +30,13 @@ export async function getStaticPaths() {
 
 const { venue, allVenues } = Astro.props;
 const { Content } = await render(venue);
+const isClosed = venue.data.closed;
 
 // Pick up to 6 related venues. If this one is dog-friendly, prefer
 // other dog-friendly entries; otherwise show any other venues.
 // Use seededShuffle so the same slug always produces the same set
 // - avoids non-deterministic builds and the bias of `sort(Math.random)`.
-const others = allVenues.filter((v) => v.id !== venue.id);
+const others = allVenues.filter((v) => v.id !== venue.id && !v.data.closed);
 const relatedPool = venue.data.dog_friendly ? others.filter((v) => v.data.dog_friendly) : others;
 const related = seededShuffle(relatedPool.length >= 6 ? relatedPool : others, venue.id).slice(0, 6);
 
@@ -64,6 +66,7 @@ const jsonLd = restaurant({
 	photo: photoUrl,
 	geo: venue.data.geo,
 	sameAs: [venue.data.facebook_link, venue.data.trip_advisor_link],
+	closed: isClosed,
 });
 ---
 
@@ -75,16 +78,18 @@ const jsonLd = restaurant({
 	noindex={venue.data.seo?.noindex}
 	breadcrumbs={breadcrumbs}
 	jsonLd={jsonLd}
-	sidebarProps={{
-		eating: {
-			title: venue.data.title,
-			trip_advisor_link: venue.data.trip_advisor_link,
-			facebook_link: venue.data.facebook_link,
-			dog_friendly: venue.data.dog_friendly,
-			website: venue.data.website,
-			phone: venue.data.phone,
-		},
-	}}
+	sidebarProps={isClosed
+		? undefined
+		: {
+				eating: {
+					title: venue.data.title,
+					trip_advisor_link: venue.data.trip_advisor_link,
+					facebook_link: venue.data.facebook_link,
+					dog_friendly: venue.data.dog_friendly,
+					website: venue.data.website,
+					phone: venue.data.phone,
+				},
+			}}
 >
 	{
 		/*
@@ -96,7 +101,7 @@ const jsonLd = restaurant({
 	}
 	<EntryHeader title={venue.data.title} />
 	{
-		venue.data.address && (
+		!isClosed && venue.data.address && (
 			<p class="single-address">
 				<Icon name="marker" />
 				<span>{venue.data.address}</span>
@@ -104,65 +109,68 @@ const jsonLd = restaurant({
 		)
 	}
 
-	<div class="entry-content">
-		{
-			venue.data.photo && (
-				<div class="entry-photo">
-					<Picture
-						src={venue.data.photo.src}
-						alt={venue.data.photo.alt ?? venue.data.title}
-						loading="eager"
-						decoding="sync"
-						fetchpriority="high"
-						formats={['avif', 'webp']}
-						width={1280}
-						widths={[640, 960, 1280]}
-						sizes="(min-width: 1024px) 760px, 100vw"
-					/>
-				</div>
-			)
-		}
+	{isClosed && <ClosedNotice title={venue.data.title} browse="places to eat" />}
 
-		<h2>About {venue.data.title}</h2>
-		<Content />
+	{
+		!isClosed && (
+			<div class="entry-content">
+				{venue.data.photo && (
+					<div class="entry-photo">
+						<Picture
+							src={venue.data.photo.src}
+							alt={venue.data.photo.alt ?? venue.data.title}
+							loading="eager"
+							decoding="sync"
+							fetchpriority="high"
+							formats={['avif', 'webp']}
+							width={1280}
+							widths={[640, 960, 1280]}
+							sizes="(min-width: 1024px) 760px, 100vw"
+						/>
+					</div>
+				)}
 
-		{
-			venue.data.dog_friendly && (
-				<p class="dog-friendly-note">
-					{venue.data.title} is dog friendly, and is a brilliant place to bring your well-behaved
-					pup!{' '}
-					<a href="/dog-friendly-cafes/">Discover more dog friendly bars, restaurants and cafes</a>.
-				</p>
-			)
-		}
+				<h2>About {venue.data.title}</h2>
+				<Content />
 
-		{
-			venue.data.geo && (
-				<>
-					{/*
-					 * VenueMap renders its own `<h2>Find {title}</h2>`
-					 * via aria-labelledby, so we don't add another H2
-					 * here. The previous "Where is X" heading rendered
-					 * immediately before "Find X" with no content
-					 * between them, which screen readers announced as a
-					 * duplicate.
-					 */}
-					<VenueMap
-						lat={venue.data.geo.lat}
-						lng={venue.data.geo.lng}
-						title={venue.data.title}
-						zoom={venue.data.geo.zoom ?? 16}
-					/>
-					<p>
-						<a href={directionsHref!} target="_blank" rel="noopener noreferrer">
-							Get directions in Google Maps
-							<span class="sr-only"> (opens in new tab)</span>
+				{venue.data.dog_friendly && (
+					<p class="dog-friendly-note">
+						{venue.data.title} is dog friendly, and is a brilliant place to bring your well-behaved
+						pup!{' '}
+						<a href="/dog-friendly-cafes/">
+							Discover more dog friendly bars, restaurants and cafes
 						</a>
+						.
 					</p>
-				</>
-			)
-		}
-	</div>
+				)}
+
+				{venue.data.geo && (
+					<>
+						{/*
+						 * VenueMap renders its own `<h2>Find {title}</h2>`
+						 * via aria-labelledby, so we don't add another H2
+						 * here. The previous "Where is X" heading rendered
+						 * immediately before "Find X" with no content
+						 * between them, which screen readers announced as a
+						 * duplicate.
+						 */}
+						<VenueMap
+							lat={venue.data.geo.lat}
+							lng={venue.data.geo.lng}
+							title={venue.data.title}
+							zoom={venue.data.geo.zoom ?? 16}
+						/>
+						<p>
+							<a href={directionsHref!} target="_blank" rel="noopener noreferrer">
+								Get directions in Google Maps
+								<span class="sr-only"> (opens in new tab)</span>
+							</a>
+						</p>
+					</>
+				)}
+			</div>
+		)
+	}
 
 	<RelatedItems
 		heading={venue.data.dog_friendly

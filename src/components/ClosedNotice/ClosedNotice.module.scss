@@ -1,0 +1,23 @@
+@use '../../styles/abstracts/variables' as *;
+
+.notice {
+	margin: 0 0 $space-5;
+	padding: $space-4 $space-5;
+	border-left: 4px solid #b3261e;
+	background: #fdecea;
+	border-radius: $radius-md;
+}
+
+.title {
+	margin: 0 0 $space-1;
+	font-weight: 700;
+	color: #b3261e;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	font-size: 0.85rem;
+}
+
+.body {
+	margin: 0;
+	color: #5c1f1b;
+}
