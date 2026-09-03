@@ -4,7 +4,7 @@ subtitle: 'Find out how to get to Tywyn, and the best way to get around once you
 hero_image:
   src: '../../assets/img/pages/getting-around.jpg'
   alt: Getting around Tywyn
-updated: 2024-06-05
+updated: 2026-09-03
 seo:
   description: 'How to get to Tywyn by road, rail, and bus, plus the best ways to get around the town, the beach, and the Dysynni valley once you arrive.'
 ---
@@ -15,11 +15,11 @@ Getting to Tywyn by train is simple, stress free and amazingly picturesque. With
 <h2>Bus</h2>
 Buses travel through Tywyn and the surrounding towns and villages 7 days a week all year round, with service being approximately every 2 hours, and so is perfect for walkers who can plan a day exploring the area, without the need for a car.
 <ul>
- 	<li><strong>G21</strong> - <a href="https://lloydscoaches.com/g21feb24/" target="_blank" rel="noopener">Machynlleth - Aberdyfi - Tywyn - Bryncrug - Llanegryn - Llwyngwril - Fairbourne - Dolgellau</a></li>
- 	<li>G24 - <a href="https://lloydscoaches.com/g24feb24-2/" target="_blank" rel="noopener">Tywyn - Bryncrug - Dolgoch Falls - Abergynolwyn - Talyllyn Lake - Minffordd - Dolgellau/Machynlleth</a></li>
+ 	<li><strong>G21</strong> - <a href="https://lloydscoaches.com/g21jan26/" target="_blank" rel="noopener">Machynlleth - Aberdyfi - Tywyn - Bryncrug - Llanegryn - Llwyngwril - Fairbourne - Dolgellau</a></li>
+ 	<li><strong>G24</strong> - <a href="https://lloydscoaches.com/g24jan26/" target="_blank" rel="noopener">Tywyn - Bryncrug - Dolgoch Falls - Abergynolwyn - Talyllyn Lake - Minffordd - Dolgellau/Machynlleth</a></li>
 </ul>
 <h2>1bws Day Ticket</h2>
-Travelling in North Wales? You can use the 1bws ticket which is valid on almost every bus in North Wales. Buy your 1bws ticket from the bus driver on your first journey of the day, the ticket will then be valid for travel on every other bus you use that day across North Wales. (Please note that 1bws tickets cannot be bought via mobile apps or websites). <a href="https://traws.cymru/en/use-1bws-ticket-north-wales" target="_blank" rel="noopener">Find out more about the 1bws day ticket.</a>
+Travelling in North Wales? You can use the 1bws ticket, which is valid on almost every bus in North Wales. Buy your 1bws ticket from the bus driver on your first journey of the day, or on the TrawsCymru app, and it will then be valid on every other bus you use that day across North Wales. You can also tap on and tap off with a contactless card, and your fares will be capped at the 1bws price automatically. <a href="https://traws.cymru/en/1bws" target="_blank" rel="noopener">Find out more about the 1bws day ticket.</a>
 
 <table>
 <caption>1bws day ticket prices</caption>
@@ -32,23 +32,23 @@ Travelling in North Wales? You can use the 1bws ticket which is valid on almost 
 <tbody>
 <tr>
 <th scope="row">Adult</th>
-<td>£6.50</td>
+<td>£7.50</td>
 </tr>
 <tr>
-<th scope="row">Child/16-21/Concessionary</th>
-<td>£4.50</td>
+<th scope="row">Child (5-15) / 16-21 with MyTravelPass / Concessionary</th>
+<td>£5.00</td>
 </tr>
 <tr>
-<th scope="row">Family</th>
-<td>£14.20</td>
+<th scope="row">Family (up to 2 adults and 3 children)</th>
+<td>£16.00</td>
 </tr>
 <tr>
-<th scope="row">Weekly  Adult</th>
-<td>£28</td>
+<th scope="row">Weekly Adult</th>
+<td>£32</td>
 </tr>
 <tr>
 <th scope="row">Weekly: Child/16-21/Concessionary</th>
-<td>£19</td>
+<td>£22</td>
 </tr>
 </tbody>
 </table>
@@ -59,5 +59,6 @@ Travelling in North Wales? You can use the 1bws ticket which is valid on almost 
  	<li><strong>Dyfi Cabs</strong> – 07831 551538</li>
  	<li><strong>1A Cars</strong> – 01654 711788</li>
  	<li><strong>Tywyn Cabs</strong> – 07873 401400 or 07873 401410</li>
+ 	<li><strong>Lecy Cabs</strong> – 07354 116917</li>
 </ul>
 </article>
