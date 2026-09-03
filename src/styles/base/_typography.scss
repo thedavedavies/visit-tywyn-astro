@@ -103,6 +103,57 @@ p + p {
 		border-radius: $radius-md;
 	}
 
+	table {
+		width: 100%;
+		margin-block: $space-5;
+		border-collapse: separate;
+		border-spacing: $space-2;
+		background: $color-bg-alt;
+		border: 1px solid $color-border;
+		border-radius: $radius-lg;
+	}
+
+	caption {
+		caption-side: top;
+		text-align: left;
+		font-weight: 700;
+		color: $color-heading;
+		margin-bottom: $space-3;
+	}
+
+	thead th {
+		padding: $space-2 $space-4;
+		border: 1px solid transparent;
+		font-size: 0.8125rem;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		text-align: left;
+		color: $color-text-muted;
+	}
+
+	tbody th,
+	tbody td {
+		padding: $space-4 $space-5;
+		background: $color-bg;
+		border: 1px solid $color-border;
+		border-radius: $radius-md;
+		text-align: left;
+		vertical-align: middle;
+	}
+
+	tbody th {
+		font-weight: 400;
+		color: $color-text;
+	}
+
+	tbody td {
+		width: 1%;
+		min-width: 5.5rem;
+		white-space: nowrap;
+		font-weight: 700;
+	}
+
 	/* Responsive 16:9 wrapper for inline embeds in markdown content
 	 * (YouTube, virtual tours, maps). Mirrors the EmbedFrame component
 	 * so legacy `<div class="embed-container">…</div>` markup ported
