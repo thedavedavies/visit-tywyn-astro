@@ -23,9 +23,15 @@ interface Props {
 	heading: string;
 	items: Item[];
 	headingId?: string;
+	sizes?: string;
 }
 
-const { heading, items, headingId = 'related-items' } = Astro.props;
+const {
+	heading,
+	items,
+	headingId = 'related-items',
+	sizes = '(min-width: 1170px) 225px, (min-width: 1024px) calc((100vw - 494px) / 3), (min-width: 768px) calc((100vw - 64px) / 3), (min-width: 480px) calc(50vw - 24px), calc(100vw - 32px)',
+} = Astro.props;
 ---
 
 {
@@ -46,8 +52,9 @@ const { heading, items, headingId = 'related-items' } = Astro.props;
 										loading="lazy"
 										formats={['avif', 'webp']}
 										width={720}
+										height={540}
 										widths={[240, 360, 480, 720]}
-										sizes="(min-width: 1240px) 220px, (min-width: 1024px) calc((100vw - 510px) / 3), (min-width: 768px) calc((100vw - 72px) / 3), (min-width: 480px) calc(50vw - 26px), calc(100vw - 32px)"
+										sizes={sizes}
 									/>
 								</div>
 							)}

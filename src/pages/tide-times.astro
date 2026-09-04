@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import RelatedItems from '../components/RelatedItems/RelatedItems.astro';
 import PageLayout from '../layouts/PageLayout.astro';
 import Icon from '../components/Icon/Icon.astro';
 import TideChart from '../components/TideChart/TideChart.astro';
@@ -344,30 +344,31 @@ const jsonLd = webPage({ title, description, url: Astro.url });
 					</div>
 				</section>
 
-				<section aria-labelledby="day-heading">
-					<p class="eyebrow">Make the most of it</p>
-					<h2 id="day-heading">Make a day of it</h2>
-					<div class="cards">
-						<article class="card">
-							<Image src={beachImg} alt="" width={640} class="card__img" />
-							<h3>Beach &amp; promenade</h3>
-							<p>Two miles of Blue Flag sand, widest and firmest around low water.</p>
-							<a href="/things-to-do/tywyn-beach/">Beach &amp; sea &rarr;</a>
-						</article>
-						<article class="card">
-							<Image src={railwayImg} alt="" width={640} class="card__img" />
-							<h3>Talyllyn Railway</h3>
-							<p>Steam up the Fathew valley to Dolgoch Falls when the tide is in.</p>
-							<a href="/things-to-do/the-talyllyn-railway/">Plan a ride &rarr;</a>
-						</article>
-						<article class="card">
-							<Image src={cinemaImg} alt="" width={640} class="card__img" />
-							<h3>Weather &amp; webcam</h3>
-							<p>Check the forecast, or look at the bay as it is right now.</p>
-							<a href="/weather/">Tywyn weather &rarr;</a>
-						</article>
-					</div>
-				</section>
+				<RelatedItems
+					heading="Make a day of it"
+					headingId="day-heading"
+					sizes="(min-width: 1170px) 369px, (min-width: 768px) calc((100vw - 64px) / 3), (min-width: 480px) calc(50vw - 24px), calc(100vw - 32px)"
+					items={[
+						{
+							href: '/things-to-do/tywyn-beach/',
+							title: 'Beach & promenade',
+							image: { src: beachImg, alt: '' },
+							summary: 'Two miles of Blue Flag sand, widest and firmest around low water.',
+						},
+						{
+							href: '/things-to-do/the-talyllyn-railway/',
+							title: 'Talyllyn Railway',
+							image: { src: railwayImg, alt: '' },
+							summary: 'Steam up the Fathew valley to Dolgoch Falls when the tide is in.',
+						},
+						{
+							href: '/weather/',
+							title: 'Weather & webcam',
+							image: { src: cinemaImg, alt: '' },
+							summary: 'Check the forecast, or look at the bay as it is right now.',
+						},
+					]}
+				/>
 
 				<p class="provenance">
 					Tide predictions &copy; UK Hydrographic Office via{' '}
@@ -793,38 +794,6 @@ const jsonLd = webPage({ title, description, url: Astro.url });
 		font-size: 0.9rem;
 		line-height: 1.5;
 		color: rd.$ink;
-	}
-
-	.cards {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-		gap: $space-7;
-
-		h3 {
-			margin: $space-3 0 $space-2;
-			font-size: 1.35rem;
-			font-weight: 600;
-		}
-
-		p {
-			margin: 0 0 $space-3;
-			font-size: 0.95rem;
-			color: rd.$muted;
-		}
-
-		a {
-			font-weight: 600;
-			color: rd.$teal;
-			text-decoration: underline;
-			text-underline-offset: 3px;
-		}
-	}
-
-	:global(.card__img) {
-		width: 100%;
-		height: 190px;
-		object-fit: cover;
-		border-radius: 14px;
 	}
 
 	.provenance {

@@ -373,8 +373,9 @@ const clampLabelX = (px: number) => Math.min(Math.max(px, PX0 + 42), PX1 - 42);
 				: fmt.format(t);
 			tooltip.hidden = false;
 			const frameRect = frame.getBoundingClientRect();
+			const half = tooltip.offsetWidth / 2;
 			const left = ((vx - px0) / (px1 - px0)) * frameRect.width;
-			tooltip.style.left = `${Math.min(Math.max(left, 80), frameRect.width - 100)}px`;
+			tooltip.style.left = `${Math.min(Math.max(left, half), frameRect.width - half)}px`;
 		});
 	}
 </script>

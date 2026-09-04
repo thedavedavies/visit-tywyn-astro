@@ -155,17 +155,15 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema]
 				{ weight: 700, style: 'normal', subset: 'latin' },
 			]}
 		/>
+		<Font
+			cssVariable="--font-display"
+			preload={displayFont ? [{ weight: 500, style: 'normal', subset: 'latin' }] : undefined}
+		/>
 		{displayFont && (
-			<>
-				<Font
-					cssVariable="--font-display"
-					preload={[{ weight: 500, style: 'normal', subset: 'latin' }]}
-				/>
-				<Font
-					cssVariable="--font-page"
-					preload={[{ weight: 400, style: 'normal', subset: 'latin' }]}
-				/>
-			</>
+			<Font
+				cssVariable="--font-page"
+				preload={[{ weight: 400, style: 'normal', subset: 'latin' }]}
+			/>
 		)}
 
 		<meta property="og:type" content={ogType} />
