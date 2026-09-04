@@ -188,7 +188,7 @@ const fontEarlyHints = {
 };
 
 const CONTENT_COLUMN_SIZES =
-	'(min-width: 1240px) 708px, (min-width: 1024px) calc(100vw - 478px), calc(100vw - 40px)';
+	'(min-width: 1170px) 708px, (min-width: 1024px) calc(100vw - 462px), calc(100vw - 32px)';
 const CONTENT_COLUMN_MAX_WIDTH = 984;
 
 /** @type {import('satteri').HastPluginDefinition} */
