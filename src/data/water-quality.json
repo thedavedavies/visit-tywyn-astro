@@ -1,11 +1,11 @@
 {
-  "fetchedAt": "2026-09-04T06:34:00.309Z",
+  "fetchedAt": "2026-09-05T06:16:01.534Z",
   "site": "Tywyn",
   "classification": "Excellent",
   "classificationYear": 2025,
   "rainImpacted": true,
   "sample": {
-    "takenIso": "2026-08-11T10:51:00.000Z",
+    "takenIso": "2026-08-26T10:54:00.000Z",
     "eColi": 10,
     "eColiQualifier": "<",
     "enterococci": 10,
