@@ -1,115 +1,67 @@
 {
-  "fetchedAt": "2026-09-07T05:57:31.675Z",
+  "fetchedAt": "2026-09-07T12:18:23.153Z",
   "location": "Tywyn beach",
-  "summary": "Overcast",
-  "code": 3,
+  "summary": "Partly cloudy",
+  "code": 2,
   "isDay": true,
-  "tempC": 15.7,
-  "feelsLikeC": 14.1,
-  "windMph": 10.7,
-  "windDir": "NW",
-  "gustsMph": 20.1,
-  "humidity": 82,
-  "pressureHpa": 1016,
+  "tempC": 17.8,
+  "feelsLikeC": 15.5,
+  "windMph": 13.2,
+  "windDir": "SW",
+  "gustsMph": 23.7,
+  "humidity": 69,
+  "pressureHpa": 1017,
   "rainChance": null,
-  "observedLabel": "7:45 am",
+  "observedLabel": "2:15 pm",
   "pollen": {
     "label": "Low",
     "species": "grass",
     "grainsM3": 0
   },
   "aqi": {
-    "value": 19,
-    "label": "Good"
+    "value": 26,
+    "label": "Fair"
   },
-  "seaTempC": 18.7,
+  "seaTempC": 18.8,
   "waves": {
-    "heightM": 1.08,
-    "periodS": 6.2,
+    "heightM": 1.06,
+    "periodS": 7,
     "week": [
       {
         "date": "2026-09-07",
-        "heightM": 1.84
+        "heightM": 1.86
       },
       {
         "date": "2026-09-08",
-        "heightM": 1.84
+        "heightM": 1.92
       },
       {
         "date": "2026-09-09",
-        "heightM": 1.7
+        "heightM": 1.58
       },
       {
         "date": "2026-09-10",
-        "heightM": 1.1
+        "heightM": 1
       },
       {
         "date": "2026-09-11",
-        "heightM": 1.2
+        "heightM": 1.06
       },
       {
         "date": "2026-09-12",
-        "heightM": 1.46
+        "heightM": 1.26
       },
       {
         "date": "2026-09-13",
-        "heightM": 1.58
+        "heightM": 1.42
       }
     ]
   },
   "hourly": [
     {
-      "timeIso": "2026-09-07T06:00:00.000Z",
-      "label": "7am",
-      "code": 51,
-      "isDay": true,
-      "tempC": 16,
-      "rainChance": 96
-    },
-    {
-      "timeIso": "2026-09-07T07:00:00.000Z",
-      "label": "8am",
-      "code": 3,
-      "isDay": true,
-      "tempC": 15.9,
-      "rainChance": 73
-    },
-    {
-      "timeIso": "2026-09-07T08:00:00.000Z",
-      "label": "9am",
-      "code": 3,
-      "isDay": true,
-      "tempC": 16.5,
-      "rainChance": 42
-    },
-    {
-      "timeIso": "2026-09-07T09:00:00.000Z",
-      "label": "10am",
-      "code": 3,
-      "isDay": true,
-      "tempC": 16.6,
-      "rainChance": 18
-    },
-    {
-      "timeIso": "2026-09-07T10:00:00.000Z",
-      "label": "11am",
-      "code": 3,
-      "isDay": true,
-      "tempC": 16.9,
-      "rainChance": 7
-    },
-    {
-      "timeIso": "2026-09-07T11:00:00.000Z",
-      "label": "12pm",
-      "code": 2,
-      "isDay": true,
-      "tempC": 17.2,
-      "rainChance": 2
-    },
-    {
       "timeIso": "2026-09-07T12:00:00.000Z",
       "label": "1pm",
-      "code": 0,
+      "code": 2,
       "isDay": true,
       "tempC": 17.7,
       "rainChance": 0
@@ -121,128 +73,176 @@
       "isDay": true,
       "tempC": 17.9,
       "rainChance": 0
+    },
+    {
+      "timeIso": "2026-09-07T14:00:00.000Z",
+      "label": "3pm",
+      "code": 3,
+      "isDay": true,
+      "tempC": 18.1,
+      "rainChance": 0
+    },
+    {
+      "timeIso": "2026-09-07T15:00:00.000Z",
+      "label": "4pm",
+      "code": 3,
+      "isDay": true,
+      "tempC": 18,
+      "rainChance": 4
+    },
+    {
+      "timeIso": "2026-09-07T16:00:00.000Z",
+      "label": "5pm",
+      "code": 3,
+      "isDay": true,
+      "tempC": 17.7,
+      "rainChance": 16
+    },
+    {
+      "timeIso": "2026-09-07T17:00:00.000Z",
+      "label": "6pm",
+      "code": 51,
+      "isDay": true,
+      "tempC": 17.3,
+      "rainChance": 32
+    },
+    {
+      "timeIso": "2026-09-07T18:00:00.000Z",
+      "label": "7pm",
+      "code": 51,
+      "isDay": true,
+      "tempC": 16.9,
+      "rainChance": 49
+    },
+    {
+      "timeIso": "2026-09-07T19:00:00.000Z",
+      "label": "8pm",
+      "code": 51,
+      "isDay": false,
+      "tempC": 16.9,
+      "rainChance": 67
     }
   ],
   "daily": [
     {
       "date": "2026-09-07",
       "label": "Mon 7",
-      "code": 53,
-      "summary": "Drizzle",
+      "code": 55,
+      "summary": "Heavy drizzle",
       "tempMaxC": 18.9,
-      "tempMinC": 15.1,
+      "tempMinC": 15.5,
       "rainChance": 100,
-      "windMph": 21,
-      "windDir": "WSW",
+      "windMph": 19.9,
+      "windDir": "SW",
       "sunriseIso": "2026-09-07T05:37:00.000Z",
       "sunsetIso": "2026-09-07T18:51:00.000Z",
-      "uvIndexMax": 3.9,
-      "precipHours": 9
+      "uvIndexMax": 3.55,
+      "precipHours": 8
     },
     {
       "date": "2026-09-08",
       "label": "Tue 8",
-      "code": 63,
-      "summary": "Rain",
+      "code": 51,
+      "summary": "Light drizzle",
       "tempMaxC": 16.5,
-      "tempMinC": 14.2,
+      "tempMinC": 14.5,
       "rainChance": 100,
-      "windMph": 19.9,
+      "windMph": 21,
       "windDir": "W",
       "sunriseIso": "2026-09-08T05:39:00.000Z",
       "sunsetIso": "2026-09-08T18:48:00.000Z",
-      "uvIndexMax": 3.3,
-      "precipHours": 5
+      "uvIndexMax": 2.6,
+      "precipHours": 2
     },
     {
       "date": "2026-09-09",
       "label": "Wed 9",
-      "code": 53,
-      "summary": "Drizzle",
-      "tempMaxC": 15.5,
-      "tempMinC": 10.3,
+      "code": 51,
+      "summary": "Light drizzle",
+      "tempMaxC": 16.7,
+      "tempMinC": 11.6,
       "rainChance": 93,
-      "windMph": 16.1,
-      "windDir": "WNW",
+      "windMph": 18.8,
+      "windDir": "NW",
       "sunriseIso": "2026-09-09T05:40:00.000Z",
       "sunsetIso": "2026-09-09T18:46:00.000Z",
-      "uvIndexMax": 4.7,
-      "precipHours": 4
+      "uvIndexMax": 4.05,
+      "precipHours": 2
     },
     {
       "date": "2026-09-10",
       "label": "Thu 10",
       "code": 61,
       "summary": "Light rain",
-      "tempMaxC": 17,
-      "tempMinC": 13,
+      "tempMaxC": 17.6,
+      "tempMinC": 8.9,
       "rainChance": 93,
-      "windMph": 15.9,
-      "windDir": "SW",
+      "windMph": 14.5,
+      "windDir": "SSW",
       "sunriseIso": "2026-09-10T05:42:00.000Z",
       "sunsetIso": "2026-09-10T18:44:00.000Z",
-      "uvIndexMax": 4.55,
-      "precipHours": 19
+      "uvIndexMax": 4,
+      "precipHours": 7
     },
     {
       "date": "2026-09-11",
       "label": "Fri 11",
       "code": 61,
       "summary": "Light rain",
-      "tempMaxC": 17.4,
-      "tempMinC": 8.7,
+      "tempMaxC": 17,
+      "tempMinC": 10,
       "rainChance": 90,
-      "windMph": 15.9,
+      "windMph": 13.4,
       "windDir": "W",
       "sunriseIso": "2026-09-11T05:44:00.000Z",
       "sunsetIso": "2026-09-11T18:41:00.000Z",
-      "uvIndexMax": 4.6,
-      "precipHours": 8
+      "uvIndexMax": 4.65,
+      "precipHours": 5
     },
     {
       "date": "2026-09-12",
       "label": "Sat 12",
       "code": 63,
       "summary": "Rain",
-      "tempMaxC": 17.9,
-      "tempMinC": 8.6,
+      "tempMaxC": 18,
+      "tempMinC": 6.6,
       "rainChance": 59,
-      "windMph": 17.2,
+      "windMph": 18.1,
       "windDir": "SSW",
       "sunriseIso": "2026-09-12T05:45:00.000Z",
       "sunsetIso": "2026-09-12T18:39:00.000Z",
-      "uvIndexMax": 2.85,
-      "precipHours": 10
+      "uvIndexMax": 4.3,
+      "precipHours": 13
     },
     {
       "date": "2026-09-13",
       "label": "Sun 13",
       "code": 63,
       "summary": "Rain",
-      "tempMaxC": 18.5,
-      "tempMinC": 13.8,
+      "tempMaxC": 18.2,
+      "tempMinC": 14.6,
       "rainChance": 67,
-      "windMph": 17.4,
-      "windDir": "W",
+      "windMph": 16.8,
+      "windDir": "WSW",
       "sunriseIso": "2026-09-13T05:47:00.000Z",
       "sunsetIso": "2026-09-13T18:36:00.000Z",
-      "uvIndexMax": 2.5,
-      "precipHours": 14
+      "uvIndexMax": 3.2,
+      "precipHours": 20
     },
     {
       "date": "2026-09-14",
       "label": "Mon 14",
-      "code": 81,
-      "summary": "Showers",
-      "tempMaxC": 19.2,
-      "tempMinC": 12.6,
+      "code": 51,
+      "summary": "Light drizzle",
+      "tempMaxC": 17.7,
+      "tempMinC": 14.5,
       "rainChance": 55,
-      "windMph": 15.2,
-      "windDir": "SSW",
+      "windMph": 14.2,
+      "windDir": "SW",
       "sunriseIso": "2026-09-14T05:49:00.000Z",
       "sunsetIso": "2026-09-14T18:34:00.000Z",
-      "uvIndexMax": 2.9,
-      "precipHours": 10
+      "uvIndexMax": 2.95,
+      "precipHours": 16
     }
   ]
 }
