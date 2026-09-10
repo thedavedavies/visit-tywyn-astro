@@ -1,31 +1,31 @@
 {
-  "fetchedAt": "2026-09-10T17:07:35.884Z",
+  "fetchedAt": "2026-09-10T19:59:57.627Z",
   "location": "Tywyn beach",
   "summary": "Overcast",
   "code": 3,
-  "isDay": true,
-  "tempC": 17.2,
-  "feelsLikeC": 15.1,
-  "windMph": 16.1,
-  "windDir": "SW",
-  "gustsMph": 28.2,
-  "humidity": 87,
-  "pressureHpa": 1011,
-  "rainChance": 100,
-  "observedLabel": "7:00 pm",
+  "isDay": false,
+  "tempC": 16.8,
+  "feelsLikeC": 15.3,
+  "windMph": 14.1,
+  "windDir": "WSW",
+  "gustsMph": 24.4,
+  "humidity": 91,
+  "pressureHpa": 1012,
+  "rainChance": null,
+  "observedLabel": "9:45 pm",
   "pollen": {
     "label": "Low",
     "species": "grass",
     "grainsM3": 0
   },
   "aqi": {
-    "value": 24,
+    "value": 22,
     "label": "Fair"
   },
   "seaTempC": 18,
   "waves": {
-    "heightM": 1.6,
-    "periodS": 5.9,
+    "heightM": 1.58,
+    "periodS": 6.2,
     "week": [
       {
         "date": "2026-09-10",
@@ -59,30 +59,6 @@
   },
   "hourly": [
     {
-      "timeIso": "2026-09-10T17:00:00.000Z",
-      "label": "6pm",
-      "code": 51,
-      "isDay": true,
-      "tempC": 17.2,
-      "rainChance": 100
-    },
-    {
-      "timeIso": "2026-09-10T18:00:00.000Z",
-      "label": "7pm",
-      "code": 3,
-      "isDay": true,
-      "tempC": 16.9,
-      "rainChance": 100
-    },
-    {
-      "timeIso": "2026-09-10T19:00:00.000Z",
-      "label": "8pm",
-      "code": 3,
-      "isDay": false,
-      "tempC": 16.8,
-      "rainChance": 99
-    },
-    {
       "timeIso": "2026-09-10T20:00:00.000Z",
       "label": "9pm",
       "code": 3,
@@ -93,9 +69,9 @@
     {
       "timeIso": "2026-09-10T21:00:00.000Z",
       "label": "10pm",
-      "code": 2,
+      "code": 3,
       "isDay": false,
-      "tempC": 16.9,
+      "tempC": 16.8,
       "rainChance": 98
     },
     {
@@ -103,7 +79,7 @@
       "label": "11pm",
       "code": 3,
       "isDay": false,
-      "tempC": 17.1,
+      "tempC": 17,
       "rainChance": 100
     },
     {
@@ -111,7 +87,7 @@
       "label": "12am",
       "code": 3,
       "isDay": false,
-      "tempC": 17.1,
+      "tempC": 17.2,
       "rainChance": 100
     },
     {
@@ -119,17 +95,41 @@
       "label": "1am",
       "code": 3,
       "isDay": false,
-      "tempC": 17.1,
+      "tempC": 16.9,
       "rainChance": 100
+    },
+    {
+      "timeIso": "2026-09-11T01:00:00.000Z",
+      "label": "2am",
+      "code": 3,
+      "isDay": false,
+      "tempC": 16.7,
+      "rainChance": 92
+    },
+    {
+      "timeIso": "2026-09-11T02:00:00.000Z",
+      "label": "3am",
+      "code": 3,
+      "isDay": false,
+      "tempC": 16.5,
+      "rainChance": 81
+    },
+    {
+      "timeIso": "2026-09-11T03:00:00.000Z",
+      "label": "4am",
+      "code": 3,
+      "isDay": false,
+      "tempC": 16.4,
+      "rainChance": 71
     }
   ],
   "daily": [
     {
       "date": "2026-09-10",
       "label": "Thu 10",
-      "code": 55,
-      "summary": "Heavy drizzle",
-      "tempMaxC": 17.2,
+      "code": 53,
+      "summary": "Drizzle",
+      "tempMaxC": 17.4,
       "tempMinC": 9.5,
       "rainChance": 100,
       "windMph": 19.9,
@@ -145,35 +145,35 @@
       "code": 3,
       "summary": "Overcast",
       "tempMaxC": 17.2,
-      "tempMinC": 11,
+      "tempMinC": 10.8,
       "rainChance": 100,
-      "windMph": 15.4,
+      "windMph": 13.2,
       "windDir": "WNW",
       "sunriseIso": "2026-09-11T05:43:00.000Z",
       "sunsetIso": "2026-09-11T18:41:00.000Z",
-      "uvIndexMax": 3.65,
+      "uvIndexMax": 3.3,
       "precipHours": 0
     },
     {
       "date": "2026-09-12",
       "label": "Sat 12",
-      "code": 61,
-      "summary": "Light rain",
-      "tempMaxC": 18,
-      "tempMinC": 11.9,
+      "code": 63,
+      "summary": "Rain",
+      "tempMaxC": 18.3,
+      "tempMinC": 11.7,
       "rainChance": 90,
-      "windMph": 22.6,
+      "windMph": 21.3,
       "windDir": "SSW",
       "sunriseIso": "2026-09-12T05:45:00.000Z",
       "sunsetIso": "2026-09-12T18:38:00.000Z",
-      "uvIndexMax": 0.55,
+      "uvIndexMax": 0.7,
       "precipHours": 13
     },
     {
       "date": "2026-09-13",
       "label": "Sun 13",
-      "code": 53,
-      "summary": "Drizzle",
+      "code": 63,
+      "summary": "Rain",
       "tempMaxC": 17.9,
       "tempMinC": 12.8,
       "rainChance": 87,
@@ -181,14 +181,14 @@
       "windDir": "W",
       "sunriseIso": "2026-09-13T05:47:00.000Z",
       "sunsetIso": "2026-09-13T18:36:00.000Z",
-      "uvIndexMax": 4,
-      "precipHours": 6
+      "uvIndexMax": 3.5,
+      "precipHours": 21
     },
     {
       "date": "2026-09-14",
       "label": "Mon 14",
-      "code": 61,
-      "summary": "Light rain",
+      "code": 63,
+      "summary": "Rain",
       "tempMaxC": 19.1,
       "tempMinC": 14.3,
       "rainChance": 88,
@@ -196,14 +196,14 @@
       "windDir": "SW",
       "sunriseIso": "2026-09-14T05:48:00.000Z",
       "sunsetIso": "2026-09-14T18:33:00.000Z",
-      "uvIndexMax": 1.8,
+      "uvIndexMax": 2.5,
       "precipHours": 24
     },
     {
       "date": "2026-09-15",
       "label": "Tue 15",
-      "code": 61,
-      "summary": "Light rain",
+      "code": 53,
+      "summary": "Drizzle",
       "tempMaxC": 16.5,
       "tempMinC": 13.5,
       "rainChance": 85,
@@ -211,38 +211,38 @@
       "windDir": "W",
       "sunriseIso": "2026-09-15T05:50:00.000Z",
       "sunsetIso": "2026-09-15T18:31:00.000Z",
-      "uvIndexMax": 4.05,
-      "precipHours": 15
+      "uvIndexMax": 3.25,
+      "precipHours": 11
     },
     {
       "date": "2026-09-16",
       "label": "Wed 16",
       "code": 53,
       "summary": "Drizzle",
-      "tempMaxC": 14.1,
+      "tempMaxC": 14.3,
       "tempMinC": 11.8,
       "rainChance": 67,
-      "windMph": 13.4,
+      "windMph": 13.6,
       "windDir": "W",
       "sunriseIso": "2026-09-16T05:52:00.000Z",
       "sunsetIso": "2026-09-16T18:29:00.000Z",
-      "uvIndexMax": 2.95,
-      "precipHours": 12
+      "uvIndexMax": 3.3,
+      "precipHours": 19
     },
     {
       "date": "2026-09-17",
       "label": "Thu 17",
-      "code": 81,
-      "summary": "Showers",
-      "tempMaxC": 16.8,
-      "tempMinC": 14.1,
+      "code": 75,
+      "summary": "Heavy snow",
+      "tempMaxC": 15.4,
+      "tempMinC": 13.6,
       "rainChance": 90,
-      "windMph": 19.4,
-      "windDir": "WSW",
+      "windMph": 18.2,
+      "windDir": "W",
       "sunriseIso": "2026-09-17T05:53:00.000Z",
       "sunsetIso": "2026-09-17T18:26:00.000Z",
-      "uvIndexMax": 3.75,
-      "precipHours": 20
+      "uvIndexMax": 3.4,
+      "precipHours": 24
     }
   ]
 }
