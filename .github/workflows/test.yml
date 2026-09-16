@@ -17,9 +17,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: 'npm'
@@ -40,7 +40,7 @@ jobs:
       # Within a fixed toolchain the image hash moves the exact key as
       # images change, and restore-keys (scoped to the same toolchain)
       # warm-starts the build so Sharp only touches new/changed files.
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: node_modules/.astro
           key: astro-cache-${{ runner.os }}-${{ hashFiles('package-lock.json', 'astro.config.mjs') }}-${{ hashFiles('src/assets/img/**') }}
