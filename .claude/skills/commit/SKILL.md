@@ -14,8 +14,14 @@ Cloudflare Pages rebuilds the site on every push to `main`.
 and holds a PR closed until `test`, `a11y` and `Socket Security: Project Report` are
 green. A red pipeline is fixed on the feature branch, where it is still cheap and
 affects nothing that is deployed. `main` stays deployable by construction, so there
-is never a reason to edit it. The one exception is the `refresh-conditions` cron,
-which is granted a ruleset bypass so it can keep pushing snapshots.
+is never a reason to edit it.
+
+The one exception is the `refresh-conditions` cron. GitHub will not accept
+`github-actions[bot]` as a bypass actor on a personal repo, so the cron checks out
+with a write **deploy key** (`CRON_DEPLOY_KEY`) and the ruleset bypasses deploy
+keys. Its pushes report `Bypassed rule violations for refs/heads/main`, which is
+success, not a warning. Never revert that checkout step to the default token: the
+push would start failing every 3 hours and the snapshots would quietly go stale.
 
 **Expect `origin/main` to be ahead.** A scheduled workflow (`refresh-conditions.yml`)
 commits weather and tides snapshots to `main` roughly every 3 hours, so being dozens
