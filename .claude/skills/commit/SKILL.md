@@ -236,7 +236,8 @@ through a branch and a PR in the style above. Merge a dependabot PR only after i
   is the only one.
 - Do not use `git add -A`, `git add .`, or `-uall`.
 - Do not force-push `main`, ever.
-- Do not amend a commit that has been pushed.
+- Do not amend a commit that has been pushed to `main`. On a feature branch,
+  amending and re-pushing with `--force-with-lease` is expected (step 9).
 - Do not hand-edit or hand-commit the weather/tides snapshots, and never write a
   `chore(data)` commit yourself.
 - Do not treat "remote is ahead" as a conflict or a reason to ask, when the
