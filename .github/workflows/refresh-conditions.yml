@@ -10,9 +10,17 @@ name: Refresh weather + tides snapshots
 # source whose snapshot is younger than ~2h45m, so data is actually
 # fetched (and a rebuild triggered) roughly every 3 hours. Same
 # effective refresh cadence and build spend as the old 3-hourly cron;
-# the frequent tick exists purely as the retry mechanism. When an
-# upstream fails, its snapshot stays old, so the next tick retries it
-# ~30 minutes later instead of waiting out a full 3-hour gap.
+# the frequent tick exists to retry a failed fetch sooner than the
+# next 3-hour slot.
+#
+# Do not count on that retry being prompt. Tick minutes are 7,37
+# rather than 0,30 because the top of the hour is GitHub's most
+# congested slot, but congestion is only part of it: measured over the
+# 18 days to 2026-09-16, just 199 of ~878 scheduled ticks ran. The
+# median gap between delivered ticks was 2h01m rather than 30 minutes,
+# and the worst was 8h05m, which outlives the 6h weather TTL on its
+# own. The tick is a best-effort retry for fetches; anything that must
+# not be lost retries inside the job instead (see the push step).
 #
 # Failure semantics: a failed fetch keeps the previous snapshot, and
 # the other source still refreshes and commits independently. The job
@@ -20,10 +28,6 @@ name: Refresh weather + tides snapshots
 # TTL (6h weather / 12h tides, shared via SITE.conditions in
 # src/lib/site.ts). Red means visitors are seeing data we consider too
 # old, not that one request blipped.
-#
-# Tick minutes are 7,37 rather than 0,30: GitHub's cron scheduler is
-# most congested at the top of the hour, where ticks are delayed by up
-# to an hour or silently dropped (both observed on this workflow).
 
 on:
   schedule:
@@ -43,6 +47,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
+        with:
+          ssh-key: ${{ secrets.CRON_DEPLOY_KEY }}
 
       - uses: actions/setup-node@v7
         with:
