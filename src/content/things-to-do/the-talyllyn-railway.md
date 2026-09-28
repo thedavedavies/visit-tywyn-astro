@@ -58,6 +58,7 @@ The museum also features exhibits on the Talyllyn Railway steam, showcasing its 
 See how narrow gauge railways transformed the Welsh slate industry and how the trains were used during World War 1. Learn how a steam locomotive works, and take the controls on the footplate of <em>William Finlay</em>.
 
 <h2>Map of the Talyllyn Route</h2>
+
 ![A map of the route of the Talyllyn Railway. Starting at Tywyn Wharf, and travelling to Nant Gwernol. The railway route passes through Pendre station, Rhydyronen, Brynglas, Dolgoch, and Abergynolwyn too.](../../assets/img/things-to-do/the-talyllyn-railway/inline/talyllyn-map.jpeg)
 <h2>How to get to the Talyllyn Railway</h2>
 Approaching Tywyn from Aberdyfi, the Talyllyn's Wharf station is on the left. Coming from Dolgellau, go through the town centre past the National Rail station for 300yds which connects to the mainline railway at Tywyn, and you will see the Talyllyn Railway are on your right. There is a large pay &amp; display car park 100 yards away. Parking is also available at Dolgoch and Abergynolwyn stations, located on the B4405 Bryncrug to Talyllyn road.
