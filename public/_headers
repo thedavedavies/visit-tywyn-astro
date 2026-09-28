@@ -70,3 +70,6 @@
 /robots.txt
   ! Cache-Control
   Cache-Control: public, max-age=86400
+
+/*.md
+  Vary: Accept

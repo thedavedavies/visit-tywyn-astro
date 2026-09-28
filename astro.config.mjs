@@ -1,11 +1,21 @@
 // @ts-check
-import { appendFileSync, readdirSync, readFileSync, statSync, unlinkSync } from 'node:fs';
+import {
+	appendFileSync,
+	readdirSync,
+	readFileSync,
+	statSync,
+	unlinkSync,
+	writeFileSync,
+} from 'node:fs';
 import { rename } from 'node:fs/promises';
 import { dirname, join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig, fontProviders } from 'astro/config';
 import { satteri } from '@astrojs/markdown-satteri';
 import sitemap from '@astrojs/sitemap';
+import domino from '@mixmark-io/domino';
+import { gfm } from '@joplin/turndown-plugin-gfm';
+import TurndownService from 'turndown';
 
 /**
  * Walk a content directory and pull `updated` (preferred) or
@@ -263,6 +273,93 @@ const heroEarlyHints = {
 };
 
 /** @type {import('astro').AstroIntegration} */
+const markdownTwins = {
+	name: 'markdown-twins',
+	hooks: {
+		'astro:build:done': async ({ dir, logger }) => {
+			const root = fileURLToPath(dir);
+			const td = new TurndownService({
+				headingStyle: 'atx',
+				bulletListMarker: '-',
+				codeBlockStyle: 'fenced',
+			});
+			td.use(gfm);
+			td.addRule('iframe', {
+				filter: 'iframe',
+				/** @param {string} _ @param {Element} node */
+				replacement: (_, node) => {
+					const src = node.getAttribute('src');
+					return src ? `\n\n[${node.getAttribute('title') || src}](${src})\n\n` : '';
+				},
+			});
+			const pages = readdirSync(root, { recursive: true, encoding: 'utf8' }).filter(
+				(p) => p.split(sep).at(-1) === 'index.html',
+			);
+			/** @type {string[]} */
+			const suspicious = [];
+			for (const rel of pages) {
+				const file = join(root, rel);
+				const doc = domino.createDocument(readFileSync(file, 'utf8'));
+				const jsonLd = Array.from(doc.querySelectorAll('script[type="application/ld+json"]')).map(
+					(s) => s.textContent.trim(),
+				);
+				const description = doc.querySelector('meta[name="description"]')?.getAttribute('content');
+				const content = doc.querySelector('article.site-content') ?? doc.body;
+				for (const button of Array.from(content.querySelectorAll('button'))) {
+					if (button.querySelector('img')) button.replaceWith(...button.childNodes);
+					else button.remove();
+				}
+				for (const a of Array.from(content.querySelectorAll('a[href]'))) {
+					const heading = a.querySelector('h1, h2, h3, h4, h5, h6');
+					if (!heading) continue;
+					const link = a.cloneNode(false);
+					while (heading.firstChild) link.appendChild(heading.firstChild);
+					heading.appendChild(link);
+					a.replaceWith(...a.childNodes);
+				}
+				for (const el of Array.from(
+					content.querySelectorAll(
+						'script, style, noscript, template, svg, canvas, form, input, select, ins, video, audio, source, [hidden], [aria-hidden="true"], img:not([alt]), img[alt=""]',
+					),
+				)) {
+					el.remove();
+				}
+				for (const el of Array.from(content.querySelectorAll('*'))) {
+					if (!el.textContent.trim()) continue;
+					if (el.nextSibling?.nodeType === 1) el.after(' ');
+					const prev = el.previousSibling;
+					if (prev?.nodeType === 3 && /\S$/.test(prev.data)) el.before(' ');
+				}
+				let md = td
+					.turndown(content)
+					.replace(/^[ \t]+$/gm, '')
+					.replace(/\n{3,}/g, '\n\n');
+				if (/^\s*\[\s*$|^\s*\]\(|<\/?[a-z][\w-]*[\s>]/m.test(md)) suspicious.push(rel);
+				const front = [
+					doc.title && `title: ${JSON.stringify(doc.title)}`,
+					description && `description: ${JSON.stringify(description)}`,
+				].filter(Boolean);
+				if (front.length) md = `---\n${front.join('\n')}\n---\n\n${md}`;
+				if (jsonLd.length) md += `\n\n\`\`\`json\n${jsonLd.join('\n')}\n\`\`\``;
+				writeFileSync(join(dirname(file), 'index.md'), `${md}\n`);
+			}
+			const redirectsFile = join(root, '_redirects');
+			const redirects = readFileSync(redirectsFile, 'utf8')
+				.split('\n')
+				.flatMap((line) => {
+					const [from, ...rest] = line.trim().split(/\s+/);
+					return /^\/[^*:]*\/$/.test(from) ? [line, `${from}index.md ${rest.join(' ')}`] : [line];
+				});
+			writeFileSync(redirectsFile, redirects.join('\n'));
+			logger.info(`markdown-twins: wrote index.md for ${pages.length} pages`);
+			if (suspicious.length) {
+				logger.warn(`markdown-twins: check the markdown for ${suspicious.join(', ')}`);
+			}
+		},
+	},
+};
+
+/** @type {import('astro').AstroIntegration} */
 const pruneUnreferencedAssets = {
 	name: 'prune-unreferenced-assets',
 	hooks: {
@@ -386,6 +483,7 @@ export default defineConfig({
 		sitemapUnderscoreAlias,
 		fontEarlyHints,
 		heroEarlyHints,
+		markdownTwins,
 		pruneUnreferencedAssets,
 	],
 	markdown: {
