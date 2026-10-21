@@ -1,10 +1,11 @@
 ---
 title: 'Tŷ Te Cadair Tea Room'
-summary: 'Traditional home made cakes, scrumptious soups, freshly made sandwiches, baguettes & hot lunches. Ingredients locally sourced where possible.'
+summary: 'Tŷ Te Cadair Tea Room at Minffordd, Tal-y-llyn has permanently closed. It was a traditional tea room serving home made cakes, soups and hot lunches.'
 address: 'Tŷ Te Cadair Tea Room, Ystradlyn, Minffordd, Tal Y Llyn'
 phone: 01654 761505
 dog_friendly: true
 published: 2022-05-28
+closed: true
 photo:
   src: '../../assets/img/eating/ty-te-cadair-tea-room/cover.jpg'
   alt: 'Tŷ Te Cadair Tea Room'
