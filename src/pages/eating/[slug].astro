@@ -15,7 +15,7 @@ import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import VenueMap from '../../components/VenueMap/VenueMap.astro';
 import Icon from '../../components/Icon/Icon.astro';
 import RelatedItems from '../../components/RelatedItems/RelatedItems.astro';
-import ClosedNotice from '../../components/ClosedNotice/ClosedNotice.astro';
+import Notice from '../../components/Notice/Notice.astro';
 import { restaurant } from '../../lib/jsonld';
 import { eatingUrl } from '../../lib/url';
 import { seededShuffle } from '../../lib/random';
@@ -109,7 +109,13 @@ const jsonLd = restaurant({
 		)
 	}
 
-	{isClosed && <ClosedNotice title={venue.data.title} browse="places to eat" />}
+	{
+		isClosed && (
+			<Notice label="Permanently closed">
+				{venue.data.title} has permanently closed. Browse other places to eat in Tywyn below.
+			</Notice>
+		)
+	}
 
 	{
 		!isClosed && (

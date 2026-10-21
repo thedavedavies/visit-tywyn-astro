@@ -16,7 +16,7 @@ import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import Gallery from '../../components/Gallery/Gallery.astro';
 import Icon from '../../components/Icon/Icon.astro';
 import RelatedItems from '../../components/RelatedItems/RelatedItems.astro';
-import ClosedNotice from '../../components/ClosedNotice/ClosedNotice.astro';
+import Notice from '../../components/Notice/Notice.astro';
 import { touristAttraction } from '../../lib/jsonld';
 import { thingsToDoUrl } from '../../lib/url';
 import { seededShuffle } from '../../lib/random';
@@ -107,7 +107,13 @@ const jsonLd = touristAttraction({
 		)
 	}
 
-	{isClosed && <ClosedNotice title={activity.data.title} browse="things to do" />}
+	{
+		isClosed && (
+			<Notice label="Permanently closed">
+				{activity.data.title} has permanently closed. Browse other things to do in Tywyn below.
+			</Notice>
+		)
+	}
 
 	{
 		!isClosed && (
