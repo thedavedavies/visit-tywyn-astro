@@ -7,12 +7,16 @@ interface Props {
 	/** Accessible label for the calendar region. */
 	label?: string;
 	sectionId?: string;
+	tag?: string;
 }
 
-const { label = 'Tywyn and Aberdyfi events calendar', sectionId = 'vt-events-calendar' } =
-	Astro.props;
+const {
+	label = 'Tywyn and Aberdyfi events calendar',
+	sectionId = 'vt-events-calendar',
+	tag,
+} = Astro.props;
 
-const months = eventsByMonth();
+const months = eventsByMonth(new Date(), tag);
 ---
 
 {
@@ -30,6 +34,17 @@ const months = eventsByMonth();
 							// month-spanning one ("May to September") still does.
 							const isMultiMonth = event.startIso.slice(0, 7) !== event.endIso.slice(0, 7);
 							const showDate = !event.monthOnly || isMultiMonth;
+							const eventPage = event.internalPath?.startsWith('/events/')
+								? event.internalPath
+								: null;
+							const venuePage = event.internalPath && !eventPage ? event.internalPath : null;
+							const venueSuffix = event.locality ? `, ${event.locality}` : '';
+							const venueName =
+								venueSuffix && event.location.endsWith(venueSuffix)
+									? event.location.slice(0, -venueSuffix.length)
+									: event.location;
+							const detailsUrl = eventPage ?? event.externalUrl;
+							const detailsLabel = eventPage ? 'Find out more' : event.externalLabel;
 							return (
 								<li class:list={[styles.event, { [styles.eventPast]: event.isPast }]}>
 									<div class={styles.when}>
@@ -50,21 +65,30 @@ const months = eventsByMonth();
 										)}
 										{event.summary && <p class={styles.summary}>{event.summary}</p>}
 										{event.isPast && <p class={styles.finished}>Event finished</p>}
-										{event.primaryUrl && (
+										{(detailsUrl || venuePage) && (
 											<p class={styles.actions}>
-												<a
-													class={styles.moreLink}
-													href={event.primaryUrl}
-													aria-label={`Find out more about ${event.title}${event.internalPath ? '' : ' (opens in new tab)'}`}
-													{...(event.internalPath
-														? {}
-														: { target: '_blank', rel: 'noopener noreferrer' })}
-												>
-													Find out more
-													<span aria-hidden="true" class={styles.moreArrow}>
-														→
-													</span>
-												</a>
+												{detailsUrl && (
+													<a
+														class={styles.moreLink}
+														href={detailsUrl}
+														aria-label={
+															eventPage
+																? `Find out more about ${event.title}`
+																: `${detailsLabel} for ${event.title} (opens in new tab)`
+														}
+														{...(eventPage ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
+													>
+														{detailsLabel}
+														<span aria-hidden="true" class={styles.moreArrow}>
+															→
+														</span>
+													</a>
+												)}
+												{venuePage && (
+													<a class={styles.venueLink} href={venuePage}>
+														About {venueName || 'the venue'}
+													</a>
+												)}
 											</p>
 										)}
 									</div>

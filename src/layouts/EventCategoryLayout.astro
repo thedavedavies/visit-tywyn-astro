@@ -1,0 +1,89 @@
+---
+import { getEntry, render } from 'astro:content';
+import PageLayout from './PageLayout.astro';
+import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
+import EventsCalendar from '../components/EventsCalendar/EventsCalendar.astro';
+import { upcomingEvents } from '../lib/events';
+import { collectionPage, eventSchema, itemList } from '../lib/jsonld';
+import { absoluteUrl } from '../lib/url';
+
+interface Props {
+	pageId: string;
+	tag: string;
+}
+
+const { pageId, tag } = Astro.props;
+
+const page = await getEntry('pages', pageId);
+if (!page) throw new Error(`EventCategoryLayout: src/content/pages/${pageId}.md not found`);
+const { Content } = await render(page);
+
+const events = upcomingEvents().filter((ev) => ev.tags.includes(tag));
+
+const seoTitle = page.data.seo?.title || page.data.title;
+const seoDescription = page.data.seo?.description || page.data.subtitle;
+const seoOgImage = page.data.seo?.og_image || page.data.hero_image?.src.src;
+
+const breadcrumbs = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Events', href: '/events/' },
+	{ label: page.data.title },
+];
+
+const jsonLd: (Record<string, unknown> | null)[] = [
+	collectionPage({
+		title: seoTitle,
+		description: seoDescription,
+		url: Astro.url,
+		image: seoOgImage,
+	}),
+	itemList(
+		page.data.title,
+		events
+			.filter((ev) => !!ev.primaryUrl)
+			.map((ev) => ({
+				url: absoluteUrl(ev.primaryUrl!)!,
+				name: ev.title,
+				image: ev.image ?? undefined,
+				description: ev.summary || undefined,
+			})),
+	),
+	...events
+		.filter((ev) => ev.schemaDates && ev.locality)
+		.map((ev) =>
+			eventSchema({
+				name: ev.title,
+				startIso: ev.schemaDates!.start,
+				endIso: ev.schemaDates!.end,
+				location: ev.location || undefined,
+				locality: ev.locality,
+				url: ev.primaryUrl,
+				image: ev.image,
+				description: ev.summary || undefined,
+			}),
+		),
+];
+---
+
+<PageLayout
+	title={seoTitle}
+	description={seoDescription}
+	canonical={page.data.seo?.canonical}
+	ogImage={seoOgImage}
+	heroImage={page.data.hero_image}
+	breadcrumbs={breadcrumbs}
+	jsonLd={jsonLd}
+>
+	<EntryHeader title={page.data.title} subtitle={page.data.subtitle} />
+
+	<div class="entry-content">
+		<Content />
+	</div>
+
+	<EventsCalendar sectionId={`vt-${tag}`} label={page.data.title} tag={tag} />
+
+	<div class="entry-content">
+		{events.length === 0 && <p>This year's dates are not confirmed yet.</p>}
+		<p><a href="/events/">See everything else coming up in Tywyn and Aberdyfi</a></p>
+	</div>
+</PageLayout>

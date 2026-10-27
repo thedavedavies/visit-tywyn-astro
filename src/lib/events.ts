@@ -35,6 +35,7 @@ export interface RawEvent {
 	 * for the whole month rather than flipping to "past" on the 1st.
 	 */
 	month_only?: boolean;
+	tags?: string[];
 }
 
 const RawEventSchema = z.object({
@@ -52,6 +53,7 @@ const RawEventSchema = z.object({
 	external_url: z.string().optional(),
 	external_label: z.string().optional(),
 	month_only: z.boolean().optional(),
+	tags: z.array(z.string()).optional(),
 });
 
 const EventsJsonSchema = z.object({ events: z.array(RawEventSchema).optional() }).passthrough();
@@ -68,6 +70,7 @@ export interface NormalisedEvent {
 	schemaDates: { start: string; end: string } | null;
 	dateLabel: string;
 	monthOnly: boolean;
+	tags: string[];
 	isPast: boolean;
 	isOngoing: boolean;
 	isUpcoming: boolean;
@@ -225,6 +228,7 @@ export function getEvents(now: Date = new Date()): NormalisedEvent[] {
 			schemaDates,
 			dateLabel: monthOnly ? monthRangeLabel(startIso, endIso) : fmtRange(startIso, endIso),
 			monthOnly,
+			tags: ev.tags ?? [],
 			isPast,
 			isOngoing,
 			isUpcoming,
@@ -266,9 +270,10 @@ function monthLabel(key: string): string {
  * dated ones. Unlike `upcomingEvents`, this keeps past events so the
  * page reads as a full annual reference (the card dims them).
  */
-export function eventsByMonth(now: Date = new Date()): EventMonthGroup[] {
+export function eventsByMonth(now: Date = new Date(), tag?: string): EventMonthGroup[] {
 	const groups = new Map<string, NormalisedEvent[]>();
 	for (const ev of getEvents(now)) {
+		if (tag && (ev.isPast || !ev.tags.includes(tag))) continue;
 		const key = ev.startIso.slice(0, 7);
 		const bucket = groups.get(key);
 		if (bucket) bucket.push(ev);
