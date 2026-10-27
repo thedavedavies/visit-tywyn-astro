@@ -5,6 +5,7 @@ address: 8 Sea View Terrace, Aberdyfi, Snowdonia National Park LL35 0EF
 phone: 01654 767332
 website: 'https://sabrainpubs.com/pubs-and-hotels/north-wales/gwynedd/the-dovey-inn'
 dog_friendly: true
+kind: BarOrPub
 published: 2022-05-28
 geo:
   lat: 52.5441154

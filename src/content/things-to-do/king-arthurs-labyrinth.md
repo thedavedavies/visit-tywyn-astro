@@ -26,7 +26,6 @@ gallery:
 social:
   facebook: 'https://www.facebook.com/pages/King-Arthurs-Labyrinth/118429064854987'
   twitter: 'https://twitter.com/KingArthurWales'
-  youtube: 'https://www.youtube.com/watch?v=hHlunTcaAfU&rel=0'
 seo:
   description: "Head to King Arthur's Labyrinth in Corris and discover Wales underground. Less than 30 minutes drive from Tywyn."
 ---

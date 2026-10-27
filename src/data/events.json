@@ -4,6 +4,7 @@
 		"Use dates in YYYY-MM-DD format and times in 24-hour HH:MM format.",
 		"Set \"month_only\": true when you only know the month, not the day. The page then shows the month name (or a span like \"May to September\" if an end_date crosses months) instead of a made-up date, and the event stays listed for the whole month.",
 		"Use internal_url for a page on this website (e.g. /things-to-do/the-talyllyn-railway/) and external_url for the official event website.",
+		"Set \"locality\" to the single town the event is in (Tywyn, Aberdyfi, Machynlleth, ...). It becomes the schema.org address Google requires for event rich results, so leave it out when the event genuinely spans more than one place and it will be left out of the structured data.",
 		"To give an event its own page on this site, set internal_url to /events/<slug>/ and add src/content/events/<slug>.md (page description + links); the date and location here drive both the calendar and that page.",
 		"Most of these repeat every year: roll the dates forward each January to keep the calendar current.",
 		"Summaries are our own wording: do not paste descriptions from leaflets or other sites."
@@ -16,6 +17,7 @@
 		"start_time": "11:00",
 		"end_time": "16:00",
 		"location": "Tywyn Promenade",
+		"locality": "Tywyn",
 		"month_only": false,
 		"internal_url": "/things-to-do/the-talyllyn-railway/",
 		"external_url": "https://example.com/events/example-event",
@@ -32,7 +34,8 @@
 			"summary": "A much-loved start to the year, with a family pantomime staged by local performers at Aberdyfi's Neuadd Dyfi.",
 			"start_date": "2026-01-01",
 			"month_only": true,
-			"location": "Neuadd Dyfi, Aberdyfi"
+			"location": "Neuadd Dyfi, Aberdyfi",
+			"locality": "Aberdyfi"
 		},
 		{
 			"title": "Winter Wildlife Walks",
@@ -45,7 +48,8 @@
 			"title": "Valentine's at The Magic Lantern",
 			"summary": "A romantic evening at Tywyn's independent Magic Lantern cinema, with themed screenings and a few special treats.",
 			"start_date": "2026-02-14",
-			"location": "Magic Lantern, Tywyn"
+			"location": "Magic Lantern, Tywyn",
+			"locality": "Tywyn"
 		},
 		{
 			"title": "St David's Day Celebrations",
@@ -58,34 +62,39 @@
 			"summary": "Pick up handmade crafts, art and gifts from makers across the area at this spring fair in Aberdyfi's Neuadd Dyfi.",
 			"start_date": "2026-03-01",
 			"month_only": true,
-			"location": "Neuadd Dyfi, Aberdyfi"
+			"location": "Neuadd Dyfi, Aberdyfi",
+			"locality": "Aberdyfi"
 		},
 		{
 			"title": "Aberdyfi Half Marathon",
 			"summary": "A spring half marathon starting and finishing at Neuadd Dyfi, with a scenic route out along the Dyfi valley.",
 			"start_date": "2026-04-01",
 			"month_only": true,
-			"location": "Neuadd Dyfi, Aberdyfi"
+			"location": "Neuadd Dyfi, Aberdyfi",
+			"locality": "Aberdyfi"
 		},
 		{
 			"title": "Easter Open Day",
 			"summary": "A family-friendly Easter open day at Aberdyfi's RNLI lifeboat station, with the chance to meet the volunteer crew.",
 			"start_date": "2026-04-01",
 			"month_only": true,
-			"location": "Aberdyfi Lifeboat Station"
+			"location": "Aberdyfi Lifeboat Station",
+			"locality": "Aberdyfi"
 		},
 		{
 			"title": "Dafad Goch Soapbox Race",
 			"summary": "Home-built soapbox carts hurtle down Aberdyfi's steep Copperhill Street in this fun and slightly chaotic spectacle.",
 			"start_date": "2026-04-05",
-			"location": "Copperhill Street, Aberdyfi"
+			"location": "Copperhill Street, Aberdyfi",
+			"locality": "Aberdyfi"
 		},
 		{
 			"title": "Tywyn Light Fest",
 			"summary": "Tywyn's seafront comes alive over two days with light installations, live music and family entertainment on the Promenade.",
 			"start_date": "2026-04-11",
 			"end_date": "2026-04-12",
-			"location": "Tywyn Promenade"
+			"location": "Tywyn Promenade",
+			"locality": "Tywyn"
 		},
 		{
 			"title": "Slip to the Brit",
@@ -98,7 +107,8 @@
 			"summary": "Three days of stand-up in nearby Machynlleth, with a line-up mixing well-known names and rising comedy talent.",
 			"start_date": "2026-05-01",
 			"end_date": "2026-05-03",
-			"location": "Machynlleth"
+			"location": "Machynlleth",
+			"locality": "Machynlleth"
 		},
 		{
 			"title": "Yarn Bombing Llwyngwril",
@@ -107,6 +117,7 @@
 			"end_date": "2026-09-30",
 			"month_only": true,
 			"location": "Llwyngwril",
+			"locality": "Llwyngwril",
 			"internal_url": "/events/yarn-bombing-llwyngwril/"
 		},
 		{
@@ -115,6 +126,7 @@
 			"start_date": "2026-06-27",
 			"end_date": "2026-06-28",
 			"location": "Aberdyfi Beach",
+			"locality": "Aberdyfi",
 			"internal_url": "/events/aberdyfi-kite-festival/"
 		},
 		{
@@ -122,7 +134,8 @@
 			"summary": "A weekend of real ale, live music and steam trains on the historic Talyllyn Railway.",
 			"start_date": "2026-07-03",
 			"end_date": "2026-07-05",
-			"location": "Talyllyn Railway, Tywyn"
+			"location": "Talyllyn Railway, Tywyn",
+			"locality": "Tywyn"
 		},
 		{
 			"title": "Aberdovey Regatta",
@@ -130,26 +143,30 @@
 			"start_date": "2026-07-20",
 			"end_date": "2026-08-02",
 			"month_only": true,
-			"location": "Dovey Yacht Club, Aberdyfi"
+			"location": "Dovey Yacht Club, Aberdyfi",
+			"locality": "Aberdyfi"
 		},
 		{
 			"title": "Race the Train",
 			"summary": "Tywyn's famous challenge, where runners race a Talyllyn Railway steam train across country between Tywyn and Abergynolwyn.",
 			"start_date": "2026-08-15",
-			"location": "Tywyn"
+			"location": "Tywyn",
+			"locality": "Tywyn"
 		},
 		{
 			"title": "Aberdyfi Food Festival",
 			"summary": "A celebration of local food and drink in Aberdyfi, bringing together producers, street food and live music.",
 			"start_date": "2026-08-16",
-			"location": "Aberdyfi"
+			"location": "Aberdyfi",
+			"locality": "Aberdyfi"
 		},
 		{
 			"title": "DoveyFest",
 			"summary": "A relaxed community festival around Aberdyfi's wharf, with craft stalls, family activities and live entertainment.",
 			"start_date": "2026-08-28",
 			"end_date": "2026-08-31",
-			"location": "Aberdyfi Wharf"
+			"location": "Aberdyfi Wharf",
+			"locality": "Aberdyfi"
 		},
 		{
 			"title": "Tywyn Live",
@@ -158,6 +175,7 @@
 			"start_time": "12:00",
 			"end_time": "23:00",
 			"location": "Tywyn Promenade",
+			"locality": "Tywyn",
 			"internal_url": "/events/tywyn-live/"
 		},
 		{
@@ -165,28 +183,32 @@
 			"summary": "A vintage vehicle and steam rally at the Talyllyn Railway in memory of preservationist Tom Rolt, with classic cars, traction engines and veteran transport.",
 			"start_date": "2026-08-01",
 			"month_only": true,
-			"location": "Talyllyn Railway, Tywyn"
+			"location": "Talyllyn Railway, Tywyn",
+			"locality": "Tywyn"
 		},
 		{
 			"title": "Barmouth Walking Festival",
 			"summary": "A programme of guided walks exploring the coast, hills and history around nearby Barmouth.",
 			"start_date": "2026-09-12",
 			"end_date": "2026-09-21",
-			"location": "Barmouth"
+			"location": "Barmouth",
+			"locality": "Barmouth"
 		},
 		{
 			"title": "Talyllyn Railway Heritage Weekend",
 			"summary": "A heritage weekend on the Talyllyn Railway, with period trains and talks on the line's history and its rescue by the writer Tom Rolt.",
 			"start_date": "2026-09-12",
 			"end_date": "2026-09-13",
-			"location": "Talyllyn Railway, Tywyn"
+			"location": "Talyllyn Railway, Tywyn",
+			"locality": "Tywyn"
 		},
 		{
 			"title": "Aberystwyth Comedy Festival",
 			"summary": "A weekend of live stand-up across venues in the lively seaside town of Aberystwyth.",
 			"start_date": "2026-10-02",
 			"end_date": "2026-10-04",
-			"location": "Aberystwyth"
+			"location": "Aberystwyth",
+			"locality": "Aberystwyth"
 		},
 		{
 			"title": "Bonfire Night",
@@ -200,14 +222,16 @@
 			"summary": "Aberdyfi welcomes the festive season with seasonal stalls, food, gifts and entertainment.",
 			"start_date": "2026-11-01",
 			"month_only": true,
-			"location": "Aberdyfi"
+			"location": "Aberdyfi",
+			"locality": "Aberdyfi"
 		},
 		{
 			"title": "Tywyn Christmas Market",
 			"summary": "Festive craft and food stalls in Tywyn, held alongside the town's Christmas lights switch-on.",
 			"start_date": "2026-11-14",
 			"month_only": true,
-			"location": "Tywyn"
+			"location": "Tywyn",
+			"locality": "Tywyn"
 		},
 		{
 			"title": "Christmas Carol Concerts",
@@ -220,7 +244,8 @@
 			"title": "New Year's Eve Party",
 			"summary": "Ring in the new year with live music and fireworks at Neuadd Dyfi and pubs across Aberdyfi and Tywyn.",
 			"start_date": "2026-12-31",
-			"location": "Neuadd Dyfi, Aberdyfi"
+			"location": "Neuadd Dyfi, Aberdyfi",
+			"locality": "Aberdyfi"
 		}
 	]
 }

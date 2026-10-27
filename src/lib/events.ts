@@ -22,6 +22,7 @@ export interface RawEvent {
 	start_time?: string;
 	end_time?: string;
 	location?: string;
+	locality?: string;
 	image?: string;
 	image_alt?: string;
 	internal_url?: string;
@@ -44,6 +45,7 @@ const RawEventSchema = z.object({
 	start_time: z.string().regex(TIME_RE, 'start_time must be HH:MM').optional(),
 	end_time: z.string().regex(TIME_RE, 'end_time must be HH:MM').optional(),
 	location: z.string().optional(),
+	locality: z.string().optional(),
 	image: z.string().optional(),
 	image_alt: z.string().optional(),
 	internal_url: z.string().optional(),
@@ -58,10 +60,12 @@ export interface NormalisedEvent {
 	title: string;
 	summary: string;
 	location: string;
+	locality: string;
 	image: string | null;
 	imageAlt: string;
 	startIso: string;
 	endIso: string;
+	schemaDates: { start: string; end: string } | null;
 	dateLabel: string;
 	monthOnly: boolean;
 	isPast: boolean;
@@ -202,15 +206,23 @@ export function getEvents(now: Date = new Date()): NormalisedEvent[] {
 		const isOngoing = start.getTime() <= t && t <= end.getTime();
 		const isUpcoming = start.getTime() > t;
 		const primaryUrl = ev.internal_url ?? ev.external_url ?? null;
+		const schemaDates =
+			monthOnly && !ev.end_date
+				? null
+				: ev.start_time
+					? { start: startIso, end: endIso }
+					: { start: ev.start_date, end: endDate };
 
 		out.push({
 			title: ev.title,
 			summary: ev.summary ?? '',
 			location: ev.location ?? '',
+			locality: ev.locality ?? '',
 			image: ev.image ?? null,
 			imageAlt: ev.image_alt ?? ev.title,
 			startIso,
 			endIso,
+			schemaDates,
 			dateLabel: monthOnly ? monthRangeLabel(startIso, endIso) : fmtRange(startIso, endIso),
 			monthOnly,
 			isPast,

@@ -4,6 +4,7 @@ summary: 'A relaxed bar and cafe in the historic Old Market Hall in Tywyn, servi
 address: Market Hall College Green, Tywyn LL36 9BY
 phone: 01654 710669
 dog_friendly: true
+kind: BarOrPub
 published: 2022-05-28
 geo:
   lat: 52.5875694

@@ -80,6 +80,9 @@ const eating = defineCollection({
 			phone: z.string().optional(),
 			address: z.string().optional(),
 			dog_friendly: z.boolean().default(false),
+			kind: z
+				.enum(['Restaurant', 'CafeOrCoffeeShop', 'BarOrPub', 'Bakery', 'IceCreamShop'])
+				.optional(),
 			geo: geoSchema,
 			trip_advisor_link: z.string().url().optional(),
 			facebook_link: z.string().url().optional(),

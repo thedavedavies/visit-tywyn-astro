@@ -5,6 +5,7 @@ address: Pen-Y-Bont Hotel, Tal-Y-Llyn, Tywyn LL36 9AJ
 phone: 01654 782285
 website: 'http://www.penybonthotel.co.uk/'
 dog_friendly: false
+kind: Restaurant
 published: 2022-05-28
 geo:
   lat: 52.66727849999999
