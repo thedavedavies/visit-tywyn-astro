@@ -4,6 +4,7 @@ summary: "A wonderful dog friendly cafe in the heart of Tywyn, Millie & Sid's is
 address: 22 High St, Tywyn LL36 9AE
 website: 'https://www.restaurantji.co.uk/wales/tywyn/sid-and-millies-/'
 dog_friendly: true
+kind: CafeOrCoffeeShop
 published: 2022-10-14
 geo:
   lat: 52.587006

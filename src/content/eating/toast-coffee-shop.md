@@ -3,6 +3,7 @@ title: Toast Coffee Shop
 summary: 'Toast Coffee House in Tywyn serves great coffee from locally roasted Poblado beans plus toasties on fresh Tywyn Bakery bread and cakes. Dog friendly.'
 address: Bryn Gwalia, High Street, Tywyn
 dog_friendly: true
+kind: CafeOrCoffeeShop
 published: 2022-10-14
 geo:
   lat: 52.587006

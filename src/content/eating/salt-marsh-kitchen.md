@@ -4,6 +4,7 @@ summary: 'Salt Marsh Kitchen serves top-quality food from local produce: meat bo
 address: 6 College Green LL36 9BS Tywyn
 phone: 01654 711949
 dog_friendly: false
+kind: Restaurant
 published: 2022-05-28
 geo:
   lat: 52.58740650000001

@@ -5,6 +5,7 @@ address: Dine India, 12, College Green, Tywyn LL36 9BS
 phone: 01654 711909
 website: 'https://www.dineindia.co.uk'
 dog_friendly: false
+kind: Restaurant
 published: 2022-05-28
 geo:
   lat: 52.587253

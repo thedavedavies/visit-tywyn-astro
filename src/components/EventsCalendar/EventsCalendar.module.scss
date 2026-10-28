@@ -140,6 +140,10 @@
 
 .actions {
 	margin: $space-4 0 0;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: $space-3 $space-4;
 }
 
 // "Find out more" navigates, so it is an <a> styled as a button. Filled
@@ -177,6 +181,17 @@
 
 .moreArrow {
 	transition: transform 0.15s ease;
+}
+
+.venueLink {
+	font-size: 0.95rem;
+	font-weight: 700;
+	color: $color-primary-dark;
+
+	&:focus-visible {
+		outline: 3px solid $color-primary-darker;
+		outline-offset: 2px;
+	}
 }
 
 .finished {

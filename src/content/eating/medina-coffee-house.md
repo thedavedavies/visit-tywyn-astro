@@ -4,6 +4,7 @@ summary: Dog-friendly coffee house on Glandovey Terrace in Aberdyfi, serving spe
 address: 18A Glandovey Terrace, Aberdyfi, Snowdonia National Park LL35 0EB Wales
 phone: 01654 767159
 dog_friendly: true
+kind: CafeOrCoffeeShop
 published: 2022-05-28
 geo:
   lat: 52.5437132

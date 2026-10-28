@@ -58,17 +58,20 @@ const jsonLd: (Record<string, unknown> | null)[] = [
 				description: ev.summary || undefined,
 			})),
 	),
-	...events.map((ev) =>
-		eventSchema({
-			name: ev.title,
-			startIso: ev.startIso,
-			endIso: ev.endIso,
-			location: ev.location || undefined,
-			url: ev.primaryUrl,
-			image: ev.image,
-			description: ev.summary || undefined,
-		}),
-	),
+	...events
+		.filter((ev) => ev.schemaDates && ev.locality)
+		.map((ev) =>
+			eventSchema({
+				name: ev.title,
+				startIso: ev.schemaDates!.start,
+				endIso: ev.schemaDates!.end,
+				location: ev.location || undefined,
+				locality: ev.locality,
+				url: ev.primaryUrl,
+				image: ev.image,
+				description: ev.summary || undefined,
+			}),
+		),
 ];
 ---
 

@@ -5,6 +5,7 @@ address: 7 Sea View Terrace, Aberdyfi, Snowdonia National Park LL35 0EE
 phone: 01654 767470
 website: 'http://www.coastdelidining.co.uk/'
 dog_friendly: true
+kind: Restaurant
 published: 2022-05-28
 geo:
   lat: 52.5438031

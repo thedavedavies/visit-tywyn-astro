@@ -167,6 +167,7 @@ interface RestaurantInput {
 	phone?: string;
 	website?: string;
 	dogFriendly?: boolean;
+	kind?: 'Restaurant' | 'CafeOrCoffeeShop' | 'BarOrPub' | 'Bakery' | 'IceCreamShop';
 	photo?: string;
 	geo?: { lat: number; lng: number };
 	sameAs?: (string | undefined)[];
@@ -185,12 +186,21 @@ export function restaurant(input: RestaurantInput): JsonLd | null {
 	const url = absoluteUrl(eatingUrl(input.id))!;
 	const node: JsonLd = {
 		'@context': 'https://schema.org',
-		'@type': input.dogFriendly ? 'Restaurant' : 'FoodEstablishment',
-		'@id': `${url}#${input.dogFriendly ? 'restaurant' : 'establishment'}`,
+		'@type': input.kind ?? 'FoodEstablishment',
+		'@id': `${url}#venue`,
 		name: input.title,
 		url,
 		...(input.description ? { description: input.description } : {}),
 		...(input.phone ? { telephone: input.phone } : {}),
+		...(input.dogFriendly
+			? {
+					amenityFeature: {
+						'@type': 'LocationFeatureSpecification',
+						name: 'Dogs welcome',
+						value: true,
+					},
+				}
+			: {}),
 		// Wrap address in PostalAddress so Place rich-result eligibility
 		// improves; bare strings work but don't surface as richly.
 		...(input.address ? { address: postalAddress(input.address) } : {}),
@@ -289,8 +299,8 @@ interface EventInput {
 	startIso: string;
 	endIso: string;
 	location?: string;
-	/** Free-form town/region so the Place can resolve to a real area. */
-	locationAddress?: string;
+	/** Town the venue sits in, so the Place carries the `address` Google requires. */
+	locality?: string;
 	url?: string | null;
 	image?: string | null;
 	description?: string;
@@ -314,18 +324,26 @@ interface EventInput {
  * shadowing the global `Event` constructor and the `event`
  * variable name commonly used in handlers.
  *
- * `location` resolves to a `Place` node. Pass `locationAddress` to
- * include a typed `PostalAddress` (improves rich-result quality);
- * without it we still emit the Place name so the event is at least
- * categorisable. Hardcoding Tywyn isn't safe because some events
- * sit outside the town (Aberdyfi, Dolgellau, etc.).
+ * `location` resolves to a `Place` node. Pass `locality` to include a
+ * typed `PostalAddress`, which Google lists as required for the Event
+ * rich result; without it we still emit the Place name so the event is
+ * at least categorisable. Hardcoding Tywyn isn't safe because some
+ * events sit outside the town (Aberdyfi, Dolgellau, etc.).
  */
 export function eventSchema(input: EventInput): JsonLd {
 	const place: JsonLd | undefined = input.location
 		? {
 				'@type': 'Place',
 				name: input.location,
-				...(input.locationAddress ? { address: postalAddress(input.locationAddress) } : {}),
+				...(input.locality
+					? {
+							address: {
+								'@type': 'PostalAddress',
+								addressLocality: input.locality,
+								addressCountry: 'GB',
+							},
+						}
+					: {}),
 			}
 		: undefined;
 	const offers: JsonLd | undefined = input.offers

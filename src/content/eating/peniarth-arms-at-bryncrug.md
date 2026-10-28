@@ -4,6 +4,7 @@ summary: The Peniarth Arms is a family owned business. It has many things to off
 address: Peniarth Arms at Bryncrug, Tywyn LL36 9PH
 phone: 01654 288096
 dog_friendly: true
+kind: BarOrPub
 published: 2022-05-28
 geo:
   lat: 52.61019899999999
