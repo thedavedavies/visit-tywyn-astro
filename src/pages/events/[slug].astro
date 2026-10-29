@@ -71,15 +71,15 @@ const links = [
 // "scheduled" event with past dates forever. The page itself stays
 // live (additive-only URL policy); only the markup is dropped.
 const jsonLd = [
-	...(event.isPast
+	...(event.isPast || !event.schemaDates || !event.locality
 		? []
 		: [
 				eventSchema({
 					name: event.title,
-					startIso: event.startIso,
-					endIso: event.endIso,
+					startIso: event.schemaDates.start,
+					endIso: event.schemaDates.end,
 					location: event.location || undefined,
-					locationAddress: event.location || undefined,
+					locality: event.locality,
 					url: path,
 					image: heroUrl ?? null,
 					description: event.summary || undefined,

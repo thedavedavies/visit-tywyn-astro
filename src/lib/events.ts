@@ -22,6 +22,7 @@ export interface RawEvent {
 	start_time?: string;
 	end_time?: string;
 	location?: string;
+	locality?: string;
 	image?: string;
 	image_alt?: string;
 	internal_url?: string;
@@ -34,6 +35,7 @@ export interface RawEvent {
 	 * for the whole month rather than flipping to "past" on the 1st.
 	 */
 	month_only?: boolean;
+	tags?: string[];
 }
 
 const RawEventSchema = z.object({
@@ -44,12 +46,14 @@ const RawEventSchema = z.object({
 	start_time: z.string().regex(TIME_RE, 'start_time must be HH:MM').optional(),
 	end_time: z.string().regex(TIME_RE, 'end_time must be HH:MM').optional(),
 	location: z.string().optional(),
+	locality: z.string().optional(),
 	image: z.string().optional(),
 	image_alt: z.string().optional(),
 	internal_url: z.string().optional(),
 	external_url: z.string().optional(),
 	external_label: z.string().optional(),
 	month_only: z.boolean().optional(),
+	tags: z.array(z.string()).optional(),
 });
 
 const EventsJsonSchema = z.object({ events: z.array(RawEventSchema).optional() }).passthrough();
@@ -58,12 +62,15 @@ export interface NormalisedEvent {
 	title: string;
 	summary: string;
 	location: string;
+	locality: string;
 	image: string | null;
 	imageAlt: string;
 	startIso: string;
 	endIso: string;
+	schemaDates: { start: string; end: string } | null;
 	dateLabel: string;
 	monthOnly: boolean;
+	tags: string[];
 	isPast: boolean;
 	isOngoing: boolean;
 	isUpcoming: boolean;
@@ -202,17 +209,26 @@ export function getEvents(now: Date = new Date()): NormalisedEvent[] {
 		const isOngoing = start.getTime() <= t && t <= end.getTime();
 		const isUpcoming = start.getTime() > t;
 		const primaryUrl = ev.internal_url ?? ev.external_url ?? null;
+		const schemaDates =
+			monthOnly && !ev.end_date
+				? null
+				: ev.start_time
+					? { start: startIso, end: endIso }
+					: { start: ev.start_date, end: endDate };
 
 		out.push({
 			title: ev.title,
 			summary: ev.summary ?? '',
 			location: ev.location ?? '',
+			locality: ev.locality ?? '',
 			image: ev.image ?? null,
 			imageAlt: ev.image_alt ?? ev.title,
 			startIso,
 			endIso,
+			schemaDates,
 			dateLabel: monthOnly ? monthRangeLabel(startIso, endIso) : fmtRange(startIso, endIso),
 			monthOnly,
+			tags: ev.tags ?? [],
 			isPast,
 			isOngoing,
 			isUpcoming,
@@ -254,9 +270,10 @@ function monthLabel(key: string): string {
  * dated ones. Unlike `upcomingEvents`, this keeps past events so the
  * page reads as a full annual reference (the card dims them).
  */
-export function eventsByMonth(now: Date = new Date()): EventMonthGroup[] {
+export function eventsByMonth(now: Date = new Date(), tag?: string): EventMonthGroup[] {
 	const groups = new Map<string, NormalisedEvent[]>();
 	for (const ev of getEvents(now)) {
+		if (tag && (ev.isPast || !ev.tags.includes(tag))) continue;
 		const key = ev.startIso.slice(0, 7);
 		const bucket = groups.get(key);
 		if (bucket) bucket.push(ev);

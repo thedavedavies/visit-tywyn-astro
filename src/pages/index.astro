@@ -8,6 +8,7 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
 import EventsSection from '../components/EventsSection/EventsSection.astro';
+import RelatedItems from '../components/RelatedItems/RelatedItems.astro';
 import { SITE } from '../lib/site';
 import { touristDestination, eventSchema, webPage } from '../lib/jsonld';
 import { upcomingEvents } from '../lib/events';
@@ -31,17 +32,20 @@ const jsonLd = [
 		url: Astro.url,
 	}),
 	touristDestination(),
-	...upcomingEvents().map((ev) =>
-		eventSchema({
-			name: ev.title,
-			startIso: ev.startIso,
-			endIso: ev.endIso,
-			location: ev.location || undefined,
-			url: ev.primaryUrl,
-			image: ev.image,
-			description: ev.summary || undefined,
-		}),
-	),
+	...upcomingEvents()
+		.filter((ev) => ev.schemaDates && ev.locality)
+		.map((ev) =>
+			eventSchema({
+				name: ev.title,
+				startIso: ev.schemaDates!.start,
+				endIso: ev.schemaDates!.end,
+				location: ev.location || undefined,
+				locality: ev.locality,
+				url: ev.primaryUrl,
+				image: ev.image,
+				description: ev.summary || undefined,
+			}),
+		),
 ];
 ---
 
@@ -89,6 +93,28 @@ const jsonLd = [
 			can do it all over again.
 		</p>
 	</div>
+
+	<RelatedItems
+		heading="Seasonal guides"
+		headingId="home-seasonal-guides"
+		items={[
+			{
+				href: '/events/halloween/',
+				title: 'Halloween in Tywyn and Aberdyfi',
+				summary: 'Trick or treating, family parties and half term by the sea.',
+			},
+			{
+				href: '/events/bonfire-night/',
+				title: 'Bonfire night and firework displays',
+				summary: 'Every display we can find, from Tywyn and Aberdyfi to Barmouth.',
+			},
+			{
+				href: '/events/christmas/',
+				title: 'Christmas events in Tywyn and Aberdyfi',
+				summary: 'Markets, lights, craft fairs, Santa visits and festive menus.',
+			},
+		]}
+	/>
 
 	<EventsSection limit={6} sectionId="vt-home-events" showAllLink={true} />
 </PageLayout>

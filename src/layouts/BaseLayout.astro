@@ -103,7 +103,7 @@ if (crumbSchema) autoSchema.push(crumbSchema);
 
 const pageSchema = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 // Builders return null when there's nothing to emit (empty input).
-// Filter those out so we don't ship `<script>null</script>`. Dedup
+// Filter those out so we don't ship a script tag containing null. Dedup
 // by `@id` so a page that emits its own Organization or WebSite
 // (e.g. the home page, historically) doesn't ship duplicates.
 const seenIds = new Set<string>();

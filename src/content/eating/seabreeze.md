@@ -5,6 +5,7 @@ address: 6 Bodfor Terrace, Aberdyfi, Snowdonia National Park LL35 0EA
 phone: 01654 767449
 website: ' https://seabreeze-aberdovey.co.uk/'
 dog_friendly: false
+kind: Restaurant
 published: 2022-05-28
 geo:
   lat: 52.54408069999999
@@ -13,7 +14,7 @@ geo:
 photo:
   src: '../../assets/img/eating/seabreeze/cover.jpg'
   alt: Seabreeze
-trip_advisor_link: 'https://www.tripadvisor.co.uk/Restaurant_Review-g191275-d1862278-Reviews-Seabreeze-Aberdyfi_Aberdovey_Snowdonia_National_Park_North_Wales_Wales.html#photos;aggregationId=101&albumid=101&filter=7&ff=422013048'
+trip_advisor_link: 'https://www.tripadvisor.co.uk/Restaurant_Review-g191275-d1862278-Reviews-Seabreeze-Aberdyfi_Aberdovey_Snowdonia_National_Park_North_Wales_Wales.html'
 facebook_link: 'https://facebook.com/SeabreezeAberdovey/'
 ---
 

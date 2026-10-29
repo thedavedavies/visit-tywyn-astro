@@ -4,6 +4,8 @@
 		"Use dates in YYYY-MM-DD format and times in 24-hour HH:MM format.",
 		"Set \"month_only\": true when you only know the month, not the day. The page then shows the month name (or a span like \"May to September\" if an end_date crosses months) instead of a made-up date, and the event stays listed for the whole month.",
 		"Use internal_url for a page on this website (e.g. /things-to-do/the-talyllyn-railway/) and external_url for the official event website.",
+		"Set \"locality\" to the single town the event is in (Tywyn, Aberdyfi, Machynlleth, ...). It becomes the schema.org address Google requires for event rich results, so leave it out when the event genuinely spans more than one place and it will be left out of the structured data.",
+		"Add \"tags\" to list an event on a seasonal page as well as the main calendar: [\"christmas\"], [\"halloween\"] and [\"fireworks\"] feed /events/christmas/, /events/halloween/ and /events/bonfire-night/. Dates cannot decide this on their own - the Christmas craft fair falls on 31 October, the festive menu runs from mid-November, and the firework displays are spread from Halloween to the second weekend of November.",
 		"To give an event its own page on this site, set internal_url to /events/<slug>/ and add src/content/events/<slug>.md (page description + links); the date and location here drive both the calendar and that page.",
 		"Most of these repeat every year: roll the dates forward each January to keep the calendar current.",
 		"Summaries are our own wording: do not paste descriptions from leaflets or other sites."
@@ -16,10 +18,12 @@
 		"start_time": "11:00",
 		"end_time": "16:00",
 		"location": "Tywyn Promenade",
+		"locality": "Tywyn",
 		"month_only": false,
 		"internal_url": "/things-to-do/the-talyllyn-railway/",
 		"external_url": "https://example.com/events/example-event",
-		"external_label": "Official event website"
+		"external_label": "Official event website",
+		"tags": ["christmas"]
 	},
 	"events": [
 		{
@@ -32,7 +36,8 @@
 			"summary": "A much-loved start to the year, with a family pantomime staged by local performers at Aberdyfi's Neuadd Dyfi.",
 			"start_date": "2026-01-01",
 			"month_only": true,
-			"location": "Neuadd Dyfi, Aberdyfi"
+			"location": "Neuadd Dyfi, Aberdyfi",
+			"locality": "Aberdyfi"
 		},
 		{
 			"title": "Winter Wildlife Walks",
@@ -45,7 +50,8 @@
 			"title": "Valentine's at The Magic Lantern",
 			"summary": "A romantic evening at Tywyn's independent Magic Lantern cinema, with themed screenings and a few special treats.",
 			"start_date": "2026-02-14",
-			"location": "Magic Lantern, Tywyn"
+			"location": "Magic Lantern, Tywyn",
+			"locality": "Tywyn"
 		},
 		{
 			"title": "St David's Day Celebrations",
@@ -58,34 +64,39 @@
 			"summary": "Pick up handmade crafts, art and gifts from makers across the area at this spring fair in Aberdyfi's Neuadd Dyfi.",
 			"start_date": "2026-03-01",
 			"month_only": true,
-			"location": "Neuadd Dyfi, Aberdyfi"
+			"location": "Neuadd Dyfi, Aberdyfi",
+			"locality": "Aberdyfi"
 		},
 		{
 			"title": "Aberdyfi Half Marathon",
 			"summary": "A spring half marathon starting and finishing at Neuadd Dyfi, with a scenic route out along the Dyfi valley.",
 			"start_date": "2026-04-01",
 			"month_only": true,
-			"location": "Neuadd Dyfi, Aberdyfi"
+			"location": "Neuadd Dyfi, Aberdyfi",
+			"locality": "Aberdyfi"
 		},
 		{
 			"title": "Easter Open Day",
 			"summary": "A family-friendly Easter open day at Aberdyfi's RNLI lifeboat station, with the chance to meet the volunteer crew.",
 			"start_date": "2026-04-01",
 			"month_only": true,
-			"location": "Aberdyfi Lifeboat Station"
+			"location": "Aberdyfi Lifeboat Station",
+			"locality": "Aberdyfi"
 		},
 		{
 			"title": "Dafad Goch Soapbox Race",
 			"summary": "Home-built soapbox carts hurtle down Aberdyfi's steep Copperhill Street in this fun and slightly chaotic spectacle.",
 			"start_date": "2026-04-05",
-			"location": "Copperhill Street, Aberdyfi"
+			"location": "Copperhill Street, Aberdyfi",
+			"locality": "Aberdyfi"
 		},
 		{
 			"title": "Tywyn Light Fest",
 			"summary": "Tywyn's seafront comes alive over two days with light installations, live music and family entertainment on the Promenade.",
 			"start_date": "2026-04-11",
 			"end_date": "2026-04-12",
-			"location": "Tywyn Promenade"
+			"location": "Tywyn Promenade",
+			"locality": "Tywyn"
 		},
 		{
 			"title": "Slip to the Brit",
@@ -98,7 +109,8 @@
 			"summary": "Three days of stand-up in nearby Machynlleth, with a line-up mixing well-known names and rising comedy talent.",
 			"start_date": "2026-05-01",
 			"end_date": "2026-05-03",
-			"location": "Machynlleth"
+			"location": "Machynlleth",
+			"locality": "Machynlleth"
 		},
 		{
 			"title": "Yarn Bombing Llwyngwril",
@@ -107,6 +119,7 @@
 			"end_date": "2026-09-30",
 			"month_only": true,
 			"location": "Llwyngwril",
+			"locality": "Llwyngwril",
 			"internal_url": "/events/yarn-bombing-llwyngwril/"
 		},
 		{
@@ -115,6 +128,7 @@
 			"start_date": "2026-06-27",
 			"end_date": "2026-06-28",
 			"location": "Aberdyfi Beach",
+			"locality": "Aberdyfi",
 			"internal_url": "/events/aberdyfi-kite-festival/"
 		},
 		{
@@ -122,7 +136,8 @@
 			"summary": "A weekend of real ale, live music and steam trains on the historic Talyllyn Railway.",
 			"start_date": "2026-07-03",
 			"end_date": "2026-07-05",
-			"location": "Talyllyn Railway, Tywyn"
+			"location": "Talyllyn Railway, Tywyn",
+			"locality": "Tywyn"
 		},
 		{
 			"title": "Aberdovey Regatta",
@@ -130,26 +145,30 @@
 			"start_date": "2026-07-20",
 			"end_date": "2026-08-02",
 			"month_only": true,
-			"location": "Dovey Yacht Club, Aberdyfi"
+			"location": "Dovey Yacht Club, Aberdyfi",
+			"locality": "Aberdyfi"
 		},
 		{
 			"title": "Race the Train",
 			"summary": "Tywyn's famous challenge, where runners race a Talyllyn Railway steam train across country between Tywyn and Abergynolwyn.",
 			"start_date": "2026-08-15",
-			"location": "Tywyn"
+			"location": "Tywyn",
+			"locality": "Tywyn"
 		},
 		{
 			"title": "Aberdyfi Food Festival",
 			"summary": "A celebration of local food and drink in Aberdyfi, bringing together producers, street food and live music.",
 			"start_date": "2026-08-16",
-			"location": "Aberdyfi"
+			"location": "Aberdyfi",
+			"locality": "Aberdyfi"
 		},
 		{
 			"title": "DoveyFest",
 			"summary": "A relaxed community festival around Aberdyfi's wharf, with craft stalls, family activities and live entertainment.",
 			"start_date": "2026-08-28",
 			"end_date": "2026-08-31",
-			"location": "Aberdyfi Wharf"
+			"location": "Aberdyfi Wharf",
+			"locality": "Aberdyfi"
 		},
 		{
 			"title": "Tywyn Live",
@@ -158,6 +177,7 @@
 			"start_time": "12:00",
 			"end_time": "23:00",
 			"location": "Tywyn Promenade",
+			"locality": "Tywyn",
 			"internal_url": "/events/tywyn-live/"
 		},
 		{
@@ -165,49 +185,243 @@
 			"summary": "A vintage vehicle and steam rally at the Talyllyn Railway in memory of preservationist Tom Rolt, with classic cars, traction engines and veteran transport.",
 			"start_date": "2026-08-01",
 			"month_only": true,
-			"location": "Talyllyn Railway, Tywyn"
+			"location": "Talyllyn Railway, Tywyn",
+			"locality": "Tywyn"
 		},
 		{
 			"title": "Barmouth Walking Festival",
 			"summary": "A programme of guided walks exploring the coast, hills and history around nearby Barmouth.",
 			"start_date": "2026-09-12",
 			"end_date": "2026-09-21",
-			"location": "Barmouth"
+			"location": "Barmouth",
+			"locality": "Barmouth"
 		},
 		{
 			"title": "Talyllyn Railway Heritage Weekend",
 			"summary": "A heritage weekend on the Talyllyn Railway, with period trains and talks on the line's history and its rescue by the writer Tom Rolt.",
 			"start_date": "2026-09-12",
 			"end_date": "2026-09-13",
-			"location": "Talyllyn Railway, Tywyn"
+			"location": "Talyllyn Railway, Tywyn",
+			"locality": "Tywyn"
 		},
 		{
 			"title": "Aberystwyth Comedy Festival",
 			"summary": "A weekend of live stand-up across venues in the lively seaside town of Aberystwyth.",
 			"start_date": "2026-10-02",
 			"end_date": "2026-10-04",
-			"location": "Aberystwyth"
+			"location": "Aberystwyth",
+			"locality": "Aberystwyth"
 		},
 		{
-			"title": "Bonfire Night",
-			"summary": "Bonfires and firework displays light up the November sky in both Tywyn and Aberdyfi.",
-			"start_date": "2026-11-05",
-			"month_only": true,
-			"location": "Tywyn & Aberdyfi"
+			"title": "Halloween Crafternoon",
+			"summary": "An afternoon of spooky crafts for younger children at the Trefeddian, part of the hotel's half-term programme by the sea.",
+			"start_date": "2026-10-28",
+			"location": "Trefeddian Hotel, Aberdyfi",
+			"locality": "Aberdyfi",
+			"tags": ["halloween"],
+			"external_url": "https://trefwales.com/tariff/whats-on",
+			"external_label": "Trefeddian what's on"
+		},
+		{
+			"title": "Kids Halloween Disco at The Neptune",
+			"summary": "An hour of Halloween games, music and dancing for little ones in the Neptune's Mermaid Lounge.",
+			"start_date": "2026-10-29",
+			"start_time": "19:00",
+			"end_time": "20:00",
+			"location": "The Neptune, Tywyn",
+			"locality": "Tywyn",
+			"tags": ["halloween"],
+			"external_url": "https://www.facebook.com/photo/?fbid=1722096123248921&set=a.1537293171729218",
+			"external_label": "Details on Facebook"
+		},
+		{
+			"title": "Halloween at the Peniarth Arms",
+			"summary": "Creepy pancake breakfasts for children across the weekend, with free live entertainment and a Halloween night at the pub on the Saturday.",
+			"start_date": "2026-10-29",
+			"end_date": "2026-11-01",
+			"location": "Peniarth Arms, Bryncrug",
+			"locality": "Bryncrug",
+			"internal_url": "/eating/peniarth-arms-at-bryncrug/",
+			"tags": ["halloween"],
+			"external_url": "https://www.facebook.com/photo/?fbid=1753535890109616&set=pcb.1753535970109608",
+			"external_label": "Details on Facebook"
+		},
+		{
+			"title": "Halloween Cupcake Workshop",
+			"summary": "Children aged 6 to 12 decorate four Halloween cupcakes to take home, learning a different technique with each one. Places are limited and booked ahead.",
+			"start_date": "2026-10-30",
+			"start_time": "14:00",
+			"end_time": "15:30",
+			"location": "Machynlleth Library",
+			"locality": "Machynlleth",
+			"tags": ["halloween"],
+			"external_url": "https://www.facebook.com/photo/?fbid=122201100824794097&set=gm.4543854979225705&idorvanity=1894446697499893",
+			"external_label": "Details on Facebook"
+		},
+		{
+			"title": "Carnevil Family Halloween Party",
+			"summary": "A family Halloween party at Neuadd Pendre, back for a second year after a popular first outing. Entry is on the door.",
+			"start_date": "2026-10-30",
+			"start_time": "18:00",
+			"location": "Neuadd Pendre, Tywyn",
+			"locality": "Tywyn",
+			"tags": ["halloween"],
+			"external_url": "https://www.facebook.com/photo/?fbid=122180849648898929&set=a.122121447104898929",
+			"external_label": "Details on Facebook"
+		},
+		{
+			"title": "Halloween Fireworks on the Seafront",
+			"summary": "The summer's postponed fireworks finally get their night, rounding off Halloween with a display over the beach once the trick-or-treating is done. The start time is approximate and depends on conditions on the night.",
+			"start_date": "2026-10-31",
+			"start_time": "20:00",
+			"location": "Tywyn Seafront, near Rock Island",
+			"locality": "Tywyn",
+			"tags": ["halloween", "fireworks"],
+			"external_url": "https://www.facebook.com/photo/?fbid=1166827562544385&set=a.294012699825880",
+			"external_label": "Details on Facebook"
+		},
+		{
+			"title": "Christmas Craft Fair at Y Ganolfan",
+			"summary": "An early start on Christmas shopping at Y Ganolfan, with handmade stalls and refreshments. Proceeds are split between the hall and the British Heart Foundation.",
+			"start_date": "2026-10-31",
+			"start_time": "11:00",
+			"end_time": "15:00",
+			"location": "Y Ganolfan, Bryncrug",
+			"locality": "Bryncrug",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "Aberdyfi Bonfire Night",
+			"summary": "The closest big display to Tywyn, on the beach behind the fire station. There is a delicious hog roast and a great bonfire from 6pm, the fireworks start once it is properly dark, and entry is free with buckets going round for the fire service.",
+			"start_date": "2026-11-08",
+			"start_time": "18:00",
+			"location": "The beach behind Aberdyfi Fire Station",
+			"locality": "Aberdyfi",
+			"tags": ["fireworks"],
+			"external_url": "https://www.facebook.com/photo/?fbid=1542436631022774&set=a.178530304080087",
+			"external_label": "Details on Facebook"
 		},
 		{
 			"title": "Aberdovey Christmas Market",
 			"summary": "Aberdyfi welcomes the festive season with seasonal stalls, food, gifts and entertainment.",
 			"start_date": "2026-11-01",
 			"month_only": true,
-			"location": "Aberdyfi"
+			"location": "Aberdyfi",
+			"locality": "Aberdyfi",
+			"tags": ["christmas"]
 		},
 		{
 			"title": "Tywyn Christmas Market",
 			"summary": "Festive craft and food stalls in Tywyn, held alongside the town's Christmas lights switch-on.",
 			"start_date": "2026-11-14",
 			"month_only": true,
-			"location": "Tywyn"
+			"location": "Tywyn",
+			"locality": "Tywyn",
+			"tags": ["christmas"],
+			"external_url": "https://www.facebook.com/CyngorTrefTywyn",
+			"external_label": "Dates from Tywyn Town Council"
+		},
+		{
+			"title": "Festive Menu at Proper Gander",
+			"summary": "Proper Gander runs a two or three course festive menu through the season, for Christmas meals out, work parties and get-togethers. Larger tables pre-order.",
+			"start_date": "2026-11-15",
+			"end_date": "2026-12-20",
+			"location": "Proper Gander, Tywyn",
+			"locality": "Tywyn",
+			"internal_url": "/eating/proper-gander/",
+			"tags": ["christmas"],
+			"external_url": "https://www.facebook.com/photo/?fbid=1668975955110332&set=gm.4552275965050273&idorvanity=1894446697499893",
+			"external_label": "Festive menu on Facebook"
+		},
+		{
+			"title": "Tywyn Late Night Christmas Shopping",
+			"summary": "Tywyn's independent High Street shops stay open into the evening for Christmas, with gifts, local makers and cafes open late. A good evening to pre-order Christmas food too.",
+			"start_date": "2026-11-26",
+			"start_time": "17:00",
+			"end_time": "19:00",
+			"location": "Tywyn High Street",
+			"locality": "Tywyn",
+			"tags": ["christmas"],
+			"external_url": "https://www.facebook.com/photo/?fbid=122287646882016096&set=pcb.122287648874016096",
+			"external_label": "Details on Facebook"
+		},
+		{
+			"title": "Winter Willow Wreath Workshop",
+			"summary": "Weave a willow wreath and dress it with festive foliage in the reserve's tractor shed, with all materials, a hot drink and a mince pie included.",
+			"start_date": "2026-12-05",
+			"start_time": "13:30",
+			"end_time": "15:30",
+			"location": "RSPB Ynys-hir",
+			"locality": "Machynlleth",
+			"tags": ["christmas"],
+			"external_url": "https://www.facebook.com/photo/?fbid=1129519952919542&set=a.208591765012370",
+			"external_label": "Details on Facebook"
+		},
+		{
+			"title": "Glandyfi Castle Christmas Fair",
+			"summary": "The castle's first Christmas fair, with local stallholders and festive trees through the rooms. Tickets are sold in advance.",
+			"start_date": "2026-12-09",
+			"start_time": "11:00",
+			"end_time": "16:00",
+			"location": "Glandyfi Castle",
+			"locality": "Machynlleth",
+			"external_url": "https://glandyfi-castle.sumupstore.com/",
+			"tags": ["christmas"],
+			"external_label": "Tickets at Glandyfi Castle"
+		},
+		{
+			"title": "Tea With Santa",
+			"summary": "A new festive afternoon at Neuadd Pendre with afternoon tea, Christmas songs, games and a present from Santa for every child. Tickets are pre-booked at Grays Coffee Shop.",
+			"start_date": "2026-12-11",
+			"start_time": "16:00",
+			"location": "Neuadd Pendre, Tywyn",
+			"locality": "Tywyn",
+			"tags": ["christmas"],
+			"external_url": "https://www.facebook.com/photo/?fbid=122180852414898929&set=a.122121447104898929",
+			"external_label": "Details on Facebook"
+		},
+		{
+			"title": "Adventure in Santaland at Plas Dolguog",
+			"summary": "An illuminated evening trail through the grounds, with a storyteller, an elves' workshop, a visit from Santa, artisan stalls and mulled wine.",
+			"start_date": "2026-12-12",
+			"end_date": "2026-12-14",
+			"location": "Plas Dolguog, Machynlleth",
+			"locality": "Machynlleth",
+			"tags": ["christmas"],
+			"external_url": "https://www.tickettailor.com/events/plasdolguog/1941940",
+			"external_label": "Book tickets"
+		},
+		{
+			"title": "Adventure in Santaland at Plas Dolguog",
+			"summary": "An illuminated evening trail through the grounds, with a storyteller, an elves' workshop, a visit from Santa, artisan stalls and mulled wine.",
+			"start_date": "2026-12-19",
+			"end_date": "2026-12-21",
+			"location": "Plas Dolguog, Machynlleth",
+			"locality": "Machynlleth",
+			"tags": ["christmas"],
+			"external_url": "https://www.tickettailor.com/events/plasdolguog/1941940",
+			"external_label": "Book tickets"
+		},
+		{
+			"title": "Santa's Grotto at Layla's Lounge",
+			"summary": "Santa sets up at Layla's Lounge, with a gift and a hot chocolate for every child. Letters posted in the shop's letterbox get a reply before the big day.",
+			"start_date": "2026-12-20",
+			"location": "Layla's Lounge, Tywyn",
+			"locality": "Tywyn",
+			"tags": ["christmas"],
+			"external_url": "https://www.facebook.com/photo/?fbid=122153887874824190&set=pcb.122153887964824190",
+			"external_label": "Details on Facebook"
+		},
+		{
+			"title": "Christmas Day Lunch at Proper Gander",
+			"summary": "The High Street restaurant opens on Christmas Day for a festive lunch, with a limited number of tables.",
+			"start_date": "2026-12-25",
+			"location": "Proper Gander, Tywyn",
+			"locality": "Tywyn",
+			"internal_url": "/eating/proper-gander/",
+			"tags": ["christmas"],
+			"external_url": "https://www.facebook.com/photo/?fbid=1668975955110332&set=gm.4552275965050273&idorvanity=1894446697499893",
+			"external_label": "Festive menu on Facebook"
 		},
 		{
 			"title": "Christmas Carol Concerts",
@@ -220,7 +434,285 @@
 			"title": "New Year's Eve Party",
 			"summary": "Ring in the new year with live music and fireworks at Neuadd Dyfi and pubs across Aberdyfi and Tywyn.",
 			"start_date": "2026-12-31",
-			"location": "Neuadd Dyfi, Aberdyfi"
+			"location": "Neuadd Dyfi, Aberdyfi",
+			"locality": "Aberdyfi"
+		},
+		{
+			"title": "Machynlleth Lantern Procession",
+			"summary": "Handmade lanterns parade through Machynlleth after dark, setting off from Canolfan Owain Glyndŵr and finishing at the football ground. A separate ticketed firework display follows, run by Tân-gwyllt Machynlleth.",
+			"start_date": "2026-10-31",
+			"start_time": "18:30",
+			"location": "Canolfan Owain Glyndŵr, Machynlleth",
+			"locality": "Machynlleth",
+			"tags": ["halloween", "fireworks"],
+			"external_url": "https://dyddiadurdyfi.org/en/events/72-bro-ddyfi-lantern-procession",
+			"external_label": "Details on Dyfi Diary"
+		},
+		{
+			"title": "Aberystwyth Fireworks Display",
+			"summary": "The town's annual display at Aberystwyth Rugby Club, run by Ardal Aberystwyth Rotary Club to raise money for local good causes. Gates open at 5.30pm and the fireworks start at 7pm. Entry is ticketed.",
+			"start_date": "2026-11-05",
+			"start_time": "17:30",
+			"location": "Aberystwyth Rugby Club, Plasgrug Avenue",
+			"locality": "Aberystwyth",
+			"tags": ["fireworks"],
+			"external_url": "https://www.tickettailor.com/events/ardalaberystwythrotaryclub1/2386899",
+			"external_label": "Buy tickets"
+		},
+		{
+			"title": "Barmouth Bonfire and Fireworks",
+			"summary": "A community bonfire and pyromusical firework display on Barmouth quay, paid for entirely by donations. A DJ and samba band warm things up from 5pm, the bonfire is lit at 6.30pm and the fireworks start at 7pm.",
+			"start_date": "2026-11-07",
+			"start_time": "18:30",
+			"location": "The Quay, Barmouth",
+			"locality": "Barmouth",
+			"external_url": "https://www.facebook.com/photo/?fbid=1115720504550026&set=a.130221459766607",
+			"external_label": "Details on Facebook",
+			"tags": ["fireworks"]
+		},
+		{
+			"title": "Festive Menu at the Railway Inn",
+			"summary": "The Railway Inn at Abergynolwyn runs a festive party menu through the season, with bookings taken for tables of six or more from 20 November.",
+			"start_date": "2026-11-20",
+			"end_date": "2026-12-24",
+			"location": "Railway Inn, Abergynolwyn",
+			"locality": "Abergynolwyn",
+			"external_url": "https://www.facebook.com/photo/?fbid=989566297523930&set=pcb.4578527615758441",
+			"external_label": "Details on Facebook",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "Festive Menu at the Penhelig Arms",
+			"summary": "The Penhelig Arms in Aberdyfi offers a three-course festive set menu at lunch and dinner from 9 November to 30 December, except on Christmas Day and Boxing Day, which have their own separate menus. Vegan and gluten-free choices and a festive menu for younger guests are available, and larger parties can ask about group tables or private hire on 01654 767215.",
+			"start_date": "2026-11-09",
+			"end_date": "2026-12-30",
+			"location": "Penhelig Arms, Aberdyfi",
+			"locality": "Aberdyfi",
+			"external_url": "https://www.penheligarmspubaberdyfi.co.uk/festive-menu",
+			"external_label": "See the festive menu",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "Christmas Fayre at the Dragon Theatre",
+			"summary": "A one-day indoor Christmas craft and gift fair at the Dragon Theatre in Barmouth, with a mix of stalls to browse for presents. No visitor entry price is published, so check with the theatre before you travel.",
+			"start_date": "2026-11-28",
+			"start_time": "10:00",
+			"end_time": "16:00",
+			"location": "The Dragon Theatre (Theatr y Ddraig), Barmouth",
+			"locality": "Barmouth",
+			"external_url": "https://www.theatryddraig.cymru/events/christmas-fayre-ffair-y-nadolig",
+			"external_label": "Event details and tickets",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "Aberystwyth Christmas Lights Switch-On and Market",
+			"summary": "Aberystwyth switches on its Christmas lights on Saturday 28 November 2026, with a food and craft market from midday to 7pm along Baker Street and at Capel Seion Vestry. A lantern parade leaves St Michael's at 5.30pm and ends at Owain Glyndwr Square, where the tree is lit; stall details may still change and no admission price is published.",
+			"start_date": "2026-11-28",
+			"start_time": "12:00",
+			"end_time": "19:00",
+			"location": "Baker Street, Aberystwyth",
+			"locality": "Aberystwyth",
+			"external_url": "https://menter-aberystwyth.org.uk/christmas/",
+			"external_label": "Details from Menter Aberystwyth",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "Barmouth Christmas Lights Switch-On",
+			"summary": "Barmouth's Christmas tree and town lights are switched on by the Mayor on the evening of Thursday 3 December, with carol singing, bells and a samba band on the High Street. Shops stay open late with festive refreshments, children can meet Father Christmas, and many pubs and hotels have live music.",
+			"start_date": "2026-12-03",
+			"location": "Barmouth High Street",
+			"locality": "Barmouth",
+			"external_url": "https://www.visitmidwales.co.uk/showmewales/whats-on/barmouth-christmas-lights-switch-on-p1828101",
+			"external_label": "Event details",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "Tinsel and Turkey Specials",
+			"summary": "Pair a steam train ride from Tywyn Wharf with a festive cooked lunch in King's Café, running on just two Saturdays, 5 and 12 December 2026. Trains leave at 10:30 and 14:10 with lunch served at 13:15, so you can eat before or after your ride, and normal train fares are charged on top of the meal price.",
+			"start_date": "2026-12-05",
+			"end_date": "2026-12-12",
+			"start_time": "10:30",
+			"location": "Talyllyn Railway, Tywyn",
+			"locality": "Tywyn",
+			"external_url": "https://www.talyllyn.co.uk/series/tinsel-turkey-specials",
+			"external_label": "Book with the Talyllyn Railway",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "Dyfi Wildlife Centre Christmas Craft Fair",
+			"summary": "Local makers sell handmade gifts and crafts indoors at the Dyfi Wildlife Centre, open on both Saturday 5 and Sunday 6 December from 11am to 3pm. It is a two-day event this year, up from a single day in 2025, and admission is not stated so check with the centre before you go.",
+			"start_date": "2026-12-05",
+			"end_date": "2026-12-06",
+			"start_time": "11:00",
+			"end_time": "15:00",
+			"location": "Dyfi Wildlife Centre, Machynlleth",
+			"locality": "Machynlleth",
+			"external_url": "https://www.dyfiospreyproject.com/events/2026-12-05-dyfi-wildlife-centre-christmas-craft-fair-2026",
+			"external_label": "Event details",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "Pantomime at the Dragon Theatre",
+			"summary": "Magic Light Productions bring a family pantomime to Barmouth's Dragon Theatre on Sunday 6 December 2026, with two performances at 1pm and 5pm. Expect a comic adventure starring Dame Trott and her son Silly Billy against a scheming queen, with plenty of cheering, booing and audience participation.",
+			"start_date": "2026-12-06",
+			"start_time": "13:00",
+			"location": "The Dragon Theatre (Theatr y Ddraig), Barmouth",
+			"locality": "Barmouth",
+			"external_url": "https://www.theatryddraig.cymru/events/the-dragon-theatre-pantomime-2026",
+			"external_label": "Book tickets",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "Y Tren Nadolig Fictoraidd, the Victorian Christmas Train",
+			"summary": "A decorated Victorian-style steam train leaves Tywyn Wharf at 11:00 on three Tuesdays only (8, 15 and 22 December), with mulled wine at departure, guides talking through Victorian and Welsh Christmas customs, and a festive cream tea at Abergynolwyn. Fares are £47.50 adult and £23.75 child, the carriages are unheated and not wheelchair accessible, and anyone travelling in Victorian dress gets a £10 voucher on the day.",
+			"start_date": "2026-12-08",
+			"end_date": "2026-12-22",
+			"start_time": "11:00",
+			"location": "Talyllyn Railway, Tywyn",
+			"locality": "Tywyn",
+			"external_url": "https://www.visitmidwales.co.uk/whats-on/y-tren-nadolig-fictoraidd-talyllyn-railway-p1812671",
+			"external_label": "Details and times",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "Santa Special Steam Trains",
+			"summary": "On the weekend of Saturday 12 and Sunday 13 December, a train rides up the Dulas Valley from Corris to Maespoeth Junction, where children can visit Santa's grotto and collect a present. Tickets must be booked in advance, running times and the locomotive can change on the day, and the railway only accepts cancellations more than 7 days before travel.",
+			"start_date": "2026-12-12",
+			"end_date": "2026-12-13",
+			"start_time": "11:00",
+			"location": "Corris Railway, Corris",
+			"locality": "Corris",
+			"external_url": "https://www.corris.co.uk/timetable-and-special-events/",
+			"external_label": "Book Santa Steam Trains",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "Barmouth Santa Dash",
+			"summary": "Pull on a Santa suit for a relaxed two-mile run, jog or walk along the Barmouth promenade and back, led by the town's Striders running club. It is untimed and family-friendly, with a medal and goodie bag for finishers and a raffle afterwards.",
+			"start_date": "2026-12-12",
+			"start_time": "11:00",
+			"end_time": "13:00",
+			"location": "Barmouth Lifeboat Station",
+			"locality": "Barmouth",
+			"external_url": "https://www.eventbrite.co.uk/e/barmouth-santa-dash-2026-tickets-1978608731980",
+			"external_label": "Book Santa Dash tickets",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "Tractors with Lights Parade",
+			"summary": "A convoy of Christmas-lit tractors leaves Dolgellau at 17:30 and rolls through Llanelltyd and Bontddu, pausing in Barmouth's Main Car Park for about half an hour before carrying on to Porthmadog. Spectators can watch and take photos for free (no spectator price is published), and the proceeds raised go to charity.",
+			"start_date": "2026-12-13",
+			"start_time": "17:40",
+			"end_time": "18:30",
+			"location": "Barmouth Main Car Park",
+			"locality": "Barmouth",
+			"external_url": "https://www.barmouth-wales.co.uk/event-details/tractors-with-lights-parade-2",
+			"external_label": "Event details",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "A Ticket to Christmas at the Vale of Rheidol",
+			"summary": "A steam train ride from Aberystwyth to Capel Bangor and back is followed by a visit to Santa in his grotto at the Engine Shed Museum, where every child gets a present. Tickets are about 25 pounds each (5 pounds for infants) and are booked online or by phone; the railway gives the run as 16 to 23 December but publishes no departure times, so check its booking calendar for the days and times on sale.",
+			"start_date": "2026-12-16",
+			"end_date": "2026-12-23",
+			"location": "Vale of Rheidol Railway, Aberystwyth",
+			"locality": "Aberystwyth",
+			"external_url": "https://vor.wales/ticket-to-christmas/",
+			"external_label": "Book Ticket to Christmas",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "Santa Specials at the Talyllyn Railway",
+			"summary": "Santa trains leave Tywyn Wharf at 11:00 and 14:00 on just four days: Saturday 19, Sunday 20, Wednesday 23 and Thursday 24 December 2026. Each child meets Father Christmas at the end of the ride and gets a gift and a treat, with mince pies and mulled wine included in the ticket (£23 per adult or child, £7 for under-2s and dogs), so arrive at least 15 minutes early.",
+			"start_date": "2026-12-19",
+			"end_date": "2026-12-24",
+			"start_time": "11:00",
+			"location": "Talyllyn Railway, Tywyn",
+			"locality": "Tywyn",
+			"external_url": "https://www.visitmidwales.co.uk/whats-on/santa-special-talyllyn-railway-p1812641",
+			"external_label": "Book Santa Specials",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "The Carol Train",
+			"summary": "An evening steam train leaves Tywyn Wharf at 18:45 for Abergynolwyn, where the carol singing starts, with mulled wine and mince pies served at the station from 18:30 and food and drink at the Abergynolwyn cafe. Tickets are booked through the railway's website (adults £17, children £7, dogs £5), and a charity raffle supports Tŷ Gobaith Children's Hospice.",
+			"start_date": "2026-12-19",
+			"start_time": "18:45",
+			"end_time": "22:00",
+			"location": "Talyllyn Railway, Tywyn",
+			"locality": "Tywyn",
+			"external_url": "https://www.talyllyn.co.uk/events/the-carol-train",
+			"external_label": "Book on the Talyllyn Railway site",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "The Spirit of Christmas",
+			"summary": "A heated, festively decorated train leaves Tywyn Wharf at midday on Monday 21 December and runs up the Fathew Valley to Abergynolwyn, where a festive afternoon tea is served before the return at about 3pm. Tickets are £45 (£30 for Talyllyn Railway Preservation Society members), booking is essential as places are limited, and the railway pitches it at adults, so check before bringing children.",
+			"start_date": "2026-12-21",
+			"start_time": "12:00",
+			"end_time": "15:00",
+			"location": "Talyllyn Railway, Tywyn",
+			"locality": "Tywyn",
+			"external_url": "https://www.talyllyn.co.uk/events/the-spirit-of-christmas/",
+			"external_label": "Book on talyllyn.co.uk",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "Christmas Day Lunch at the Penhelig Arms",
+			"summary": "The Penhelig Arms Hotel in Aberdyfi is taking bookings for a set three-course lunch on Christmas Day, Friday 25 December 2026. Prices and sitting times are not published online, so ring the hotel on 01654 767215 to confirm before you plan around it.",
+			"start_date": "2026-12-25",
+			"location": "Penhelig Arms, Aberdyfi",
+			"locality": "Aberdyfi",
+			"external_url": "https://www.penheligarmspubaberdyfi.co.uk/christmas-day",
+			"external_label": "Book Christmas Day lunch",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "Christmas Presence",
+			"summary": "The Magic Lantern Cinema opens its doors on Christmas Day for a free community gathering, with a soup lunch, a drink and a mince pie, and a film for anyone who wants to stay. You can drop in between 11am and 3pm, but booking a free ticket in advance helps the volunteer team plan the catering.",
+			"start_date": "2026-12-25",
+			"start_time": "11:00",
+			"end_time": "15:00",
+			"location": "Magic Lantern, Tywyn",
+			"locality": "Tywyn",
+			"external_url": "https://tywyncinema.co.uk/MagicLantern.dll/WhatsOn?f=189539",
+			"external_label": "Book a free place",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "Boxing Day Set Menu at the Penhelig Arms",
+			"summary": "The Penhelig Arms in Aberdyfi is serving a Boxing Day set menu on Saturday 26 December, with a baked mushroom starter, a choice of steak and Malbec pie or salmon en croûte, and a fruit crumble to finish. No price or serving times are published, so ring the hotel on 01654 767215 or book through its website.",
+			"start_date": "2026-12-26",
+			"location": "Penhelig Arms, Aberdyfi",
+			"locality": "Aberdyfi",
+			"external_url": "https://www.penheligarmspubaberdyfi.co.uk/boxing-day",
+			"external_label": "Boxing Day menu and booking",
+			"tags": ["christmas"]
+		},
+		{
+			"title": "Steam 'n' Scream at the Talyllyn Railway",
+			"summary": "A Halloween meal at Tywyn Wharf followed by a steam train out to Dolgoch Woods after dark. Two sittings each evening, at 4.30pm and 6.30pm, with a two course meal included in the ticket.",
+			"start_date": "2026-10-29",
+			"end_date": "2026-10-30",
+			"start_time": "16:30",
+			"location": "Talyllyn Railway, Tywyn",
+			"locality": "Tywyn",
+			"external_url": "https://www.talyllyn.co.uk/events/steam-n-scream",
+			"external_label": "Book Steam 'n' Scream",
+			"tags": ["halloween"]
+		},
+		{
+			"title": "Little Monster Squad",
+			"summary": "An hour of Halloween crafts, games and biscuit decorating for children at King's Cafe on Tywyn Wharf station, finishing with a dance to scare the ghosts away. Five pounds a child including a goodie bag, accompanying adults free, paid at the booking office on the day.",
+			"start_date": "2026-10-30",
+			"start_time": "15:00",
+			"end_time": "16:00",
+			"location": "King's Cafe, Tywyn",
+			"locality": "Tywyn",
+			"internal_url": "/eating/kings-cafe-at-talyllyn-railway/",
+			"external_url": "https://www.talyllyn.co.uk/events/little-monster-squad",
+			"external_label": "Details and times",
+			"tags": ["halloween"]
 		}
 	]
 }

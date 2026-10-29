@@ -5,6 +5,7 @@ address: Proper Gander, 4 High Street, Tywyn, Gwynedd, LL36 9AA
 phone: 01654 712169
 website: 'http://www.propergandertywyn.com/'
 dog_friendly: false
+kind: Restaurant
 published: 2022-05-27
 geo:
   lat: 52.5868777

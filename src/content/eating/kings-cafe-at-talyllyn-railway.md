@@ -5,6 +5,7 @@ address: Wharf Station Neptune Road Wharf Station, Tywyn LL36 9EY
 phone: 01654 710472
 website: 'https://www.talyllyn.co.uk/'
 dog_friendly: true
+kind: CafeOrCoffeeShop
 published: 2022-05-28
 geo:
   lat: 52.583729
