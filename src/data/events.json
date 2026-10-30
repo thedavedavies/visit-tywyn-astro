@@ -219,8 +219,8 @@
 			"location": "Trefeddian Hotel, Aberdyfi",
 			"locality": "Aberdyfi",
 			"tags": ["halloween"],
-			"external_url": "https://trefwales.com/tariff/whats-on",
-			"external_label": "Trefeddian what's on"
+			"external_url": "https://trefwales.com/blog/post/half-term-happiness",
+			"external_label": "Trefeddian half-term events"
 		},
 		{
 			"title": "Kids Halloween Disco at The Neptune",
@@ -303,10 +303,11 @@
 		},
 		{
 			"title": "Aberdovey Christmas Market",
-			"summary": "Aberdyfi welcomes the festive season with seasonal stalls, food, gifts and entertainment.",
-			"start_date": "2026-11-01",
-			"month_only": true,
-			"location": "Aberdyfi",
+			"summary": "Aberdyfi Community Council's Christmas fair, a morning of festive stalls at Neuadd Dyfi.",
+			"start_date": "2026-12-12",
+			"start_time": "10:00",
+			"end_time": "13:00",
+			"location": "Neuadd Dyfi, Aberdyfi",
 			"locality": "Aberdyfi",
 			"tags": ["christmas"]
 		},
@@ -314,7 +315,6 @@
 			"title": "Tywyn Christmas Market",
 			"summary": "Festive craft and food stalls in Tywyn, held alongside the town's Christmas lights switch-on.",
 			"start_date": "2026-11-14",
-			"month_only": true,
 			"location": "Tywyn",
 			"locality": "Tywyn",
 			"tags": ["christmas"],
@@ -323,15 +323,15 @@
 		},
 		{
 			"title": "Festive Menu at Proper Gander",
-			"summary": "Proper Gander runs a two or three course festive menu through the season, for Christmas meals out, work parties and get-togethers. Larger tables pre-order.",
+			"summary": "Proper Gander runs a two or three course festive menu through the season, for Christmas meals out, work parties and get-togethers. Parties of six or more pre-order, and a £10 per person non-refundable deposit is taken when you book.",
 			"start_date": "2026-11-15",
 			"end_date": "2026-12-20",
 			"location": "Proper Gander, Tywyn",
 			"locality": "Tywyn",
 			"internal_url": "/eating/proper-gander/",
 			"tags": ["christmas"],
-			"external_url": "https://www.facebook.com/photo/?fbid=1668975955110332&set=gm.4552275965050273&idorvanity=1894446697499893",
-			"external_label": "Festive menu on Facebook"
+			"external_url": "https://propergandertywyn.com/wp-content/uploads/2026/10/Proper-Gander-Festive-Menu-2026.pdf",
+			"external_label": "Festive menu (PDF)"
 		},
 		{
 			"title": "Tywyn Late Night Christmas Shopping",
@@ -365,7 +365,7 @@
 			"end_time": "16:00",
 			"location": "Glandyfi Castle",
 			"locality": "Machynlleth",
-			"external_url": "https://glandyfi-castle.sumupstore.com/",
+			"external_url": "https://glandyfi-castle.sumupstore.com/product/christmas-fair-wednesday-9th-december-1",
 			"tags": ["christmas"],
 			"external_label": "Tickets at Glandyfi Castle"
 		},
@@ -379,49 +379,6 @@
 			"tags": ["christmas"],
 			"external_url": "https://www.facebook.com/photo/?fbid=122180852414898929&set=a.122121447104898929",
 			"external_label": "Details on Facebook"
-		},
-		{
-			"title": "Adventure in Santaland at Plas Dolguog",
-			"summary": "An illuminated evening trail through the grounds, with a storyteller, an elves' workshop, a visit from Santa, artisan stalls and mulled wine.",
-			"start_date": "2026-12-12",
-			"end_date": "2026-12-14",
-			"location": "Plas Dolguog, Machynlleth",
-			"locality": "Machynlleth",
-			"tags": ["christmas"],
-			"external_url": "https://www.tickettailor.com/events/plasdolguog/1941940",
-			"external_label": "Book tickets"
-		},
-		{
-			"title": "Adventure in Santaland at Plas Dolguog",
-			"summary": "An illuminated evening trail through the grounds, with a storyteller, an elves' workshop, a visit from Santa, artisan stalls and mulled wine.",
-			"start_date": "2026-12-19",
-			"end_date": "2026-12-21",
-			"location": "Plas Dolguog, Machynlleth",
-			"locality": "Machynlleth",
-			"tags": ["christmas"],
-			"external_url": "https://www.tickettailor.com/events/plasdolguog/1941940",
-			"external_label": "Book tickets"
-		},
-		{
-			"title": "Santa's Grotto at Layla's Lounge",
-			"summary": "Santa sets up at Layla's Lounge, with a gift and a hot chocolate for every child. Letters posted in the shop's letterbox get a reply before the big day.",
-			"start_date": "2026-12-20",
-			"location": "Layla's Lounge, Tywyn",
-			"locality": "Tywyn",
-			"tags": ["christmas"],
-			"external_url": "https://www.facebook.com/photo/?fbid=122153887874824190&set=pcb.122153887964824190",
-			"external_label": "Details on Facebook"
-		},
-		{
-			"title": "Christmas Day Lunch at Proper Gander",
-			"summary": "The High Street restaurant opens on Christmas Day for a festive lunch, with a limited number of tables.",
-			"start_date": "2026-12-25",
-			"location": "Proper Gander, Tywyn",
-			"locality": "Tywyn",
-			"internal_url": "/eating/proper-gander/",
-			"tags": ["christmas"],
-			"external_url": "https://www.facebook.com/photo/?fbid=1668975955110332&set=gm.4552275965050273&idorvanity=1894446697499893",
-			"external_label": "Festive menu on Facebook"
 		},
 		{
 			"title": "Christmas Carol Concerts",
@@ -439,7 +396,7 @@
 		},
 		{
 			"title": "Machynlleth Lantern Procession",
-			"summary": "Handmade lanterns parade through Machynlleth after dark, setting off from Canolfan Owain Glyndŵr and finishing at the football ground. A separate ticketed firework display follows, run by Tân-gwyllt Machynlleth.",
+			"summary": "Handmade lanterns parade through Machynlleth after dark, setting off from Canolfan Owain Glyndŵr and finishing on the lawn at Y Plas. A separate ticketed firework display follows, run by Tân-gwyllt Machynlleth.",
 			"start_date": "2026-10-31",
 			"start_time": "18:30",
 			"location": "Canolfan Owain Glyndŵr, Machynlleth",
@@ -453,7 +410,7 @@
 			"summary": "The town's annual display at Aberystwyth Rugby Club, run by Ardal Aberystwyth Rotary Club to raise money for local good causes. Gates open at 5.30pm and the fireworks start at 7pm. Entry is ticketed.",
 			"start_date": "2026-11-05",
 			"start_time": "17:30",
-			"location": "Aberystwyth Rugby Club, Plasgrug Avenue",
+			"location": "Aberystwyth Rugby Club, Plascrug Avenue",
 			"locality": "Aberystwyth",
 			"tags": ["fireworks"],
 			"external_url": "https://www.tickettailor.com/events/ardalaberystwythrotaryclub1/2386899",
@@ -501,7 +458,7 @@
 			"location": "The Dragon Theatre (Theatr y Ddraig), Barmouth",
 			"locality": "Barmouth",
 			"external_url": "https://www.theatryddraig.cymru/events/christmas-fayre-ffair-y-nadolig",
-			"external_label": "Event details and tickets",
+			"external_label": "Event details",
 			"tags": ["christmas"]
 		},
 		{
@@ -522,8 +479,8 @@
 			"start_date": "2026-12-03",
 			"location": "Barmouth High Street",
 			"locality": "Barmouth",
-			"external_url": "https://www.visitmidwales.co.uk/showmewales/whats-on/barmouth-christmas-lights-switch-on-p1828101",
-			"external_label": "Event details",
+			"external_url": "https://www.barmouthtowncouncil.gov.uk/council-events",
+			"external_label": "Details from Barmouth Town Council",
 			"tags": ["christmas"]
 		},
 		{
@@ -564,14 +521,14 @@
 		},
 		{
 			"title": "Y Tren Nadolig Fictoraidd, the Victorian Christmas Train",
-			"summary": "A decorated Victorian-style steam train leaves Tywyn Wharf at 11:00 on three Tuesdays only (8, 15 and 22 December), with mulled wine at departure, guides talking through Victorian and Welsh Christmas customs, and a festive cream tea at Abergynolwyn. Fares are £47.50 adult and £23.75 child, the carriages are unheated and not wheelchair accessible, and anyone travelling in Victorian dress gets a £10 voucher on the day.",
+			"summary": "A decorated Victorian steam train leaves Tywyn Wharf at 11:00 on three Tuesdays only (8, 15 and 22 December), with mulled wine at departure, guides talking through Victorian and Welsh Christmas customs, and a festive cream tea at Abergynolwyn. Fares are £47.50 adult and £23.75 child, the carriages are unheated and not wheelchair accessible, and anyone travelling in Victorian dress gets a £10 voucher on the day.",
 			"start_date": "2026-12-08",
 			"end_date": "2026-12-22",
 			"start_time": "11:00",
 			"location": "Talyllyn Railway, Tywyn",
 			"locality": "Tywyn",
-			"external_url": "https://www.visitmidwales.co.uk/whats-on/y-tren-nadolig-fictoraidd-talyllyn-railway-p1812671",
-			"external_label": "Details and times",
+			"external_url": "https://www.talyllyn.co.uk/series/y-tren-nadolig-fictoraidd",
+			"external_label": "Book with the Talyllyn Railway",
 			"tags": ["christmas"]
 		},
 		{
@@ -582,13 +539,13 @@
 			"start_time": "11:00",
 			"location": "Corris Railway, Corris",
 			"locality": "Corris",
-			"external_url": "https://www.corris.co.uk/timetable-and-special-events/",
+			"external_url": "https://www.corris.co.uk/tickets/?cid=my-calendar&month=12&yr=2026",
 			"external_label": "Book Santa Steam Trains",
 			"tags": ["christmas"]
 		},
 		{
 			"title": "Barmouth Santa Dash",
-			"summary": "Pull on a Santa suit for a relaxed two-mile run, jog or walk along the Barmouth promenade and back, led by the town's Striders running club. It is untimed and family-friendly, with a medal and goodie bag for finishers and a raffle afterwards.",
+			"summary": "Pull on a Santa suit for a relaxed two-mile run, jog or walk along the Barmouth promenade and back, led by the town's Striders running club. It is untimed and family-friendly, with a medal and goodie bag for finishers.",
 			"start_date": "2026-12-12",
 			"start_time": "11:00",
 			"end_time": "13:00",
@@ -600,14 +557,14 @@
 		},
 		{
 			"title": "Tractors with Lights Parade",
-			"summary": "A convoy of Christmas-lit tractors leaves Dolgellau at 17:30 and rolls through Llanelltyd and Bontddu, pausing in Barmouth's Main Car Park for about half an hour before carrying on to Porthmadog. Spectators can watch and take photos for free (no spectator price is published), and the proceeds raised go to charity.",
+			"summary": "A convoy of Christmas-lit tractors sets off from Dolgellau farmers' mart at 16:30 and rolls through Llanelltyd and Bontddu, pausing in Barmouth's Main Car Park before carrying on to Porthmadog. Watching is free (the £10 entry is per vehicle taking part), and the money raised goes to Wales Air Ambulance, Prostate Cancer Cymru and Breast Cancer Care at Ysbyty Gwynedd.",
 			"start_date": "2026-12-13",
 			"start_time": "17:40",
 			"end_time": "18:30",
 			"location": "Barmouth Main Car Park",
 			"locality": "Barmouth",
-			"external_url": "https://www.barmouth-wales.co.uk/event-details/tractors-with-lights-parade-2",
-			"external_label": "Event details",
+			"external_url": "https://www.facebook.com/photo/?fbid=122209827140470371&set=a.122117695088470371",
+			"external_label": "Details on Facebook",
 			"tags": ["christmas"]
 		},
 		{
@@ -623,13 +580,13 @@
 		},
 		{
 			"title": "Santa Specials at the Talyllyn Railway",
-			"summary": "Santa trains leave Tywyn Wharf at 11:00 and 14:00 on just four days: Saturday 19, Sunday 20, Wednesday 23 and Thursday 24 December 2026. Each child meets Father Christmas at the end of the ride and gets a gift and a treat, with mince pies and mulled wine included in the ticket (£23 per adult or child, £7 for under-2s and dogs), so arrive at least 15 minutes early.",
+			"summary": "Santa trains leave Tywyn Wharf at 11:00 and 14:00 on just four days: Saturday 19, Sunday 20, Wednesday 23 and Thursday 24 December 2026. Each child meets Father Christmas at the end of the ride and gets a gift and a treat, with mince pies and mulled wine included in the ticket (£23 per adult or child, £7 for under-2s and £5 for dogs), so arrive at least 15 minutes early.",
 			"start_date": "2026-12-19",
 			"end_date": "2026-12-24",
 			"start_time": "11:00",
 			"location": "Talyllyn Railway, Tywyn",
 			"locality": "Tywyn",
-			"external_url": "https://www.visitmidwales.co.uk/whats-on/santa-special-talyllyn-railway-p1812641",
+			"external_url": "https://www.talyllyn.co.uk/series/santa-specials",
 			"external_label": "Book Santa Specials",
 			"tags": ["christmas"]
 		},
@@ -653,7 +610,7 @@
 			"end_time": "15:00",
 			"location": "Talyllyn Railway, Tywyn",
 			"locality": "Tywyn",
-			"external_url": "https://www.talyllyn.co.uk/events/the-spirit-of-christmas/",
+			"external_url": "https://www.talyllyn.co.uk/events/the-spirit-of-christmas",
 			"external_label": "Book on talyllyn.co.uk",
 			"tags": ["christmas"]
 		},
