@@ -312,14 +312,16 @@
 			"tags": ["christmas"]
 		},
 		{
-			"title": "Tywyn Christmas Market",
-			"summary": "Festive craft and food stalls in Tywyn, held alongside the town's Christmas lights switch-on.",
+			"title": "Tywyn Christmas Market and Lights Switch-On",
+			"summary": "A street market sets up on the High Street from 9am and an indoor craft market opens at the leisure centre at 10am, with food and drink stalls and local musicians playing all afternoon. The Christmas tree lights are switched on at 5.30pm, and Santa's grotto opens at 6pm. Part of the High Street east of the Spar is closed to traffic from 6am to 8pm.",
 			"start_date": "2026-11-14",
-			"location": "Tywyn",
+			"start_time": "09:00",
+			"end_time": "20:00",
+			"location": "Tywyn High Street and Leisure Centre",
 			"locality": "Tywyn",
 			"tags": ["christmas"],
-			"external_url": "https://www.facebook.com/CyngorTrefTywyn",
-			"external_label": "Dates from Tywyn Town Council"
+			"external_url": "https://www.facebook.com/photo/?fbid=1458692843052530&set=a.270057245249435",
+			"external_label": "Details on Facebook"
 		},
 		{
 			"title": "Festive Menu at Proper Gander",
