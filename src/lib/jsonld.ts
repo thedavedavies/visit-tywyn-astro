@@ -297,7 +297,7 @@ interface EventOffer {
 interface EventInput {
 	name: string;
 	startIso: string;
-	endIso: string;
+	endIso?: string;
 	location?: string;
 	/** Town the venue sits in, so the Place carries the `address` Google requires. */
 	locality?: string;
@@ -360,7 +360,7 @@ export function eventSchema(input: EventInput): JsonLd {
 		'@type': 'Event',
 		name: input.name,
 		startDate: input.startIso,
-		endDate: input.endIso,
+		...(input.endIso ? { endDate: input.endIso } : {}),
 		eventStatus: 'https://schema.org/EventScheduled',
 		eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
 		...(input.isAccessibleForFree !== undefined

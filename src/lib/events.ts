@@ -67,7 +67,7 @@ export interface NormalisedEvent {
 	imageAlt: string;
 	startIso: string;
 	endIso: string;
-	schemaDates: { start: string; end: string } | null;
+	schemaDates: { start: string; end?: string } | null;
 	dateLabel: string;
 	monthOnly: boolean;
 	tags: string[];
@@ -196,11 +196,7 @@ export function getEvents(now: Date = new Date()): NormalisedEvent[] {
 		// day of its month, so "sometime in June" stays upcoming through
 		// 30 June rather than turning "past" on the 1st.
 		const endDate = ev.end_date ?? (monthOnly ? lastDayOfMonth(ev.start_date) : ev.start_date);
-		const endTime =
-			ev.end_time ??
-			(monthOnly || (ev.end_date && ev.end_date !== ev.start_date)
-				? '23:59'
-				: (ev.start_time ?? '23:59'));
+		const endTime = ev.end_time ?? '23:59';
 		const endIso = combine(endDate, endTime, true);
 		const start = new Date(startIso);
 		const end = new Date(endIso);
@@ -213,7 +209,7 @@ export function getEvents(now: Date = new Date()): NormalisedEvent[] {
 			monthOnly && !ev.end_date
 				? null
 				: ev.start_time
-					? { start: startIso, end: endIso }
+					? { start: startIso, end: ev.end_time || endDate !== ev.start_date ? endIso : undefined }
 					: { start: ev.start_date, end: endDate };
 
 		out.push({
