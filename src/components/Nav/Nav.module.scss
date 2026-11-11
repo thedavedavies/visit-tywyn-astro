@@ -71,6 +71,13 @@
 	@include breakpoint(md) {
 		a {
 			height: 100%;
+			padding-inline: $space-4;
+		}
+	}
+
+	@include breakpoint(xxl) {
+		a {
+			padding-inline: $space-5;
 		}
 	}
 }
@@ -106,6 +113,11 @@
 	@include breakpoint(md) {
 		width: auto;
 		height: 100%;
+		padding-inline: $space-4;
+	}
+
+	@include breakpoint(xxl) {
+		padding-inline: $space-5;
 	}
 }
 
