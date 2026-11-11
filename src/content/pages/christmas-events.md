@@ -11,5 +11,3 @@ Christmas here opens with Tywyn's lights switch-on on Saturday 14 November, the 
 Through December the village halls take their turn with craft fairs, the High Street shops open late one evening, and most of the pubs and restaurants switch to a festive menu. These are very popular, so it is worth booking well ahead.
 
 It all carries on into the new year, with swimmers taking to the sea for the New Year's Day Dip on 1 January and the Aberdovey Panto at Neuadd Dyfi.
-
-<strong>Related: <a href="/events/halloween/">Halloween in Tywyn and Aberdyfi</a> and <a href="/events/bonfire-night/">firework displays near Tywyn and Aberdyfi</a>.</strong>

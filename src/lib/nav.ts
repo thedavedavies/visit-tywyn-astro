@@ -17,6 +17,7 @@ export interface NavItem {
 export const PRIMARY_NAV: NavItem[] = [
 	{ label: 'Places to eat', href: '/eating/' },
 	{ label: 'Things to do', href: '/things-to-do/' },
+	{ label: 'Events', href: '/events/' },
 	{ label: 'Where to stay', href: '/where-to-stay/' },
 	{ label: 'Webcam', href: '/webcam/' },
 	{
