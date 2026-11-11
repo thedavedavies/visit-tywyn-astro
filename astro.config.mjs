@@ -1,6 +1,7 @@
 // @ts-check
 import {
 	appendFileSync,
+	existsSync,
 	readdirSync,
 	readFileSync,
 	statSync,
@@ -384,7 +385,7 @@ const pruneUnreferencedAssets = {
 					) {
 						textFiles.push(p);
 					}
-					if (p.startsWith(astroDir)) assetFiles.push(p);
+					if (p.startsWith(astroDir) && !/\.m?js$/.test(ent.name)) assetFiles.push(p);
 				}
 			};
 			walk(root);
@@ -393,6 +394,21 @@ const pruneUnreferencedAssets = {
 				for (const m of readFileSync(p, 'utf8').matchAll(/\/_astro\/[^"'\s)>,]+/g)) {
 					referenced.add(join(root, m[0]));
 				}
+			}
+			const safeName = /^[\w./-]+$/;
+			const unsafe = assetFiles.filter((p) => !safeName.test(relative(astroDir, p)));
+			if (unsafe.length) {
+				throw new Error(
+					`prune-unreferenced-assets: rename the source files behind these assets to letters, digits, _ . - only: ${unsafe.map((p) => relative(root, p)).join(', ')}`,
+				);
+			}
+			const missing = [...referenced].filter(
+				(p) => safeName.test(relative(astroDir, p)) && !existsSync(p),
+			);
+			if (missing.length) {
+				throw new Error(
+					`prune-unreferenced-assets: referenced but missing from dist (often a byte-identical duplicate of the source image elsewhere in src/assets): ${missing.map((p) => relative(root, p)).join(', ')}`,
+				);
 			}
 			let removed = 0;
 			let removedBytes = 0;

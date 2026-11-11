@@ -2,7 +2,7 @@
 title: Events in Tywyn and Aberdyfi
 subtitle: 'What’s happening in and around Tywyn and Aberdyfi in {month}?'
 hero_image:
-  src: '../../assets/img/pages/events.jpg'
+  src: '../../assets/img/things-to-do/magic-lantern-cinema/cover.jpg'
   alt: Tywyn Cinema
 updated: 2026-06-08
 ---
