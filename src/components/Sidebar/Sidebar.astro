@@ -42,114 +42,118 @@ const { thingsToDo, eating, showWeather = true, showTides = true, showAds = true
 ---
 
 <aside class={styles.sidebar} aria-label="Plan your visit">
-	{
-		thingsToDo && (thingsToDo.website || thingsToDo.phone || thingsToDo.grid_reference) && (
-			<SidebarBox title={`${thingsToDo.title} Information`} iconName="marker">
-				{/*
-				 * Was a `<dl>` of `<div>`s, which is invalid HTML: a `<dl>`
-				 * child `<div>` must wrap a `<dt>`+`<dd>` pair. The rows
-				 * aren't real term/definition pairs (they're a contact
-				 * list), so a `<ul>` is the honest semantic.
-				 */}
-				<ul class={styles.contactList}>
-					{thingsToDo.website && (
-						<li class={styles.contactRow}>
-							<Icon name="link" />
-							<a target="_blank" rel="noopener noreferrer" href={thingsToDo.website}>
-								{thingsToDo.website}
+	{thingsToDo && (thingsToDo.website || thingsToDo.phone || thingsToDo.grid_reference) && (
+		<SidebarBox title={`${thingsToDo.title} Information`} iconName="marker">
+			{/*
+			 * Was a `<dl>` of `<div>`s, which is invalid HTML: a `<dl>`
+			 * child `<div>` must wrap a `<dt>`+`<dd>` pair. The rows
+			 * aren't real term/definition pairs (they're a contact
+			 * list), so a `<ul>` is the honest semantic.
+			 */}
+			<ul class={styles.contactList}>
+				{thingsToDo.website && (
+					<li class={styles.contactRow}>
+						<Icon name="link" />
+						<a target="_blank" rel="noopener noreferrer" href={thingsToDo.website}>
+							{thingsToDo.website}
+							<span class="sr-only"> (opens in new tab)</span>
+						</a>
+					</li>
+				)}
+				{thingsToDo.phone && (
+					<li class={styles.contactRow}>
+						<Icon name="phone" />
+						<a href={`tel:${thingsToDo.phone.replace(/\s+/g, '')}`}>{thingsToDo.phone}</a>
+					</li>
+				)}
+				{thingsToDo.grid_reference && (
+					<li class={styles.contactRow}>
+						<Icon name="marker" />
+						<span>Grid reference: {thingsToDo.grid_reference}</span>
+					</li>
+				)}
+			</ul>
+		</SidebarBox>
+	)}
+
+	{eating && (eating.trip_advisor_link || eating.facebook_link || eating.dog_friendly) && (
+		<div class={styles.eatingDetails}>
+			<h2 class={styles.leadTitle}>{eating.title} Details</h2>
+			<div class={styles.restaurantInfo}>
+				<ul class={styles.eatingIcons}>
+					{eating.trip_advisor_link && (
+						<li>
+							<a href={eating.trip_advisor_link} target="_blank" rel="noopener noreferrer">
+								<Icon name="tripadvisor" />
+								<span>{eating.title} on Trip Advisor</span>
 								<span class="sr-only"> (opens in new tab)</span>
 							</a>
 						</li>
 					)}
-					{thingsToDo.phone && (
-						<li class={styles.contactRow}>
-							<Icon name="phone" />
-							<a href={`tel:${thingsToDo.phone.replace(/\s+/g, '')}`}>{thingsToDo.phone}</a>
-						</li>
-					)}
-					{thingsToDo.grid_reference && (
-						<li class={styles.contactRow}>
-							<Icon name="marker" />
-							<span>Grid reference: {thingsToDo.grid_reference}</span>
+					{eating.facebook_link && (
+						<li>
+							<a href={eating.facebook_link} target="_blank" rel="noopener noreferrer">
+								<Icon name="facebook" />
+								<span>{eating.title} on Facebook</span>
+								<span class="sr-only"> (opens in new tab)</span>
+							</a>
 						</li>
 					)}
 				</ul>
-			</SidebarBox>
-		)
-	}
-
-	{
-		eating && (eating.trip_advisor_link || eating.facebook_link || eating.dog_friendly) && (
-			<div class={styles.eatingDetails}>
-				<h2 class={styles.leadTitle}>{eating.title} Details</h2>
-				<div class={styles.restaurantInfo}>
-					<ul class={styles.eatingIcons}>
-						{eating.trip_advisor_link && (
-							<li>
-								<a href={eating.trip_advisor_link} target="_blank" rel="noopener noreferrer">
-									<Icon name="tripadvisor" />
-									<span>{eating.title} on Trip Advisor</span>
-									<span class="sr-only"> (opens in new tab)</span>
-								</a>
-							</li>
-						)}
-						{eating.facebook_link && (
-							<li>
-								<a href={eating.facebook_link} target="_blank" rel="noopener noreferrer">
-									<Icon name="facebook" />
-									<span>{eating.title} on Facebook</span>
-									<span class="sr-only"> (opens in new tab)</span>
-								</a>
-							</li>
-						)}
-					</ul>
-					{eating.dog_friendly && <DogFriendlyPill />}
-					<div class={styles.eatingMeta}>
-						{eating.website && (
-							<p>
-								<a target="_blank" rel="noopener noreferrer" href={eating.website}>
-									{eating.website}
-									<span class="sr-only"> (opens in new tab)</span>
-								</a>
-							</p>
-						)}
-						{eating.phone && (
-							<p>
-								Phone: <a href={`tel:${eating.phone.replace(/\s+/g, '')}`}>{eating.phone}</a>
-							</p>
-						)}
-					</div>
+				{eating.dog_friendly && <DogFriendlyPill />}
+				<div class={styles.eatingMeta}>
+					{eating.website && (
+						<p>
+							<a target="_blank" rel="noopener noreferrer" href={eating.website}>
+								{eating.website}
+								<span class="sr-only"> (opens in new tab)</span>
+							</a>
+						</p>
+					)}
+					{eating.phone && (
+						<p>
+							Phone: <a href={`tel:${eating.phone.replace(/\s+/g, '')}`}>{eating.phone}</a>
+						</p>
+					)}
 				</div>
 			</div>
-		)
-	}
+		</div>
+	)}
 
 	<SidebarBox title="Plan your visit to Tywyn" iconName="marker">
 		<ul>
-			<li><a href="/events/">Events in Tywyn</a></li>
-			<li><a href="/things-to-do/magic-lantern-cinema/">Tywyn Cinema</a></li>
-			<li><a href="/webcam/">Seafront Webcam</a></li>
-			<li><a href="/weather/">Weather forecast</a></li>
-			<li><a href="/tide-times/">Tide times</a></li>
-			<li><a href="/dog-friendly-cafes/">Dog friendly cafes</a></li>
+			<li>
+				<a href="/events/">Events in Tywyn</a>
+			</li>
+			<li>
+				<a href="/things-to-do/magic-lantern-cinema/">Tywyn Cinema</a>
+			</li>
+			<li>
+				<a href="/webcam/">Seafront Webcam</a>
+			</li>
+			<li>
+				<a href="/weather/">Weather forecast</a>
+			</li>
+			<li>
+				<a href="/tide-times/">Tide times</a>
+			</li>
+			<li>
+				<a href="/dog-friendly-cafes/">Dog friendly cafes</a>
+			</li>
 		</ul>
 	</SidebarBox>
 
-	{
-		showWeather && (
-			<SidebarBox title="Tywyn beach weather" iconName="marker">
-				<WeatherWidget />
-			</SidebarBox>
-		)
-	}
+	{showWeather && (
+		<SidebarBox title="Tywyn beach weather" iconName="marker">
+			<WeatherWidget />
+		</SidebarBox>
+	)}
 
-	{
-		showTides && (
-			<SidebarBox title="Next tides" iconName="wave">
-				<TidesWidget />
-			</SidebarBox>
-		)
-	}
+	{showTides && (
+		<SidebarBox title="Next tides" iconName="wave">
+			<TidesWidget />
+		</SidebarBox>
+	)}
 
 	{showAds && <AdSlot slot="7221027714" />}
 </aside>

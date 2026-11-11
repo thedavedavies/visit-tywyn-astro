@@ -102,36 +102,32 @@ const jsonLd = [
 >
 	<EntryHeader title={event.title} subtitle={dateLabel} />
 
-	{
-		event.location && (
-			<p class="event-location">
-				<Icon name="marker" />
-				<span>{event.location}</span>
-			</p>
-		)
-	}
+	{event.location && (
+		<p class="event-location">
+			<Icon name="marker" />
+			<span>{event.location}</span>
+		</p>
+	)}
 
 	<div class="entry-content">
 		<Content />
 	</div>
 
-	{
-		links.length > 0 && (
-			<section class="event-links" aria-labelledby="event-links-title">
-				<h2 id="event-links-title">Find out more</h2>
-				<ul>
-					{links.map((l) => (
-						<li>
-							<a href={l.href} target="_blank" rel="noopener noreferrer">
-								{l.label}
-								<span class="sr-only"> (opens in new tab)</span>
-							</a>
-						</li>
-					))}
-				</ul>
-			</section>
-		)
-	}
+	{links.length > 0 && (
+		<section class="event-links" aria-labelledby="event-links-title">
+			<h2 id="event-links-title">Find out more</h2>
+			<ul>
+				{links.map((l) => (
+					<li>
+						<a href={l.href} target="_blank" rel="noopener noreferrer">
+							{l.label}
+							<span class="sr-only"> (opens in new tab)</span>
+						</a>
+					</li>
+				))}
+			</ul>
+		</section>
+	)}
 
 	<p class="back-link">
 		<a href="/events/">

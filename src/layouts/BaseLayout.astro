@@ -96,8 +96,7 @@ const autoSchema: Record<string, unknown>[] = [organization(), website()];
 // component still receives the page's original `breadcrumbs` prop
 // (empty on the home page) so the visual trail does not appear with
 // a lone "Home" entry; this synthesis is JSON-LD only.
-const crumbItems =
-	breadcrumbs.length > 0 ? breadcrumbs : isFrontPage ? [{ label: 'Home' }] : [];
+const crumbItems = breadcrumbs.length > 0 ? breadcrumbs : isFrontPage ? [{ label: 'Home' }] : [];
 const crumbSchema = breadcrumbList(crumbItems, canonicalHref);
 if (crumbSchema) autoSchema.push(crumbSchema);
 
@@ -126,16 +125,14 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema]
 		<title>{fullTitle}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonicalHref} />
-		{
-			noindex ? (
-				<meta name="robots" content="noindex, nofollow" />
-			) : (
-				<meta
-					name="robots"
-					content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
-				/>
-			)
-		}
+		{noindex ? (
+			<meta name="robots" content="noindex, nofollow" />
+		) : (
+			<meta
+				name="robots"
+				content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+			/>
+		)}
 
 		{SITE.gscVerification && (
 			<meta name="google-site-verification" content={SITE.gscVerification} />
@@ -223,32 +220,30 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema]
 			 * library fetch off speculative loads; normal navigations
 			 * are unaffected because `document.prerendering` is false.
 			 */
-			SITE.gaMeasurementId && import.meta.env.PROD && (
-				<script
-					is:inline
-					define:vars={{ gaId: SITE.gaMeasurementId, productionHost: new URL(SITE.url).host }}
-				>
-					if (location.host === productionHost) {
-						const fire = () => {
-							const s = document.createElement('script');
-							s.async = true;
-							s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
-							document.head.appendChild(s);
-							window.dataLayer = window.dataLayer || [];
-							function gtag() {
-								dataLayer.push(arguments);
-							}
-							gtag('js', new Date());
-							gtag('config', gaId);
-						};
-						if (document.prerendering) {
-							document.addEventListener('prerenderingchange', fire, { once: true });
-						} else {
-							fire();
+			SITE.gaMeasurementId && import.meta.env.PROD && <script
+				is:inline
+				define:vars={{ gaId: SITE.gaMeasurementId, productionHost: new URL(SITE.url).host }}
+			>
+				if (location.host === productionHost) {
+					const fire = () => {
+						const s = document.createElement('script');
+						s.async = true;
+						s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+						document.head.appendChild(s);
+						window.dataLayer = window.dataLayer || [];
+						function gtag() {
+							dataLayer.push(arguments);
 						}
+						gtag('js', new Date());
+						gtag('config', gaId);
+					};
+					if (document.prerendering) {
+						document.addEventListener('prerenderingchange', fire, { once: true });
+					} else {
+						fire();
 					}
-				</script>
-			)
+				}
+			</script>
 		}
 		{
 			/*
@@ -265,33 +260,31 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema]
 			 *     injected element so analytics.js reads it the same way
 			 *     it would from the original static tag.
 			 */
-			import.meta.env.PROD && (
-				<script
-					is:inline
-					define:vars={{
-						ahrefsKey: 'RHUgFDUqpEFNoIEFLipsjA',
-						productionHost: new URL(SITE.url).host,
-					}}
-				>
-					if (location.host === productionHost) {
-						const fire = () => {
-							const s = document.createElement('script');
-							s.async = true;
-							s.src = 'https://analytics.ahrefs.com/analytics.js';
-							s.setAttribute('data-key', ahrefsKey);
-							document.head.appendChild(s);
-						};
-						// Prerender gate (see GA4 above). Ahrefs has no
-						// documented prerender handling, so without this it
-						// records a pageview for every hovered link.
-						if (document.prerendering) {
-							document.addEventListener('prerenderingchange', fire, { once: true });
-						} else {
-							fire();
-						}
+			import.meta.env.PROD && <script
+				is:inline
+				define:vars={{
+					ahrefsKey: 'RHUgFDUqpEFNoIEFLipsjA',
+					productionHost: new URL(SITE.url).host,
+				}}
+			>
+				if (location.host === productionHost) {
+					const fire = () => {
+						const s = document.createElement('script');
+						s.async = true;
+						s.src = 'https://analytics.ahrefs.com/analytics.js';
+						s.setAttribute('data-key', ahrefsKey);
+						document.head.appendChild(s);
+					};
+					// Prerender gate (see GA4 above). Ahrefs has no
+					// documented prerender handling, so without this it
+					// records a pageview for every hovered link.
+					if (document.prerendering) {
+						document.addEventListener('prerenderingchange', fire, { once: true });
+					} else {
+						fire();
 					}
-				</script>
-			)
+				}
+			</script>
 		}
 
 		{
@@ -305,37 +298,37 @@ const jsonLdBlocks = [...autoSchema, ...pageSchema]
 			 * before (or without) the library loading; it drains the
 			 * queue on arrival.
 			 */
-			SITE.adsenseClient && hasAds && (
-				<script is:inline define:vars={{ adsClient: SITE.adsenseClient }}>
-					(() => {
-						const load = () => {
-							const s = document.createElement('script');
-							s.async = true;
-							s.crossOrigin = 'anonymous';
-							s.src =
-								'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' +
-								adsClient;
-							document.head.appendChild(s);
-						};
-						if (document.prerendering) {
-							document.addEventListener('prerenderingchange', load, { once: true });
-						} else {
-							load();
-						}
-					})();
-				</script>
-			)
+			SITE.adsenseClient && hasAds && <script
+				is:inline
+				define:vars={{ adsClient: SITE.adsenseClient }}
+			>
+				(() => {
+					const load = () => {
+						const s = document.createElement('script');
+						s.async = true;
+						s.crossOrigin = 'anonymous';
+						s.src =
+							'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + adsClient;
+						document.head.appendChild(s);
+					};
+					if (document.prerendering) {
+						document.addEventListener('prerenderingchange', load, { once: true });
+					} else {
+						load();
+					}
+				})();
+			</script>
 		}
 
-		{
-			jsonLdBlocks.map((block) => (
-				<script type="application/ld+json" set:html={safeJsonLd(block)} />
-			))
-		}
+		{jsonLdBlocks.map((block) => (
+			<script type="application/ld+json" set:html={safeJsonLd(block)} />
+		))}
 	</head>
 
 	<body class={bodyClass}>
-		<a class="skip-link" href="#primary">Skip to content</a>
+		<a class="skip-link" href="#primary">
+			Skip to content
+		</a>
 		<div id="page">
 			<Header heroImage={heroImage} breadcrumbs={breadcrumbs} />
 			<main id="primary" class="site-main" tabindex="-1">

@@ -21,21 +21,19 @@ const { href, name, summary, image, sponsored = false } = Astro.props;
 
 <article class={styles.card}>
 	<a href={href} target="_blank" rel="noopener" class={styles.link}>
-		{
-			image && (
-				<div class={styles.media}>
-					<Picture
-						src={image.src}
-						alt={image.alt ?? name}
-						loading="lazy"
-						formats={['avif', 'webp']}
-						width={760}
-						widths={[320, 480, 640, 760]}
-						sizes="(min-width: 768px) 330px, calc(100vw - 32px)"
-					/>
-				</div>
-			)
-		}
+		{image && (
+			<div class={styles.media}>
+				<Picture
+					src={image.src}
+					alt={image.alt ?? name}
+					loading="lazy"
+					formats={['avif', 'webp']}
+					width={760}
+					widths={[320, 480, 640, 760]}
+					sizes="(min-width: 768px) 330px, calc(100vw - 32px)"
+				/>
+			</div>
+		)}
 		<div class={styles.body}>
 			<h3 class={styles.title}>{name}</h3>
 			<p class={styles.summary}>{summary}</p>

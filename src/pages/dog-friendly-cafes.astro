@@ -38,28 +38,24 @@ const jsonLd = itemList(
 		subtitle={page?.data.subtitle}
 	/>
 
-	{
-		Content && (
-			<div class="entry-content">
-				<Content />
-			</div>
-		)
-	}
+	{Content && (
+		<div class="entry-content">
+			<Content />
+		</div>
+	)}
 
 	<div class="venue-list">
-		{
-			dogFriendly.map((venue, idx) => (
-				<ListingCard
-					href={eatingUrl(venue.id)}
-					title={venue.data.title}
-					summary={venue.data.summary}
-					address={venue.data.address}
-					image={venue.data.photo}
-					headingLevel={2}
-					eager={idx < 2}
-				/>
-			))
-		}
+		{dogFriendly.map((venue, idx) => (
+			<ListingCard
+				href={eatingUrl(venue.id)}
+				title={venue.data.title}
+				summary={venue.data.summary}
+				address={venue.data.address}
+				image={venue.data.photo}
+				headingLevel={2}
+				eager={idx < 2}
+			/>
+		))}
 	</div>
 </PageLayout>
 

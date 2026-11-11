@@ -122,268 +122,261 @@ const jsonLd = webPage({ title, description, url: Astro.url });
 	displayFont
 	bodyClass="tide-page"
 >
-	{
-		!snap || bandEvents.length === 0 ? (
-			<div class="entry-content">
-				<h1>Tide times</h1>
-				<p>Tide predictions are being refreshed. Check back in a few minutes.</p>
-			</div>
-		) : (
-			<div class="tx">
-				<section class="hero">
-					<p class="eyebrow">Tywyn beach</p>
-					<h1 class="hero__title">Tide times</h1>
-					<p class="hero__lede">
-						High and low water for Tywyn beach, today and for the week ahead, with heights, the
-						shape of the curve and what it means for the sand.
-					</p>
-				</section>
+	{!snap || bandEvents.length === 0 ? (
+		<div class="entry-content">
+			<h1>Tide times</h1>
+			<p>Tide predictions are being refreshed. Check back in a few minutes.</p>
+		</div>
+	) : (
+		<div class="tx">
+			<section class="hero">
+				<p class="eyebrow">Tywyn beach</p>
+				<h1 class="hero__title">Tide times</h1>
+				<p class="hero__lede">
+					High and low water for Tywyn beach, today and for the week ahead, with heights, the shape
+					of the curve and what it means for the sand.
+				</p>
+			</section>
 
-				<section class="band bleed" aria-labelledby="today-heading">
-					<div class="band__inner">
-						<div class="band__head">
-							<div>
-								<p class="eyebrow eyebrow--band">{bandAllToday ? 'Today' : 'Coming up'}</p>
-								<h2 id="today-heading">{bandHeading}</h2>
-							</div>
-							<p class="band__date">{FULL_DATE_FMT.format(now)}</p>
+			<section class="band bleed" aria-labelledby="today-heading">
+				<div class="band__inner">
+					<div class="band__head">
+						<div>
+							<p class="eyebrow eyebrow--band">{bandAllToday ? 'Today' : 'Coming up'}</p>
+							<h2 id="today-heading">{bandHeading}</h2>
 						</div>
-						<ul class="events">
-							{bandEvents.map((event) => (
-								<li>
-									<span class="events__label">
-										<span class:list={['events__arrow', event.type === 'high' && 'is-high']}>
-											<Icon
-												name={event.type === 'high' ? 'ms-arrow_upward' : 'ms-arrow_downward'}
-											/>
-										</span>
-										{event.type === 'high' ? 'High water' : 'Low water'}
-										{event.suffix}
+						<p class="band__date">{FULL_DATE_FMT.format(now)}</p>
+					</div>
+					<ul class="events">
+						{bandEvents.map((event) => (
+							<li>
+								<span class="events__label">
+									<span class:list={['events__arrow', event.type === 'high' && 'is-high']}>
+										<Icon name={event.type === 'high' ? 'ms-arrow_upward' : 'ms-arrow_downward'} />
 									</span>
-									<span class="events__time">{event.time}</span>
-									<span class="events__height">{event.heightM.toFixed(1)}m</span>
-								</li>
-							))}
-						</ul>
-					</div>
+									{event.type === 'high' ? 'High water' : 'Low water'}
+									{event.suffix}
+								</span>
+								<span class="events__time">{event.time}</span>
+								<span class="events__height">{event.heightM.toFixed(1)}m</span>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+
+			{chartSnap && (
+				<section aria-labelledby="curve-heading">
+					<p class="eyebrow">The week ahead</p>
+					<h2 id="curve-heading">Your next seven days in Tywyn</h2>
+					<TideChart
+						events={chartSnap.upcoming}
+						days={sunDays}
+						stale={snap.stale === true}
+						staleLabel={weather?.observedLabel ?? null}
+					/>
 				</section>
+			)}
 
-				{chartSnap && (
-					<section aria-labelledby="curve-heading">
-						<p class="eyebrow">The week ahead</p>
-						<h2 id="curve-heading">Your next seven days in Tywyn</h2>
-						<TideChart
-							events={chartSnap.upcoming}
-							days={sunDays}
-							stale={snap.stale === true}
-							staleLabel={weather?.observedLabel ?? null}
-						/>
-					</section>
-				)}
-
-				<section aria-labelledby="table-heading">
-					<p class="eyebrow">Times &amp; heights</p>
-					<h2 id="table-heading">The week's tides</h2>
-					<div class="tableScroll" tabindex="0" role="region" aria-labelledby="table-heading">
-						<table class="tides">
-							<caption class="sr-only">
-								High and low water times and heights for each day of the week ahead
-							</caption>
-							<thead>
-								<tr>
-									<th scope="col">Day</th>
-									{Array.from({ length: maxCols }).map(() => (
-										<th scope="col">Tide</th>
-									))}
-								</tr>
-							</thead>
-							<tbody>
-								{days.map((day) => (
-									<tr class:list={[day.isToday && 'is-today']}>
-										<th scope="row">
-											<span class="tides__day">{day.label}</span>
-											{day.isToday && <span class="tides__today">Today</span>}
-										</th>
-										{Array.from({ length: maxCols }).map((_, i) => {
-											const event = day.events[i];
-											return (
-												<td>
-													{event ? (
-														<>
-															<span class="tides__cellLabel">
-																<span
-																	class:list={['tides__arrow', event.type === 'high' && 'is-high']}
-																>
-																	<Icon
-																		name={
-																			event.type === 'high'
-																				? 'ms-arrow_upward'
-																				: 'ms-arrow_downward'
-																		}
-																	/>
-																</span>
-																{event.type === 'high' ? 'High' : 'Low'}
-															</span>
-															<span class="tides__time">{time(event.timeIso)}</span>
-															<span class="tides__height">{event.heightM.toFixed(1)}m</span>
-														</>
-													) : (
-														<span class="tides__empty" aria-hidden="true">
-															&ndash;
-														</span>
-													)}
-												</td>
-											);
-										})}
-									</tr>
+			<section aria-labelledby="table-heading">
+				<p class="eyebrow">Times &amp; heights</p>
+				<h2 id="table-heading">The week's tides</h2>
+				<div class="tableScroll" tabindex="0" role="region" aria-labelledby="table-heading">
+					<table class="tides">
+						<caption class="sr-only">
+							High and low water times and heights for each day of the week ahead
+						</caption>
+						<thead>
+							<tr>
+								<th scope="col">Day</th>
+								{Array.from({ length: maxCols }).map(() => (
+									<th scope="col">Tide</th>
 								))}
-							</tbody>
-						</table>
-					</div>
-				</section>
+							</tr>
+						</thead>
+						<tbody>
+							{days.map((day) => (
+								<tr class:list={[day.isToday && 'is-today']}>
+									<th scope="row">
+										<span class="tides__day">{day.label}</span>
+										{day.isToday && <span class="tides__today">Today</span>}
+									</th>
+									{Array.from({ length: maxCols }).map((_, i) => {
+										const event = day.events[i];
+										return (
+											<td>
+												{event ? (
+													<>
+														<span class="tides__cellLabel">
+															<span
+																class:list={['tides__arrow', event.type === 'high' && 'is-high']}
+															>
+																<Icon
+																	name={
+																		event.type === 'high' ? 'ms-arrow_upward' : 'ms-arrow_downward'
+																	}
+																/>
+															</span>
+															{event.type === 'high' ? 'High' : 'Low'}
+														</span>
+														<span class="tides__time">{time(event.timeIso)}</span>
+														<span class="tides__height">{event.heightM.toFixed(1)}m</span>
+													</>
+												) : (
+													<span class="tides__empty" aria-hidden="true">
+														&ndash;
+													</span>
+												)}
+											</td>
+										);
+									})}
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</section>
 
-				<section aria-labelledby="about-heading">
-					<p class="eyebrow">The shape of it</p>
-					<h2 id="about-heading">About the tides at Tywyn</h2>
-					<div class="about">
-						<div class="about__body">
-							<p>{aboutRangeSentence(todayEvents)}</p>
-							<p>{springNeapSentence(allEvents)}</p>
-							{biggest && (
-								<p>
-									The biggest range this week falls on {biggest.label}, with about{' '}
-									{biggest.rangeM.toFixed(1)}m between high and low water. Low water uncovers the
-									widest stretch of firm sand, which is when the beach walks are best.
-								</p>
-							)}
-						</div>
-						{rangeOfToday && (
-							<aside class="about__aside">
-								<p class="about__label">Today's range</p>
-								<p class="about__figure">{rangeOfToday}</p>
-								{noteOfToday && <p class="about__note">{noteOfToday}</p>}
-							</aside>
+			<section aria-labelledby="about-heading">
+				<p class="eyebrow">The shape of it</p>
+				<h2 id="about-heading">About the tides at Tywyn</h2>
+				<div class="about">
+					<div class="about__body">
+						<p>{aboutRangeSentence(todayEvents)}</p>
+						<p>{springNeapSentence(allEvents)}</p>
+						{biggest && (
+							<p>
+								The biggest range this week falls on {biggest.label}, with about{' '}
+								{biggest.rangeM.toFixed(1)}m between high and low water. Low water uncovers the
+								widest stretch of firm sand, which is when the beach walks are best.
+							</p>
 						)}
 					</div>
-				</section>
+					{rangeOfToday && (
+						<aside class="about__aside">
+							<p class="about__label">Today's range</p>
+							<p class="about__figure">{rangeOfToday}</p>
+							{noteOfToday && <p class="about__note">{noteOfToday}</p>}
+						</aside>
+					)}
+				</div>
+			</section>
 
-				<section aria-labelledby="safe-heading">
-					<p class="eyebrow">Before you go</p>
-					<h2 id="safe-heading">Staying safe</h2>
-					<div class="safe">
-						<ul class="safe__list">
-							<li>
-								<span class="safe__icon">
-									<Icon name="ms-waves" />
-								</span>
-								<div>
-									<h3>The flood tide runs fast over flat sand</h3>
-									<p>
-										The beach shelves gently, so an incoming tide covers a lot of ground quickly.
-										Keep an eye on the water behind you while the tide is coming in.
-									</p>
-								</div>
-							</li>
-							<li>
-								<span class="safe__icon">
+			<section aria-labelledby="safe-heading">
+				<p class="eyebrow">Before you go</p>
+				<h2 id="safe-heading">Staying safe</h2>
+				<div class="safe">
+					<ul class="safe__list">
+						<li>
+							<span class="safe__icon">
+								<Icon name="ms-waves" />
+							</span>
+							<div>
+								<h3>The flood tide runs fast over flat sand</h3>
+								<p>
+									The beach shelves gently, so an incoming tide covers a lot of ground quickly. Keep
+									an eye on the water behind you while the tide is coming in.
+								</p>
+							</div>
+						</li>
+						<li>
+							<span class="safe__icon">
+								<Icon name="ms-water" />
+							</span>
+							<div>
+								<h3>Currents at the river mouths</h3>
+								<p>
+									The Dysynni to the north and the Dyfi to the south both run strongly on the ebb.
+									Stay clear of the channels when the tide is falling.
+								</p>
+							</div>
+						</li>
+						<li>
+							<span class="safe__icon">
+								<Icon name="swimmer" />
+							</span>
+							<div>
+								<h3>Look for the red flag</h3>
+								<p>
+									A red flag flying means the water is unsafe, so stay out. Beach wardens patrol the
+									main beach in season and are there to help &ndash; always follow their advice.
+								</p>
+							</div>
+						</li>
+					</ul>
+
+					{water && (
+						<aside class="wq">
+							<p class="wq__label">
+								<span class="wq__icon">
 									<Icon name="ms-water" />
 								</span>
-								<div>
-									<h3>Currents at the river mouths</h3>
-									<p>
-										The Dysynni to the north and the Dyfi to the south both run strongly on the ebb.
-										Stay clear of the channels when the tide is falling.
-									</p>
-								</div>
-							</li>
-							<li>
-								<span class="safe__icon">
-									<Icon name="swimmer" />
-								</span>
-								<div>
-									<h3>Look for the red flag</h3>
-									<p>
-										A red flag flying means the water is unsafe, so stay out. Beach wardens patrol
-										the main beach in season and are there to help &ndash; always follow their
-										advice.
-									</p>
-								</div>
-							</li>
-						</ul>
-
-						{water && (
-							<aside class="wq">
-								<p class="wq__label">
-									<span class="wq__icon">
-										<Icon name="ms-water" />
-									</span>
-									Water quality
+								Water quality
+							</p>
+							<p class="wq__figure">{water.classification}</p>
+							<ul class="wq__meter" aria-hidden="true">
+								{['Poor', 'Sufficient', 'Good', 'Excellent'].map((step, i) => {
+									const rank =
+										['Poor', 'Sufficient', 'Good', 'Excellent'].indexOf(water.classification) + 1;
+									return <li class:list={[i < rank && 'is-filled']} />;
+								})}
+							</ul>
+							<p class="wq__note">
+								{water.classification} is the highest of four bathing water ratings.
+								{water.classificationYear ? ` Rated for ${water.classificationYear}.` : ''}
+								{water.sample
+									? ` Last sample ${SAMPLE_FMT.format(new Date(water.sample.takenIso))}.`
+									: ''}
+							</p>
+							{water.rainImpacted && (
+								<p class="wq__rain">
+									Water quality here can dip for a day or two after heavy rain.
 								</p>
-								<p class="wq__figure">{water.classification}</p>
-								<ul class="wq__meter" aria-hidden="true">
-									{['Poor', 'Sufficient', 'Good', 'Excellent'].map((step, i) => {
-										const rank =
-											['Poor', 'Sufficient', 'Good', 'Excellent'].indexOf(water.classification) + 1;
-										return <li class:list={[i < rank && 'is-filled']} />;
-									})}
-								</ul>
-								<p class="wq__note">
-									{water.classification} is the highest of four bathing water ratings.
-									{water.classificationYear ? ` Rated for ${water.classificationYear}.` : ''}
-									{water.sample
-										? ` Last sample ${SAMPLE_FMT.format(new Date(water.sample.takenIso))}.`
-										: ''}
-								</p>
-								{water.rainImpacted && (
-									<p class="wq__rain">
-										Water quality here can dip for a day or two after heavy rain.
-									</p>
-								)}
-							</aside>
-						)}
-					</div>
-				</section>
+							)}
+						</aside>
+					)}
+				</div>
+			</section>
 
-				<RelatedItems
-					heading="Make a day of it"
-					headingId="day-heading"
-					sizes="(min-width: 1170px) 369px, (min-width: 768px) calc((100vw - 64px) / 3), (min-width: 480px) calc(50vw - 24px), calc(100vw - 32px)"
-					items={[
-						{
-							href: '/things-to-do/tywyn-beach/',
-							title: 'Beach & promenade',
-							image: { src: beachImg, alt: '' },
-							summary: 'Two miles of Blue Flag sand, widest and firmest around low water.',
-						},
-						{
-							href: '/things-to-do/the-talyllyn-railway/',
-							title: 'Talyllyn Railway',
-							image: { src: railwayImg, alt: '' },
-							summary: 'Steam up the Fathew valley to Dolgoch Falls when the tide is in.',
-						},
-						{
-							href: '/weather/',
-							title: 'Weather & webcam',
-							image: { src: cinemaImg, alt: '' },
-							summary: 'Check the forecast, or look at the bay as it is right now.',
-						},
-					]}
-				/>
+			<RelatedItems
+				heading="Make a day of it"
+				headingId="day-heading"
+				sizes="(min-width: 1170px) 369px, (min-width: 768px) calc((100vw - 64px) / 3), (min-width: 480px) calc(50vw - 24px), calc(100vw - 32px)"
+				items={[
+					{
+						href: '/things-to-do/tywyn-beach/',
+						title: 'Beach & promenade',
+						image: { src: beachImg, alt: '' },
+						summary: 'Two miles of Blue Flag sand, widest and firmest around low water.',
+					},
+					{
+						href: '/things-to-do/the-talyllyn-railway/',
+						title: 'Talyllyn Railway',
+						image: { src: railwayImg, alt: '' },
+						summary: 'Steam up the Fathew valley to Dolgoch Falls when the tide is in.',
+					},
+					{
+						href: '/weather/',
+						title: 'Weather & webcam',
+						image: { src: cinemaImg, alt: '' },
+						summary: 'Check the forecast, or look at the bay as it is right now.',
+					},
+				]}
+			/>
 
-				<p class="provenance">
-					Tide predictions &copy; UK Hydrographic Office via{' '}
-					<a
-						href="https://easytide.admiralty.co.uk/"
-						target="_blank"
-						rel="noopener noreferrer nofollow"
-					>
-						Admiralty EasyTide<span class="sr-only"> (opens in new tab)</span>
-					</a>
-					, for the Aberdyfi station. Classification and sample data: Natural Resources Wales.
-				</p>
-			</div>
-		)
-	}
+			<p class="provenance">
+				Tide predictions &copy; UK Hydrographic Office via{' '}
+				<a
+					href="https://easytide.admiralty.co.uk/"
+					target="_blank"
+					rel="noopener noreferrer nofollow"
+				>
+					Admiralty EasyTide<span class="sr-only"> (opens in new tab)</span>
+				</a>
+				, for the Aberdyfi station. Classification and sample data: Natural Resources Wales.
+			</p>
+		</div>
+	)}
 </PageLayout>
 
 <style lang="scss">

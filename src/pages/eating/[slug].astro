@@ -79,110 +79,101 @@ const jsonLd = restaurant({
 	noindex={venue.data.seo?.noindex}
 	breadcrumbs={breadcrumbs}
 	jsonLd={jsonLd}
-	sidebarProps={isClosed
-		? undefined
-		: {
-				eating: {
-					title: venue.data.title,
-					trip_advisor_link: venue.data.trip_advisor_link,
-					facebook_link: venue.data.facebook_link,
-					dog_friendly: venue.data.dog_friendly,
-					website: venue.data.website,
-					phone: venue.data.phone,
-				},
-			}}
+	sidebarProps={
+		isClosed
+			? undefined
+			: {
+					eating: {
+						title: venue.data.title,
+						trip_advisor_link: venue.data.trip_advisor_link,
+						facebook_link: venue.data.facebook_link,
+						dog_friendly: venue.data.dog_friendly,
+						website: venue.data.website,
+						phone: venue.data.phone,
+					},
+				}
+	}
 >
-	{
-		/*
-		 * `EntryHeader` already renders its own `<header>`. The previous
-		 * outer `<header class="entry-header">` produced a nested header.
-		 * The address paragraph is a sibling, not part of the heading
-		 * group, so no semantic wrapper is needed here.
-		 */
-	}
+	{/*
+	 * `EntryHeader` already renders its own `<header>`. The previous
+	 * outer `<header class="entry-header">` produced a nested header.
+	 * The address paragraph is a sibling, not part of the heading
+	 * group, so no semantic wrapper is needed here.
+	 */}
 	<EntryHeader title={venue.data.title} />
-	{
-		!isClosed && venue.data.address && (
-			<p class="single-address">
-				<Icon name="marker" />
-				<span>{venue.data.address}</span>
-			</p>
-		)
-	}
+	{!isClosed && venue.data.address && (
+		<p class="single-address">
+			<Icon name="marker" />
+			<span>{venue.data.address}</span>
+		</p>
+	)}
 
-	{
-		isClosed && (
-			<Notice label="Permanently closed">
-				{venue.data.title} has permanently closed. Browse other great places to eat in Tywyn.
-			</Notice>
-		)
-	}
+	{isClosed && (
+		<Notice label="Permanently closed">
+			{venue.data.title} has permanently closed. Browse other great places to eat in Tywyn.
+		</Notice>
+	)}
 
-	{
-		!isClosed && (
-			<div class="entry-content">
-				{venue.data.photo && (
-					<div class="entry-photo">
-						<Picture
-							src={venue.data.photo.src}
-							alt={venue.data.photo.alt ?? venue.data.title}
-							loading="eager"
-							decoding="sync"
-							fetchpriority="high"
-							formats={['avif', 'webp']}
-							width={1280}
-							widths={[640, 720, 960, 1280]}
-							sizes="(min-width: 1170px) 708px, (min-width: 1024px) calc(100vw - 462px), calc(100vw - 32px)"
-						/>
-					</div>
-				)}
+	{!isClosed && (
+		<div class="entry-content">
+			{venue.data.photo && (
+				<div class="entry-photo">
+					<Picture
+						src={venue.data.photo.src}
+						alt={venue.data.photo.alt ?? venue.data.title}
+						loading="eager"
+						decoding="sync"
+						fetchpriority="high"
+						formats={['avif', 'webp']}
+						width={1280}
+						widths={[640, 720, 960, 1280]}
+						sizes="(min-width: 1170px) 708px, (min-width: 1024px) calc(100vw - 462px), calc(100vw - 32px)"
+					/>
+				</div>
+			)}
 
-				<h2>About {venue.data.title}</h2>
-				<Content />
+			<h2>About {venue.data.title}</h2>
+			<Content />
 
-				{venue.data.dog_friendly && (
-					<p class="dog-friendly-note">
-						{venue.data.title} is dog friendly, and is a brilliant place to bring your well-behaved
-						pup!{' '}
-						<a href="/dog-friendly-cafes/">
-							Discover more dog friendly bars, restaurants and cafes
+			{venue.data.dog_friendly && (
+				<p class="dog-friendly-note">
+					{venue.data.title} is dog friendly, and is a brilliant place to bring your well-behaved
+					pup!{' '}
+					<a href="/dog-friendly-cafes/">Discover more dog friendly bars, restaurants and cafes</a>.
+				</p>
+			)}
+
+			{venue.data.geo && (
+				<>
+					{/*
+					 * VenueMap renders its own `<h2>Find {title}</h2>`
+					 * via aria-labelledby, so we don't add another H2
+					 * here. The previous "Where is X" heading rendered
+					 * immediately before "Find X" with no content
+					 * between them, which screen readers announced as a
+					 * duplicate.
+					 */}
+					<VenueMap
+						lat={venue.data.geo.lat}
+						lng={venue.data.geo.lng}
+						title={venue.data.title}
+						zoom={venue.data.geo.zoom ?? 16}
+					/>
+					<p>
+						<a href={directionsHref!} target="_blank" rel="noopener noreferrer">
+							Get directions in Google Maps
+							<span class="sr-only"> (opens in new tab)</span>
 						</a>
-						.
 					</p>
-				)}
-
-				{venue.data.geo && (
-					<>
-						{/*
-						 * VenueMap renders its own `<h2>Find {title}</h2>`
-						 * via aria-labelledby, so we don't add another H2
-						 * here. The previous "Where is X" heading rendered
-						 * immediately before "Find X" with no content
-						 * between them, which screen readers announced as a
-						 * duplicate.
-						 */}
-						<VenueMap
-							lat={venue.data.geo.lat}
-							lng={venue.data.geo.lng}
-							title={venue.data.title}
-							zoom={venue.data.geo.zoom ?? 16}
-						/>
-						<p>
-							<a href={directionsHref!} target="_blank" rel="noopener noreferrer">
-								Get directions in Google Maps
-								<span class="sr-only"> (opens in new tab)</span>
-							</a>
-						</p>
-					</>
-				)}
-			</div>
-		)
-	}
+				</>
+			)}
+		</div>
+	)}
 
 	<RelatedItems
-		heading={venue.data.dog_friendly
-			? 'More dog-friendly places to eat'
-			: 'More places to eat in Tywyn'}
+		heading={
+			venue.data.dog_friendly ? 'More dog-friendly places to eat' : 'More places to eat in Tywyn'
+		}
 		headingId="related-eating"
 		items={related.map((v) => ({
 			href: eatingUrl(v.id),

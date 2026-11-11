@@ -49,243 +49,241 @@ const fullImages = await Promise.all(
 );
 ---
 
-{
-	images.length > 0 && (
-		<section class={styles.gallery} aria-label={label}>
-			<ul class={styles.grid}>
-				{images.map((img, idx) => {
-					// Frontmatter may omit `alt`; fall back to a positional
-					// label so the wrapping <button>'s accessible name is
-					// the image alt (no extra aria-label needed). `||` not
-					// `??` so an empty-string alt also falls through.
-					const altText = img.alt || `${label} image ${idx + 1} of ${images.length}`;
-					const full = fullImages[idx];
-					return (
-						<li>
-							<button
-								class={styles.thumb}
-								type="button"
-								data-gallery-open={idx}
-								data-full-src={full.src}
-								data-full-srcset={full.srcSet.attribute}
-								data-full-sizes={full.attributes.sizes}
-								data-full-width={full.attributes.width}
-								data-full-height={full.attributes.height}
-								data-full-alt={altText}
-							>
-								<Picture
-									src={img.src}
-									alt={altText}
-									loading="lazy"
-									formats={['avif', 'webp']}
-									width={720}
-									widths={[200, 320, 480, 720]}
-									sizes="(min-width: 768px) 250px, (min-width: 420px) 50vw, calc(100vw - 32px)"
-								/>
-							</button>
-						</li>
-					);
-				})}
-			</ul>
+{images.length > 0 && (
+	<section class={styles.gallery} aria-label={label}>
+		<ul class={styles.grid}>
+			{images.map((img, idx) => {
+				// Frontmatter may omit `alt`; fall back to a positional
+				// label so the wrapping <button>'s accessible name is
+				// the image alt (no extra aria-label needed). `||` not
+				// `??` so an empty-string alt also falls through.
+				const altText = img.alt || `${label} image ${idx + 1} of ${images.length}`;
+				const full = fullImages[idx];
+				return (
+					<li>
+						<button
+							class={styles.thumb}
+							type="button"
+							data-gallery-open={idx}
+							data-full-src={full.src}
+							data-full-srcset={full.srcSet.attribute}
+							data-full-sizes={full.attributes.sizes}
+							data-full-width={full.attributes.width}
+							data-full-height={full.attributes.height}
+							data-full-alt={altText}
+						>
+							<Picture
+								src={img.src}
+								alt={altText}
+								loading="lazy"
+								formats={['avif', 'webp']}
+								width={720}
+								widths={[200, 320, 480, 720]}
+								sizes="(min-width: 768px) 250px, (min-width: 420px) 50vw, calc(100vw - 32px)"
+							/>
+						</button>
+					</li>
+				);
+			})}
+		</ul>
 
-			<dialog
-				class={styles.lightbox}
-				aria-label={`${label} lightbox`}
-				aria-modal="true"
-				data-gallery-lightbox
-			>
-				<div class={styles.lightboxFrame} data-gallery-frame>
-					<img
-						class={styles.lightboxImage}
-						alt=""
-						decoding="async"
-						fetchpriority="high"
-						data-gallery-img
-					/>
-					<button
-						class={`${styles.lightboxNav} ${styles.lightboxPrev}`}
-						type="button"
-						aria-label="Previous image"
-						data-gallery-prev
-					>
-						<span aria-hidden="true">‹</span>
-					</button>
-					<button
-						class={`${styles.lightboxNav} ${styles.lightboxNext}`}
-						type="button"
-						aria-label="Next image"
-						data-gallery-next
-					>
-						<span aria-hidden="true">›</span>
-					</button>
-					<button
-						class={styles.lightboxClose}
-						type="button"
-						aria-label="Close gallery"
-						data-gallery-close
-					>
-						<span aria-hidden="true">×</span>
-					</button>
-					<p class="sr-only" aria-live="polite" data-gallery-status></p>
-				</div>
-			</dialog>
+		<dialog
+			class={styles.lightbox}
+			aria-label={`${label} lightbox`}
+			aria-modal="true"
+			data-gallery-lightbox
+		>
+			<div class={styles.lightboxFrame} data-gallery-frame>
+				<img
+					class={styles.lightboxImage}
+					alt=""
+					decoding="async"
+					fetchpriority="high"
+					data-gallery-img
+				/>
+				<button
+					class={`${styles.lightboxNav} ${styles.lightboxPrev}`}
+					type="button"
+					aria-label="Previous image"
+					data-gallery-prev
+				>
+					<span aria-hidden="true">‹</span>
+				</button>
+				<button
+					class={`${styles.lightboxNav} ${styles.lightboxNext}`}
+					type="button"
+					aria-label="Next image"
+					data-gallery-next
+				>
+					<span aria-hidden="true">›</span>
+				</button>
+				<button
+					class={styles.lightboxClose}
+					type="button"
+					aria-label="Close gallery"
+					data-gallery-close
+				>
+					<span aria-hidden="true">×</span>
+				</button>
+				<p class="sr-only" aria-live="polite" data-gallery-status></p>
+			</div>
+		</dialog>
 
-			<script is:inline>
-				(() => {
-					const dialog = document.querySelector('[data-gallery-lightbox]');
-					if (!dialog || typeof dialog.showModal !== 'function') return;
-					const img = dialog.querySelector('[data-gallery-img]');
-					const status = dialog.querySelector('[data-gallery-status]');
-					const triggers = Array.from(document.querySelectorAll('[data-gallery-open]'));
-					if (triggers.length === 0) return;
+		<script is:inline>
+			(() => {
+				const dialog = document.querySelector('[data-gallery-lightbox]');
+				if (!dialog || typeof dialog.showModal !== 'function') return;
+				const img = dialog.querySelector('[data-gallery-img]');
+				const status = dialog.querySelector('[data-gallery-status]');
+				const triggers = Array.from(document.querySelectorAll('[data-gallery-open]'));
+				if (triggers.length === 0) return;
 
-					let currentIdx = 0;
-					let lastTrigger = null;
+				let currentIdx = 0;
+				let lastTrigger = null;
 
-					// Preload-on-intent: warm the HTTP cache for a full-size
-					// image as soon as the user shows intent (hover, focus,
-					// touch-start). By the time their click lands, the bytes
-					// are usually already in cache so the lightbox opens to a
-					// rendered image instead of a blank box.
-					const preloaded = new Set();
-					const preload = (btn) => {
-						const url = btn && btn.dataset.fullSrc;
-						if (!url || preloaded.has(url)) return;
-						preloaded.add(url);
-						const ghost = new Image();
-						ghost.decoding = 'async';
-						if (btn.dataset.fullSrcset) ghost.srcset = btn.dataset.fullSrcset;
-						if (btn.dataset.fullSizes) ghost.sizes = btn.dataset.fullSizes;
-						ghost.src = url;
-					};
-					const preloadNeighbours = () => {
-						preload(triggers[(currentIdx + 1) % triggers.length]);
-						preload(triggers[(currentIdx - 1 + triggers.length) % triggers.length]);
-					};
+				// Preload-on-intent: warm the HTTP cache for a full-size
+				// image as soon as the user shows intent (hover, focus,
+				// touch-start). By the time their click lands, the bytes
+				// are usually already in cache so the lightbox opens to a
+				// rendered image instead of a blank box.
+				const preloaded = new Set();
+				const preload = (btn) => {
+					const url = btn && btn.dataset.fullSrc;
+					if (!url || preloaded.has(url)) return;
+					preloaded.add(url);
+					const ghost = new Image();
+					ghost.decoding = 'async';
+					if (btn.dataset.fullSrcset) ghost.srcset = btn.dataset.fullSrcset;
+					if (btn.dataset.fullSizes) ghost.sizes = btn.dataset.fullSizes;
+					ghost.src = url;
+				};
+				const preloadNeighbours = () => {
+					preload(triggers[(currentIdx + 1) % triggers.length]);
+					preload(triggers[(currentIdx - 1 + triggers.length) % triggers.length]);
+				};
 
-					const show = (idx) => {
-						currentIdx = (idx + triggers.length) % triggers.length;
-						const btn = triggers[currentIdx];
-						// Order matters: setting `srcset` before `src` lets
-						// the browser pick the correct candidate on the
-						// first layout pass.
-						img.srcset = btn.dataset.fullSrcset || '';
-						img.sizes = btn.dataset.fullSizes || '';
-						img.src = btn.dataset.fullSrc;
-						if (btn.dataset.fullWidth) img.width = btn.dataset.fullWidth;
-						if (btn.dataset.fullHeight) img.height = btn.dataset.fullHeight;
-						img.alt = btn.dataset.fullAlt || '';
-					};
+				const show = (idx) => {
+					currentIdx = (idx + triggers.length) % triggers.length;
+					const btn = triggers[currentIdx];
+					// Order matters: setting `srcset` before `src` lets
+					// the browser pick the correct candidate on the
+					// first layout pass.
+					img.srcset = btn.dataset.fullSrcset || '';
+					img.sizes = btn.dataset.fullSizes || '';
+					img.src = btn.dataset.fullSrc;
+					if (btn.dataset.fullWidth) img.width = btn.dataset.fullWidth;
+					if (btn.dataset.fullHeight) img.height = btn.dataset.fullHeight;
+					img.alt = btn.dataset.fullAlt || '';
+				};
 
-					const announce = () => {
-						const alt = triggers[currentIdx].dataset.fullAlt || '';
-						const prefix = `Image ${currentIdx + 1} of ${triggers.length}`;
-						status.textContent = alt ? `${prefix}: ${alt}` : prefix;
-					};
+				const announce = () => {
+					const alt = triggers[currentIdx].dataset.fullAlt || '';
+					const prefix = `Image ${currentIdx + 1} of ${triggers.length}`;
+					status.textContent = alt ? `${prefix}: ${alt}` : prefix;
+				};
 
-					triggers.forEach((btn, idx) => {
-						// Intent signals: desktop hover, keyboard focus,
-						// first touch all fire before the click and start
-						// the preload. `pointerenter` covers mouse + touch
-						// + pen in one listener.
-						const prime = () => preload(btn);
-						btn.addEventListener('pointerenter', prime, { once: true });
-						btn.addEventListener('focus', prime, { once: true });
+				triggers.forEach((btn, idx) => {
+					// Intent signals: desktop hover, keyboard focus,
+					// first touch all fire before the click and start
+					// the preload. `pointerenter` covers mouse + touch
+					// + pen in one listener.
+					const prime = () => preload(btn);
+					btn.addEventListener('pointerenter', prime, { once: true });
+					btn.addEventListener('focus', prime, { once: true });
 
-						btn.addEventListener('click', () => {
-							lastTrigger = btn;
-							show(idx);
-							dialog.showModal();
-							// Update the live region after the dialog is
-							// visible so screen readers actually announce it.
-							announce();
-							preloadNeighbours();
-						});
-					});
-
-					const closeLightbox = () => {
-						if (!dialog.open) return;
-						dialog.close();
-						// Drop the image from the dialog so a closed dialog
-						// doesn't hold a decoded full-size bitmap in memory.
-						img.removeAttribute('src');
-						img.removeAttribute('srcset');
-						status.textContent = '';
-						if (lastTrigger && typeof lastTrigger.focus === 'function') {
-							lastTrigger.focus();
-							lastTrigger = null;
-						}
-					};
-
-					const step = (delta) => {
-						show(currentIdx + delta);
+					btn.addEventListener('click', () => {
+						lastTrigger = btn;
+						show(idx);
+						dialog.showModal();
+						// Update the live region after the dialog is
+						// visible so screen readers actually announce it.
 						announce();
 						preloadNeighbours();
-					};
-					dialog.querySelector('[data-gallery-prev]').addEventListener('click', () => step(-1));
-					dialog.querySelector('[data-gallery-next]').addEventListener('click', () => step(1));
-					dialog.querySelector('[data-gallery-close]').addEventListener('click', closeLightbox);
+					});
+				});
 
-					// Backdrop click closes; clicks on the inner frame don't
-					// match `event.target === dialog` because the frame is
-					// the more specific target.
-					dialog.addEventListener('click', (event) => {
-						if (event.target === dialog) closeLightbox();
-					});
+				const closeLightbox = () => {
+					if (!dialog.open) return;
+					dialog.close();
+					// Drop the image from the dialog so a closed dialog
+					// doesn't hold a decoded full-size bitmap in memory.
+					img.removeAttribute('src');
+					img.removeAttribute('srcset');
+					status.textContent = '';
+					if (lastTrigger && typeof lastTrigger.focus === 'function') {
+						lastTrigger.focus();
+						lastTrigger = null;
+					}
+				};
 
-					dialog.addEventListener('keydown', (event) => {
-						if (event.key === 'ArrowLeft') {
-							event.preventDefault();
-							step(-1);
-						} else if (event.key === 'ArrowRight') {
-							event.preventDefault();
-							step(1);
-						}
-					});
+				const step = (delta) => {
+					show(currentIdx + delta);
+					announce();
+					preloadNeighbours();
+				};
+				dialog.querySelector('[data-gallery-prev]').addEventListener('click', () => step(-1));
+				dialog.querySelector('[data-gallery-next]').addEventListener('click', () => step(1));
+				dialog.querySelector('[data-gallery-close]').addEventListener('click', closeLightbox);
 
-					// Touch / pointer swipe: horizontal-dominant gesture past
-					// the threshold navigates. Listening on the frame (not the
-					// dialog) so swipes on the backdrop don't double-up with
-					// the close-on-backdrop-click handler. A second concurrent
-					// pointer (pinch-zoom) aborts the swipe.
-					const frame = dialog.querySelector('[data-gallery-frame]');
-					const SWIPE_MIN = 50;
-					let swipe = null;
-					frame.addEventListener('pointerdown', (event) => {
-						// Ignore taps on controls so a quick tap on prev/next
-						// is never reinterpreted as a partial swipe.
-						if (event.target.closest('button')) return;
-						if (swipe) {
-							swipe = null;
-							return;
-						}
-						swipe = { id: event.pointerId, x: event.clientX, y: event.clientY };
-					});
-					frame.addEventListener('pointerup', (event) => {
-						if (!swipe || swipe.id !== event.pointerId) {
-							swipe = null;
-							return;
-						}
-						const dx = event.clientX - swipe.x;
-						const dy = event.clientY - swipe.y;
-						swipe = null;
-						if (Math.abs(dx) < SWIPE_MIN) return;
-						if (Math.abs(dy) > Math.abs(dx)) return;
-						step(dx < 0 ? 1 : -1);
-					});
-					frame.addEventListener('pointercancel', () => {
-						swipe = null;
-					});
+				// Backdrop click closes; clicks on the inner frame don't
+				// match `event.target === dialog` because the frame is
+				// the more specific target.
+				dialog.addEventListener('click', (event) => {
+					if (event.target === dialog) closeLightbox();
+				});
 
-					// Escape closes the dialog natively via the `cancel`
-					// event. Hook into that so cleanup runs without relying
-					// on the (less consistently fired) `close` event.
-					dialog.addEventListener('cancel', (event) => {
+				dialog.addEventListener('keydown', (event) => {
+					if (event.key === 'ArrowLeft') {
 						event.preventDefault();
-						closeLightbox();
-					});
-				})();
-			</script>
-		</section>
-	)
-}
+						step(-1);
+					} else if (event.key === 'ArrowRight') {
+						event.preventDefault();
+						step(1);
+					}
+				});
+
+				// Touch / pointer swipe: horizontal-dominant gesture past
+				// the threshold navigates. Listening on the frame (not the
+				// dialog) so swipes on the backdrop don't double-up with
+				// the close-on-backdrop-click handler. A second concurrent
+				// pointer (pinch-zoom) aborts the swipe.
+				const frame = dialog.querySelector('[data-gallery-frame]');
+				const SWIPE_MIN = 50;
+				let swipe = null;
+				frame.addEventListener('pointerdown', (event) => {
+					// Ignore taps on controls so a quick tap on prev/next
+					// is never reinterpreted as a partial swipe.
+					if (event.target.closest('button')) return;
+					if (swipe) {
+						swipe = null;
+						return;
+					}
+					swipe = { id: event.pointerId, x: event.clientX, y: event.clientY };
+				});
+				frame.addEventListener('pointerup', (event) => {
+					if (!swipe || swipe.id !== event.pointerId) {
+						swipe = null;
+						return;
+					}
+					const dx = event.clientX - swipe.x;
+					const dy = event.clientY - swipe.y;
+					swipe = null;
+					if (Math.abs(dx) < SWIPE_MIN) return;
+					if (Math.abs(dy) > Math.abs(dx)) return;
+					step(dx < 0 ? 1 : -1);
+				});
+				frame.addEventListener('pointercancel', () => {
+					swipe = null;
+				});
+
+				// Escape closes the dialog natively via the `cancel`
+				// event. Hook into that so cleanup runs without relying
+				// on the (less consistently fired) `close` event.
+				dialog.addEventListener('cancel', (event) => {
+					event.preventDefault();
+					closeLightbox();
+				});
+			})();
+		</script>
+	</section>
+)}

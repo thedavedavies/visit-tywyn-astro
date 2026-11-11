@@ -19,28 +19,26 @@ interface Props {
 const { items } = Astro.props;
 ---
 
-{
-	items.length > 0 && (
-		<nav class={styles.container} aria-label="Breadcrumb">
-			<ol class={styles.list}>
-				{items.map((item, idx) => {
-					const isLast = idx === items.length - 1;
-					return (
-						<li class={styles.item}>
-							{item.href && !isLast ? (
-								<a href={item.href}>{item.label}</a>
-							) : (
-								<span aria-current={isLast ? 'page' : undefined}>{item.label}</span>
-							)}
-							{!isLast && (
-								<span class={styles.separator} aria-hidden="true">
-									»
-								</span>
-							)}
-						</li>
-					);
-				})}
-			</ol>
-		</nav>
-	)
-}
+{items.length > 0 && (
+	<nav class={styles.container} aria-label="Breadcrumb">
+		<ol class={styles.list}>
+			{items.map((item, idx) => {
+				const isLast = idx === items.length - 1;
+				return (
+					<li class={styles.item}>
+						{item.href && !isLast ? (
+							<a href={item.href}>{item.label}</a>
+						) : (
+							<span aria-current={isLast ? 'page' : undefined}>{item.label}</span>
+						)}
+						{!isLast && (
+							<span class={styles.separator} aria-hidden="true">
+								»
+							</span>
+						)}
+					</li>
+				);
+			})}
+		</ol>
+	</nav>
+)}

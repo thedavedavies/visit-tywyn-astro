@@ -23,7 +23,9 @@ const Tag = label ? 'aside' : 'div';
 			xmlns="http://www.w3.org/2000/svg"
 			aria-hidden="true"
 		>
-			<path class={styles.cornerMask} d="M54 0V0.716804C54 25.9434 35.0653 47.1517 10 50L0 57V0H54Z"
+			<path
+				class={styles.cornerMask}
+				d="M54 0V0.716804C54 25.9434 35.0653 47.1517 10 50L0 57V0H54Z"
 			></path>
 			<path
 				class={styles.cornerLine}
@@ -39,6 +41,8 @@ const Tag = label ? 'aside' : 'div';
 
 	<div>
 		{label && <p class={styles.label}>{label}</p>}
-		<p class={styles.body}><slot /></p>
+		<p class={styles.body}>
+			<slot />
+		</p>
 	</div>
 </Tag>

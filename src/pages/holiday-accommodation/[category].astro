@@ -64,26 +64,24 @@ if (category.data.featured.length > 0) {
 		<p>{category.data.intro}</p>
 	</div>
 
-	{
-		category.data.featured.length > 0 && (
-			<section class="featured-stays" aria-labelledby="featured-stays-title">
-				<h2 id="featured-stays-title">Featured stays</h2>
-				<ul>
-					{category.data.featured.map((entry) => (
-						<li>
-							<FeaturedStayCard
-								href={entry.url}
-								name={entry.name}
-								summary={entry.summary}
-								image={entry.image}
-								sponsored={entry.sponsored}
-							/>
-						</li>
-					))}
-				</ul>
-			</section>
-		)
-	}
+	{category.data.featured.length > 0 && (
+		<section class="featured-stays" aria-labelledby="featured-stays-title">
+			<h2 id="featured-stays-title">Featured stays</h2>
+			<ul>
+				{category.data.featured.map((entry) => (
+					<li>
+						<FeaturedStayCard
+							href={entry.url}
+							name={entry.name}
+							summary={entry.summary}
+							image={entry.image}
+							sponsored={entry.sponsored}
+						/>
+					</li>
+				))}
+			</ul>
+		</section>
+	)}
 
 	<BookingSearchList links={category.data.booking_search_links} />
 

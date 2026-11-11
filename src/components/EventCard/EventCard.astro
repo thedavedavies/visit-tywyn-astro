@@ -12,10 +12,9 @@ const showFinishedBadge = event.isPast;
 ---
 
 <article class:list={[styles.card, { [styles.cardPast]: showFinishedBadge }]}>
-	{
-		event.image && (
-			<a href={event.primaryUrl ?? '#'} class={styles.media} tabindex="-1" aria-hidden="true">
-				{/*
+	{event.image && (
+		<a href={event.primaryUrl ?? '#'} class={styles.media} tabindex="-1" aria-hidden="true">
+			{/*
 					Event images come from `src/data/events.json` as
 					string paths, so they can't go through Astro's
 					image pipeline (which needs static imports). Until
@@ -24,10 +23,9 @@ const showFinishedBadge = event.isPast;
 					No events currently set an `image`, so this path
 					is dead in practice.
 				*/}
-				<img src={event.image} alt={event.imageAlt} loading="lazy" />
-			</a>
-		)
-	}
+			<img src={event.image} alt={event.imageAlt} loading="lazy" />
+		</a>
+	)}
 	<div class={styles.body}>
 		<p class={styles.date}>
 			<Icon name="calendar" />
@@ -36,22 +34,18 @@ const showFinishedBadge = event.isPast;
 		<h3 class={styles.title}>
 			{event.primaryUrl ? <a href={event.primaryUrl}>{event.title}</a> : event.title}
 		</h3>
-		{
-			event.location && (
-				<p class={styles.location}>
-					<Icon name="marker" />
-					{event.location}
-				</p>
-			)
-		}
+		{event.location && (
+			<p class={styles.location}>
+				<Icon name="marker" />
+				{event.location}
+			</p>
+		)}
 		{event.summary && <p class={styles.summary}>{event.summary}</p>}
-		{
-			/*
-			 * Static badge, not a live region. The "Event finished" label is
-			 * server-rendered at build time; using `role="status"` here made
-			 * the visible text re-announce on every page load.
-			 */
-		}
+		{/*
+		 * Static badge, not a live region. The "Event finished" label is
+		 * server-rendered at build time; using `role="status"` here made
+		 * the visible text re-announce on every page load.
+		 */}
 		{showFinishedBadge && <p class={styles.badge}>Event finished</p>}
 	</div>
 </article>

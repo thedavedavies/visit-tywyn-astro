@@ -78,57 +78,51 @@ const jsonLd = touristAttraction({
 	heroImage={activity.data.hero_image}
 	breadcrumbs={breadcrumbs}
 	jsonLd={jsonLd}
-	sidebarProps={isClosed
-		? undefined
-		: {
-				thingsToDo: {
-					title: activity.data.title,
-					website: activity.data.website,
-					phone: activity.data.phone,
-					grid_reference: activity.data.grid_reference,
-				},
-			}}
+	sidebarProps={
+		isClosed
+			? undefined
+			: {
+					thingsToDo: {
+						title: activity.data.title,
+						website: activity.data.website,
+						phone: activity.data.phone,
+						grid_reference: activity.data.grid_reference,
+					},
+				}
+	}
 >
-	{
-		/*
-		 * `EntryHeader` already renders its own `<header>`. The previous
-		 * outer `<header class="entry-header">` produced a nested header.
-		 * The address paragraph is a sibling, not part of the heading
-		 * group, so no semantic wrapper is needed here.
-		 */
-	}
+	{/*
+	 * `EntryHeader` already renders its own `<header>`. The previous
+	 * outer `<header class="entry-header">` produced a nested header.
+	 * The address paragraph is a sibling, not part of the heading
+	 * group, so no semantic wrapper is needed here.
+	 */}
 	<EntryHeader title={activity.data.title} subtitle={activity.data.subtitle} />
-	{
-		!isClosed && activity.data.address && (
-			<p class="single-address">
-				<Icon name="marker" />
-				<span>{activity.data.address}</span>
-			</p>
-		)
-	}
+	{!isClosed && activity.data.address && (
+		<p class="single-address">
+			<Icon name="marker" />
+			<span>{activity.data.address}</span>
+		</p>
+	)}
 
-	{
-		isClosed && (
-			<Notice label="Permanently closed">
-				{activity.data.title} has permanently closed. Browse other things to do in Tywyn below.
-			</Notice>
-		)
-	}
+	{isClosed && (
+		<Notice label="Permanently closed">
+			{activity.data.title} has permanently closed. Browse other things to do in Tywyn below.
+		</Notice>
+	)}
 
-	{
-		!isClosed && (
-			<div class="entry-content">
-				<Content />
+	{!isClosed && (
+		<div class="entry-content">
+			<Content />
 
-				{activity.data.gallery.length > 0 && (
-					<>
-						<h2>{activity.data.title} Gallery</h2>
-						<Gallery images={activity.data.gallery} label={`${activity.data.title} gallery`} />
-					</>
-				)}
-			</div>
-		)
-	}
+			{activity.data.gallery.length > 0 && (
+				<>
+					<h2>{activity.data.title} Gallery</h2>
+					<Gallery images={activity.data.gallery} label={`${activity.data.title} gallery`} />
+				</>
+			)}
+		</div>
+	)}
 
 	<RelatedItems
 		heading="More things to do in Tywyn"
