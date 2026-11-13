@@ -12,7 +12,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import EntryHeader from '../../components/EntryHeader/EntryHeader.astro';
 import Icon from '../../components/Icon/Icon.astro';
 import { getEvents } from '../../lib/events';
-import { eventSchema } from '../../lib/jsonld';
+import { eventNodes } from '../../lib/jsonld';
 
 export async function getStaticPaths() {
 	const events = await getCollection('events');
@@ -71,20 +71,7 @@ const links = [
 // "scheduled" event with past dates forever. The page itself stays
 // live (additive-only URL policy); only the markup is dropped.
 const jsonLd = [
-	...(event.isPast || !event.schemaDates || !event.locality
-		? []
-		: [
-				eventSchema({
-					name: event.title,
-					startIso: event.schemaDates.start,
-					endIso: event.schemaDates.end,
-					location: event.location || undefined,
-					locality: event.locality,
-					url: path,
-					image: heroUrl ?? null,
-					description: event.summary || undefined,
-				}),
-			]),
+	...(event.isPast ? [] : eventNodes(event, { url: path, image: heroUrl ?? null })),
 	// No breadcrumbList here: BaseLayout already auto-emits one from
 	// the `breadcrumbs` prop below; passing it again shipped the only
 	// duplicated BreadcrumbList on the site.

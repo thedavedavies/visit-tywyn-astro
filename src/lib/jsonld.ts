@@ -14,6 +14,7 @@
 
 import { SITE } from './site';
 import { absoluteUrl, eatingUrl, thingsToDoUrl } from './url';
+import type { NormalisedEvent } from './events';
 
 export type JsonLd = Record<string, unknown>;
 
@@ -381,6 +382,23 @@ export function eventSchema(input: EventInput): JsonLd {
 				}
 			: {}),
 	};
+}
+
+export function eventNodes(ev: NormalisedEvent, overrides: Partial<EventInput> = {}): JsonLd[] {
+	if (!ev.locality) return [];
+	return ev.schemaDates.map((d) =>
+		eventSchema({
+			name: ev.title,
+			startIso: d.start,
+			endIso: d.end,
+			location: ev.location || undefined,
+			locality: ev.locality,
+			url: ev.primaryUrl,
+			image: ev.image,
+			description: ev.summary || undefined,
+			...overrides,
+		}),
+	);
 }
 
 interface ArticleInput {

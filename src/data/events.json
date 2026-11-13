@@ -7,6 +7,8 @@
 		"Set \"locality\" to the single town the event is in (Tywyn, Aberdyfi, Machynlleth, ...). It becomes the schema.org address Google requires for event rich results, so leave it out when the event genuinely spans more than one place and it will be left out of the structured data.",
 		"Add \"tags\" to list an event on a seasonal page as well as the main calendar: [\"christmas\"], [\"halloween\"] and [\"fireworks\"] feed /events/christmas/, /events/halloween/ and /events/bonfire-night/. Dates cannot decide this on their own - the Christmas craft fair falls on 31 October, the festive menu runs from mid-November, and the firework displays are spread from Halloween to the second weekend of November.",
 		"To give an event its own page on this site, set internal_url to /events/<slug>/ and add src/content/events/<slug>.md (page description + links); the date and location here drive both the calendar and that page.",
+		"When an event runs on separate days that are each booked on their own (Santa trains, for example), list every running day in \"dates\", in order from start_date to end_date. The calendar still shows one card, but the structured data gets one event per running day instead of claiming every day in between.",
+		"Add \"menu\" to the tags of restaurant menus and other offers that are not events in their own right. They stay on the calendar, but get no event structured data, because Google does not allow menus, services or opening hours to be marked up as events.",
 		"Most of these repeat every year: roll the dates forward each January to keep the calendar current.",
 		"Summaries are our own wording: do not paste descriptions from leaflets or other sites."
 	],
@@ -331,7 +333,7 @@
 			"location": "Proper Gander, Tywyn",
 			"locality": "Tywyn",
 			"internal_url": "/eating/proper-gander/",
-			"tags": ["christmas"],
+			"tags": ["christmas", "menu"],
 			"external_url": "https://propergandertywyn.com/wp-content/uploads/2026/10/Proper-Gander-Festive-Menu-2026.pdf",
 			"external_label": "Festive menu (PDF)"
 		},
@@ -438,7 +440,7 @@
 			"locality": "Abergynolwyn",
 			"external_url": "https://www.facebook.com/photo/?fbid=989566297523930&set=pcb.4578527615758441",
 			"external_label": "Details on Facebook",
-			"tags": ["christmas"]
+			"tags": ["christmas", "menu"]
 		},
 		{
 			"title": "Festive Menu at the Penhelig Arms",
@@ -449,7 +451,7 @@
 			"locality": "Aberdyfi",
 			"external_url": "https://www.penheligarmspubaberdyfi.co.uk/festive-menu",
 			"external_label": "See the festive menu",
-			"tags": ["christmas"]
+			"tags": ["christmas", "menu"]
 		},
 		{
 			"title": "Christmas Fayre at the Dragon Theatre",
@@ -490,6 +492,7 @@
 			"summary": "Pair a steam train ride from Tywyn Wharf with a festive cooked lunch in King's Café, running on just two Saturdays, 5 and 12 December 2026. Trains leave at 10:30 and 14:10 with lunch served at 13:15, so you can eat before or after your ride, and normal train fares are charged on top of the meal price.",
 			"start_date": "2026-12-05",
 			"end_date": "2026-12-12",
+			"dates": ["2026-12-05", "2026-12-12"],
 			"start_time": "10:30",
 			"location": "Talyllyn Railway, Tywyn",
 			"locality": "Tywyn",
@@ -526,6 +529,7 @@
 			"summary": "A decorated Victorian steam train leaves Tywyn Wharf at 11:00 on three Tuesdays only (8, 15 and 22 December), with mulled wine at departure, guides talking through Victorian and Welsh Christmas customs, and a festive cream tea at Abergynolwyn. Fares are £47.50 adult and £23.75 child, the carriages are unheated and not wheelchair accessible, and anyone travelling in Victorian dress gets a £10 voucher on the day.",
 			"start_date": "2026-12-08",
 			"end_date": "2026-12-22",
+			"dates": ["2026-12-08", "2026-12-15", "2026-12-22"],
 			"start_time": "11:00",
 			"location": "Talyllyn Railway, Tywyn",
 			"locality": "Tywyn",
@@ -538,6 +542,7 @@
 			"summary": "On the weekend of Saturday 12 and Sunday 13 December, a train rides up the Dulas Valley from Corris to Maespoeth Junction, where children can visit Santa's grotto and collect a present. Tickets must be booked in advance, running times and the locomotive can change on the day, and the railway only accepts cancellations more than 7 days before travel.",
 			"start_date": "2026-12-12",
 			"end_date": "2026-12-13",
+			"dates": ["2026-12-12", "2026-12-13"],
 			"start_time": "11:00",
 			"location": "Corris Railway, Corris",
 			"locality": "Corris",
@@ -571,9 +576,19 @@
 		},
 		{
 			"title": "A Ticket to Christmas at the Vale of Rheidol",
-			"summary": "A steam train ride from Aberystwyth to Capel Bangor and back is followed by a visit to Santa in his grotto at the Engine Shed Museum, where every child gets a present. Tickets are about 25 pounds each (5 pounds for infants) and are booked online or by phone; the railway gives the run as 16 to 23 December but publishes no departure times, so check its booking calendar for the days and times on sale.",
+			"summary": "A steam train ride from Aberystwyth to Capel Bangor and back is followed by a visit to Santa in his grotto at the Engine Shed Museum, where every child gets a present. It runs every day from 16 to 23 December, with trains at 13:30, 15:00, 16:30 and 18:00 (just the two later ones on Friday 18th), and the 16:30 on Thursday 17th is a relaxed session for children with additional learning needs. Tickets are £26.25 for adults and children and £5.30 for infants, booked online or by phone.",
 			"start_date": "2026-12-16",
 			"end_date": "2026-12-23",
+			"dates": [
+				"2026-12-16",
+				"2026-12-17",
+				"2026-12-18",
+				"2026-12-19",
+				"2026-12-20",
+				"2026-12-21",
+				"2026-12-22",
+				"2026-12-23"
+			],
 			"location": "Vale of Rheidol Railway, Aberystwyth",
 			"locality": "Aberystwyth",
 			"external_url": "https://vor.wales/ticket-to-christmas/",
@@ -585,6 +600,7 @@
 			"summary": "Santa trains leave Tywyn Wharf at 11:00 and 14:00 on just four days: Saturday 19, Sunday 20, Wednesday 23 and Thursday 24 December 2026. Each child meets Father Christmas at the end of the ride and gets a gift and a treat, with mince pies and mulled wine included in the ticket (£23 per adult or child, £7 for under-2s and £5 for dogs), so arrive at least 15 minutes early.",
 			"start_date": "2026-12-19",
 			"end_date": "2026-12-24",
+			"dates": ["2026-12-19", "2026-12-20", "2026-12-23", "2026-12-24"],
 			"start_time": "11:00",
 			"location": "Talyllyn Railway, Tywyn",
 			"locality": "Tywyn",
@@ -624,7 +640,7 @@
 			"locality": "Aberdyfi",
 			"external_url": "https://www.penheligarmspubaberdyfi.co.uk/christmas-day",
 			"external_label": "Book Christmas Day lunch",
-			"tags": ["christmas"]
+			"tags": ["christmas", "menu"]
 		},
 		{
 			"title": "Christmas Presence",
@@ -646,7 +662,7 @@
 			"locality": "Aberdyfi",
 			"external_url": "https://www.penheligarmspubaberdyfi.co.uk/boxing-day",
 			"external_label": "Boxing Day menu and booking",
-			"tags": ["christmas"]
+			"tags": ["christmas", "menu"]
 		},
 		{
 			"title": "Steam 'n' Scream at the Talyllyn Railway",
