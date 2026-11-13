@@ -6,46 +6,44 @@ const snap = getWeatherSnapshot();
 ---
 
 <div class={styles.widget} data-vt-conditions="weather">
-	{
-		!snap ? (
-			<p class={styles.empty}>Tywyn weather is loading.</p>
-		) : (
-			<>
-				<p class={styles.location}>{snap.location}</p>
-				<p class={styles.headline}>
-					<span class={styles.temp}>{snap.tempC?.toFixed(0)}&deg;C</span>
-					<span class={styles.summary}>{snap.summary}</span>
-				</p>
-				<dl class={styles.facts}>
-					{snap.feelsLikeC !== null && (
-						<div class={styles.fact}>
-							<dt>Feels like</dt>
-							<dd>{snap.feelsLikeC.toFixed(0)}&deg;C</dd>
-						</div>
-					)}
-					{snap.windMph !== null && (
-						<div class={styles.fact}>
-							<dt>Wind</dt>
-							<dd>
-								{snap.windMph.toFixed(0)}mph {windDirectionName(snap.windDir) ?? ''}
-							</dd>
-						</div>
-					)}
-					{snap.rainChance !== null && (
-						<div class={styles.fact}>
-							<dt>Rain</dt>
-							<dd>{snap.rainChance}%</dd>
-						</div>
-					)}
-				</dl>
-				<p class={styles.stamp}>
-					Updated {snap.observedLabel}
-					{snap.stale && <span class={styles.stale}> · last good reading</span>}
-				</p>
-				<a class={styles.more} href="/weather/">
-					7-day weather forecast
-				</a>
-			</>
-		)
-	}
+	{!snap ? (
+		<p class={styles.empty}>Tywyn weather is loading.</p>
+	) : (
+		<>
+			<p class={styles.location}>{snap.location}</p>
+			<p class={styles.headline}>
+				<span class={styles.temp}>{snap.tempC?.toFixed(0)}&deg;C</span>
+				<span class={styles.summary}>{snap.summary}</span>
+			</p>
+			<dl class={styles.facts}>
+				{snap.feelsLikeC !== null && (
+					<div class={styles.fact}>
+						<dt>Feels like</dt>
+						<dd>{snap.feelsLikeC.toFixed(0)}&deg;C</dd>
+					</div>
+				)}
+				{snap.windMph !== null && (
+					<div class={styles.fact}>
+						<dt>Wind</dt>
+						<dd>
+							{snap.windMph.toFixed(0)}mph {windDirectionName(snap.windDir) ?? ''}
+						</dd>
+					</div>
+				)}
+				{snap.rainChance !== null && (
+					<div class={styles.fact}>
+						<dt>Rain</dt>
+						<dd>{snap.rainChance}%</dd>
+					</div>
+				)}
+			</dl>
+			<p class={styles.stamp}>
+				Updated {snap.observedLabel}
+				{snap.stale && <span class={styles.stale}> · last good reading</span>}
+			</p>
+			<a class={styles.more} href="/weather/">
+				7-day weather forecast
+			</a>
+		</>
+	)}
 </div>

@@ -136,11 +136,15 @@ const clampLabelX = (px: number) => Math.min(Math.max(px, PX0 + 42), PX1 - 42);
 	<div class={styles.card}>
 		<div class={styles.legend}>
 			<span class={styles.key}>
-				<span class={styles.keyHigh}><Icon name="ms-arrow_upward" /></span>
+				<span class={styles.keyHigh}>
+					<Icon name="ms-arrow_upward" />
+				</span>
 				High water
 			</span>
 			<span class={styles.key}>
-				<span class={styles.keyLow}><Icon name="ms-arrow_downward" /></span>
+				<span class={styles.keyLow}>
+					<Icon name="ms-arrow_downward" />
+				</span>
 				Low water
 			</span>
 			<span class={styles.key}>
@@ -151,14 +155,12 @@ const clampLabelX = (px: number) => Math.min(Math.max(px, PX0 + 42), PX1 - 42);
 				<span class={styles.keyNow}></span>
 				Now
 			</span>
-			{
-				stale && (
-					<span class={styles.staleChip}>
-						<Icon name="ms-schedule" />
-						Last good reading{staleLabel ? ` ${staleLabel}` : ''}
-					</span>
-				)
-			}
+			{stale && (
+				<span class={styles.staleChip}>
+					<Icon name="ms-schedule" />
+					Last good reading{staleLabel ? ` ${staleLabel}` : ''}
+				</span>
+			)}
 		</div>
 
 		<div class={styles.scroll} tabindex="0" role="region" aria-label="Tide curve for the week">
@@ -177,96 +179,86 @@ const clampLabelX = (px: number) => Math.min(Math.max(px, PX0 + 42), PX1 - 42);
 					data-maxm={MAX_M}
 					data-events={eventData}
 				>
-					{
-						nights.map(([from, to]) => (
-							<rect
-								class={styles.night}
-								x={x(from).toFixed(1)}
-								y={PY1}
-								width={Math.max(x(to) - x(from), 0).toFixed(1)}
-								height={PY0 - PY1}
+					{nights.map(([from, to]) => (
+						<rect
+							class={styles.night}
+							x={x(from).toFixed(1)}
+							y={PY1}
+							width={Math.max(x(to) - x(from), 0).toFixed(1)}
+							height={PY0 - PY1}
+						/>
+					))}
+					{ticks.map((m) => (
+						<>
+							<line
+								class={styles.grid}
+								x1={PX0}
+								x2={PX1}
+								y1={y(m).toFixed(1)}
+								y2={y(m).toFixed(1)}
 							/>
-						))
-					}
-					{
-						ticks.map((m) => (
-							<>
-								<line
-									class={styles.grid}
-									x1={PX0}
-									x2={PX1}
-									y1={y(m).toFixed(1)}
-									y2={y(m).toFixed(1)}
-								/>
-								<text class={styles.tick} x={PX0 - 10} y={y(m) + 5}>
-									{m}m
-								</text>
-							</>
-						))
-					}
+							<text class={styles.tick} x={PX0 - 10} y={y(m) + 5}>
+								{m}m
+							</text>
+						</>
+					))}
 					<line class={styles.baseline} x1={PX0} x2={PX1} y1={PY0} y2={PY0}></line>
-					<text class={styles.tick} x={PX0 - 10} y={PY0 + 5}>0m</text>
+					<text class={styles.tick} x={PX0 - 10} y={PY0 + 5}>
+						0m
+					</text>
 
-					{
-						bands
-							.slice(1)
-							.map((band) => (
-								<line
-									class={styles.dayline}
-									x1={x(band.from).toFixed(1)}
-									x2={x(band.from).toFixed(1)}
-									y1={PY1}
-									y2={PY0 + 8}
-								/>
-							))
-					}
-					{
-						bands.map(
-							(band) =>
-								x(band.to) - x(band.from) > 46 && (
-									<text
-										class={styles.day}
-										x={((x(band.from) + x(band.to)) / 2).toFixed(1)}
-										y={PY0 + 26}
-									>
-										{band.label}
-									</text>
-								),
-						)
-					}
+					{bands.slice(1).map((band) => (
+						<line
+							class={styles.dayline}
+							x1={x(band.from).toFixed(1)}
+							x2={x(band.from).toFixed(1)}
+							y1={PY1}
+							y2={PY0 + 8}
+						/>
+					))}
+					{bands.map(
+						(band) =>
+							x(band.to) - x(band.from) > 46 && (
+								<text
+									class={styles.day}
+									x={((x(band.from) + x(band.to)) / 2).toFixed(1)}
+									y={PY0 + 26}
+								>
+									{band.label}
+								</text>
+							),
+					)}
 
 					<path class={styles.area} d={areaPath}></path>
 					<path class={styles.line} d={linePath}></path>
 
-					{
-						visible.map((p) => (
-							<circle
-								class:list={[styles.dot, p.type === 'high' ? styles.dotHigh : styles.dotLow]}
-								cx={x(p.t).toFixed(1)}
-								cy={y(p.h).toFixed(1)}
-								r="5"
-							/>
-						))
-					}
-					{
-						labelled.map((p) => {
-							const above = p.type === 'high' && y(p.h) - 44 > PY1;
-							const ty = above ? y(p.h) - 30 : y(p.h) + 22;
-							return (
-								<text class={styles.eventLabel} x={clampLabelX(x(p.t))} y={ty}>
-									<tspan class={styles.eventHeight}>{p.h.toFixed(1)}m</tspan>
-									<tspan x={clampLabelX(x(p.t))} dy="16">
-										{TIME_LABEL.format(new Date(p.t)).replace(/\s/g, '')}
-									</tspan>
-								</text>
-							);
-						})
-					}
+					{visible.map((p) => (
+						<circle
+							class:list={[styles.dot, p.type === 'high' ? styles.dotHigh : styles.dotLow]}
+							cx={x(p.t).toFixed(1)}
+							cy={y(p.h).toFixed(1)}
+							r="5"
+						/>
+					))}
+					{labelled.map((p) => {
+						const above = p.type === 'high' && y(p.h) - 44 > PY1;
+						const ty = above ? y(p.h) - 30 : y(p.h) + 22;
+						return (
+							<text class={styles.eventLabel} x={clampLabelX(x(p.t))} y={ty}>
+								<tspan class={styles.eventHeight}>{p.h.toFixed(1)}m</tspan>
+								<tspan x={clampLabelX(x(p.t))} dy="16">
+									{TIME_LABEL.format(new Date(p.t)).replace(/\s/g, '')}
+								</tspan>
+							</text>
+						);
+					})}
 
 					<g data-now style="display:none">
 						<line class={styles.nowline} x1="0" x2="0" y1={PY1} y2={PY0}></line>
 						<rect class={styles.nowchip} x="-34" y={PY1} width="68" height="20" rx="4"></rect>
-						<text class={styles.nowlabel} x="0" y={PY1 + 14}>Now</text>
+						<text class={styles.nowlabel} x="0" y={PY1 + 14}>
+							Now
+						</text>
 					</g>
 					<g data-cursor style="display:none">
 						<line class={styles.crosshair} x1="0" x2="0" y1={PY1} y2={PY0}></line>

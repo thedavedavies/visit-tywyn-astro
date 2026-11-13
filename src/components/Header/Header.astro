@@ -30,7 +30,9 @@ const { heroImage = null, breadcrumbs = [] } = Astro.props;
 				<Image class={styles.logo} src={logoSrc} alt={SITE.name} layout="fixed" loading="eager" />
 			</a>
 			<p class={styles.titleHidden} aria-hidden="true">
-				<a href="/" rel="home" tabindex="-1">{SITE.name}</a>
+				<a href="/" rel="home" tabindex="-1">
+					{SITE.name}
+				</a>
 			</p>
 		</div>
 

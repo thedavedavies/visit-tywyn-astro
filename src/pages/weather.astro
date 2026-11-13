@@ -176,354 +176,350 @@ const jsonLd = webPage({ title, description, url: Astro.url });
 	displayFont
 	bodyClass="weather-page"
 >
-	{
-		!snap ? (
-			<div class="entry-content">
-				<h1>Tywyn weather</h1>
-				<p>The forecast is being refreshed. Check back in a few minutes.</p>
-			</div>
-		) : (
-			<div class="wx">
-				<section class="hero" aria-label="Current conditions">
-					<div class="hero__text">
-						<h1 class="hero__headline">{headline ?? 'Tywyn weather'}</h1>
-						{support && <p class="hero__support">{support}</p>}
-						<p class="hero__updated">
-							{updated}
-							{snap.stale && <em> · last good reading</em>}
+	{!snap ? (
+		<div class="entry-content">
+			<h1>Tywyn weather</h1>
+			<p>The forecast is being refreshed. Check back in a few minutes.</p>
+		</div>
+	) : (
+		<div class="wx">
+			<section class="hero" aria-label="Current conditions">
+				<div class="hero__text">
+					<h1 class="hero__headline">{headline ?? 'Tywyn weather'}</h1>
+					{support && <p class="hero__support">{support}</p>}
+					<p class="hero__updated">
+						{updated}
+						{snap.stale && <em> · last good reading</em>}
+					</p>
+				</div>
+				<div class="hero__disc">
+					<Icon
+						name={`weather-anim-${iconFor(snap.code ?? today?.code ?? null, snap.isDay ?? true)}`}
+					/>
+				</div>
+			</section>
+
+			{stats.length > 0 && (
+				<ul class="stats">
+					{stats.map((stat) => (
+						<li>
+							<span class="stats__label">{stat.label}</span>
+							<span class="stats__value">{stat.value}</span>
+						</li>
+					))}
+				</ul>
+			)}
+
+			{hourCells.length > 0 && (
+				<section aria-labelledby="today-heading">
+					<p class="eyebrow">Today</p>
+					<h2 id="today-heading">The rest of today, hour by hour</h2>
+					{todayLine && <p class="sectionNote">{todayLine}</p>}
+					<div class="hourScroll" tabindex="0" role="region" aria-labelledby="today-heading">
+						<ol class="hours">
+							{hourCells.map((hour) => (
+								<li>
+									<span class="hours__time">{hour.label}</span>
+									<span class={`hours__icon tone-${hour.glyph.tone}`}>
+										<Icon name={hour.glyph.icon} />
+									</span>
+									<span class="hours__temp">
+										{hour.tempC !== null ? `${hour.tempC.toFixed(0)}°` : '–'}
+									</span>
+									{hour.rainChance !== null && (
+										<span class="hours__rain">
+											<span class="hours__rainIcon tone-rain">
+												<Icon name="ms-water_drop" />
+											</span>
+											{hour.rainChance}%
+										</span>
+									)}
+									{hour.sunset && (
+										<span class="hours__sunset">
+											<span class="tone-sun">
+												<Icon name="ms-wb_twilight" />
+											</span>
+											{hour.sunset}
+										</span>
+									)}
+								</li>
+							))}
+						</ol>
+					</div>
+				</section>
+			)}
+
+			{dayRows.length > 0 && (
+				<section aria-labelledby="week-heading">
+					<p class="eyebrow">The week ahead</p>
+					<h2 id="week-heading">Your next seven days in Tywyn</h2>
+					<div class="weekScroll" tabindex="0" role="region" aria-labelledby="week-heading">
+						<table class="week">
+							<caption class="sr-only">
+								Daily forecast for the week ahead: outlook, temperatures, rain chance and wind
+							</caption>
+							<thead>
+								<tr>
+									<th scope="col">Day</th>
+									<th scope="col">Outlook</th>
+									<th scope="col" class="num">
+										High / low
+									</th>
+									<th scope="col" class="num">
+										Rain
+									</th>
+									<th scope="col" class="num">
+										Wind
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								{dayRows.map(({ day, glyph, isToday, fullLabel, outlook, isPick }) => (
+									<tr class:list={[isPick && 'week__pick']}>
+										<th scope="row">
+											<span class="week__day">{fullLabel}</span>
+											{isToday && <span class="week__today">Today</span>}
+										</th>
+										<td>
+											<span class="week__outlook">
+												<span class={`week__icon tone-${glyph.tone}`}>
+													<Icon name={glyph.icon} />
+												</span>
+												<span>
+													{outlook}
+													{isPick && (
+														<span class="week__pickline">
+															<span class="week__badge">Pick of the week</span>
+															<em>{pickOfWeekNote(day)}</em>
+														</span>
+													)}
+												</span>
+											</span>
+										</td>
+										<td class="num">
+											<span class="week__high">
+												{day.tempMaxC !== null ? `${day.tempMaxC.toFixed(0)}°` : '–'}
+											</span>{' '}
+											<span class="week__low">
+												{day.tempMinC !== null ? `${day.tempMinC.toFixed(0)}°` : ''}
+											</span>
+										</td>
+										<td class="num week__rain">
+											{day.rainChance !== null ? `${day.rainChance}%` : '–'}
+										</td>
+										<td class="num week__wind">
+											{day.windMph !== null
+												? `${day.windDir ?? ''} ${day.windMph.toFixed(0)} mph`.trim()
+												: '–'}
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				</section>
+			)}
+
+			<section class="beach bleed" aria-labelledby="beach-heading">
+				<div class="beach__inner">
+					<div class="beach__conditions">
+						<p class="eyebrow eyebrow--band">Sea &amp; shore</p>
+						<h2 id="beach-heading">Down at the beach</h2>
+						{snap.seaTempC != null && (
+							<div class="beach__block">
+								<p class="beach__label">
+									<span class="beach__labelIcon">
+										<Icon name="ms-water" />
+									</span>
+									Sea temperature
+								</p>
+								<p class="beach__big">{snap.seaTempC.toFixed(1)}°C</p>
+								<p class="beach__note">{seaVsAir(snap.seaTempC, snap.tempC)}</p>
+							</div>
+						)}
+						{waves?.heightM != null && (
+							<div class="beach__block">
+								<p class="beach__label">
+									<span class="beach__labelIcon">
+										<Icon name="ms-waves" />
+									</span>
+									Waves
+								</p>
+								<p class="beach__mid">{wavesHeadline(waves.heightM)}</p>
+								<p class="beach__note">{wavesDetail(waves.heightM, waves.periodS)}</p>
+							</div>
+						)}
+						{swellLine && (
+							<div class="beach__block">
+								<p class="beach__label">The week's swell</p>
+								<p class="beach__swell">{swellLine}</p>
+							</div>
+						)}
+						<p class="beach__smallprint">
+							Tide predictions &copy; UK Hydrographic Office. Check conditions locally before
+							swimming.
 						</p>
 					</div>
-					<div class="hero__disc">
-						<Icon
-							name={`weather-anim-${iconFor(snap.code ?? today?.code ?? null, snap.isDay ?? true)}`}
-						/>
-					</div>
-				</section>
-
-				{stats.length > 0 && (
-					<ul class="stats">
-						{stats.map((stat) => (
-							<li>
-								<span class="stats__label">{stat.label}</span>
-								<span class="stats__value">{stat.value}</span>
-							</li>
-						))}
-					</ul>
-				)}
-
-				{hourCells.length > 0 && (
-					<section aria-labelledby="today-heading">
-						<p class="eyebrow">Today</p>
-						<h2 id="today-heading">The rest of today, hour by hour</h2>
-						{todayLine && <p class="sectionNote">{todayLine}</p>}
-						<div class="hourScroll" tabindex="0" role="region" aria-labelledby="today-heading">
-							<ol class="hours">
-								{hourCells.map((hour) => (
+					{tideEvents.length > 0 && (
+						<div class="beach__tides">
+							<div class="beach__tidesHead">
+								<p class="beach__label">Today's tides</p>
+								<p class="beach__tidesDate">{tidesDateLabel}</p>
+							</div>
+							<ul class="tideList">
+								{tideEvents.map((event) => (
 									<li>
-										<span class="hours__time">{hour.label}</span>
-										<span class={`hours__icon tone-${hour.glyph.tone}`}>
-											<Icon name={hour.glyph.icon} />
+										<span
+											class:list={[
+												'tideList__arrow',
+												event.type === 'high' ? 'tone-sun' : 'tideList__arrow--down',
+											]}
+										>
+											<Icon
+												name={event.type === 'high' ? 'ms-arrow_upward' : 'ms-arrow_downward'}
+											/>
 										</span>
-										<span class="hours__temp">
-											{hour.tempC !== null ? `${hour.tempC.toFixed(0)}°` : '–'}
+										<span class="tideList__type">
+											{event.type === 'high' ? 'High water' : 'Low water'}
+											{event.daySuffix && ` (${event.daySuffix})`}
 										</span>
-										{hour.rainChance !== null && (
-											<span class="hours__rain">
-												<span class="hours__rainIcon tone-rain">
-													<Icon name="ms-water_drop" />
-												</span>
-												{hour.rainChance}%
-											</span>
-										)}
-										{hour.sunset && (
-											<span class="hours__sunset">
-												<span class="tone-sun">
-													<Icon name="ms-wb_twilight" />
-												</span>
-												{hour.sunset}
-											</span>
-										)}
+										<span class="tideList__time">{event.time}</span>
+										<span class="tideList__height">{event.heightM.toFixed(1)}m</span>
 									</li>
 								))}
-							</ol>
-						</div>
-					</section>
-				)}
-
-				{dayRows.length > 0 && (
-					<section aria-labelledby="week-heading">
-						<p class="eyebrow">The week ahead</p>
-						<h2 id="week-heading">Your next seven days in Tywyn</h2>
-						<div class="weekScroll" tabindex="0" role="region" aria-labelledby="week-heading">
-							<table class="week">
-								<caption class="sr-only">
-									Daily forecast for the week ahead: outlook, temperatures, rain chance and wind
-								</caption>
-								<thead>
-									<tr>
-										<th scope="col">Day</th>
-										<th scope="col">Outlook</th>
-										<th scope="col" class="num">
-											High / low
-										</th>
-										<th scope="col" class="num">
-											Rain
-										</th>
-										<th scope="col" class="num">
-											Wind
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-									{dayRows.map(({ day, glyph, isToday, fullLabel, outlook, isPick }) => (
-										<tr class:list={[isPick && 'week__pick']}>
-											<th scope="row">
-												<span class="week__day">{fullLabel}</span>
-												{isToday && <span class="week__today">Today</span>}
-											</th>
-											<td>
-												<span class="week__outlook">
-													<span class={`week__icon tone-${glyph.tone}`}>
-														<Icon name={glyph.icon} />
-													</span>
-													<span>
-														{outlook}
-														{isPick && (
-															<span class="week__pickline">
-																<span class="week__badge">Pick of the week</span>
-																<em>{pickOfWeekNote(day)}</em>
-															</span>
-														)}
-													</span>
-												</span>
-											</td>
-											<td class="num">
-												<span class="week__high">
-													{day.tempMaxC !== null ? `${day.tempMaxC.toFixed(0)}°` : '–'}
-												</span>{' '}
-												<span class="week__low">
-													{day.tempMinC !== null ? `${day.tempMinC.toFixed(0)}°` : ''}
-												</span>
-											</td>
-											<td class="num week__rain">
-												{day.rainChance !== null ? `${day.rainChance}%` : '–'}
-											</td>
-											<td class="num week__wind">
-												{day.windMph !== null
-													? `${day.windDir ?? ''} ${day.windMph.toFixed(0)} mph`.trim()
-													: '–'}
-											</td>
-										</tr>
-									))}
-								</tbody>
-							</table>
-						</div>
-					</section>
-				)}
-
-				<section class="beach bleed" aria-labelledby="beach-heading">
-					<div class="beach__inner">
-						<div class="beach__conditions">
-							<p class="eyebrow eyebrow--band">Sea &amp; shore</p>
-							<h2 id="beach-heading">Down at the beach</h2>
-							{snap.seaTempC != null && (
-								<div class="beach__block">
-									<p class="beach__label">
-										<span class="beach__labelIcon">
-											<Icon name="ms-water" />
-										</span>
-										Sea temperature
-									</p>
-									<p class="beach__big">{snap.seaTempC.toFixed(1)}°C</p>
-									<p class="beach__note">{seaVsAir(snap.seaTempC, snap.tempC)}</p>
-								</div>
-							)}
-							{waves?.heightM != null && (
-								<div class="beach__block">
-									<p class="beach__label">
-										<span class="beach__labelIcon">
-											<Icon name="ms-waves" />
-										</span>
-										Waves
-									</p>
-									<p class="beach__mid">{wavesHeadline(waves.heightM)}</p>
-									<p class="beach__note">{wavesDetail(waves.heightM, waves.periodS)}</p>
-								</div>
-							)}
-							{swellLine && (
-								<div class="beach__block">
-									<p class="beach__label">The week's swell</p>
-									<p class="beach__swell">{swellLine}</p>
-								</div>
-							)}
-							<p class="beach__smallprint">
-								Tide predictions &copy; UK Hydrographic Office. Check conditions locally before
-								swimming.
-							</p>
-						</div>
-						{tideEvents.length > 0 && (
-							<div class="beach__tides">
-								<div class="beach__tidesHead">
-									<p class="beach__label">Today's tides</p>
-									<p class="beach__tidesDate">{tidesDateLabel}</p>
-								</div>
-								<ul class="tideList">
-									{tideEvents.map((event) => (
-										<li>
-											<span
-												class:list={[
-													'tideList__arrow',
-													event.type === 'high' ? 'tone-sun' : 'tideList__arrow--down',
-												]}
-											>
-												<Icon
-													name={event.type === 'high' ? 'ms-arrow_upward' : 'ms-arrow_downward'}
-												/>
-											</span>
-											<span class="tideList__type">
-												{event.type === 'high' ? 'High water' : 'Low water'}
-												{event.daySuffix && ` (${event.daySuffix})`}
-											</span>
-											<span class="tideList__time">{event.time}</span>
-											<span class="tideList__height">{event.heightM.toFixed(1)}m</span>
-										</li>
-									))}
-								</ul>
-								<a class="beach__link" href="/tide-times/">
-									This week's tide times
-								</a>
-							</div>
-						)}
-					</div>
-				</section>
-
-				<section aria-labelledby="sky-heading">
-					<p class="eyebrow">Sun &amp; sky</p>
-					<h2 id="sky-heading">Sunshine, air and pollen</h2>
-					{daylight && sunrise && sunset && (
-						<div class="daylight">
-							<p class="daylight__duration">
-								<strong>{daylight}</strong>
-								<span>of daylight</span>
-							</p>
-							<div class="daylight__horizon" aria-hidden="true">
-								<span class="daylight__sun" />
-								<span class="daylight__dot daylight__dot--rise" />
-								<span class="daylight__dot daylight__dot--set" />
-							</div>
-							<div class="daylight__ends">
-								<p>
-									<span class="daylight__label">
-										<span class="tone-sun">
-											<Icon name="ms-wb_twilight" />
-										</span>
-										Sunrise
-									</span>
-									<span class="daylight__time">{sunrise}</span>
-								</p>
-								<p>
-									<span class="daylight__label">
-										<span class="tone-sun">
-											<Icon name="ms-wb_twilight" />
-										</span>
-										Sunset
-									</span>
-									<span class="daylight__time">{sunset}</span>
-								</p>
-							</div>
+							</ul>
+							<a class="beach__link" href="/tide-times/">
+								This week's tide times
+							</a>
 						</div>
 					)}
-					<div class="skyStats">
-						{uv && (
-							<div class="skyStats__item">
-								<p class="skyStats__label">
+				</div>
+			</section>
+
+			<section aria-labelledby="sky-heading">
+				<p class="eyebrow">Sun &amp; sky</p>
+				<h2 id="sky-heading">Sunshine, air and pollen</h2>
+				{daylight && sunrise && sunset && (
+					<div class="daylight">
+						<p class="daylight__duration">
+							<strong>{daylight}</strong>
+							<span>of daylight</span>
+						</p>
+						<div class="daylight__horizon" aria-hidden="true">
+							<span class="daylight__sun" />
+							<span class="daylight__dot daylight__dot--rise" />
+							<span class="daylight__dot daylight__dot--set" />
+						</div>
+						<div class="daylight__ends">
+							<p>
+								<span class="daylight__label">
 									<span class="tone-sun">
-										<Icon name="ms-clear_day" />
+										<Icon name="ms-wb_twilight" />
 									</span>
-									UV index
-								</p>
-								<p class="skyStats__value">
-									{uv.value} <em>{uv.band}</em>
-								</p>
-								<p class="skyStats__note">{uv.advice}</p>
-							</div>
-						)}
-						{snap.aqi && (
-							<div class="skyStats__item">
-								<p class="skyStats__label">
-									<span class="tone-rain">
-										<Icon name="ms-air" />
+									Sunrise
+								</span>
+								<span class="daylight__time">{sunrise}</span>
+							</p>
+							<p>
+								<span class="daylight__label">
+									<span class="tone-sun">
+										<Icon name="ms-wb_twilight" />
 									</span>
-									Air quality
-								</p>
-								<p class="skyStats__value">
-									{snap.aqi.label} <em>European AQI {snap.aqi.value}</em>
-								</p>
-								<p class="skyStats__note">{aqiFlavour(snap.aqi.label)}</p>
-							</div>
-						)}
-						{snap.pollen && (
-							<div class="skyStats__item">
-								<p class="skyStats__label">
-									<span class="tone-green">
-										<Icon name="ms-eco" />
-									</span>
-									Pollen
-								</p>
-								<p class="skyStats__value">
-									{snap.pollen.label} <em>{snap.pollen.species}</em>
-								</p>
-								<p class="skyStats__note">{pollenFlavour(snap.pollen)}</p>
-							</div>
-						)}
+									Sunset
+								</span>
+								<span class="daylight__time">{sunset}</span>
+							</p>
+						</div>
 					</div>
-				</section>
+				)}
+				<div class="skyStats">
+					{uv && (
+						<div class="skyStats__item">
+							<p class="skyStats__label">
+								<span class="tone-sun">
+									<Icon name="ms-clear_day" />
+								</span>
+								UV index
+							</p>
+							<p class="skyStats__value">
+								{uv.value} <em>{uv.band}</em>
+							</p>
+							<p class="skyStats__note">{uv.advice}</p>
+						</div>
+					)}
+					{snap.aqi && (
+						<div class="skyStats__item">
+							<p class="skyStats__label">
+								<span class="tone-rain">
+									<Icon name="ms-air" />
+								</span>
+								Air quality
+							</p>
+							<p class="skyStats__value">
+								{snap.aqi.label} <em>European AQI {snap.aqi.value}</em>
+							</p>
+							<p class="skyStats__note">{aqiFlavour(snap.aqi.label)}</p>
+						</div>
+					)}
+					{snap.pollen && (
+						<div class="skyStats__item">
+							<p class="skyStats__label">
+								<span class="tone-green">
+									<Icon name="ms-eco" />
+								</span>
+								Pollen
+							</p>
+							<p class="skyStats__value">
+								{snap.pollen.label} <em>{snap.pollen.species}</em>
+							</p>
+							<p class="skyStats__note">{pollenFlavour(snap.pollen)}</p>
+						</div>
+					)}
+				</div>
+			</section>
 
-				<section aria-labelledby="whatever-heading">
-					<p class="eyebrow">Make the most of it</p>
-					<h2 id="whatever-heading">Whatever the weather</h2>
-					<p class="sectionNote">
-						Tywyn's a proper seaside town: there's plenty to do, come sunshine or drizzle.
-					</p>
-					<div class="cards">
-						<article class="card">
-							<Image src={beachImg} alt="" width={640} class="card__img" />
-							<p class="card__tag card__tag--green">On fine days</p>
-							<h3>Beach &amp; promenade</h3>
-							<p>
-								Two miles of Blue Flag sand with dolphins offshore and sunsets over Cardigan Bay.
-							</p>
-							<a href="/things-to-do/tywyn-beach/">Beach &amp; sea &rarr;</a>
-						</article>
-						<article class="card">
-							<Image src={railwayImg} alt="" width={640} class="card__img" />
-							<p class="card__tag card__tag--rain">If drizzle sets in</p>
-							<h3>Talyllyn Railway</h3>
-							<p>
-								Steam up the Fathew valley to Dolgoch Falls: the carriages are cosy, come rain or
-								shine.
-							</p>
-							<a href="/things-to-do/the-talyllyn-railway/">Plan a ride &rarr;</a>
-						</article>
-						<article class="card">
-							<Image src={cinemaImg} alt="" width={640} class="card__img" />
-							<p class="card__tag card__tag--teal">For blowy evenings</p>
-							<h3>Cinema &amp; caf&eacute;s</h3>
-							<p>
-								The Magic Lantern cinema and the town's caf&eacute;s were made for weather-watching.
-							</p>
-							<a href="/things-to-do/magic-lantern-cinema/">Eat, drink &amp; watch &rarr;</a>
-						</article>
-					</div>
-				</section>
-
-				<p class="provenance">
-					Forecast &copy; Open-Meteo &middot; Tide predictions &copy; UK Hydrographic Office
-					&middot; Air quality &copy; Copernicus CAMS &middot; Updated every few hours
+			<section aria-labelledby="whatever-heading">
+				<p class="eyebrow">Make the most of it</p>
+				<h2 id="whatever-heading">Whatever the weather</h2>
+				<p class="sectionNote">
+					Tywyn's a proper seaside town: there's plenty to do, come sunshine or drizzle.
 				</p>
-			</div>
-		)
-	}
+				<div class="cards">
+					<article class="card">
+						<Image src={beachImg} alt="" width={640} class="card__img" />
+						<p class="card__tag card__tag--green">On fine days</p>
+						<h3>Beach &amp; promenade</h3>
+						<p>Two miles of Blue Flag sand with dolphins offshore and sunsets over Cardigan Bay.</p>
+						<a href="/things-to-do/tywyn-beach/">Beach &amp; sea &rarr;</a>
+					</article>
+					<article class="card">
+						<Image src={railwayImg} alt="" width={640} class="card__img" />
+						<p class="card__tag card__tag--rain">If drizzle sets in</p>
+						<h3>Talyllyn Railway</h3>
+						<p>
+							Steam up the Fathew valley to Dolgoch Falls: the carriages are cosy, come rain or
+							shine.
+						</p>
+						<a href="/things-to-do/the-talyllyn-railway/">Plan a ride &rarr;</a>
+					</article>
+					<article class="card">
+						<Image src={cinemaImg} alt="" width={640} class="card__img" />
+						<p class="card__tag card__tag--teal">For blowy evenings</p>
+						<h3>Cinema &amp; caf&eacute;s</h3>
+						<p>
+							The Magic Lantern cinema and the town's caf&eacute;s were made for weather-watching.
+						</p>
+						<a href="/things-to-do/magic-lantern-cinema/">Eat, drink &amp; watch &rarr;</a>
+					</article>
+				</div>
+			</section>
+
+			<p class="provenance">
+				Forecast &copy; Open-Meteo &middot; Tide predictions &copy; UK Hydrographic Office &middot;
+				Air quality &copy; Copernicus CAMS &middot; Updated every few hours
+			</p>
+		</div>
+	)}
 </PageLayout>
 
 <style lang="scss">

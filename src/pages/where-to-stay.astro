@@ -42,8 +42,10 @@ const jsonLd = [
 
 <PageLayout
 	title={page?.data.seo?.title ?? page?.data.title ?? 'Where to stay in Tywyn'}
-	description={page?.data.seo?.description ??
-		'Find holiday accommodation in Tywyn - camping, caravans, self-catering cottages, and B&Bs.'}
+	description={
+		page?.data.seo?.description ??
+		'Find holiday accommodation in Tywyn - camping, caravans, self-catering cottages, and B&Bs.'
+	}
 	heroImage={page?.data.hero_image}
 	breadcrumbs={breadcrumbs}
 	jsonLd={jsonLd}
@@ -53,29 +55,25 @@ const jsonLd = [
 		subtitle={page?.data.subtitle}
 	/>
 
-	{
-		Content && (
-			<div class="entry-content">
-				<Content />
-			</div>
-		)
-	}
+	{Content && (
+		<div class="entry-content">
+			<Content />
+		</div>
+	)}
 
 	<section class="stay-categories" aria-labelledby="stay-categories-title">
 		<h2 id="stay-categories-title">Browse by type</h2>
 		<ul>
-			{
-				categories.map((category) => (
-					<li>
-						<StayCategoryCard
-							href={`/holiday-accommodation/${category.id}/`}
-							title={category.data.title}
-							intro={category.data.intro}
-							heroImage={category.data.hero_image}
-						/>
-					</li>
-				))
-			}
+			{categories.map((category) => (
+				<li>
+					<StayCategoryCard
+						href={`/holiday-accommodation/${category.id}/`}
+						title={category.data.title}
+						intro={category.data.intro}
+						heroImage={category.data.hero_image}
+					/>
+				</li>
+			))}
 		</ul>
 	</section>
 </PageLayout>

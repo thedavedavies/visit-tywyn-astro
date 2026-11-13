@@ -84,13 +84,11 @@ const jsonLd: (Record<string, unknown> | null)[] = [
 >
 	<EntryHeader title={eventsTitle} subtitle={subtitle} />
 
-	{
-		introHtml ? (
-			<div class="entry-content" set:html={introHtml} />
-		) : (
-			<div class="entry-content">{Content && <Content />}</div>
-		)
-	}
+	{introHtml ? (
+		<div class="entry-content" set:html={introHtml} />
+	) : (
+		<div class="entry-content">{Content && <Content />}</div>
+	)}
 
 	<EventsCalendar sectionId="vt-events-page" />
 </PageLayout>

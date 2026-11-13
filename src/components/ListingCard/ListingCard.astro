@@ -35,33 +35,29 @@ const HTag = `h${headingLevel}` as 'h2' | 'h3';
 
 <article class={styles.row}>
 	<a href={href} class={styles.media} aria-hidden="true" tabindex="-1">
-		{
-			image && (
-				<Picture
-					src={image.src}
-					alt={image.alt ?? title}
-					loading={eager ? 'eager' : 'lazy'}
-					fetchpriority={eager ? 'high' : undefined}
-					formats={['avif', 'webp']}
-					width={760}
-					widths={[320, 480, 640, 760]}
-					sizes="(min-width: 1170px) 234px, (min-width: 1024px) calc((100vw - 462px) * 0.33), (min-width: 768px) calc((100vw - 32px) * 0.33), calc(100vw - 32px)"
-				/>
-			)
-		}
+		{image && (
+			<Picture
+				src={image.src}
+				alt={image.alt ?? title}
+				loading={eager ? 'eager' : 'lazy'}
+				fetchpriority={eager ? 'high' : undefined}
+				formats={['avif', 'webp']}
+				width={760}
+				widths={[320, 480, 640, 760]}
+				sizes="(min-width: 1170px) 234px, (min-width: 1024px) calc((100vw - 462px) * 0.33), (min-width: 768px) calc((100vw - 32px) * 0.33), calc(100vw - 32px)"
+			/>
+		)}
 	</a>
 	<div class={styles.body}>
 		<HTag class={styles.title}>
 			<a href={href}>{title}</a>
 		</HTag>
-		{
-			address && (
-				<p class={styles.address}>
-					<Icon name="marker" />
-					<span>{address}</span>
-				</p>
-			)
-		}
+		{address && (
+			<p class={styles.address}>
+				<Icon name="marker" />
+				<span>{address}</span>
+			</p>
+		)}
 		{summary && <p class={styles.summary}>{summary}</p>}
 	</div>
 </article>

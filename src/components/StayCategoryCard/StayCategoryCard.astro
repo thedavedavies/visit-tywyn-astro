@@ -19,25 +19,25 @@ const { href, title, intro, heroImage } = Astro.props;
 
 <article class={styles.card}>
 	<a href={href} class={styles.link}>
-		{
-			heroImage && (
-				<div class={styles.media}>
-					<Picture
-						src={heroImage.src}
-						alt={heroImage.alt ?? title}
-						loading="lazy"
-						formats={['avif', 'webp']}
-						width={760}
-						widths={[320, 480, 640, 760]}
-						sizes="(min-width: 768px) 290px, calc(100vw - 32px)"
-					/>
-				</div>
-			)
-		}
+		{heroImage && (
+			<div class={styles.media}>
+				<Picture
+					src={heroImage.src}
+					alt={heroImage.alt ?? title}
+					loading="lazy"
+					formats={['avif', 'webp']}
+					width={760}
+					widths={[320, 480, 640, 760]}
+					sizes="(min-width: 768px) 290px, calc(100vw - 32px)"
+				/>
+			</div>
+		)}
 		<div class={styles.body}>
 			<h3 class={styles.title}>{title}</h3>
 			<p class={styles.intro}>{intro}</p>
-			<span class={styles.cta}>Browse {title.toLowerCase()} <span aria-hidden="true">→</span></span>
+			<span class={styles.cta}>
+				Browse {title.toLowerCase()} <span aria-hidden="true">→</span>
+			</span>
 		</div>
 	</a>
 </article>

@@ -22,13 +22,16 @@ const headingId = `map-${slugify(title)}`;
 ---
 
 <section class={styles.section} aria-labelledby={headingId}>
-	<h2 id={headingId} class={styles.heading}>Find {title}</h2>
+	<h2 id={headingId} class={styles.heading}>
+		Find {title}
+	</h2>
 	<div class={styles.frame}>
 		<iframe
 			title={`Map showing ${title}`}
 			loading="lazy"
 			referrerpolicy="no-referrer-when-downgrade"
 			allow=""
-			src={src}></iframe>
+			src={src}
+		></iframe>
 	</div>
 </section>

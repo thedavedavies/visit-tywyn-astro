@@ -45,23 +45,21 @@ const jsonLd = itemList(
 	</div>
 
 	<div class="activity-list">
-		{
-			activities.flatMap((activity, idx) => {
-				const card = (
-					<ListingCard
-						href={thingsToDoUrl(activity.id)}
-						title={activity.data.title}
-						summary={activity.data.summary}
-						address={activity.data.address}
-						image={activity.data.hero_image}
-						headingLevel={2}
-						eager={idx < 2}
-					/>
-				);
-				const showAd = (idx + 1) % 3 === 0 && idx < activities.length - 1;
-				return showAd ? [card, <AdSlot slot="7221027714" placement="in-feed" />] : [card];
-			})
-		}
+		{activities.flatMap((activity, idx) => {
+			const card = (
+				<ListingCard
+					href={thingsToDoUrl(activity.id)}
+					title={activity.data.title}
+					summary={activity.data.summary}
+					address={activity.data.address}
+					image={activity.data.hero_image}
+					headingLevel={2}
+					eager={idx < 2}
+				/>
+			);
+			const showAd = (idx + 1) % 3 === 0 && idx < activities.length - 1;
+			return showAd ? [card, <AdSlot slot="7221027714" placement="in-feed" />] : [card];
+		})}
 	</div>
 </PageLayout>
 

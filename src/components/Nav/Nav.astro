@@ -39,70 +39,65 @@ function isActive(href: string): boolean {
 		Primary Menu
 	</button>
 	<ul id="primary-menu" class={styles.menu}>
-		{
-			PRIMARY_NAV.map((item, index) => {
-				const children = item.children ?? [];
-				const hasChildren = children.length > 0;
+		{PRIMARY_NAV.map((item, index) => {
+			const children = item.children ?? [];
+			const hasChildren = children.length > 0;
 
-				if (hasChildren) {
-					const submenuId = `primary-submenu-${index}`;
-					// Highlight the parent when the current page is one of its
-					// children (the dropdown "contains" where you are).
-					const sectionActive = children.some((child) => !!child.href && isActive(child.href));
-					return (
-						<li
-							class:list={[styles.item, styles.hasChildren, { [styles.itemActive]: sectionActive }]}
-						>
-							<button
-								type="button"
-								class={styles.disclosure}
-								aria-expanded="false"
-								aria-controls={submenuId}
-								data-vt-submenu-trigger
-							>
-								{item.label}
-								<span class={styles.caret} aria-hidden="true">
-									▼
-								</span>
-							</button>
-							<ul id={submenuId} class={styles.subMenu}>
-								{children.map((child) => (
-									<li
-										class:list={[
-											styles.subItem,
-											{ [styles.subItemActive]: child.href ? isActive(child.href) : false },
-										]}
-									>
-										<a
-											href={child.href}
-											aria-current={child.href && isActive(child.href) ? 'page' : undefined}
-										>
-											{child.label}
-										</a>
-									</li>
-								))}
-							</ul>
-						</li>
-					);
-				}
-
+			if (hasChildren) {
+				const submenuId = `primary-submenu-${index}`;
+				// Highlight the parent when the current page is one of its
+				// children (the dropdown "contains" where you are).
+				const sectionActive = children.some((child) => !!child.href && isActive(child.href));
 				return (
 					<li
-						class:list={[
-							styles.item,
-							{ [styles.itemActive]: item.href ? isActive(item.href) : false },
-						]}
+						class:list={[styles.item, styles.hasChildren, { [styles.itemActive]: sectionActive }]}
 					>
-						<a
-							href={item.href}
-							aria-current={item.href && isActive(item.href) ? 'page' : undefined}
+						<button
+							type="button"
+							class={styles.disclosure}
+							aria-expanded="false"
+							aria-controls={submenuId}
+							data-vt-submenu-trigger
 						>
 							{item.label}
-						</a>
+							<span class={styles.caret} aria-hidden="true">
+								▼
+							</span>
+						</button>
+						<ul id={submenuId} class={styles.subMenu}>
+							{children.map((child) => (
+								<li
+									class:list={[
+										styles.subItem,
+										{ [styles.subItemActive]: child.href ? isActive(child.href) : false },
+									]}
+								>
+									<a
+										href={child.href}
+										aria-current={child.href && isActive(child.href) ? 'page' : undefined}
+									>
+										{child.label}
+									</a>
+								</li>
+							))}
+						</ul>
 					</li>
 				);
-			})
-		}
+			}
+
+			return (
+				<li
+					class:list={[
+						styles.item,
+						{ [styles.itemActive]: item.href ? isActive(item.href) : false },
+					]}
+				>
+					<a href={item.href} aria-current={item.href && isActive(item.href) ? 'page' : undefined}>
+						{item.label}
+					</a>
+				</li>
+			);
+		})}
 	</ul>
 </nav>
 

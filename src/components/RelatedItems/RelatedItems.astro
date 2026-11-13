@@ -34,38 +34,36 @@ const {
 } = Astro.props;
 ---
 
-{
-	items.length > 0 && (
-		<section class={styles.section} aria-labelledby={headingId}>
-			<h2 id={headingId} class={styles.heading}>
-				{heading}
-			</h2>
-			<ul class={styles.grid}>
-				{items.map((item) => (
-					<li class={styles.item}>
-						<a href={item.href} class={styles.link}>
-							{item.image && (
-								<div class={styles.media}>
-									<Picture
-										src={item.image.src}
-										alt={item.image.alt ?? item.title}
-										loading="lazy"
-										formats={['avif', 'webp']}
-										width={720}
-										height={540}
-										widths={[240, 360, 480, 720]}
-										sizes={sizes}
-									/>
-								</div>
-							)}
-							<div class={styles.body}>
-								<h3 class={styles.title}>{item.title}</h3>
-								{item.summary && <p class={styles.summary}>{item.summary}</p>}
+{items.length > 0 && (
+	<section class={styles.section} aria-labelledby={headingId}>
+		<h2 id={headingId} class={styles.heading}>
+			{heading}
+		</h2>
+		<ul class={styles.grid}>
+			{items.map((item) => (
+				<li class={styles.item}>
+					<a href={item.href} class={styles.link}>
+						{item.image && (
+							<div class={styles.media}>
+								<Picture
+									src={item.image.src}
+									alt={item.image.alt ?? item.title}
+									loading="lazy"
+									formats={['avif', 'webp']}
+									width={720}
+									height={540}
+									widths={[240, 360, 480, 720]}
+									sizes={sizes}
+								/>
 							</div>
-						</a>
-					</li>
-				))}
-			</ul>
-		</section>
-	)
-}
+						)}
+						<div class={styles.body}>
+							<h3 class={styles.title}>{item.title}</h3>
+							{item.summary && <p class={styles.summary}>{item.summary}</p>}
+						</div>
+					</a>
+				</li>
+			))}
+		</ul>
+	</section>
+)}

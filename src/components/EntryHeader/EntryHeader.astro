@@ -17,6 +17,8 @@ const Heading = level === 1 ? 'h1' : 'h2';
 ---
 
 <header class={styles.header}>
-	<Heading class={styles.title} data-speakable="title">{title}</Heading>
+	<Heading class={styles.title} data-speakable="title">
+		{title}
+	</Heading>
 	{subtitle && <p class={styles.subtitle}>{subtitle}</p>}
 </header>
