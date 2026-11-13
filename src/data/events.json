@@ -395,8 +395,7 @@
 			"title": "New Year's Eve Party",
 			"summary": "Ring in the new year with live music and fireworks at Neuadd Dyfi and pubs across Aberdyfi and Tywyn.",
 			"start_date": "2026-12-31",
-			"location": "Neuadd Dyfi, Aberdyfi",
-			"locality": "Aberdyfi"
+			"location": "Neuadd Dyfi, Aberdyfi"
 		},
 		{
 			"title": "Machynlleth Lantern Procession",
@@ -576,7 +575,7 @@
 		},
 		{
 			"title": "A Ticket to Christmas at the Vale of Rheidol",
-			"summary": "A steam train ride from Aberystwyth to Capel Bangor and back is followed by a visit to Santa in his grotto at the Engine Shed Museum, where every child gets a present. It runs every day from 16 to 23 December, with trains at 13:30, 15:00, 16:30 and 18:00 (just the two later ones on Friday 18th), and the 16:30 on Thursday 17th is a relaxed session for children with additional learning needs. Tickets are £26.25 for adults and children and £5.30 for infants, booked online or by phone.",
+			"summary": "A steam train ride from Aberystwyth to Capel Bangor and back is followed by a visit to Santa in his grotto at the Engine Shed Museum, where every child gets a present. It runs every day from 16 to 23 December, with trains at 13:30, 15:00, 16:30 and 18:00 (just the two later ones on Friday 18th), and the 16:30 on Thursday 17th is a relaxed session for visitors of any age with additional learning needs, autism, sensory processing differences or other neurodivergence. Tickets are £26.25 for adults and children and £5.30 for infants, booked online or by phone.",
 			"start_date": "2026-12-16",
 			"end_date": "2026-12-23",
 			"dates": [
@@ -669,6 +668,7 @@
 			"summary": "A Halloween meal at Tywyn Wharf followed by a steam train out to Dolgoch Woods after dark. Two sittings each evening, at 4.30pm and 6.30pm, with a two course meal included in the ticket.",
 			"start_date": "2026-10-29",
 			"end_date": "2026-10-30",
+			"dates": ["2026-10-29", "2026-10-30"],
 			"start_time": "16:30",
 			"location": "Talyllyn Railway, Tywyn",
 			"locality": "Tywyn",
