@@ -21,6 +21,7 @@ export interface RawEvent {
 	end_date?: string;
 	start_time?: string;
 	end_time?: string;
+	dates?: string[];
 	location?: string;
 	locality?: string;
 	image?: string;
@@ -38,23 +39,33 @@ export interface RawEvent {
 	tags?: string[];
 }
 
-const RawEventSchema = z.object({
-	title: z.string().min(1),
-	summary: z.string().optional(),
-	start_date: z.string().regex(DATE_RE, 'start_date must be YYYY-MM-DD'),
-	end_date: z.string().regex(DATE_RE, 'end_date must be YYYY-MM-DD').optional(),
-	start_time: z.string().regex(TIME_RE, 'start_time must be HH:MM').optional(),
-	end_time: z.string().regex(TIME_RE, 'end_time must be HH:MM').optional(),
-	location: z.string().optional(),
-	locality: z.string().optional(),
-	image: z.string().optional(),
-	image_alt: z.string().optional(),
-	internal_url: z.string().optional(),
-	external_url: z.string().optional(),
-	external_label: z.string().optional(),
-	month_only: z.boolean().optional(),
-	tags: z.array(z.string()).optional(),
-});
+const RawEventSchema = z
+	.object({
+		title: z.string().min(1),
+		summary: z.string().optional(),
+		start_date: z.string().regex(DATE_RE, 'start_date must be YYYY-MM-DD'),
+		end_date: z.string().regex(DATE_RE, 'end_date must be YYYY-MM-DD').optional(),
+		start_time: z.string().regex(TIME_RE, 'start_time must be HH:MM').optional(),
+		end_time: z.string().regex(TIME_RE, 'end_time must be HH:MM').optional(),
+		dates: z.array(z.string().regex(DATE_RE, 'dates must be YYYY-MM-DD')).optional(),
+		location: z.string().optional(),
+		locality: z.string().optional(),
+		image: z.string().optional(),
+		image_alt: z.string().optional(),
+		internal_url: z.string().optional(),
+		external_url: z.string().optional(),
+		external_label: z.string().optional(),
+		month_only: z.boolean().optional(),
+		tags: z.array(z.string()).optional(),
+	})
+	.refine(
+		(ev) =>
+			!ev.dates ||
+			(ev.dates[0] === ev.start_date &&
+				ev.dates.at(-1) === (ev.end_date ?? ev.start_date) &&
+				ev.dates.every((d, i, all) => i === 0 || d > all[i - 1]!)),
+		{ message: 'dates must run in order from start_date to end_date', path: ['dates'] },
+	);
 
 const EventsJsonSchema = z.object({ events: z.array(RawEventSchema).optional() }).passthrough();
 
@@ -67,7 +78,7 @@ export interface NormalisedEvent {
 	imageAlt: string;
 	startIso: string;
 	endIso: string;
-	schemaDates: { start: string; end?: string } | null;
+	schemaDates: { start: string; end?: string }[];
 	dateLabel: string;
 	monthOnly: boolean;
 	tags: string[];
@@ -205,12 +216,25 @@ export function getEvents(now: Date = new Date()): NormalisedEvent[] {
 		const isOngoing = start.getTime() <= t && t <= end.getTime();
 		const isUpcoming = start.getTime() > t;
 		const primaryUrl = ev.internal_url ?? ev.external_url ?? null;
+		const day = (d: string) =>
+			ev.start_time
+				? {
+						start: combine(d, ev.start_time, false),
+						end: ev.end_time ? combine(d, ev.end_time, true) : undefined,
+					}
+				: { start: d, end: d };
 		const schemaDates =
-			monthOnly && !ev.end_date
-				? null
-				: ev.start_time
-					? { start: startIso, end: ev.end_time || endDate !== ev.start_date ? endIso : undefined }
-					: { start: ev.start_date, end: endDate };
+			(monthOnly && !ev.end_date) || ev.tags?.includes('menu')
+				? []
+				: ev.dates
+					? ev.dates
+							.filter((d) => new Date(combine(d, ev.end_time ?? '', true)).getTime() >= t)
+							.map(day)
+					: endDate === ev.start_date
+						? [day(ev.start_date)]
+						: ev.start_time && ev.end_time
+							? [{ start: startIso, end: endIso }]
+							: [{ start: ev.start_date, end: endDate }];
 
 		out.push({
 			title: ev.title,

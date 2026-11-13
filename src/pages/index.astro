@@ -9,7 +9,7 @@ import PageLayout from '../layouts/PageLayout.astro';
 import EntryHeader from '../components/EntryHeader/EntryHeader.astro';
 import EventsSection from '../components/EventsSection/EventsSection.astro';
 import { SITE } from '../lib/site';
-import { touristDestination, eventSchema, webPage } from '../lib/jsonld';
+import { touristDestination, eventNodes, webPage } from '../lib/jsonld';
 import { upcomingEvents } from '../lib/events';
 import surfcamSrc from '../assets/img/heroes/home-surfcam.jpg';
 
@@ -31,20 +31,7 @@ const jsonLd = [
 		url: Astro.url,
 	}),
 	touristDestination(),
-	...upcomingEvents()
-		.filter((ev) => ev.schemaDates && ev.locality)
-		.map((ev) =>
-			eventSchema({
-				name: ev.title,
-				startIso: ev.schemaDates!.start,
-				endIso: ev.schemaDates!.end,
-				location: ev.location || undefined,
-				locality: ev.locality,
-				url: ev.primaryUrl,
-				image: ev.image,
-				description: ev.summary || undefined,
-			}),
-		),
+	...upcomingEvents().flatMap((ev) => eventNodes(ev)),
 ];
 ---
 
